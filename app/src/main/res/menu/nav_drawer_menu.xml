@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:title="@string/string_track_workouts" />
+
+    <item
+        android:id="@+id/selectTrainingCycleFragment"
+        android:title="@string/string_plan_training_cycles" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/string_settings" />
+
+</menu>

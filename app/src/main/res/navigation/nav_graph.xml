@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.lightweight.ui.HomeFragment"
+        android:label="Workout"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_selectCategoryFragment"
+            app:destination="@id/selectCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectCategoryFragment"
+        android:name="com.example.lightweight.ui.SelectCategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_select_category" />
+    <fragment
+        android:id="@+id/selectTrainingCycleFragment"
+        android:name="com.example.lightweight.ui.SelectTrainingCycleFragment"
+        android:label="Training Cycle"
+        tools:layout="@layout/fragment_select_training_cycle" />
+    <fragment
+        android:id="@+id/selectExerciseFragment"
+        android:name="com.example.lightweight.ui.SelectExerciseFragment"
+        android:label="Exercise"
+        tools:layout="@layout/fragment_select_exercise" />
+</navigation>

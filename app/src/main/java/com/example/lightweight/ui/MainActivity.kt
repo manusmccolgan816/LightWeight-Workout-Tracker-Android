@@ -1,0 +1,76 @@
+package com.example.lightweight.ui
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.*
+import androidx.room.Room
+import com.example.lightweight.R
+import com.example.lightweight.data.db.WorkoutDatabase
+import com.example.lightweight.data.repositories.WorkoutRepository
+import com.google.android.material.navigation.NavigationView
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var navController: NavController
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var toolbar: Toolbar
+    private lateinit var navView: NavigationView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        navController = navHostFragment.findNavController()
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+
+        // Passing the top-level fragments
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.homeFragment, R.id.selectTrainingCycleFragment),
+            drawerLayout, // This puts the hamburger icon into the toolbar
+        )
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar) // Set the toolbar to work as the action bar
+
+        // Sets up action bar with navController, with appBarConfiguration controlling how the
+        // navigation button is displayed
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navView = findViewById(R.id.nav_view)
+        navView.setupWithNavController(navController)
+
+//        val database = WorkoutDatabase(this)
+//        val repository = WorkoutRepository(database)
+//        val factory = WorkoutViewModelFactory(repository)
+//
+//        //val viewModel = ViewModelProviders.of(this).get(WorkoutViewModel::class.java)
+//        val viewModel: WorkoutViewModel by viewModels { factory }
+    }
+
+    /**
+     * Provides back navigation functionality for back button on toolbar. If back navigation is
+     * unsuccessful then superclass function is called.
+     */
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    /**
+     * Navigates to the destination clicked. If this is unsuccessful then base function is called.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+}
