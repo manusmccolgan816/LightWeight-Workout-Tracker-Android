@@ -15,8 +15,15 @@ import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.repositories.WorkoutRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
-class SelectCategoryFragment : Fragment(R.layout.fragment_select_category) {
+class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), KodeinAware {
+
+    override val kodein: Kodein by kodein()
+    private val factory: WorkoutViewModelFactory by instance()
 
     private lateinit var recyclerViewCategories: RecyclerView
     private lateinit var fabAddCategory: FloatingActionButton
@@ -24,11 +31,12 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         // Creates the database with the current context - IllegalStateException is thrown if
         // context is null
-        val database = WorkoutDatabase(requireContext())
-        val repository = WorkoutRepository(database)
-        val factory = WorkoutViewModelFactory(repository)
+//        val database = WorkoutDatabase(requireContext())
+//        val repository = WorkoutRepository(database)
+//        val factory = WorkoutViewModelFactory(repository)
 
         val viewModel: WorkoutViewModel by viewModels { factory }
 
