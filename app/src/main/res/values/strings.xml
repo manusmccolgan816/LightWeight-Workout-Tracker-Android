@@ -8,4 +8,6 @@
     <string name="string_save">Save</string>
     <string name="string_cancel">Cancel</string>
     <string name="string_name">Name</string>
+    <string name="string_edit">Edit</string>
+    <string name="string_delete">Delete</string>
 </resources>

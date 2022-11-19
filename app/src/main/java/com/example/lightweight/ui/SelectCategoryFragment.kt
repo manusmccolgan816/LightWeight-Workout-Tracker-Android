@@ -38,15 +38,10 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category) {
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
 
-        viewModel.getAllCategories().observe(viewLifecycleOwner, Observer {
+        viewModel.getAllCategories().observe(viewLifecycleOwner) {
             adapter.categories = it
             adapter.notifyDataSetChanged()
-        })
-
-//        viewModel.getAllCategories().observe(viewLifecycleOwner) {
-//            adapter.categories = it
-//            adapter.notifyDataSetChanged()
-//        }
+        }
 
         fabAddCategory = view.findViewById(R.id.fab_add_category)
         fabAddCategory.setOnClickListener {
