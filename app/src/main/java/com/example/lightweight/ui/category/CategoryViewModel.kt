@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.category
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.Category
@@ -7,9 +7,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WorkoutViewModel(
-    private val repository: WorkoutRepository
-) : ViewModel() {
+class CategoryViewModel(
+    private val repository: WorkoutRepository)
+    : ViewModel() {
 
     fun upsert(category: Category) = CoroutineScope(Dispatchers.Main).launch {
         repository.upsert(category)

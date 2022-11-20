@@ -5,7 +5,7 @@ import androidx.room.*
 import com.example.lightweight.data.db.entities.Category
 
 @Dao
-interface WorkoutDao {
+interface CategoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(category: Category)

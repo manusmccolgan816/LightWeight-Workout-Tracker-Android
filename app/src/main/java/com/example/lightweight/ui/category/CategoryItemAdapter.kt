@@ -1,6 +1,5 @@
-package com.example.lightweight
+package com.example.lightweight.ui.category
 
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.ui.WorkoutViewModel
 
 class CategoryItemAdapter(
     var categories: List<Category>,
-    private val viewModel: WorkoutViewModel
+    private val viewModel: CategoryViewModel
 ) : RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder>() {
 
     private lateinit var parent: ViewGroup

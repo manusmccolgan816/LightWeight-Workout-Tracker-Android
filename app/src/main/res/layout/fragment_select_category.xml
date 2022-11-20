@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="18dp"
-    tools:context=".ui.SelectCategoryFragment">
+    tools:context=".ui.category.SelectCategoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_categories"

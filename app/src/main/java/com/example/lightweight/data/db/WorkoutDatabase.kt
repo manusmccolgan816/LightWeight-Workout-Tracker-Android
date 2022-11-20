@@ -12,7 +12,7 @@ import com.example.lightweight.data.db.entities.Category
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 
-    abstract fun getWorkoutDao(): WorkoutDao
+    abstract fun getCategoryDao(): CategoryDao
 
     companion object {
         @Volatile

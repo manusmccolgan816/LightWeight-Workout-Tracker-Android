@@ -1,29 +1,22 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.category
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.lightweight.CategoryItemAdapter
 import com.example.lightweight.R
-import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.data.repositories.WorkoutRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), KodeinAware {
 
-    override val kodein: Kodein by kodein()
-    private val factory: WorkoutViewModelFactory by instance()
+    override val kodein by kodein()
+    private val factory: CategoryViewModelFactory by instance()
 
     private lateinit var recyclerViewCategories: RecyclerView
     private lateinit var fabAddCategory: FloatingActionButton
@@ -31,14 +24,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // Creates the database with the current context - IllegalStateException is thrown if
-        // context is null
-//        val database = WorkoutDatabase(requireContext())
-//        val repository = WorkoutRepository(database)
-//        val factory = WorkoutViewModelFactory(repository)
-
-        val viewModel: WorkoutViewModel by viewModels { factory }
+        val viewModel: CategoryViewModel by viewModels { factory }
 
         val adapter = CategoryItemAdapter(listOf(), viewModel)
 
@@ -53,11 +39,8 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
         fabAddCategory = view.findViewById(R.id.fab_add_category)
         fabAddCategory.setOnClickListener {
-            AddCategoryDialog(requireContext(), object : AddCategoryDialogListener {
-                override fun onAddButtonClicked(category: Category) {
-                    viewModel.upsert(category)
-                }
-            }).show()
+            AddCategoryDialog(requireContext(),
+                fun(category: Category) { viewModel.upsert(category) }).show()
         }
     }
 }

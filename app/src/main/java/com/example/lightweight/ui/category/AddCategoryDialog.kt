@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.category
 
 import android.content.Context
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatDialog
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 
-class AddCategoryDialog(context: Context, val addCategoryDialogListener: AddCategoryDialogListener) : AppCompatDialog(context) {
-//val addCategory:(Category) -> Unit) : AppCompatDialog(context) {
+class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
+    : AppCompatDialog(context) {
 
     private lateinit var editTextCategoryName: EditText
     private lateinit var buttonSaveNewCategory: Button
@@ -31,8 +31,7 @@ class AddCategoryDialog(context: Context, val addCategoryDialogListener: AddCate
             }
 
             val category = Category(name)
-            addCategoryDialogListener.onAddButtonClicked(category)
-            //addCategory(category)
+            addCategory(category)
             dismiss()
         }
 

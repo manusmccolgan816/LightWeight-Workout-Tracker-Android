@@ -6,9 +6,9 @@ import com.example.lightweight.data.db.entities.Category
 class WorkoutRepository(
     private val db: WorkoutDatabase
 ) {
-    suspend fun upsert(category: Category) = db.getWorkoutDao().upsert(category)
+    suspend fun upsert(category: Category) = db.getCategoryDao().upsert(category)
 
-    suspend fun delete(category: Category) = db.getWorkoutDao().delete(category)
+    suspend fun delete(category: Category) = db.getCategoryDao().delete(category)
 
-    fun getAllCategories() = db.getWorkoutDao().getAllCategories()
+    fun getAllCategories() = db.getCategoryDao().getAllCategories()
 }
