@@ -6,45 +6,43 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/text_view_new_category"
+        android:id="@+id/text_view_delete_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/string_new_category"
+        android:text="@string/string_delete_category"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edit_text_category_name"
+    <TextView
+        android:id="@+id/text_view_delete_category_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="@string/string_name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/string_delete_category_desc"
+        app:layout_constraintBottom_toTopOf="@id/button_cancel_delete_category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_new_category" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_delete_category" />
 
     <Button
-        android:id="@+id/button_save_new_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/string_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_category_name" />
-
-    <Button
-        android:id="@+id/button_cancel_new_category"
+        android:id="@+id/button_cancel_delete_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:text="@string/string_cancel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_category_name" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_delete_category_desc" />
+
+    <Button
+        android:id="@+id/button_confirm_delete_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/string_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_delete_category_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

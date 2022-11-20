@@ -35,8 +35,8 @@ class CategoryItemAdapter(
 
         imageViewCategoryOptions = holder.itemView.findViewById(R.id.image_view_category_options)
 
-        // Setting up popup menu for each category item when icon is clicked
-        imageViewCategoryOptions.setOnClickListener{
+        // Set up popup menu for each category item when icon is clicked
+        imageViewCategoryOptions.setOnClickListener {
             // Create the popup menu anchored to the category item
             val popupMenu = PopupMenu(parent.context, holder.itemView, Gravity.END)
 
@@ -48,6 +48,8 @@ class CategoryItemAdapter(
                         true
                     }
                     R.id.menu_item_delete_category -> {
+                        ConfirmDeleteCategoryDialog(parent.context, curCategory,
+                            fun(category: Category) { viewModel.delete(category) }).show()
                         true
                     }
                     else -> { true }
