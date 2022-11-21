@@ -3,7 +3,9 @@ package com.example.lightweight
 import android.app.Application
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.repositories.CategoryRepository
+import com.example.lightweight.data.repositories.ExerciseRepository
 import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -20,5 +22,8 @@ class LightweightApplication : Application(), KodeinAware {
         bind() from singleton { CategoryRepository(instance()) }
         // provider instantiates a new instance each time a reference is made
         bind() from provider { CategoryViewModelFactory(instance()) }
+
+        bind() from singleton { ExerciseRepository(instance()) }
+        bind() from provider { ExerciseViewModelFactory(instance()) }
     }
 }

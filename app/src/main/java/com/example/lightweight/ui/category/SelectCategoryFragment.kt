@@ -25,8 +25,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: CategoryViewModel by viewModels { factory }
-
-        val adapter = CategoryItemAdapter(listOf(), viewModel)
+        val adapter = CategoryItemAdapter(listOf(), viewModel, this)
 
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())

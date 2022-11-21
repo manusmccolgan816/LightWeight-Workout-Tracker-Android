@@ -9,5 +9,5 @@ class ExerciseRepository(private val db: WorkoutDatabase) {
 
     suspend fun delete(exercise: Exercise) = db.getExerciseDao().delete(exercise)
 
-    fun getAllExercises() = db.getCategoryDao().getAllCategories()
+    fun getAllExercises() = db.getExerciseDao().getAllExercises()
 }

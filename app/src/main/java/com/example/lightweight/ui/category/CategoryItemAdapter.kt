@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 
 class CategoryItemAdapter(
     var categories: List<Category>,
-    private val viewModel: CategoryViewModel
+    private val viewModel: CategoryViewModel,
+    var fragment: Fragment
 ) : RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -33,7 +37,6 @@ class CategoryItemAdapter(
             .text = curCategory.categoryName
 
         imageViewCategoryOptions = holder.itemView.findViewById(R.id.image_view_category_options)
-
         // Set up popup menu for each category item when icon is clicked
         imageViewCategoryOptions.setOnClickListener {
             // Create the popup menu anchored to the category item
@@ -59,8 +62,15 @@ class CategoryItemAdapter(
                     else -> { true }
                 }
             }
-
             popupMenu.show()
+        }
+
+        // Handle clicks inside the RecyclerView item, not accounting for clicks on views that
+        // already have an onClickListener
+        holder.itemView.setOnClickListener {
+            val action = SelectCategoryFragmentDirections
+                .actionSelectCategoryFragmentToSelectExerciseFragment()
+            findNavController(fragment).navigate(action)
         }
     }
 
