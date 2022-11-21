@@ -39,8 +39,11 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
         fabAddCategory = view.findViewById(R.id.fab_add_category)
         fabAddCategory.setOnClickListener {
-            AddCategoryDialog(requireContext(),
-                fun(category: Category) { viewModel.insert(category) }).show()
+            // Display the add category dialog
+            AddCategoryDialog(
+                requireContext(),
+                fun(category: Category) { viewModel.insert(category) }
+            ).show()
         }
     }
 }

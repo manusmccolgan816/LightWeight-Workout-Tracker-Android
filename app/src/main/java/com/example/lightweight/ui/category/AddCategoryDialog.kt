@@ -24,15 +24,17 @@ class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
 
         buttonSaveNewCategory = findViewById(R.id.button_save_new_category)!!
         buttonSaveNewCategory.setOnClickListener {
-            val name = editTextNewCategoryName.text.toString()
+            val name = editTextNewCategoryName.text.toString().trim()
 
             if (name.isEmpty()) {
-                Toast.makeText(context, "No category name given.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "No category name given", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val category = Category(name)
             addCategory(category)
+            Toast.makeText(context, "$name category has been created",
+                Toast.LENGTH_SHORT).show()
             dismiss()
         }
 

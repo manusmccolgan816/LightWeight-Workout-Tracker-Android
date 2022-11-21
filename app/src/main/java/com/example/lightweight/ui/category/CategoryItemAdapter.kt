@@ -43,6 +43,7 @@ class CategoryItemAdapter(
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_edit_category -> {
+                        // Display the edit category dialog
                         EditCategoryDialog(parent.context, curCategory,
                             fun(categoryID: Int?, newName: String) {
                                 viewModel.update(categoryID, newName)
@@ -50,6 +51,7 @@ class CategoryItemAdapter(
                         true
                     }
                     R.id.menu_item_delete_category -> {
+                        // Display the delete category dialog
                         ConfirmDeleteCategoryDialog(parent.context, curCategory,
                             fun(category: Category) { viewModel.delete(category) }).show()
                         true

@@ -1,4 +1,4 @@
-package com.example.lightweight.data.db
+package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

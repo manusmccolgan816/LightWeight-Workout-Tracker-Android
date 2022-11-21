@@ -3,18 +3,13 @@ package com.example.lightweight.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
-import androidx.room.Room
 import com.example.lightweight.R
-import com.example.lightweight.data.db.WorkoutDatabase
-import com.example.lightweight.data.repositories.WorkoutRepository
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
