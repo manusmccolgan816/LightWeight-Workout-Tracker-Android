@@ -7,7 +7,9 @@ class WorkoutRepository(
     private val db: WorkoutDatabase
     ) {
 
-    suspend fun upsert(category: Category) = db.getCategoryDao().upsert(category)
+    suspend fun insert(category: Category) = db.getCategoryDao().insert(category)
+
+    suspend fun update(categoryID: Int?, newName: String) = db.getCategoryDao().update(categoryID, newName)
 
     suspend fun delete(category: Category) = db.getCategoryDao().delete(category)
 

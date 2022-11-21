@@ -6,17 +6,17 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/text_view_new_category"
+        android:id="@+id/text_view_edit_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/string_new_category"
+        android:text="@string/string_edit_category"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edit_text_new_category_name"
+        android:id="@+id/edit_text_edit_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -26,25 +26,25 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_new_category" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_edit_category" />
 
     <Button
-        android:id="@+id/button_save_new_category"
+        android:id="@+id/button_save_edit_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/string_save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_new_category_name" />
+        app:layout_constraintTop_toBottomOf="@id/edit_text_edit_category_name" />
 
     <Button
-        android:id="@+id/button_cancel_new_category"
+        android:id="@+id/button_cancel_edit_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:text="@string/string_cancel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_new_category_name" />
+        app:layout_constraintTop_toBottomOf="@id/edit_text_edit_category_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

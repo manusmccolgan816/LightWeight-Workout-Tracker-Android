@@ -7,8 +7,11 @@ import com.example.lightweight.data.db.entities.Category
 @Dao
 interface CategoryDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(category: Category)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(category: Category)
+
+    @Query("UPDATE CATEGORY SET category_name = :categoryName WHERE category_ID = :categoryID")
+    suspend fun update(categoryID: Int?, categoryName: String)
 
     @Delete
     suspend fun delete(category: Category)

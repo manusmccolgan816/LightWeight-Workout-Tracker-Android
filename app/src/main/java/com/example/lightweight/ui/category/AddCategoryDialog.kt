@@ -12,7 +12,7 @@ import com.example.lightweight.data.db.entities.Category
 class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
     : AppCompatDialog(context) {
 
-    private lateinit var editTextCategoryName: EditText
+    private lateinit var editTextNewCategoryName: EditText
     private lateinit var buttonSaveNewCategory: Button
     private lateinit var buttonCancelNewCategory: Button
 
@@ -20,10 +20,11 @@ class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_add_category)
 
-        editTextCategoryName = findViewById(R.id.edit_text_category_name)!!
+        editTextNewCategoryName = findViewById(R.id.edit_text_new_category_name)!!
+
         buttonSaveNewCategory = findViewById(R.id.button_save_new_category)!!
         buttonSaveNewCategory.setOnClickListener {
-            val name = editTextCategoryName.text.toString()
+            val name = editTextNewCategoryName.text.toString()
 
             if (name.isEmpty()) {
                 Toast.makeText(context, "No category name given.", Toast.LENGTH_SHORT).show()

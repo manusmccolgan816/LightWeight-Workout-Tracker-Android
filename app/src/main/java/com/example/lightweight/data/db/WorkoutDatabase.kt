@@ -8,7 +8,7 @@ import com.example.lightweight.data.db.entities.Category
 
 @Database(
     entities = [Category::class],
-    version = 1,
+    version = 2,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 
@@ -24,6 +24,7 @@ abstract class WorkoutDatabase : RoomDatabase() {
         }
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db").build()
+            context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db")
+            .fallbackToDestructiveMigration().build()
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -44,7 +43,10 @@ class CategoryItemAdapter(
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_edit_category -> {
-                        Toast.makeText(parent.context, "Clicked and all", Toast.LENGTH_SHORT).show()
+                        EditCategoryDialog(parent.context, curCategory,
+                            fun(categoryID: Int?, newName: String) {
+                                viewModel.update(categoryID, newName)
+                            }).show()
                         true
                     }
                     R.id.menu_item_delete_category -> {

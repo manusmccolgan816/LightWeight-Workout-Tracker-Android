@@ -11,5 +11,6 @@ data class Category (
     ) {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "category_ID")
     var categoryID: Int? = null
 }

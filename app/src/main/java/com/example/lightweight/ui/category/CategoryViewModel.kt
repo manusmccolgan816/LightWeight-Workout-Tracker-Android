@@ -7,12 +7,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(
-    private val repository: WorkoutRepository)
-    : ViewModel() {
+class CategoryViewModel(private val repository: WorkoutRepository
+) : ViewModel() {
 
-    fun upsert(category: Category) = CoroutineScope(Dispatchers.Main).launch {
-        repository.upsert(category)
+    fun insert(category: Category) = CoroutineScope(Dispatchers.Main).launch {
+        repository.insert(category)
+    }
+
+    fun update(categoryID: Int?, newName: String) = CoroutineScope(Dispatchers.Main).launch {
+        repository.update(categoryID, newName)
     }
 
     fun delete(category: Category) = CoroutineScope(Dispatchers.Main).launch {
