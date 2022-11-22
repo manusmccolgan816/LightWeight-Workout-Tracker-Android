@@ -65,8 +65,8 @@ class CategoryItemAdapter(
             popupMenu.show()
         }
 
-        // Handle clicks inside the RecyclerView item, not accounting for clicks on views that
-        // already have an onClickListener
+        // Navigate to SelectExerciseFragment when a category item is selected, passing the category
+        // as a parameter
         holder.itemView.setOnClickListener {
             val action = SelectCategoryFragmentDirections
                 .actionSelectCategoryFragmentToSelectExerciseFragment()

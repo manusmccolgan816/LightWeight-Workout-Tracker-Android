@@ -52,22 +52,11 @@ dependencies {
     def kodein_version = "6.4.0"
     def lifecycle_version = "2.0.0"
 
-//    implementation "androidx.room:room-ktx:$room_version"
-//    kapt "androidx.room:room-compiler:$room_version"
-
     // Room and Architectural Components
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
-//    implementation "androidx.room:room-runtime:$room_version"
-//    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-//    implementation "android.arch.persistence.room:runtime:1.1.1"
-//    kapt "android.arch.persistence.room:compiler:1.1.1"
-    //kapt 'android.arch.persistence.room:compiler:1.1.1'
-//    implementation "androidx.room:room-ktx:2.4.3"
-//    annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'

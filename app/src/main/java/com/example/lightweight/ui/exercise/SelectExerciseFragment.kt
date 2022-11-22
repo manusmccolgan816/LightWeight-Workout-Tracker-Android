@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Category
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -16,6 +18,8 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
     override val kodein by kodein()
     private val factory: ExerciseViewModelFactory by instance()
+
+    private val args: SelectExerciseFragmentArgs by navArgs()
 
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var fabAddExercise: FloatingActionButton
