@@ -7,6 +7,9 @@ class ExerciseRepository(private val db: WorkoutDatabase) {
 
     suspend fun insert(exercise: Exercise) = db.getExerciseDao().insert(exercise)
 
+    suspend fun updateName(exerciseID: Int?, exerciseName: String) = db.getExerciseDao()
+        .updateName(exerciseID, exerciseName)
+
     suspend fun delete(exercise: Exercise) = db.getExerciseDao().delete(exercise)
 
     fun getAllExercises() = db.getExerciseDao().getAllExercises()

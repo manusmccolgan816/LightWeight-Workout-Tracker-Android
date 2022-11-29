@@ -11,6 +11,9 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(exercise: Exercise)
 
+    @Query("UPDATE EXERCISE SET exercise_name = :exerciseName WHERE exercise_ID = :exerciseID")
+    suspend fun updateName(exerciseID: Int?, exerciseName: String)
+
     @Delete
     suspend fun delete(exercise: Exercise)
 

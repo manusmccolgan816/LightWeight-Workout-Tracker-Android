@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.exercise
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class ExerciseItemAdapter(
 ) : RecyclerView.Adapter<ExerciseItemAdapter.ExerciseItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
+    private lateinit var imageViewExerciseOptions: ImageView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ExerciseItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,8 +29,37 @@ class ExerciseItemAdapter(
 
     override fun onBindViewHolder(holder: ExerciseItemViewHolder, position: Int) {
         val curExercise = exercises[position]
+
         holder.itemView.findViewById<TextView>(R.id.text_view_exercise_name)
             .text = curExercise.exerciseName
+
+        imageViewExerciseOptions = holder.itemView.findViewById(R.id.image_view_exercise_options)
+        // Set up popup menu for each exercise when icon is clicked
+        imageViewExerciseOptions.setOnClickListener {
+            // Create the popup menu anchored to the category item
+            val popupMenu = PopupMenu(parent.context, holder.itemView, Gravity.END)
+
+            popupMenu.inflate(R.menu.exercise_popup_menu)
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_item_edit_exercise -> {
+                        // Display the edit exercise dialog
+                        EditExerciseDialog(parent.context, curExercise,
+                            fun (exerciseID: Int?, newName: String) {
+                                viewModel.updateName(exerciseID, newName)
+                            }).show()
+                        true
+                    }
+                    R.id.menu_item_delete_exercise -> {
+                        ConfirmDeleteExerciseDialog(parent.context, curExercise,
+                            fun (curExercise: Exercise) { viewModel.delete(curExercise) }).show()
+                        true
+                    }
+                    else -> true
+                }
+            }
+            popupMenu.show()
+        }
     }
 
     override fun getItemCount(): Int {

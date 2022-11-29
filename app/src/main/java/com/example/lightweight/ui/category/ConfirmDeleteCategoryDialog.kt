@@ -3,7 +3,6 @@ package com.example.lightweight.ui.category
 import android.content.Context
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import com.example.lightweight.R
