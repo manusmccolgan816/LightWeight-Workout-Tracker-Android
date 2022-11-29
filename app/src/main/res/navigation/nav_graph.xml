@@ -36,5 +36,9 @@
         <argument
             android:name="categoryID"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_selectExerciseFragment_to_nav_graph_set_tracker"
+            app:destination="@id/nav_graph_set_tracker" />
     </fragment>
+    <include app:graph="@navigation/nav_graph_set_tracker" />
 </navigation>

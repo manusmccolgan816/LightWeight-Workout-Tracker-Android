@@ -45,13 +45,6 @@ class MainActivity : AppCompatActivity() {
 
         navView = findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
-
-//        val database = WorkoutDatabase(this)
-//        val repository = WorkoutRepository(database)
-//        val factory = WorkoutViewModelFactory(repository)
-//
-//        //val viewModel = ViewModelProviders.of(this).get(WorkoutViewModel::class.java)
-//        val viewModel: WorkoutViewModel by viewModels { factory }
     }
 
     /**

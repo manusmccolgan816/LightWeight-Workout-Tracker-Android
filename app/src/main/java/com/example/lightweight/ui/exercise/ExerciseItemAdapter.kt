@@ -8,13 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.ui.category.SelectCategoryFragmentDirections
 
 class ExerciseItemAdapter(
     var exercises: List<Exercise>,
-    private val viewModel: ExerciseViewModel
+    private val viewModel: ExerciseViewModel,
+    var fragment: Fragment
 ) : RecyclerView.Adapter<ExerciseItemAdapter.ExerciseItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -59,6 +63,14 @@ class ExerciseItemAdapter(
                 }
             }
             popupMenu.show()
+        }
+
+        // Navigate to SelectExerciseFragment when a category item is selected, passing the category
+        // as a parameter
+        holder.itemView.setOnClickListener {
+            val action = SelectExerciseFragmentDirections
+                .actionSelectExerciseFragmentToNavGraphSetTracker()
+            NavHostFragment.findNavController(fragment).navigate(action)
         }
     }
 
