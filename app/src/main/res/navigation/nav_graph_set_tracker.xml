@@ -6,7 +6,7 @@
     app:startDestination="@id/logSetsFragment">
     <fragment
         android:id="@+id/logSetsFragment"
-        android:name="com.example.lightweight.ui.LogSetsFragment"
-        android:label="fragment_log_sets"
+        android:name="com.example.lightweight.ui.settracker.logsets.LogSetsFragment"
+        android:label="Log Sets"
         tools:layout="@layout/fragment_log_sets" />
 </navigation>

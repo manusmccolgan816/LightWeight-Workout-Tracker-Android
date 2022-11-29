@@ -69,7 +69,7 @@ class ExerciseItemAdapter(
         // as a parameter
         holder.itemView.setOnClickListener {
             val action = SelectExerciseFragmentDirections
-                .actionSelectExerciseFragmentToNavGraphSetTracker()
+                .actionSelectExerciseFragmentToSetTrackerActivity(curExercise.exerciseID!!)
             NavHostFragment.findNavController(fragment).navigate(action)
         }
     }

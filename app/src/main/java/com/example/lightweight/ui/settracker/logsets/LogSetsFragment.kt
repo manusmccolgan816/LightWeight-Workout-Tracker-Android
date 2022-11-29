@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.settracker.logsets
 
 import android.os.Bundle
 import android.view.View
