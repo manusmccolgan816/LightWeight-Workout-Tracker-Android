@@ -69,7 +69,7 @@ class CategoryItemAdapter(
         // as a parameter
         holder.itemView.setOnClickListener {
             val action = SelectCategoryFragmentDirections
-                .actionSelectCategoryFragmentToSelectExerciseFragment()
+                .actionSelectCategoryFragmentToSelectExerciseFragment(curCategory.categoryID!!)
             findNavController(fragment).navigate(action)
         }
     }

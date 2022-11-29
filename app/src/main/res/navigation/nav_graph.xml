@@ -32,5 +32,9 @@
         android:id="@+id/selectExerciseFragment"
         android:name="com.example.lightweight.ui.exercise.SelectExerciseFragment"
         android:label="Exercise"
-        tools:layout="@layout/fragment_select_exercise" />
+        tools:layout="@layout/fragment_select_exercise" >
+        <argument
+            android:name="categoryID"
+            app:argType="integer" />
+    </fragment>
 </navigation>

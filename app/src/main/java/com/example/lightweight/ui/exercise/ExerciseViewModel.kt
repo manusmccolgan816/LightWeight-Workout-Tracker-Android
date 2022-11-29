@@ -19,4 +19,6 @@ class ExerciseViewModel(private val repository: ExerciseRepository) : ViewModel(
 
     // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllExercises() = repository.getAllExercises()
+
+    fun getExercisesOfCategory(categoryID: Int?) = repository.getExercisesOfCategory(categoryID)
 }

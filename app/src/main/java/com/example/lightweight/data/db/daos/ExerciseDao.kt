@@ -16,4 +16,7 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM EXERCISE")
     fun getAllExercises(): LiveData<List<Exercise>>
+
+    @Query("SELECT * FROM EXERCISE WHERE category_ID = :categoryID")
+    fun getExercisesOfCategory(categoryID: Int?): LiveData<List<Exercise>>
 }

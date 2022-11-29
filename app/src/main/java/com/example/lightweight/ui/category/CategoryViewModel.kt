@@ -23,4 +23,6 @@ class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(
 
     // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllCategories() = repository.getAllCategories()
+
+    fun getCategoryOfID(categoryID: Int?) = repository.getCategoryOfID(categoryID)
 }

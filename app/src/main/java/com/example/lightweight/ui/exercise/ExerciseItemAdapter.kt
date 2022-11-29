@@ -27,7 +27,8 @@ class ExerciseItemAdapter(
 
     override fun onBindViewHolder(holder: ExerciseItemViewHolder, position: Int) {
         val curExercise = exercises[position]
-
+        holder.itemView.findViewById<TextView>(R.id.text_view_exercise_name)
+            .text = curExercise.exerciseName
     }
 
     override fun getItemCount(): Int {

@@ -12,4 +12,6 @@ class CategoryRepository(private val db: WorkoutDatabase) {
     suspend fun delete(category: Category) = db.getCategoryDao().delete(category)
 
     fun getAllCategories() = db.getCategoryDao().getAllCategories()
+
+    fun getCategoryOfID(categoryID: Int?) = db.getCategoryDao().getCategoryOfID(categoryID)
 }

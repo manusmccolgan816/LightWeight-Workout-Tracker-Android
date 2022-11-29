@@ -10,4 +10,7 @@ class ExerciseRepository(private val db: WorkoutDatabase) {
     suspend fun delete(exercise: Exercise) = db.getExerciseDao().delete(exercise)
 
     fun getAllExercises() = db.getExerciseDao().getAllExercises()
+
+    fun getExercisesOfCategory(categoryID: Int?) = db.getExerciseDao()
+        .getExercisesOfCategory(categoryID)
 }
