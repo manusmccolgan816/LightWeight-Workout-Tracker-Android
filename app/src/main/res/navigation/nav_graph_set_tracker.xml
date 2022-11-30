@@ -7,6 +7,16 @@
     <fragment
         android:id="@+id/logSetsFragment"
         android:name="com.example.lightweight.ui.settracker.logsets.LogSetsFragment"
-        android:label="Log Sets"
+        android:label="@string/string_log"
         tools:layout="@layout/fragment_log_sets" />
+    <fragment
+        android:id="@+id/stopwatchFragment"
+        android:name="com.example.lightweight.ui.settracker.stopwatch.StopwatchFragment"
+        android:label="@string/string_stopwatch"
+        tools:layout="@layout/fragment_stopwatch" />
+    <fragment
+        android:id="@+id/exerciseHistoryFragment"
+        android:name="com.example.lightweight.ui.settracker.exercisehistory.ExerciseHistoryFragment"
+        android:label="@string/string_history"
+        tools:layout="@layout/fragment_exercise_history" />
 </navigation>

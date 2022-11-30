@@ -22,4 +22,6 @@
     <string name="string_log">Log</string>
     <string name="string_stopwatch">Stopwatch</string>
     <string name="string_history">History</string>
+    <string name="string_select_category">Select Category</string>
+    <string name="string_select_exercise">Select Exercise</string>
 </resources>

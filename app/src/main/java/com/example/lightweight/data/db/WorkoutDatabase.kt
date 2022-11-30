@@ -11,7 +11,7 @@ import com.example.lightweight.data.db.entities.Exercise
 
 @Database(
     entities = [Category::class, Exercise::class],
-    version = 3,
+    version = 4,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 

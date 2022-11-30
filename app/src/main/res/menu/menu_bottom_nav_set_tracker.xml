@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/logSetsFragment"
+        android:icon="@drawable/ic_baseline_fitness_center_24"
         android:title="@string/string_log" />
 
     <item
         android:id="@+id/stopwatchFragment"
+        android:icon="@drawable/ic_baseline_timer_24"
         android:title="@string/string_stopwatch" />
 
     <item
         android:id="@+id/exerciseHistoryFragment"
+        android:icon="@drawable/ic_baseline_history_24"
         android:title="@string/string_history" />
 
 </menu>

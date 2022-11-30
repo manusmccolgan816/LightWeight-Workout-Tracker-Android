@@ -17,8 +17,8 @@
     <fragment
         android:id="@+id/selectCategoryFragment"
         android:name="com.example.lightweight.ui.category.SelectCategoryFragment"
-        android:label="Category"
-        tools:layout="@layout/fragment_select_category" >
+        android:label="@string/string_select_category"
+        tools:layout="@layout/fragment_select_category">
         <action
             android:id="@+id/action_selectCategoryFragment_to_selectExerciseFragment"
             app:destination="@id/selectExerciseFragment" />
@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/selectExerciseFragment"
         android:name="com.example.lightweight.ui.exercise.SelectExerciseFragment"
-        android:label="Exercise"
-        tools:layout="@layout/fragment_select_exercise" >
+        android:label="@string/string_select_exercise"
+        tools:layout="@layout/fragment_select_exercise">
         <argument
             android:name="categoryID"
             app:argType="integer" />
