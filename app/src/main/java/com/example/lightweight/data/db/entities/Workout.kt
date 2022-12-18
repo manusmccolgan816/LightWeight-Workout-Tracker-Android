@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "WORKOUT")
-class Workout (
+data class Workout(
     @ColumnInfo(name = "date")
     val date: String,
 

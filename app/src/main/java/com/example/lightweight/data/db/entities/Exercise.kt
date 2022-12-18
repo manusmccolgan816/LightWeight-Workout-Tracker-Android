@@ -12,10 +12,12 @@ import androidx.room.PrimaryKey
         childColumns = ["category_ID"],
         parentColumns = ["category_ID"],
         onDelete = CASCADE // When a category is deleted, all its child exercises are too
-)])
+    )]
+)
 data class Exercise(
     @ColumnInfo(name = "exercise_name")
     val exerciseName: String,
+
     @ColumnInfo(name = "category_ID")
     val categoryID: Int?
 ) {
