@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
         onDelete = CASCADE // When an exercise is deleted, so are its instances
     )]
 )
-class ExerciseInstance(
+data class ExerciseInstance(
     @ColumnInfo(name = "workout_ID")
     val workoutID: Int?,
 

@@ -4,17 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.lightweight.data.db.daos.CategoryDao
-import com.example.lightweight.data.db.daos.ExerciseDao
-import com.example.lightweight.data.db.daos.ExerciseInstanceDao
-import com.example.lightweight.data.db.daos.WorkoutDao
-import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.data.db.entities.Exercise
-import com.example.lightweight.data.db.entities.ExerciseInstance
-import com.example.lightweight.data.db.entities.Workout
+import com.example.lightweight.data.db.daos.*
+import com.example.lightweight.data.db.entities.*
 
 @Database(
-    entities = [Category::class, Exercise::class, Workout::class, ExerciseInstance::class],
+    entities = [
+        Category::class,
+        Exercise::class,
+        Workout::class,
+        ExerciseInstance::class,
+        TrainingSet::class
+    ],
     version = 4,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
@@ -23,6 +23,7 @@ abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun getExerciseDao(): ExerciseDao
     abstract fun getWorkoutDao(): WorkoutDao
     abstract fun getExerciseInstanceDao(): ExerciseInstanceDao
+    abstract fun getTrainingSetDao(): TrainingSetDao
 
     companion object {
         @Volatile
