@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SetTrackerActivity : AppCompatActivity() {
 
-    private val args: SetTrackerActivityArgs by navArgs()
+    val args: SetTrackerActivityArgs by navArgs()
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration

@@ -43,8 +43,8 @@
     <activity
         android:id="@+id/setTrackerActivity"
         android:name="com.example.lightweight.ui.settracker.SetTrackerActivity"
-        android:label="activity_set_tracker"
-        tools:layout="@layout/activity_set_tracker" >
+        android:label="Set Tracker"
+        tools:layout="@layout/activity_set_tracker">
         <argument
             android:name="exerciseID"
             app:argType="integer" />

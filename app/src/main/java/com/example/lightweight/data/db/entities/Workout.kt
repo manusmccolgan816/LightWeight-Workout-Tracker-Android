@@ -15,5 +15,5 @@ data class Workout(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "workout_ID")
-    var categoryID: Int? = null
+    var workoutID: Int? = null
 }

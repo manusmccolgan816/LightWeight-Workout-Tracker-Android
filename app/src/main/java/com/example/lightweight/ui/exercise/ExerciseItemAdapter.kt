@@ -68,6 +68,7 @@ class ExerciseItemAdapter(
         // Navigate to SelectExerciseFragment when a category item is selected, passing the category
         // as a parameter
         holder.itemView.setOnClickListener {
+
             val action = SelectExerciseFragmentDirections
                 .actionSelectExerciseFragmentToSetTrackerActivity(curExercise.exerciseID!!)
             NavHostFragment.findNavController(fragment).navigate(action)

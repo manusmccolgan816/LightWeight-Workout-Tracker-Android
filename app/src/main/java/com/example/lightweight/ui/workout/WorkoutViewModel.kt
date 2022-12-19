@@ -19,4 +19,6 @@ class WorkoutViewModel(private val repository: WorkoutRepository) : ViewModel() 
 
     // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllWorkouts() = repository.getAllWorkouts()
+
+    fun getWorkoutOfDate(date: String) = repository.getWorkoutOfDate(date)
 }

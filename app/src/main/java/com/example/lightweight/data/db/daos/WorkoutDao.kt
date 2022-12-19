@@ -15,4 +15,7 @@ interface WorkoutDao {
 
     @Query("SELECT * FROM WORKOUT")
     fun getAllWorkouts(): LiveData<List<Workout>>
+
+    @Query("SELECT * FROM WORKOUT WHERE date = :date")
+    fun getWorkoutOfDate(date: String): Workout?
 }
