@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.ExerciseInstance
@@ -19,6 +20,8 @@ import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -58,29 +61,40 @@ class LogSetsFragment() : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
         buttonSaveSet = view.findViewById(R.id.button_save_set)
         buttonSaveSet.setOnClickListener {
-//            val weight = editTextWeight.text.toString().toFloat()
-//            val reps = editTextNumReps.text.toString().toInt()
-//            // If weight and reps have been input...
-//            if (weight != null && reps != null) {
-//                var workout = Workout(date, null)
-//                // Create the workout if none exists for the given date
-//                if (workoutViewModel.getWorkoutOfDate(date) != null) {
-//                    workout = Workout(date, null)
-//                }
-//
-//                val setTrackerActivity: SetTrackerActivity = activity as SetTrackerActivity
-//                val exerciseID = setTrackerActivity.exerciseID
-//                // TODO Change this of course
-//                var exerciseInstance: ExerciseInstance = ExerciseInstance(1, 1, null)
-//                // Create an exercise instance if none exists for the given date and exercise
-//                if (exerciseInstanceViewModel.getExerciseInstance(workout.workoutID, exerciseID)
-//                        != null) {
-//                    exerciseInstance = ExerciseInstance(workout.workoutID, exerciseID, null)
-//                }
-//                // TODO Change this (isPR should be checked)
-//                val trainingSet: TrainingSet = TrainingSet(exerciseInstance.exerciseInstanceID, weight, reps, null, false)
-//                trainingSetViewModel.insert(trainingSet)
-//            }
+            val weight = editTextWeight.text.toString().toFloatOrNull()
+            val reps = editTextNumReps.text.toString().toIntOrNull()
+            // If weight and reps have been input...
+            if (weight != null && reps != null) {
+                var workout = Workout(date, null) // TODO Change this of course
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    // Create the workout if none exists for the given date
+                    if (workoutViewModel.getWorkoutOfDate(date) == null) {
+                        workout = Workout(date, null)
+                        workoutViewModel.insert(workout)
+                    }
+
+                    val setTrackerActivity: SetTrackerActivity = activity as SetTrackerActivity
+                    val exerciseID = setTrackerActivity.args.exerciseID
+                    // TODO Change this of course
+                    var exerciseInstance: ExerciseInstance = ExerciseInstance(1,
+                        1, null)
+                    // Create an exercise instance if none exists for the given date and exercise
+                    if (exerciseInstanceViewModel.getExerciseInstance(workout.workoutID, exerciseID)
+                            == null) {
+                        exerciseInstance = ExerciseInstance(workout.workoutID, exerciseID, null)
+                        exerciseInstanceViewModel.insert(exerciseInstance)
+                    }
+                    // TODO Change this (isPR should be checked)
+                    val trainingSet = TrainingSet(exerciseInstance.exerciseInstanceID, weight, reps,
+                        null, false)
+                    trainingSetViewModel.insert(trainingSet)
+                }
+                Toast.makeText(requireContext(), "Set saved", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

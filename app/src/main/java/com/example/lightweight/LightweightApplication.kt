@@ -6,7 +6,7 @@ import com.example.lightweight.data.repositories.*
 import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
-import com.example.lightweight.ui.trainingset.TrainingSetViewModel
+import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -36,6 +36,6 @@ class LightweightApplication : Application(), KodeinAware {
         bind() from provider { ExerciseInstanceViewModelFactory(instance())}
 
         bind() from singleton { TrainingSetRepository(instance()) }
-        bind() from provider { TrainingSetViewModel(instance())}
+        bind() from provider { TrainingSetViewModelFactory(instance())}
     }
 }
