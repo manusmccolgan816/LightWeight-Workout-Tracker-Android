@@ -24,4 +24,15 @@
     <string name="string_history">History</string>
     <string name="string_select_category">Select Category</string>
     <string name="string_select_exercise">Select Exercise</string>
+    <string name="string_back_arrow"><![CDATA[<]]></string>
+    <string name="string_forward_arrow"><![CDATA[>]]></string>
+    <string name="string_select_workout_date">Select Workout Date</string>
+    <string name="string_sun">SUN</string>
+    <string name="string_mon">MON</string>
+    <string name="string_tue">TUE</string>
+    <string name="string_wed">WED</string>
+    <string name="string_thur">THUR</string>
+    <string name="string_fri">FRI</string>
+    <string name="string_sat">SAT</string>
+    <string name="string_select_date">Select Date</string>
 </resources>

@@ -8,11 +8,14 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.lightweight.ui.HomeFragment"
-        android:label="Workout"
+        android:label="@string/string_track_workouts"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_selectCategoryFragment"
             app:destination="@id/selectCategoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectCategoryFragment"
@@ -49,4 +52,9 @@
             android:name="exerciseID"
             app:argType="integer" />
     </activity>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.lightweight.ui.calendar.CalendarFragment"
+        android:label="@string/string_select_workout_date"
+        tools:layout="@layout/fragment_calendar" />
 </navigation>
