@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <argument
+            android:name="selectedDate"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/selectCategoryFragment"
@@ -56,5 +60,9 @@
         android:id="@+id/calendarFragment"
         android:name="com.example.lightweight.ui.calendar.CalendarFragment"
         android:label="@string/string_select_workout_date"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <argument android:name="selectedDate"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

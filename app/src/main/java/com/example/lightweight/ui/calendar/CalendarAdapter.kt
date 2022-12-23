@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.calendar
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.example.lightweight.R
 
 class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
+    private val selectedDayOfMonthPosition: Int?,
     private val onItemListener: OnItemListener
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -20,6 +22,9 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         holder.dayOfMonth.text = daysOfMonth.get(position)
+
+        if (selectedDayOfMonthPosition != null && position == selectedDayOfMonthPosition)
+            holder.dayOfMonth.setTextColor(Color.RED)
     }
 
     override fun getItemCount(): Int {
