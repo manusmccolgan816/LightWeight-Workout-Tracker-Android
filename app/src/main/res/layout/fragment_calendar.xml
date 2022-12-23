@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/button_back"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -25,7 +25,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/monthYearTV"
+            android:id="@+id/text_view_month_year"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -34,7 +34,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/forwardButton"
+            android:id="@+id/button_forward"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -50,14 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/string_sun"
-            android:textAlignment="center"
-            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -107,10 +99,18 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/string_sun"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendarRecyclerView"
+        android:id="@+id/recycler_view_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
