@@ -35,7 +35,7 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
         val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
         val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
-        val adapter = ExerciseItemAdapter(listOf(), exerciseViewModel, this)
+        val adapter = ExerciseItemAdapter(args.selectedDate, listOf(), exerciseViewModel, this)
 
         val categoryID = args.categoryID
 

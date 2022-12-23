@@ -15,6 +15,7 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 
 class CategoryItemAdapter(
+    private val selectedDate: String,
     var categories: List<Category>,
     private val viewModel: CategoryViewModel,
     var fragment: Fragment
@@ -69,7 +70,8 @@ class CategoryItemAdapter(
         // as a parameter
         holder.itemView.setOnClickListener {
             val action = SelectCategoryFragmentDirections
-                .actionSelectCategoryFragmentToSelectExerciseFragment(curCategory.categoryID!!)
+                .actionSelectCategoryFragmentToSelectExerciseFragment(
+                    curCategory.categoryID!!, selectedDate)
             findNavController(fragment).navigate(action)
         }
     }

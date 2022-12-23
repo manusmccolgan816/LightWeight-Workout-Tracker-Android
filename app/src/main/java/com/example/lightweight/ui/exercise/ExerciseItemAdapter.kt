@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
-import com.example.lightweight.ui.category.SelectCategoryFragmentDirections
 
 class ExerciseItemAdapter(
+    private val selectedDate: String,
     var exercises: List<Exercise>,
     private val viewModel: ExerciseViewModel,
     var fragment: Fragment
@@ -70,7 +69,8 @@ class ExerciseItemAdapter(
         holder.itemView.setOnClickListener {
 
             val action = SelectExerciseFragmentDirections
-                .actionSelectExerciseFragmentToSetTrackerActivity(curExercise.exerciseID!!)
+                .actionSelectExerciseFragmentToSetTrackerActivity(
+                    curExercise.exerciseID!!, selectedDate)
             NavHostFragment.findNavController(fragment).navigate(action)
         }
     }

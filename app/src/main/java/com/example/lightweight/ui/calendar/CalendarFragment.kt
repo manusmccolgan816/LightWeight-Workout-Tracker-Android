@@ -121,7 +121,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     override fun onItemClick(position: Int, dayText: String) {
         // If a non-empty date was selected...
         if (dayText != "") {
-            // Get the new selected date in the format dd MMMM yyyy
+            // Get the new selected date in the format d MMMM yyyy
             val newSelectedDateStr = "$dayText ${monthYearFromDate(displayDate)}"
 
             // Navigate to SelectCategoryFragment

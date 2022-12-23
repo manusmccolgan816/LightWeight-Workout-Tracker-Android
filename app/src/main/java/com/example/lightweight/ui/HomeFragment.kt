@@ -31,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fabCalendar = view.findViewById(R.id.fab_calendar)
         extendedFabAddExercises = view.findViewById(R.id.extended_fab_add_exercises)
 
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
         // If the parameter value is not the default...
         if (args.selectedDate != "today") {
             //...convert the argument to LocalDate type
@@ -49,7 +49,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         extendedFabAddExercises.setOnClickListener{
             // Navigate to SelectCategoryFragment
-            val action = HomeFragmentDirections.actionHomeFragmentToSelectCategoryFragment()
+            val action = HomeFragmentDirections
+                .actionHomeFragmentToSelectCategoryFragment(selectedDate.toString())
             findNavController().navigate(action)
         }
     }

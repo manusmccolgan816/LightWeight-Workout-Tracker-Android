@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_selectCategoryFragment_to_selectExerciseFragment"
             app:destination="@id/selectExerciseFragment" />
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/selectTrainingCycleFragment"
@@ -47,6 +50,9 @@
         <action
             android:id="@+id/action_selectExerciseFragment_to_setTrackerActivity"
             app:destination="@id/setTrackerActivity" />
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
     </fragment>
     <activity
         android:id="@+id/setTrackerActivity"
@@ -56,6 +62,9 @@
         <argument
             android:name="exerciseID"
             app:argType="integer" />
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
     </activity>
     <fragment
         android:id="@+id/calendarFragment"

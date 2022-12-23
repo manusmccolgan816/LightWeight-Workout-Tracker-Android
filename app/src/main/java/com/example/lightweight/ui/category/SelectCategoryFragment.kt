@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.ui.HomeFragmentArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -18,6 +20,8 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
     override val kodein by kodein()
     private val factory: CategoryViewModelFactory by instance()
 
+    private val args: SelectCategoryFragmentArgs by navArgs()
+
     private lateinit var recyclerViewCategories: RecyclerView
     private lateinit var fabAddCategory: FloatingActionButton
 
@@ -25,7 +29,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: CategoryViewModel by viewModels { factory }
-        val adapter = CategoryItemAdapter(listOf(), viewModel, this)
+        val adapter = CategoryItemAdapter(args.selectedDate, listOf(), viewModel, this)
 
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
