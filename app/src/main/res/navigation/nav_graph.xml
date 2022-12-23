@@ -19,7 +19,8 @@
         <argument
             android:name="selectedDate"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="today" />
     </fragment>
     <fragment
         android:id="@+id/selectCategoryFragment"
@@ -64,5 +65,8 @@
         <argument android:name="selectedDate"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_calendarFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

@@ -6,10 +6,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.ui.HomeFragmentDirections
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -119,9 +121,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     override fun onItemClick(position: Int, dayText: String) {
         // If a non-empty date was selected...
         if (dayText != "") {
-            // ...display a toast giving the selected date
-            val message = "Selected Date " + dayText + " " + monthYearFromDate(displayDate)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            // Get the new selected date in the format dd MMMM yyyy
+            val newSelectedDateStr = "$dayText ${monthYearFromDate(displayDate)}"
+
+            // Navigate to SelectCategoryFragment
+            val action = CalendarFragmentDirections
+                .actionCalendarFragmentToHomeFragment(newSelectedDateStr)
+            findNavController().navigate(action)
         }
     }
 }
