@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.exercise
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +68,6 @@ class ExerciseItemAdapter(
         // Navigate to SelectExerciseFragment when a category item is selected, passing the category
         // as a parameter
         holder.itemView.setOnClickListener {
-
             val action = SelectExerciseFragmentDirections
                 .actionSelectExerciseFragmentToSetTrackerActivity(
                     curExercise.exerciseID!!, selectedDate)
