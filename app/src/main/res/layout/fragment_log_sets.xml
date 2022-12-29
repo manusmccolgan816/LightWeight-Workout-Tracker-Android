@@ -10,6 +10,7 @@
         android:id="@+id/text_view_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/edit_text_weight"
         android:text="@string/string_weight"
         app:layout_constraintBottom_toTopOf="@id/edit_text_weight"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +32,7 @@
         android:id="@+id/text_view_num_reps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/edit_text_num_reps"
         android:text="@string/string_reps"
         app:layout_constraintBottom_toTopOf="@id/edit_text_num_reps"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/button_clear_set">
 
         <TextView
@@ -108,7 +111,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_training_sets"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_headings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
