@@ -10,7 +10,7 @@
         android:id="@+id/text_view_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weight"
+        android:text="@string/string_weight"
         app:layout_constraintBottom_toTopOf="@id/edit_text_weight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -19,6 +19,7 @@
         android:id="@+id/edit_text_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints="weight"
         android:ems="5"
         android:gravity="center"
         android:inputType="number"
@@ -30,7 +31,7 @@
         android:id="@+id/text_view_num_reps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reps"
+        android:text="@string/string_reps"
         app:layout_constraintBottom_toTopOf="@id/edit_text_num_reps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,6 +40,7 @@
         android:id="@+id/edit_text_num_reps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints="reps"
         android:ems="5"
         android:gravity="center"
         android:inputType="number"
@@ -52,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Clear"
+        android:text="@string/string_clear"
         app:layout_constraintEnd_toStartOf="@+id/button_save_set"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -64,15 +66,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Save"
+        android:text="@string/string_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_clear_set"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_num_reps" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/linear_layout_training_set_headings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/button_clear_set" />
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/button_clear_set">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/string_set"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/string_weight"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/string_reps"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_training_sets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_headings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.example.lightweight.ui.settracker.logsets
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -9,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
@@ -38,13 +39,19 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     }
     private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
 
+    private lateinit var adapter: TrainingSetItemAdapter
+    private var isAdapterSetup = false
+
     private var exerciseID: Int? = null
+    private var workoutID: Int? = null
+    private var exerciseInstanceID: Int? = null
     private lateinit var selectedDate: String
 
     private lateinit var editTextWeight: EditText
     private lateinit var editTextNumReps: EditText
     private lateinit var buttonClearSet: Button
     private lateinit var buttonSaveSet: Button
+    private lateinit var recyclerViewTrainingSets: RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,10 +60,31 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
         selectedDate = act.args.selectedDate // Set selectedDate from the SetTrackerActivity arg
 
+        val ref = this.activity
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (workoutViewModel.getWorkoutOfDate(selectedDate) != null) {
+                workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
+
+                if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) != null) {
+                    exerciseInstanceID = exerciseInstanceViewModel
+                        .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
+                    ref?.runOnUiThread {
+                        setupAdapter()
+                        isAdapterSetup = true
+                    }
+                }
+            }
+        }
+
         editTextWeight = view.findViewById(R.id.edit_text_weight)
         editTextNumReps = view.findViewById(R.id.edit_text_num_reps)
         buttonClearSet = view.findViewById(R.id.button_clear_set)
         buttonSaveSet = view.findViewById(R.id.button_save_set)
+        recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
+
+        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel)
+        recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewTrainingSets.adapter = adapter
 
         buttonClearSet.setOnClickListener {
             editTextWeight.text.clear()
@@ -67,13 +95,62 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonSaveSet.setOnClickListener {
             saveTrainingSet()
         }
+
     }
+
+//    private fun setWorkoutAndExerciseInstance() {
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            // If no workout exists for the selected date...
+//            if (workoutViewModel.getWorkoutOfDate(selectedDate) == null) {
+//                // ...create a new workout
+//                val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
+//                insWorkoutJob.join() // Wait for the insertion to finish
+//            }
+//            workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
+//
+//            // If no exercise instance exists for the selected date and exercise...
+//            if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) == null) {
+//                // ...create a new exercise instance
+//                val instExerciseInstanceJob = exerciseInstanceViewModel
+//                    .insert(ExerciseInstance(workoutID, exerciseID, null))
+//                instExerciseInstanceJob.join() // Wait for the insertion to finish
+//            }
+//            exerciseInstanceID = exerciseInstanceViewModel
+//                .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
+//            }
+//        }
+//    }
+
+//    private fun saveTrainingSet() {
+//        val weight = editTextWeight.text.toString().toFloatOrNull()
+//        val reps = editTextNumReps.text.toString().toIntOrNull()
+//        // If weight and reps have been input...
+//        if (weight != null && reps != null) {
+//            // TODO Change this (isPR should be checked)
+//            // Insert a new training set with the given exerciseInstanceID, weight and reps
+//            val trainingSet = TrainingSet(exerciseInstance.exerciseInstanceID, weight, reps,
+//                null, false)
+//            trainingSetViewModel.insert(trainingSet)
+//
+//            Toast.makeText(requireContext(), "Set saved", Toast.LENGTH_SHORT).show()
+//
+//            if (!isAdapterSetup) {
+//                setupAdapter()
+//                isAdapterSetup = true
+//            }
+//        }
+//        else {
+//            Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun saveTrainingSet() {
         val weight = editTextWeight.text.toString().toFloatOrNull()
         val reps = editTextNumReps.text.toString().toIntOrNull()
         // If weight and reps have been input...
         if (weight != null && reps != null) {
+            val ref = this.activity
+
             lifecycleScope.launch(Dispatchers.IO) {
                 // If no workout exists for the selected date...
                 if (workoutViewModel.getWorkoutOfDate(selectedDate) == null) {
@@ -81,23 +158,31 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
                     insWorkoutJob.join() // Wait for the insertion to finish
                 }
-                val workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
+                workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
 
                 // If no exercise instance exists for the selected date and exercise...
                 if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID)
-                        == null) {
+                    == null) {
                     // ...create a new exercise instance
                     val instExerciseInstanceJob = exerciseInstanceViewModel
                         .insert(ExerciseInstance(workoutID, exerciseID, null))
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
                 }
-                val exerciseInstanceID = exerciseInstanceViewModel
+                exerciseInstanceID = exerciseInstanceViewModel
                     .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
 
                 // TODO Change this (isPR should be checked)
+                // Insert a new training set with the given exerciseInstanceID, weight and reps
                 val trainingSet = TrainingSet(exerciseInstanceID, weight, reps,
                     null, false)
                 trainingSetViewModel.insert(trainingSet)
+
+                ref?.runOnUiThread {
+                    if (!isAdapterSetup) {
+                        setupAdapter()
+                        isAdapterSetup = true
+                    }
+                }
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(requireContext(), "Set saved", Toast.LENGTH_SHORT).show()
@@ -107,5 +192,13 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         else {
             Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setupAdapter() {
+        trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
+            .observe(viewLifecycleOwner) {
+                adapter.trainingSets = it
+                adapter.notifyDataSetChanged()
+            }
     }
 }

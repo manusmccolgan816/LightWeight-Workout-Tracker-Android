@@ -1,6 +1,5 @@
 package com.example.lightweight.ui.exercise
 
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View

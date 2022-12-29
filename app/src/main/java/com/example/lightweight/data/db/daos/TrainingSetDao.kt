@@ -15,4 +15,7 @@ interface TrainingSetDao {
 
     @Query("SELECT * FROM TRAINING_SET")
     fun getAllTrainingSets(): LiveData<List<TrainingSet>>
+
+    @Query("SELECT * FROM TRAINING_SET WHERE exercise_instance_ID = :exerciseInstanceID")
+    fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>>
 }

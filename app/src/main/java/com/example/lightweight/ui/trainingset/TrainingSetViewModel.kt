@@ -19,4 +19,7 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
 
     // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllTrainingSets() = repository.getAllTrainingSets()
+
+    fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?) =
+        repository.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
 }

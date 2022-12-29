@@ -10,4 +10,7 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
     suspend fun delete(trainingSet: TrainingSet) = db.getTrainingSetDao().delete(trainingSet)
 
     fun getAllTrainingSets() = db.getTrainingSetDao().getAllTrainingSets()
+
+    fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?) =
+        db.getTrainingSetDao().getTrainingSetsOfExerciseInstance(exerciseInstanceID)
 }

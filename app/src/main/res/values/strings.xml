@@ -35,4 +35,8 @@
     <string name="string_fri">FRI</string>
     <string name="string_sat">SAT</string>
     <string name="string_select_date">Select Date</string>
+    <string name="string_set">Set</string>
+    <string name="string_weight">Weight</string>
+    <string name="string_reps">Reps</string>
+    <string name="string_clear">Clear</string>
 </resources>
