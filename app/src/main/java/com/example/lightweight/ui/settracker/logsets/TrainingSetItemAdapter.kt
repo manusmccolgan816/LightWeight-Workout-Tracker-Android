@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.settracker.logsets
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,9 @@ class TrainingSetItemAdapter(
         textViewSetReps = holder.itemView.findViewById(R.id.text_view_training_set_reps)
 
         textViewSetNumber.text = (position + 1).toString()
-
+        textViewSetWeight.text = curTrainingSet.weight.toString()
+        textViewSetReps.text = curTrainingSet.reps.toString()
+        Log.d("", "REP BOIS: " + curTrainingSet.reps.toString())
     }
 
     override fun getItemCount(): Int {

@@ -62,12 +62,18 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
+            // If a workout exists for the selected date...
             if (workoutViewModel.getWorkoutOfDate(selectedDate) != null) {
+                // Get a reference to the workoutID
                 workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
 
+                // If an exercise instance exists for the selected date and exercise
                 if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) != null) {
+                    // Get a reference to the exerciseInstanceID
                     exerciseInstanceID = exerciseInstanceViewModel
                         .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
+
+                    // Set up the adapter outside of the coroutine
                     ref?.runOnUiThread {
                         setupAdapter()
                         isAdapterSetup = true
@@ -98,52 +104,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
     }
 
-//    private fun setWorkoutAndExerciseInstance() {
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            // If no workout exists for the selected date...
-//            if (workoutViewModel.getWorkoutOfDate(selectedDate) == null) {
-//                // ...create a new workout
-//                val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
-//                insWorkoutJob.join() // Wait for the insertion to finish
-//            }
-//            workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
-//
-//            // If no exercise instance exists for the selected date and exercise...
-//            if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) == null) {
-//                // ...create a new exercise instance
-//                val instExerciseInstanceJob = exerciseInstanceViewModel
-//                    .insert(ExerciseInstance(workoutID, exerciseID, null))
-//                instExerciseInstanceJob.join() // Wait for the insertion to finish
-//            }
-//            exerciseInstanceID = exerciseInstanceViewModel
-//                .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
-//            }
-//        }
-//    }
-
-//    private fun saveTrainingSet() {
-//        val weight = editTextWeight.text.toString().toFloatOrNull()
-//        val reps = editTextNumReps.text.toString().toIntOrNull()
-//        // If weight and reps have been input...
-//        if (weight != null && reps != null) {
-//            // TODO Change this (isPR should be checked)
-//            // Insert a new training set with the given exerciseInstanceID, weight and reps
-//            val trainingSet = TrainingSet(exerciseInstance.exerciseInstanceID, weight, reps,
-//                null, false)
-//            trainingSetViewModel.insert(trainingSet)
-//
-//            Toast.makeText(requireContext(), "Set saved", Toast.LENGTH_SHORT).show()
-//
-//            if (!isAdapterSetup) {
-//                setupAdapter()
-//                isAdapterSetup = true
-//            }
-//        }
-//        else {
-//            Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
     private fun saveTrainingSet() {
         val weight = editTextWeight.text.toString().toFloatOrNull()
         val reps = editTextNumReps.text.toString().toIntOrNull()
@@ -157,8 +117,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     // ...create a new workout
                     val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
                     insWorkoutJob.join() // Wait for the insertion to finish
+                    workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
                 }
-                workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
 
                 // If no exercise instance exists for the selected date and exercise...
                 if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID)
@@ -167,9 +127,9 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     val instExerciseInstanceJob = exerciseInstanceViewModel
                         .insert(ExerciseInstance(workoutID, exerciseID, null))
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
+                    exerciseInstanceID = exerciseInstanceViewModel
+                        .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
                 }
-                exerciseInstanceID = exerciseInstanceViewModel
-                    .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
 
                 // TODO Change this (isPR should be checked)
                 // Insert a new training set with the given exerciseInstanceID, weight and reps
@@ -177,8 +137,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     null, false)
                 trainingSetViewModel.insert(trainingSet)
 
-                ref?.runOnUiThread {
-                    if (!isAdapterSetup) {
+                // If the adapter has not already been set up...
+                if (!isAdapterSetup) {
+                    // Set up the adapter outside of the coroutine
+                    ref?.runOnUiThread {
                         setupAdapter()
                         isAdapterSetup = true
                     }
