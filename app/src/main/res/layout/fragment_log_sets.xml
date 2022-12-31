@@ -74,7 +74,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/linear_layout_training_set_headings"
         android:layout_width="match_parent"
@@ -82,6 +81,11 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_buttons">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75" />
 
         <TextView
             android:layout_width="0dp"
