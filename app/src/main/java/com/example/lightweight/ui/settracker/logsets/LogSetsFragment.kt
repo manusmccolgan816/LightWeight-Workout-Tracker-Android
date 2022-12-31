@@ -24,7 +24,6 @@ import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import kotlinx.coroutines.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.allInstances
 import org.kodein.di.generic.instance
 
 class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
@@ -133,24 +132,49 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
                 ref?.runOnUiThread {
                     var isPR = false
-                    val setsToCompare = trainingSetViewModel.getTrainingSetsOfExerciseAndReps(exerciseID, reps)
-                    setsToCompare.observe(viewLifecycleOwner) {
-                        // It is a PR if this is the first set of the given exercise and number of
-                        // reps
-                        if (it.isEmpty()) isPR = true
-                        // It is a PR if the weight is higher than the previous heaviest set of the
-                        // given exercise and number of reps
-                        else if (weight > it[0].weight) {
-                            trainingSetViewModel.setIsPRFalse(it[0].trainingSetID)
+                    val previousPRSets = trainingSetViewModel.getPRTrainingSetsOfExercise(exerciseID)
+                    previousPRSets.observe(viewLifecycleOwner) {
+                        // If there are no PRs (and so no training sets) of this exercise...
+                        if (it.isEmpty()) {
+                            // ...the new set will be a PR
                             isPR = true
                         }
+                        else {
+                            // If the new set has more reps than any other of the exercise...
+                            if (it[it.size -1].reps < reps) {
+                                // ...it will be a PR
+                                isPR = true
+                            }
+                            // Loop through each PR (arranged from lowest to highest reps)
+                            loop@ for (i in it) {
+                                // If i has a higher rep count than the new set...
+                                if (i.reps > reps) {
+                                    // ...and the new set has a higher weight...
+                                    if (i.weight < weight) {
+                                        // ...the new set is a PR
+                                        isPR = true
+                                    }
+                                    break@loop
+                                }
+                                // If i has fewer reps and lower weight than the new set OR i has
+                                // the same number of reps and a higher weight than the new set...
+                                if ((i.reps < reps && i.weight <= weight)
+                                        || (i.reps == reps && i.weight < weight)) {
+                                    // ...i is no longer a PR
+                                    trainingSetViewModel.setIsPRFalse(i.trainingSetID)
+                                    // The new set is a PR
+                                    isPR = true
+                                }
+                            }
+                        }
+
                         // Insert the new training set
                         val trainingSet = TrainingSet(exerciseInstanceID, weight, reps, null,
                             isPR)
                         trainingSetViewModel.insert(trainingSet)
 
                         // Stop observing for changes in the data
-                        setsToCompare.removeObservers(viewLifecycleOwner)
+                        previousPRSets.removeObservers(viewLifecycleOwner)
                     }
                 }
 
@@ -172,30 +196,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
             Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
         }
     }
-
-    /**
-     * Returns a Boolean indicating whether the weight and reps given would constitute a personal
-     * record in a TrainingSet of the exercise. This overwrites the old TrainingSet's isPR value if
-     * it is surpassed.
-     */
-//    private fun isPRRemovePrevious(weight: Float, reps: Int) : Boolean {
-//        // Store all of the given exercise's sets of the given rep count
-//        //val setsToCompare = trainingSetViewModel.getTrainingSetsOfExerciseAndReps(exerciseID, reps)
-//        var setsToCompare: List<TrainingSet>
-//        trainingSetViewModel.getTrainingSetsOfExerciseAndReps(exerciseID, reps).observe(viewLifecycleOwner) {
-//            setsToCompare = it
-//        }
-//
-//        // If the new weight is heavier than the previous heaviest...
-//        if (weight > setsToCompare[0].weight) {
-//            // Set the old set's isPR value to false
-//            trainingSetViewModel.setIsPRFalse(setsToCompare[0].trainingSetID)
-//
-//            return true
-//        }
-//
-//        return false
-//    }
 
     private fun setupAdapter() {
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
