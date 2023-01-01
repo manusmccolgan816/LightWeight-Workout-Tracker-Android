@@ -95,7 +95,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonClearSet.setOnClickListener {
             editTextWeight.text.clear()
             editTextNumReps.text.clear()
-            Toast.makeText(requireContext(), "Text cleared", Toast.LENGTH_SHORT).show()
         }
 
         buttonSaveSet.setOnClickListener {

@@ -30,7 +30,7 @@
             android:autofillHints="weight"
             android:ems="5"
             android:gravity="center"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/text_view_num_reps"
