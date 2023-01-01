@@ -1,7 +1,5 @@
 package com.example.lightweight.ui.settracker.logsets
 
-import android.opengl.Visibility
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.db.entities.TrainingSet
-import com.example.lightweight.ui.category.ConfirmDeleteCategoryDialog
-import com.example.lightweight.ui.category.EditCategoryDialog
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 
 class TrainingSetItemAdapter(
     var trainingSets: List<TrainingSet>,
     private val trainingSetViewModel: TrainingSetViewModel,
+    private val exerciseID: Int?,
+    private val fragment: Fragment
 ) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -63,10 +61,28 @@ class TrainingSetItemAdapter(
                 when (it.itemId) {
                     R.id.menu_item_edit_training_set -> {
                         // Display the edit training set dialog
+                        EditTrainingSetDialog(parent.context, curTrainingSet,
+                            fun (trainingSetID: Int?, weight: Float, reps: Int) {
 
+                            }).show()
                         true
                     }
                     R.id.menu_item_delete_training_set -> {
+                        // If the set to be deleted is a PR, another set may become a PR
+                        if (curTrainingSet.isPR) {
+                            val nonPRSets = trainingSetViewModel
+                                .getTrainingSetsOfExerciseAndIsPR(exerciseID, 0)
+                            nonPRSets.observe(fragment.viewLifecycleOwner) {
+                                if (!it.isEmpty()) {
+                                    for (i in it) {
+
+                                    }
+                                }
+
+                                nonPRSets.removeObservers(fragment.viewLifecycleOwner)
+                            }
+                        }
+
                         // Delete the training set
                         trainingSetViewModel.delete(curTrainingSet)
                         Toast.makeText(parent.context, "Set has been deleted",

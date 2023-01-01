@@ -2,7 +2,6 @@ package com.example.lightweight.ui.category
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -13,7 +12,7 @@ import com.example.lightweight.data.db.entities.Category
 class EditCategoryDialog(
     context: Context,
     val category: Category,
-    val editCategory:(categoryID: Int?, newName: String) -> Unit
+    val editCategory: (categoryID: Int?, newName: String) -> Unit
 ) : AppCompatDialog(context) {
 
     private lateinit var editTextEditCategoryName: EditText

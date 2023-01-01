@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text_edit_set_weight" />
 
     <Button
-        android:id="@+id/button_save_edit_category"
+        android:id="@+id/button_save_edit_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text_edit_set_reps" />
 
     <Button
-        android:id="@+id/button_cancel_edit_category"
+        android:id="@+id/button_cancel_edit_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

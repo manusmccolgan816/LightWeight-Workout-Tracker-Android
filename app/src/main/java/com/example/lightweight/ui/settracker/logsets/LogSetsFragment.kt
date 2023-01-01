@@ -88,7 +88,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonSaveSet = view.findViewById(R.id.button_save_set)
         recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
 
-        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel)
+        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseID, this)
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
 
@@ -131,7 +131,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
                 ref?.runOnUiThread {
                     var isPR = false
-                    val previousPRSets = trainingSetViewModel.getPRTrainingSetsOfExercise(exerciseID)
+                    val previousPRSets = trainingSetViewModel
+                        .getPRTrainingSetsOfExercise(exerciseID)
+//                    val previousPRSets = trainingSetViewModel
+//                        .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                     previousPRSets.observe(viewLifecycleOwner) {
                         // If there are no PRs (and so no training sets) of this exercise...
                         if (it.isEmpty()) {
@@ -139,6 +142,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                             isPR = true
                         }
                         else {
+                            val repWeightMappings: HashMap<Int, Float> = HashMap()
                             // If the new set has more reps than any other of the exercise...
                             if (it[it.size -1].reps < reps) {
                                 // ...it will be a PR
@@ -148,8 +152,9 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                             loop@ for (i in it) {
                                 // If i has a higher rep count than the new set...
                                 if (i.reps > reps) {
-                                    // ...and the new set has a higher weight...
-                                    if (i.weight < weight) {
+                                    // ...if the new set has a higher weight AND there is not a
+                                    // PR with the same number of reps...
+                                    if (i.weight < weight && repWeightMappings.get(reps) == null) {
                                         // ...the new set is a PR
                                         isPR = true
                                     }
@@ -164,6 +169,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                                     // The new set is a PR
                                     isPR = true
                                 }
+                                // Add i's reps and weight to the HashMap
+                                repWeightMappings.put(i.reps, i.weight)
                             }
                         }
 

@@ -39,4 +39,6 @@
     <string name="string_weight">Weight</string>
     <string name="string_reps">Reps</string>
     <string name="string_clear">Clear</string>
+    <string name="string_edit_set">Edit Set</string>
+    <string name="string_delete_exercise">Delete Exercise</string>
 </resources>
