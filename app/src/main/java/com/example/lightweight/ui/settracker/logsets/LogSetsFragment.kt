@@ -165,7 +165,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                                 if ((i.reps < reps && i.weight <= weight)
                                         || (i.reps == reps && i.weight < weight)) {
                                     // ...i is no longer a PR
-                                    trainingSetViewModel.setIsPRFalse(i.trainingSetID)
+                                    trainingSetViewModel.updateIsPR(i.trainingSetID, 0)
                                     // The new set is a PR
                                     isPR = true
                                 }

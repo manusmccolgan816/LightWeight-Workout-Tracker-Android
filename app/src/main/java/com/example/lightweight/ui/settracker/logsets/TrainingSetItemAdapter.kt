@@ -70,17 +70,40 @@ class TrainingSetItemAdapter(
                     R.id.menu_item_delete_training_set -> {
                         // If the set to be deleted is a PR, another set may become a PR
                         if (curTrainingSet.isPR) {
-                            val nonPRSets = trainingSetViewModel
-                                .getTrainingSetsOfExerciseAndIsPR(exerciseID, 0)
-                            nonPRSets.observe(fragment.viewLifecycleOwner) {
-                                if (!it.isEmpty()) {
-                                    for (i in it) {
-
-                                    }
+                            val sameRepSets = trainingSetViewModel
+                                .getTrainingSetsOfExerciseRepsIsPR(exerciseID, curTrainingSet.reps, 0)
+                            sameRepSets.observe(fragment.viewLifecycleOwner) {
+                                // If there is at least one other set of the same number of reps...
+                                if (it.isNotEmpty()) {
+                                    // ...set the heaviest one as a PR
+                                    trainingSetViewModel.updateIsPR(it[0].trainingSetID, 1)
                                 }
 
-                                nonPRSets.removeObservers(fragment.viewLifecycleOwner)
+                                sameRepSets.removeObservers(fragment.viewLifecycleOwner)
                             }
+
+//                            val nonPRSets = trainingSetViewModel
+//                                .getTrainingSetsOfExerciseAndIsPR(exerciseID, 0)
+//                            nonPRSets.observe(fragment.viewLifecycleOwner) {
+//                                var heaviestSameRepTrainingSet = TrainingSet(
+//                                    null, 0f, 0, null, false)
+//                                loop@ for (i in it) {
+//                                    if (i.reps > curTrainingSet.reps) {
+//                                        break@loop
+//                                    }
+//                                    if (i.reps < curTrainingSet.reps) {
+//
+//                                    }
+//                                    // If i has the same number of reps as the set to be deleted
+//                                    else {
+//                                        if (i.weight > heaviestSameRepTrainingSet.weight) {
+//                                            heaviestSameRepTrainingSet = i
+//                                        }
+//                                    }
+//                                }
+//
+//                                nonPRSets.removeObservers(fragment.viewLifecycleOwner)
+//                            }
                         }
 
                         // Delete the training set

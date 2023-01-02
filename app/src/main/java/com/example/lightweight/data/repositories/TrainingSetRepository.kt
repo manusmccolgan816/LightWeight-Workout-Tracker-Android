@@ -9,7 +9,8 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
 
     suspend fun delete(trainingSet: TrainingSet) = db.getTrainingSetDao().delete(trainingSet)
 
-    suspend fun setIsPRFalse(trainingSetID: Int?) = db.getTrainingSetDao().setIsPRFalse(trainingSetID)
+    suspend fun updateIsPR(trainingSetID: Int?, isPR: Int) =
+        db.getTrainingSetDao().updateIsPR(trainingSetID, isPR)
 
     fun getAllTrainingSets() = db.getTrainingSetDao().getAllTrainingSets()
 
@@ -21,4 +22,7 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
 
     fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?) =
         db.getTrainingSetDao().getTrainingSetsOfExerciseInstance(exerciseInstanceID)
+
+    fun getTrainingSetsOfExerciseRepsIsPR(exerciseID: Int?, reps: Int, isPR: Int) =
+        db.getTrainingSetDao().getTrainingSetsOfExerciseRepsIsPR(exerciseID, reps, isPR)
 }

@@ -17,8 +17,8 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
         repository.delete(trainingSet)
     }
 
-    fun setIsPRFalse(trainingSetID: Int?) = CoroutineScope(Dispatchers.Main).launch {
-        repository.setIsPRFalse(trainingSetID)
+    fun updateIsPR(trainingSetID: Int?, isPR: Int) = CoroutineScope(Dispatchers.Main).launch {
+        repository.updateIsPR(trainingSetID, isPR)
     }
 
     fun getAllTrainingSets() = repository.getAllTrainingSets()
@@ -31,4 +31,7 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
 
     fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?) =
         repository.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
+
+    fun getTrainingSetsOfExerciseRepsIsPR(exerciseID: Int?, reps: Int, isPR: Int) =
+        repository.getTrainingSetsOfExerciseRepsIsPR(exerciseID, reps, isPR)
 }
