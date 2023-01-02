@@ -79,7 +79,7 @@ class TrainingSetItemAdapter(
                             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
                                 val updatedPRSets: LinkedList<TrainingSet> = LinkedList()
 
-                                // Populate linked list with all PR sets but the one to be deleted
+                                // Populate updatedPRSets with all PR sets but the one to be deleted
                                 for (i in prSets) {
                                     if (i != curTrainingSet) {
                                         updatedPRSets.add(i)
@@ -104,9 +104,10 @@ class TrainingSetItemAdapter(
                                             }
                                         }
 
-                                        // ...set the heaviest one as a PR
                                         // TODO If there is a clash ensure the oldest set becomes a PR
                                         if (makePR) {
+                                            // Add the now PR training set to the correct index of
+                                            // updatedPRSets
                                             loop@ for (i in updatedPRSets.indices) {
                                                 if (i + 1 != updatedPRSets.size) {
                                                     if (possiblePRSet.reps > updatedPRSets[i].reps
@@ -135,14 +136,20 @@ class TrainingSetItemAdapter(
                                     val repValues: HashSet<Int> = HashSet()
                                     var reps: Int
                                     var weight: Float
+                                    // Iterate through each training set with fewer reps than the
+                                    // set to be deleted
                                     for (i in lowerRepSets.indices) {
                                         reps = lowerRepSets[i].reps
                                         weight = lowerRepSets[i].weight
+
+                                        // If this is the first set of the given rep count that is
+                                        // being iterated through...
                                         if (!repValues.contains(reps)) {
                                             repValues.add(reps)
+                                            // If the set is not a PR...
                                             if (!lowerRepSets[i].isPR) {
                                                 var makePR = true
-                                                // Check if the training set is a PR
+                                                // Check if the training set should be made a PR
                                                 loop@ for (j in updatedPRSets.size - 1 downTo 0) {
                                                     if (updatedPRSets[j].reps <= reps) break@loop
                                                     if (updatedPRSets[j].weight >= weight) {
