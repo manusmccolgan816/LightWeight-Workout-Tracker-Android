@@ -132,9 +132,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                 ref?.runOnUiThread {
                     var isPR = false
                     val previousPRSets = trainingSetViewModel
-                        .getPRTrainingSetsOfExercise(exerciseID)
-//                    val previousPRSets = trainingSetViewModel
-//                        .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
+                        .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                     previousPRSets.observe(viewLifecycleOwner) {
                         // If there are no PRs (and so no training sets) of this exercise...
                         if (it.isEmpty()) {
