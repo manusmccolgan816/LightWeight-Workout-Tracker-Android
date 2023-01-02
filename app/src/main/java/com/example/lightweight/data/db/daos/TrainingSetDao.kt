@@ -53,5 +53,5 @@ interface TrainingSetDao {
             "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
             "WHERE exercise_ID = :exerciseID AND reps < :reps " +
             "ORDER BY reps DESC, weight DESC")
-    fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int)
+    fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int): LiveData<List<TrainingSet>>
 }

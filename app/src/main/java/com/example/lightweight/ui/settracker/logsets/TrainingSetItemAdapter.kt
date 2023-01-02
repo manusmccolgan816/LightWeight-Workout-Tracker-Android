@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.settracker.logsets
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class TrainingSetItemAdapter(
     var trainingSets: List<TrainingSet>,
@@ -73,19 +77,29 @@ class TrainingSetItemAdapter(
                             val prTrainingSetsObs = trainingSetViewModel
                                 .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
+                                val updatedPRSets: LinkedList<TrainingSet> = LinkedList()
+
+                                // Populate linked list with all PR sets but the one to be deleted
+                                for (i in prSets) {
+                                    if (i != curTrainingSet) {
+                                        updatedPRSets.add(i)
+                                    }
+                                }
+
                                 val sameRepSetsObs = trainingSetViewModel
                                     .getTrainingSetsOfExerciseRepsIsPR(exerciseID, curTrainingSet.reps, 0)
                                 sameRepSetsObs.observe(fragment.viewLifecycleOwner) { sameRepSets ->
                                     // If at least one other set of the same number of reps exists...
                                     if (sameRepSets.isNotEmpty()) {
                                         var makePR = true
+                                        val possiblePRSet = sameRepSets[0]
 
-                                        loop@ for (i in prSets) {
+                                        loop@ for (i in updatedPRSets) {
                                             // If i has a higher rep count than the heaviest non-PR
                                             // set of the same rep count as the set to be deleted...
-                                            if (i.reps > sameRepSets[0].reps) {
+                                            if (i.reps > possiblePRSet.reps) {
                                                 // ...it will be made a PR if i has a lower weight
-                                                makePR = i.weight < sameRepSets[0].weight
+                                                makePR = i.weight < possiblePRSet.weight
                                                 break@loop
                                             }
                                         }
@@ -93,10 +107,57 @@ class TrainingSetItemAdapter(
                                         // ...set the heaviest one as a PR
                                         // TODO If there is a clash ensure the oldest set becomes a PR
                                         if (makePR) {
-                                            trainingSetViewModel.updateIsPR(trainingSets[0].trainingSetID, 1)
+                                            loop@ for (i in updatedPRSets.indices) {
+                                                if (i + 1 != updatedPRSets.size) {
+                                                    if (possiblePRSet.reps > updatedPRSets[i].reps
+                                                        && possiblePRSet.reps < updatedPRSets[i + 1].reps) {
+                                                        updatedPRSets.add(i + 1, possiblePRSet)
+                                                        break@loop
+                                                    }
+                                                    else if (possiblePRSet.reps < updatedPRSets[i].reps) {
+                                                        updatedPRSets.addFirst(possiblePRSet)
+                                                        break@loop
+                                                    }
+                                                }
+                                                updatedPRSets.addLast(possiblePRSet)
+                                            }
+                                            updatedPRSets.add(sameRepSets[0])
+                                            trainingSetViewModel
+                                                .updateIsPR(possiblePRSet.trainingSetID, 1)
                                         }
                                     }
                                     sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
+                                }
+                                val lowerRepSetsObs =
+                                    trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
+                                        exerciseID, curTrainingSet.reps)
+                                lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
+                                    val repValues: HashSet<Int> = HashSet()
+                                    var reps: Int
+                                    var weight: Float
+                                    for (i in lowerRepSets.indices) {
+                                        reps = lowerRepSets[i].reps
+                                        weight = lowerRepSets[i].weight
+                                        if (!repValues.contains(reps)) {
+                                            repValues.add(reps)
+                                            if (!lowerRepSets[i].isPR) {
+                                                var makePR = true
+                                                // Check if the training set is a PR
+                                                loop@ for (j in updatedPRSets.size - 1 downTo 0) {
+                                                    if (updatedPRSets[j].reps <= reps) break@loop
+                                                    if (updatedPRSets[j].weight >= weight) {
+                                                        makePR = false
+                                                        break@loop
+                                                    }
+                                                }
+                                                if (makePR) {
+                                                    trainingSetViewModel.updateIsPR(
+                                                        lowerRepSets[i].trainingSetID, 1)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    lowerRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
                                 }
                                 prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
                             }
