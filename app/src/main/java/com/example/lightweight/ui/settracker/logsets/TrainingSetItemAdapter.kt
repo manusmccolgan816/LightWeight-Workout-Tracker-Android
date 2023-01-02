@@ -104,7 +104,6 @@ class TrainingSetItemAdapter(
                                             }
                                         }
 
-                                        // TODO If there is a clash ensure the oldest set becomes a PR
                                         if (makePR) {
                                             // Add the now PR training set to the correct index of
                                             // updatedPRSets
