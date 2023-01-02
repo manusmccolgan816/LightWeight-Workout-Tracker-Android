@@ -19,7 +19,7 @@ interface TrainingSetDao {
     @Query("SELECT * FROM TRAINING_SET")
     fun getAllTrainingSets(): LiveData<List<TrainingSet>>
 
-    @Query("SELECT *" +
+    @Query("SELECT * " +
             "FROM TRAINING_SET " +
             "INNER JOIN EXERCISE_INSTANCE " +
             "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
@@ -27,7 +27,7 @@ interface TrainingSetDao {
             "ORDER BY reps ASC")
     fun getPRTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>>
 
-    @Query("SELECT *" +
+    @Query("SELECT * " +
             "FROM TRAINING_SET " +
             "INNER JOIN EXERCISE_INSTANCE " +
             "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
@@ -38,7 +38,7 @@ interface TrainingSetDao {
     @Query("SELECT * FROM TRAINING_SET WHERE exercise_instance_ID = :exerciseInstanceID")
     fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>>
 
-    @Query("SELECT *" +
+    @Query("SELECT * " +
             "FROM TRAINING_SET " +
             "INNER JOIN EXERCISE_INSTANCE " +
             "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
@@ -46,4 +46,12 @@ interface TrainingSetDao {
             "ORDER BY weight DESC")
     fun getTrainingSetsOfExerciseRepsIsPR(exerciseID: Int?, reps: Int, isPR: Int):
             LiveData<List<TrainingSet>>
+
+    @Query("SELECT * " +
+            "FROM TRAINING_SET " +
+            "INNER JOIN EXERCISE_INSTANCE " +
+            "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
+            "WHERE exercise_ID = :exerciseID AND reps < :reps " +
+            "ORDER BY reps DESC, weight DESC")
+    fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int)
 }

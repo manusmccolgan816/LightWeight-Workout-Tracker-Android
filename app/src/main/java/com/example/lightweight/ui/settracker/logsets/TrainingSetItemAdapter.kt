@@ -70,40 +70,36 @@ class TrainingSetItemAdapter(
                     R.id.menu_item_delete_training_set -> {
                         // If the set to be deleted is a PR, another set may become a PR
                         if (curTrainingSet.isPR) {
-                            val sameRepSets = trainingSetViewModel
-                                .getTrainingSetsOfExerciseRepsIsPR(exerciseID, curTrainingSet.reps, 0)
-                            sameRepSets.observe(fragment.viewLifecycleOwner) {
-                                // If there is at least one other set of the same number of reps...
-                                if (it.isNotEmpty()) {
-                                    // ...set the heaviest one as a PR
-                                    trainingSetViewModel.updateIsPR(it[0].trainingSetID, 1)
+                            val prTrainingSetsObs = trainingSetViewModel
+                                .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
+                            prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
+                                val sameRepSetsObs = trainingSetViewModel
+                                    .getTrainingSetsOfExerciseRepsIsPR(exerciseID, curTrainingSet.reps, 0)
+                                sameRepSetsObs.observe(fragment.viewLifecycleOwner) { sameRepSets ->
+                                    // If at least one other set of the same number of reps exists...
+                                    if (sameRepSets.isNotEmpty()) {
+                                        var makePR = true
+
+                                        loop@ for (i in prSets) {
+                                            // If i has a higher rep count than the heaviest non-PR
+                                            // set of the same rep count as the set to be deleted...
+                                            if (i.reps > sameRepSets[0].reps) {
+                                                // ...it will be made a PR if i has a lower weight
+                                                makePR = i.weight < sameRepSets[0].weight
+                                                break@loop
+                                            }
+                                        }
+
+                                        // ...set the heaviest one as a PR
+                                        // TODO If there is a clash ensure the oldest set becomes a PR
+                                        if (makePR) {
+                                            trainingSetViewModel.updateIsPR(trainingSets[0].trainingSetID, 1)
+                                        }
+                                    }
+                                    sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
                                 }
-
-                                sameRepSets.removeObservers(fragment.viewLifecycleOwner)
+                                prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
                             }
-
-//                            val nonPRSets = trainingSetViewModel
-//                                .getTrainingSetsOfExerciseAndIsPR(exerciseID, 0)
-//                            nonPRSets.observe(fragment.viewLifecycleOwner) {
-//                                var heaviestSameRepTrainingSet = TrainingSet(
-//                                    null, 0f, 0, null, false)
-//                                loop@ for (i in it) {
-//                                    if (i.reps > curTrainingSet.reps) {
-//                                        break@loop
-//                                    }
-//                                    if (i.reps < curTrainingSet.reps) {
-//
-//                                    }
-//                                    // If i has the same number of reps as the set to be deleted
-//                                    else {
-//                                        if (i.weight > heaviestSameRepTrainingSet.weight) {
-//                                            heaviestSameRepTrainingSet = i
-//                                        }
-//                                    }
-//                                }
-//
-//                                nonPRSets.removeObservers(fragment.viewLifecycleOwner)
-//                            }
                         }
 
                         // Delete the training set
