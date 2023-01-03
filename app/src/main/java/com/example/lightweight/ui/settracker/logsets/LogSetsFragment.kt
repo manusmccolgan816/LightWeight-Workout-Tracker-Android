@@ -1,6 +1,7 @@
 package com.example.lightweight.ui.settracker.logsets
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -131,54 +132,68 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
                 ref?.runOnUiThread {
                     var isPR = false
-                    val previousPRSets = trainingSetViewModel
+                    // Get the PR sets of the current exercise by observing a LiveData
+                    val previousPRSetsObs = trainingSetViewModel
                         .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
-                    previousPRSets.observe(viewLifecycleOwner) {
-                        // If there are no PRs (and so no training sets) of this exercise...
-                        if (it.isEmpty()) {
-                            // ...the new set will be a PR
-                            isPR = true
-                        }
-                        else {
-                            val repWeightMappings: HashMap<Int, Float> = HashMap()
-                            // If the new set has more reps than any other of the exercise...
-                            if (it[it.size -1].reps < reps) {
-                                // ...it will be a PR
+                    previousPRSetsObs.observe(viewLifecycleOwner) { prSets ->
+
+                        // Get the dates of the PR sets by observing a LiveData
+                        val prDatesObs = trainingSetViewModel
+                            .getTrainingSetDatesOfExerciseIsPR(exerciseID, 1)
+                        prDatesObs.observe(viewLifecycleOwner) { prDates ->
+                            // If there are no PRs (and so no training sets) of this exercise...
+                            if (prSets.isEmpty()) {
+                                // ...the new set will be a PR
                                 isPR = true
                             }
-                            // Loop through each PR (arranged from lowest to highest reps)
-                            loop@ for (i in it) {
-                                // If i has a higher rep count than the new set...
-                                if (i.reps > reps) {
-                                    // ...if the new set has a higher weight AND there is not a
-                                    // PR with the same number of reps...
-                                    if (i.weight < weight && repWeightMappings.get(reps) == null) {
-                                        // ...the new set is a PR
-                                        isPR = true
-                                    }
-                                    break@loop
-                                }
-                                // If i has fewer reps and lower weight than the new set OR i has
-                                // the same number of reps and a higher weight than the new set...
-                                if ((i.reps < reps && i.weight <= weight)
-                                        || (i.reps == reps && i.weight < weight)) {
-                                    // ...i is no longer a PR
-                                    trainingSetViewModel.updateIsPR(i.trainingSetID, 0)
-                                    // The new set is a PR
+                            else {
+                                val repWeightMappings: HashMap<Int, Float> = HashMap()
+                                // If the new set has more reps than any other of the exercise...
+                                if (prSets[prSets.size -1].reps < reps) {
+                                    // ...it will be a PR
                                     isPR = true
                                 }
-                                // Add i's reps and weight to the HashMap
-                                repWeightMappings.put(i.reps, i.weight)
+
+                                // Loop through each PR (arranged from lowest to highest reps)
+                                var count = 0
+                                loop@ for (i in prSets) {
+                                    // If i has a higher rep count than the new set...
+                                    if (i.reps > reps) {
+                                        // ...if the new set has a higher weight AND there is not a
+                                        // PR with the same number of reps...
+                                        if (i.weight < weight && repWeightMappings.get(reps) == null) {
+                                            // ...the new set is a PR
+                                            isPR = true
+                                        }
+                                        break@loop
+                                    }
+                                    // If i has fewer reps and lower weight than the new set OR i
+                                    // has the same number of reps and a higher weight than the new
+                                    // set OR i is the same as the new set and the new set is of an
+                                    // earlier date...
+                                    if ((i.reps < reps && i.weight <= weight)
+                                        || (i.reps == reps && i.weight < weight)
+                                        || (i.reps == reps && i.weight == weight
+                                                && selectedDate < prDates[count])) {
+                                        // ...i is no longer a PR
+                                        trainingSetViewModel.updateIsPR(i.trainingSetID, 0)
+                                        // The new set is a PR
+                                        isPR = true
+                                    }
+                                    // Add i's reps and weight to the HashMap
+                                    repWeightMappings.put(i.reps, i.weight)
+                                    count++
+                                }
                             }
+
+                            prDatesObs.removeObservers(viewLifecycleOwner)
+                            // Insert the new training set
+                            val trainingSet = TrainingSet(exerciseInstanceID, weight, reps, null,
+                                isPR)
+                            trainingSetViewModel.insert(trainingSet)
                         }
 
-                        // Insert the new training set
-                        val trainingSet = TrainingSet(exerciseInstanceID, weight, reps, null,
-                            isPR)
-                        trainingSetViewModel.insert(trainingSet)
-
-                        // Stop observing for changes in the data
-                        previousPRSets.removeObservers(viewLifecycleOwner)
+                        previousPRSetsObs.removeObservers(viewLifecycleOwner)
                     }
                 }
 

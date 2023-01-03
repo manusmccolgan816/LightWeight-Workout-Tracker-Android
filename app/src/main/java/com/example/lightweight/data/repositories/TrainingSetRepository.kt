@@ -14,6 +14,9 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
 
     fun getAllTrainingSets() = db.getTrainingSetDao().getAllTrainingSets()
 
+    fun getTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int) =
+        db.getTrainingSetDao().getTrainingSetDatesOfExerciseIsPR(exerciseID, isPR)
+
     fun getTrainingSetsOfExerciseAndIsPR(exerciseID: Int?, isPR: Int) =
         db.getTrainingSetDao().getTrainingSetsOfExerciseAndIsPR(exerciseID, isPR)
 

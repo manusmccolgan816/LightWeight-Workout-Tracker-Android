@@ -19,10 +19,19 @@ interface TrainingSetDao {
     @Query("SELECT * FROM TRAINING_SET")
     fun getAllTrainingSets(): LiveData<List<TrainingSet>>
 
+    @Query("SELECT date FROM TRAINING_SET AS TS INNER JOIN " +
+            "EXERCISE_INSTANCE AS EI " +
+            "ON TS.exercise_instance_ID = EI.exercise_instance_ID " +
+            "INNER JOIN WORKOUT AS W " +
+            "ON EI.workout_ID = W.workout_ID " +
+            "WHERE exercise_ID = :exerciseID AND is_PR = :isPR " +
+            "ORDER BY reps")
+    fun getTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int): LiveData<List<String>>
+
     @Query("SELECT * " +
-            "FROM TRAINING_SET " +
-            "INNER JOIN EXERCISE_INSTANCE " +
-            "ON TRAINING_SET.exercise_instance_ID = EXERCISE_INSTANCE.exercise_instance_ID " +
+            "FROM TRAINING_SET AS TS " +
+            "INNER JOIN EXERCISE_INSTANCE AS EI " +
+            "ON TS.exercise_instance_ID = EI.exercise_instance_ID " +
             "WHERE exercise_ID = :exerciseID AND is_PR = :isPR " +
             "ORDER BY reps ASC")
     fun getTrainingSetsOfExerciseAndIsPR(exerciseID: Int?, isPR: Int): LiveData<List<TrainingSet>>
