@@ -12,7 +12,7 @@ import com.example.lightweight.data.db.entities.TrainingSet
 class EditTrainingSetDialog(
     context: Context,
     val trainingSet: TrainingSet,
-    val editTrainingSet: (trainingSetID: Int?, newWeight: Float, newReps: Int) -> Unit
+    val editTrainingSet: (newWeight: Float, newReps: Int) -> Unit
 ) : AppCompatDialog(context) {
 
     private lateinit var editTextEditSetWeight: EditText
@@ -42,8 +42,8 @@ class EditTrainingSetDialog(
             }
 
             // Only call editTrainingSet if the set has been changed
-            if (weight.toFloat() != trainingSet.weight && reps.toInt() != trainingSet.reps) {
-                editTrainingSet(trainingSet.trainingSetID, weight.toFloat(), reps.toInt())
+            if (weight.toFloat() != trainingSet.weight || reps.toInt() != trainingSet.reps) {
+                editTrainingSet(weight.toFloat(), reps.toInt())
             }
 
             dismiss()

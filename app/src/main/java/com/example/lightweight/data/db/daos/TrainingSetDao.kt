@@ -13,6 +13,9 @@ interface TrainingSetDao {
     @Delete
     suspend fun delete(trainingSet: TrainingSet)
 
+    @Update
+    suspend fun update(trainingSet: TrainingSet)
+
     @Query("UPDATE TRAINING_SET SET is_PR = :isPR WHERE training_set_ID = :trainingSetID")
     suspend fun updateIsPR(trainingSetID: Int?, isPR: Int)
 
@@ -46,7 +49,7 @@ interface TrainingSetDao {
             "INNER JOIN WORKOUT AS W " +
             "ON EI.workout_ID = W.workout_ID " +
             "WHERE exercise_ID = :exerciseID AND reps = :reps AND is_PR = :isPR " +
-            "ORDER BY weight DESC, date")
+            "ORDER BY weight DESC, date, training_set_number")
     fun getTrainingSetsOfExerciseRepsIsPR(exerciseID: Int?, reps: Int, isPR: Int):
             LiveData<List<TrainingSet>>
 
@@ -57,6 +60,6 @@ interface TrainingSetDao {
             "INNER JOIN WORKOUT AS W " +
             "ON EI.workout_ID = W.workout_ID " +
             "WHERE exercise_ID = :exerciseID AND reps < :reps " +
-            "ORDER BY reps DESC, weight DESC, date")
+            "ORDER BY reps DESC, weight DESC, date, training_set_number")
     fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int): LiveData<List<TrainingSet>>
 }

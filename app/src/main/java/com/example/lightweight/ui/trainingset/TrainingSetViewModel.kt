@@ -17,6 +17,10 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
         repository.delete(trainingSet)
     }
 
+    fun update(trainingSet: TrainingSet) = CoroutineScope(Dispatchers.Main).launch {
+        repository.update(trainingSet)
+    }
+
     fun updateIsPR(trainingSetID: Int?, isPR: Int) = CoroutineScope(Dispatchers.Main).launch {
         repository.updateIsPR(trainingSetID, isPR)
     }

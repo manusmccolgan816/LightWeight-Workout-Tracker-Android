@@ -31,7 +31,7 @@ class TrainingSet(
     val note: String?,
 
     @ColumnInfo(name = "is_PR")
-    val isPR: Boolean
+    var isPR: Boolean
 ) {
 
     @PrimaryKey(autoGenerate = true)

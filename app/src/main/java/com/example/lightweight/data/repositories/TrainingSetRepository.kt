@@ -9,6 +9,8 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
 
     suspend fun delete(trainingSet: TrainingSet) = db.getTrainingSetDao().delete(trainingSet)
 
+    suspend fun update(trainingSet: TrainingSet) = db.getTrainingSetDao().update(trainingSet)
+
     suspend fun updateIsPR(trainingSetID: Int?, isPR: Int) =
         db.getTrainingSetDao().updateIsPR(trainingSetID, isPR)
 

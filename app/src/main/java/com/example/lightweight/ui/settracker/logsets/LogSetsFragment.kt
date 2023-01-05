@@ -89,7 +89,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonSaveSet = view.findViewById(R.id.button_save_set)
         recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
 
-        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseID, this)
+        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseID, selectedDate,
+            this)
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
 
@@ -141,6 +142,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                         val prDatesObs = trainingSetViewModel
                             .getTrainingSetDatesOfExerciseIsPR(exerciseID, 1)
                         prDatesObs.observe(viewLifecycleOwner) { prDates ->
+
                             // If there are no PRs (and so no training sets) of this exercise...
                             if (prSets.isEmpty()) {
                                 // ...the new set will be a PR
