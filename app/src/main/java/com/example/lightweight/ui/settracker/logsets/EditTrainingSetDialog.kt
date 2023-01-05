@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialog
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
@@ -32,7 +33,20 @@ class EditTrainingSetDialog(
         editTextEditSetReps.setText(trainingSet.reps.toString())
 
         buttonSaveEditSet.setOnClickListener {
+            val weight = editTextEditSetWeight.text.toString()
+            val reps = editTextEditSetReps.text.toString()
 
+            if (weight.isBlank() || reps.isBlank()) {
+                Toast.makeText(context, "Enter weight and reps", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Only call editTrainingSet if the set has been changed
+            if (weight.toFloat() != trainingSet.weight && reps.toInt() != trainingSet.reps) {
+                editTrainingSet(trainingSet.trainingSetID, weight.toFloat(), reps.toInt())
+            }
+
+            dismiss()
         }
 
         buttonCancelEditSet.setOnClickListener {

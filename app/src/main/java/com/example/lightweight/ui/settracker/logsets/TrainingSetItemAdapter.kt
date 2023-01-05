@@ -49,7 +49,7 @@ class TrainingSetItemAdapter(
         textViewSetWeight = holder.itemView.findViewById(R.id.text_view_training_set_weight)
         textViewSetReps = holder.itemView.findViewById(R.id.text_view_training_set_reps)
 
-        textViewSetNumber.text = (position + 1).toString()
+        textViewSetNumber.text = curTrainingSet.trainingSetNumber.toString()
         textViewSetWeight.text = curTrainingSet.weight.toString()
         textViewSetReps.text = curTrainingSet.reps.toString()
         // Display the trophy if the set is a PR
@@ -67,6 +67,7 @@ class TrainingSetItemAdapter(
                         // Display the edit training set dialog
                         EditTrainingSetDialog(parent.context, curTrainingSet,
                             fun (trainingSetID: Int?, weight: Float, reps: Int) {
+                                // Check if the updated set is a PR
 
                             }).show()
                         true

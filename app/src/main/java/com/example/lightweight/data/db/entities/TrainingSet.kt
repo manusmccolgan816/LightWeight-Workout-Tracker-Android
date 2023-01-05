@@ -18,6 +18,9 @@ class TrainingSet(
     @ColumnInfo(name = "exercise_instance_ID")
     val exerciseInstanceID: Int?,
 
+    @ColumnInfo(name = "training_set_number")
+    val trainingSetNumber: Int,
+
     @ColumnInfo(name = "weight")
     val weight: Float,
 

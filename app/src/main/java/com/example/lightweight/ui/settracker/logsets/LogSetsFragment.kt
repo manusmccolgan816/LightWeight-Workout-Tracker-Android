@@ -167,10 +167,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                                         }
                                         break@loop
                                     }
-                                    // If i has fewer reps and lower weight than the new set OR i
-                                    // has the same number of reps and a higher weight than the new
-                                    // set OR i is the same as the new set and the new set is of an
-                                    // earlier date...
+                                    // If i has fewer reps and lower or equal weight than the new
+                                    // set OR i has the same number of reps and a higher weight than
+                                    // the new set OR i is the same as the new set and the new set
+                                    // is of an earlier date...
                                     if ((i.reps < reps && i.weight <= weight)
                                         || (i.reps == reps && i.weight < weight)
                                         || (i.reps == reps && i.weight == weight
@@ -187,9 +187,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                             }
 
                             prDatesObs.removeObservers(viewLifecycleOwner)
+
                             // Insert the new training set
-                            val trainingSet = TrainingSet(exerciseInstanceID, weight, reps, null,
-                                isPR)
+                            val trainingSet = TrainingSet(exerciseInstanceID,
+                                adapter.itemCount + 1, weight, reps, null, isPR)
                             trainingSetViewModel.insert(trainingSet)
                         }
 
