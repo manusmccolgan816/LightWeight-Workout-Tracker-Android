@@ -65,7 +65,7 @@
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
     <ImageView
-        android:id="@+id/image_view_note"
+        android:id="@+id/image_view_training_set_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

@@ -25,6 +25,10 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
         repository.updateIsPR(trainingSetID, isPR)
     }
 
+    fun updateNote(trainingSetID: Int?, note: String?) = CoroutineScope(Dispatchers.Main).launch {
+        repository.updateNote(trainingSetID, note)
+    }
+
     fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int) =
         CoroutineScope(Dispatchers.Main).launch {
         repository.decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)

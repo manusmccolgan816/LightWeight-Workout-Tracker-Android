@@ -24,14 +24,16 @@ class EditCategoryDialog(
         setContentView(R.layout.dialog_edit_category)
 
         editTextEditCategoryName = findViewById(R.id.edit_text_edit_category_name)!!
+        buttonSaveEditCategory = findViewById(R.id.button_save_edit_category)!!
+        buttonCancelEditCategory = findViewById(R.id.button_cancel_edit_category)!!
+
         // Set the text to the current category name
         editTextEditCategoryName.setText(category.categoryName)
 
-        buttonSaveEditCategory = findViewById(R.id.button_save_edit_category)!!
         buttonSaveEditCategory.setOnClickListener {
             val name = editTextEditCategoryName.text.toString().trim()
 
-            if (name.isEmpty()) {
+            if (name.isBlank()) {
                 Toast.makeText(context, "No category name given", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -43,7 +45,6 @@ class EditCategoryDialog(
             dismiss()
         }
 
-        buttonCancelEditCategory = findViewById(R.id.button_cancel_edit_category)!!
         buttonCancelEditCategory.setOnClickListener {
             cancel()
         }

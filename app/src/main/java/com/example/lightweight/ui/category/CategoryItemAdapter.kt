@@ -49,7 +49,7 @@ class CategoryItemAdapter(
                     R.id.menu_item_edit_category -> {
                         // Display the edit category dialog
                         EditCategoryDialog(parent.context, curCategory,
-                            fun (categoryID: Int?, newName: String) {
+                            fun(categoryID: Int?, newName: String) {
                                 viewModel.update(categoryID, newName)
                             }).show()
                         true

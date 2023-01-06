@@ -19,6 +19,9 @@ interface TrainingSetDao {
     @Query("UPDATE TRAINING_SET SET is_PR = :isPR WHERE training_set_ID = :trainingSetID")
     suspend fun updateIsPR(trainingSetID: Int?, isPR: Int)
 
+    @Query("UPDATE TRAINING_SET SET note = :note WHERE training_set_ID = :trainingSetID")
+    suspend fun updateNote(trainingSetID: Int?, note: String?)
+
     @Query("UPDATE TRAINING_SET " +
             "SET training_set_number = training_set_number - 1 " +
             "WHERE exercise_instance_ID = :exerciseInstanceID " +

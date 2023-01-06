@@ -30,6 +30,7 @@ class TrainingSetItemAdapter(
 
     private lateinit var parent: ViewGroup
 
+    private lateinit var imageViewSetNote: ImageView
     private lateinit var imageViewTrophy: ImageView
     private lateinit var imageViewSetOptions: ImageView
     private lateinit var textViewSetNumber: TextView
@@ -46,6 +47,7 @@ class TrainingSetItemAdapter(
     override fun onBindViewHolder(holder: TrainingSetItemViewHolder, position: Int) {
         val curTrainingSet = trainingSets[position]
 
+        imageViewSetNote = holder.itemView.findViewById(R.id.image_view_training_set_note)
         imageViewTrophy = holder.itemView.findViewById(R.id.image_view_trophy)
         imageViewSetOptions = holder.itemView.findViewById(R.id.image_view_training_set_options)
         textViewSetNumber = holder.itemView.findViewById(R.id.text_view_training_set_number)
@@ -55,9 +57,28 @@ class TrainingSetItemAdapter(
         textViewSetNumber.text = curTrainingSet.trainingSetNumber.toString()
         textViewSetWeight.text = curTrainingSet.weight.toString()
         textViewSetReps.text = curTrainingSet.reps.toString()
+
+        // If the training set has a note...
+        if (!curTrainingSet.note.isNullOrBlank()) {
+            // ...use the filled comment image
+            imageViewSetNote.setImageResource(R.drawable.ic_baseline_filled_comment_24)
+        }
+        // If the set has no note...
+        else {
+            // ...use the empty comment image
+            imageViewSetNote.setImageResource(R.drawable.ic_baseline_empty_comment_24)
+        }
+
         // Display the trophy if the set is a PR
         if (curTrainingSet.isPR) imageViewTrophy.visibility = View.VISIBLE
         else imageViewTrophy.visibility = View.INVISIBLE
+
+        imageViewSetNote.setOnClickListener {
+            TrainingSetNoteDialog(parent.context, curTrainingSet,
+                fun(trainingSetID: Int?, note: String?) {
+                    trainingSetViewModel.updateNote(trainingSetID, note)
+                }).show()
+        }
 
         imageViewSetOptions.setOnClickListener {
             // Create the popup menu anchored to the training set item
