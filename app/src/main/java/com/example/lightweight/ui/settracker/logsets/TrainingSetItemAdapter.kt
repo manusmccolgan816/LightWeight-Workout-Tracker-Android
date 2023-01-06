@@ -109,30 +109,13 @@ class TrainingSetItemAdapter(
                                         }
 
                                         if (makePR) {
-                                            // Add the now PR training set to the correct index of
-                                            // updatedPRSets
-                                            loop@ for (i in updatedPRSets.indices) {
-                                                if (i + 1 != updatedPRSets.size) {
-                                                    if (possiblePRSet.reps > updatedPRSets[i].reps
-                                                        && possiblePRSet.reps < updatedPRSets[i + 1].reps) {
-                                                        updatedPRSets.add(i + 1, possiblePRSet)
-                                                        break@loop
-                                                    }
-                                                    else if (possiblePRSet.reps < updatedPRSets[i].reps) {
-                                                        updatedPRSets.addFirst(possiblePRSet)
-                                                        break@loop
-                                                    }
-                                                }
-                                                updatedPRSets.addLast(possiblePRSet)
-                                            }
-                                            if (updatedPRSets.isEmpty()) {
-                                                updatedPRSets.add(possiblePRSet)
-                                            }
+                                            addToUpdatedPRSets(updatedPRSets, possiblePRSet)
                                             trainingSetViewModel
                                                 .updateIsPR(possiblePRSet.trainingSetID, 1)
                                         }
                                     }
                                     sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
+                                    Log.d(null, "Removed sameRepSetsObs")
 
                                     val lowerRepSetsObs =
                                         trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
@@ -163,6 +146,7 @@ class TrainingSetItemAdapter(
                                                         }
                                                     }
                                                     if (makePR1) {
+                                                        addToUpdatedPRSets(updatedPRSets, lowerRepSets[i])
                                                         trainingSetViewModel.updateIsPR(
                                                             lowerRepSets[i].trainingSetID, 1)
                                                     }
@@ -170,9 +154,11 @@ class TrainingSetItemAdapter(
                                             }
                                         }
                                         lowerRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
+                                        Log.d(null, "Removed lowerRepSetsObs")
                                     }
                                 }
                                 prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
+                                Log.d(null, "Removed prTrainingSetsObs")
                             }
                         }
 
@@ -191,6 +177,35 @@ class TrainingSetItemAdapter(
             }
             popupMenu.show()
         }
+    }
+
+    /**
+     * Adds newSet to the correct index of updatedPRSets, which is ordered by reps (ascending).
+     */
+    private fun addToUpdatedPRSets(updatedPRSets: LinkedList<TrainingSet>, newSet: TrainingSet)
+    : LinkedList<TrainingSet> {
+        // Add the now PR training set to the correct index of
+        // updatedPRSets
+        if (updatedPRSets.isEmpty()) {
+            updatedPRSets.add(newSet)
+            return updatedPRSets
+        }
+
+        loop@ for (i in updatedPRSets.indices) {
+            if (i + 1 != updatedPRSets.size) {
+                if (newSet.reps > updatedPRSets[i].reps
+                    && newSet.reps < updatedPRSets[i + 1].reps) {
+                    updatedPRSets.add(i + 1, newSet)
+                    break@loop
+                }
+                else if (newSet.reps < updatedPRSets[i].reps) {
+                    updatedPRSets.addFirst(newSet)
+                    break@loop
+                }
+            }
+            updatedPRSets.addLast(newSet)
+        }
+        return updatedPRSets
     }
 
     private fun updateOtherSetsIsPR(curTrainingSet: TrainingSet, weight: Float, reps: Int) {
@@ -229,26 +244,7 @@ class TrainingSetItemAdapter(
                         }
 
                         if (makePR) {
-                            // Add the now PR training set to the correct index of
-                            // updatedPRSets
-                            loop@ for (i in updatedPRSets.indices) {
-                                if (i + 1 != updatedPRSets.size) {
-                                    if (possiblePRSet.reps > updatedPRSets[i].reps
-                                        && possiblePRSet.reps < updatedPRSets[i + 1].reps) {
-                                        updatedPRSets.add(i + 1, possiblePRSet)
-                                        break@loop
-                                    }
-                                    else if (possiblePRSet.reps < updatedPRSets[i].reps) {
-                                        updatedPRSets.addFirst(possiblePRSet)
-                                        break@loop
-                                    }
-                                }
-                                updatedPRSets.addLast(possiblePRSet)
-                            }
-                            if (updatedPRSets.isEmpty()) {
-                                updatedPRSets.add(possiblePRSet)
-                            }
-
+                            addToUpdatedPRSets(updatedPRSets, possiblePRSet)
                             trainingSetViewModel
                                 .updateIsPR(possiblePRSet.trainingSetID, 1)
                         }
@@ -285,6 +281,7 @@ class TrainingSetItemAdapter(
                                         }
                                     }
                                     if (makePR1) {
+                                        addToUpdatedPRSets(updatedPRSets, lowerRepSets[i])
                                         trainingSetViewModel.updateIsPR(
                                             lowerRepSets[i].trainingSetID, 1)
                                     }
