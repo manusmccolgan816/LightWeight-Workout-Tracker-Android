@@ -15,6 +15,8 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
+import com.example.lightweight.ui.exercise.ExerciseViewModel
+import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.settracker.SetTrackerActivity
@@ -30,10 +32,12 @@ import org.kodein.di.generic.instance
 class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
     override val kodein by kodein()
+    private val exerciseFactory: ExerciseViewModelFactory by instance()
     private val workoutFactory: WorkoutViewModelFactory by instance()
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
 
+    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
     private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
         exerciseInstanceFactory
@@ -63,6 +67,12 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
+            val exercise = exerciseViewModel.getExerciseOfID(exerciseID)
+            ref?.runOnUiThread {
+                // Set the action bar title
+                activity?.title = exercise.exerciseName
+            }
+
             // If a workout exists for the selected date...
             if (workoutViewModel.getWorkoutOfDate(selectedDate) != null) {
                 // Get a reference to the workoutID

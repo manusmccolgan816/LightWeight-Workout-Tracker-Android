@@ -32,6 +32,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set the action bar title
+        activity?.title = resources.getString(R.string.string_select_date)
+
         textViewMonthYear = view.findViewById(R.id.text_view_month_year)
         recyclerViewCalendar = view.findViewById(R.id.recycler_view_calendar)
         buttonBack = view.findViewById(R.id.button_back)

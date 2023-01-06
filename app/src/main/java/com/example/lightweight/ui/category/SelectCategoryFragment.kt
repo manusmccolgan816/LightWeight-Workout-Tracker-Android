@@ -31,6 +31,9 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         val viewModel: CategoryViewModel by viewModels { factory }
         val adapter = CategoryItemAdapter(args.selectedDate, listOf(), viewModel, this)
 
+        // Set the action bar title
+        activity?.title = "Select Category"
+
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter

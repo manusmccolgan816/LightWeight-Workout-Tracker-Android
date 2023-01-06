@@ -27,6 +27,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set the action bar title
+        activity?.title = "Track Workouts"
+
         textViewSelectedDate = view.findViewById(R.id.text_view_selected_date)
         fabCalendar = view.findViewById(R.id.fab_calendar)
         extendedFabAddExercises = view.findViewById(R.id.extended_fab_add_exercises)

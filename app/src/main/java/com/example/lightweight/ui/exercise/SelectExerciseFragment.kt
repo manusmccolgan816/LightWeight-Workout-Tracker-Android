@@ -39,6 +39,16 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
         val categoryID = args.categoryID
 
+        val ref = this.activity
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val category = categoryViewModel.getCategoryOfID(categoryID)
+            ref?.runOnUiThread {
+                // Set the action bar title
+                activity?.title = category.categoryName
+            }
+        }
+
         recyclerViewExercises = view.findViewById(R.id.recycler_view_exercises)
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter
@@ -50,7 +60,6 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
         fabAddExercise = view.findViewById(R.id.fab_add_exercise)
         fabAddExercise.setOnClickListener {
-            val ref = this.activity
             // Use a coroutine to execute the query and alter editTextDiaryEntry accordingly
             lifecycleScope.launch(Dispatchers.IO) {
                 val category = categoryViewModel.getCategoryOfID(categoryID)

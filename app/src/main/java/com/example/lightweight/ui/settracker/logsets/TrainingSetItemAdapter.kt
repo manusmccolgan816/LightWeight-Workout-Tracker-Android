@@ -208,6 +208,10 @@ class TrainingSetItemAdapter(
         return updatedPRSets
     }
 
+    /**
+     * Update the PR status of any sets of the same or lower rep count than curTrainingSet,
+     * considering the set will be updated and could make other sets PRs.
+     */
     private fun updateOtherSetsIsPR(curTrainingSet: TrainingSet, weight: Float, reps: Int) {
         //region Deal with the PR status of other sets
         if (curTrainingSet.isPR) {

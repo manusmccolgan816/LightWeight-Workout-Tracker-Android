@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.lightweight.ui.HomeFragment"
-        android:label="@string/string_track_workouts"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_selectCategoryFragment"
@@ -25,7 +24,6 @@
     <fragment
         android:id="@+id/selectCategoryFragment"
         android:name="com.example.lightweight.ui.category.SelectCategoryFragment"
-        android:label="@string/string_select_category"
         tools:layout="@layout/fragment_select_category">
         <action
             android:id="@+id/action_selectCategoryFragment_to_selectExerciseFragment"
@@ -37,12 +35,10 @@
     <fragment
         android:id="@+id/selectTrainingCycleFragment"
         android:name="com.example.lightweight.ui.SelectTrainingCycleFragment"
-        android:label="Training Cycle"
         tools:layout="@layout/fragment_select_training_cycle" />
     <fragment
         android:id="@+id/selectExerciseFragment"
         android:name="com.example.lightweight.ui.exercise.SelectExerciseFragment"
-        android:label="@string/string_select_exercise"
         tools:layout="@layout/fragment_select_exercise">
         <argument
             android:name="categoryID"
@@ -57,7 +53,6 @@
     <activity
         android:id="@+id/setTrackerActivity"
         android:name="com.example.lightweight.ui.settracker.SetTrackerActivity"
-        android:label="Set Tracker"
         tools:layout="@layout/activity_set_tracker">
         <argument
             android:name="exerciseID"
@@ -69,7 +64,6 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.example.lightweight.ui.calendar.CalendarFragment"
-        android:label="@string/string_select_workout_date"
         tools:layout="@layout/fragment_calendar" >
         <argument android:name="selectedDate"
             app:argType="string"
