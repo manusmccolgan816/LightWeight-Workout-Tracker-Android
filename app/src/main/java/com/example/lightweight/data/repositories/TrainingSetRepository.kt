@@ -14,6 +14,9 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
     suspend fun updateIsPR(trainingSetID: Int?, isPR: Int) =
         db.getTrainingSetDao().updateIsPR(trainingSetID, isPR)
 
+    suspend fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int) =
+        db.getTrainingSetDao().decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
+
     fun getAllTrainingSets() = db.getTrainingSetDao().getAllTrainingSets()
 
     fun getTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int) =

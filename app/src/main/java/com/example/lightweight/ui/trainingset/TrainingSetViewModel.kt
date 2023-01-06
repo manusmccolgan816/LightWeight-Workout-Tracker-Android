@@ -25,6 +25,11 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
         repository.updateIsPR(trainingSetID, isPR)
     }
 
+    fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+        repository.decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
+    }
+
     fun getAllTrainingSets() = repository.getAllTrainingSets()
 
     fun getTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int) =

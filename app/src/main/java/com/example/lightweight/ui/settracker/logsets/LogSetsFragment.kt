@@ -222,6 +222,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     private fun setupAdapter() {
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
             .observe(viewLifecycleOwner) {
+                Log.d(null, "Training sets data changed")
                 adapter.trainingSets = it
                 adapter.notifyDataSetChanged()
             }

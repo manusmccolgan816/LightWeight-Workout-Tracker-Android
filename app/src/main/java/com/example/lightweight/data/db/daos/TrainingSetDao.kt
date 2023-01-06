@@ -19,6 +19,12 @@ interface TrainingSetDao {
     @Query("UPDATE TRAINING_SET SET is_PR = :isPR WHERE training_set_ID = :trainingSetID")
     suspend fun updateIsPR(trainingSetID: Int?, isPR: Int)
 
+    @Query("UPDATE TRAINING_SET " +
+            "SET training_set_number = training_set_number - 1 " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID " +
+            "AND training_set_number > :trainingSetNumber")
+    suspend fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int)
+
     @Query("SELECT * FROM TRAINING_SET")
     fun getAllTrainingSets(): LiveData<List<TrainingSet>>
 
