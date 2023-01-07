@@ -401,7 +401,7 @@ class TrainingSetItemAdapter(
 
                         // Update the training set
                         val trainingSet = TrainingSet(curTrainingSet.exerciseInstanceID,
-                            curTrainingSet.trainingSetNumber, weight, reps, null, isPR)
+                            curTrainingSet.trainingSetNumber, weight, reps, curTrainingSet.note, isPR)
                         trainingSet.trainingSetID = curTrainingSet.trainingSetID
                         trainingSetViewModel.update(trainingSet)
                     }

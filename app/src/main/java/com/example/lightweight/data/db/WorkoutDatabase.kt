@@ -15,7 +15,7 @@ import com.example.lightweight.data.db.entities.*
         ExerciseInstance::class,
         TrainingSet::class
     ],
-    version = 5,
+    version = 6,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 

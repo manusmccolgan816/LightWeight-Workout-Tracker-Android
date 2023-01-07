@@ -30,7 +30,8 @@
             android:autofillHints="weight"
             android:ems="5"
             android:gravity="center"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:minHeight="48dp" />
 
         <TextView
             android:id="@+id/text_view_num_reps"
@@ -46,7 +47,8 @@
             android:autofillHints="reps"
             android:ems="5"
             android:gravity="center"
-            android:inputType="number" />
+            android:inputType="number"
+            android:minHeight="48dp" />
 
     </LinearLayout>
 
@@ -74,44 +76,46 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linear_layout_training_set_headings"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_view_set"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_buttons">
+        android:layout_marginStart="72dp"
+        android:layout_weight="1"
+        android:text="@string/string_set"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_set_weight"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_buttons" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75" />
+    <TextView
+        android:id="@+id/text_view_set_weight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/string_weight"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_set_reps"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_view_set"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_buttons" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/string_set"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/string_weight"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/string_reps"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/text_view_set_reps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_weight="1"
+        android:text="@string/string_reps"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_view_set_weight"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_buttons" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_training_sets"
@@ -121,6 +125,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_headings" />
+        app:layout_constraintTop_toBottomOf="@id/text_view_set" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
