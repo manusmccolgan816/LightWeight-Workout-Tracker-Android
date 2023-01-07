@@ -43,4 +43,6 @@
     <string name="string_delete_exercise">Delete Exercise</string>
     <string name="string_note">Note</string>
     <string name="string_add_a_note_here">Add a note here</string>
+    <string name="string_trophy">Trophy</string>
+    <string name="string_text_bubble">Text bubble</string>
 </resources>
