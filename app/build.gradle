@@ -69,4 +69,7 @@ dependencies {
     // Kodein
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
+
+    // CardView
+    implementation "androidx.cardview:cardview:1.0.0"
 }

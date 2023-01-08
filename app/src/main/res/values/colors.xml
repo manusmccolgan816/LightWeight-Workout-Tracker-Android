@@ -11,7 +11,20 @@
     <color name="green_p">#2e7d32</color>
     <color name="green_l">#60ad5e</color>
     <color name="green_d">#005005</color>
+
     <color name="yellow_p">#ffeb3b</color>
     <color name="yellow_l">#ffff72</color>
     <color name="yellow_d">#c8b900</color>
+
+    <color name="teal_p">#64ffda</color>
+    <color name="teal_l">#9effff</color>
+    <color name="teal_d">#14cba8</color>
+
+    <color name="pink_p">#ff4081</color>
+    <color name="pink_l">#ff79b0</color>
+    <color name="pink_d">#c60055</color>
+
+    <color name="indigo_p">#303f9f</color>
+    <color name="indigo_l">#666ad1</color>
+    <color name="indigo_d">#001970</color>
 </resources>
