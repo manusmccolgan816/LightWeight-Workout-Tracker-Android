@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -16,8 +15,6 @@ import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -68,7 +65,7 @@ class HomeParentWorkoutAdapter(
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(curExerciseInstance.exerciseInstanceID)
             .observe(fragment.viewLifecycleOwner) {
                 homeChildWorkoutAdapter.trainingSets = it
-                homeChildWorkoutAdapter.notifyDataSetChanged()
+                homeChildWorkoutAdapter.notifyItemRangeChanged(0, it.size)
                 Log.d(null, "Data set changed at position $position")
         }
     }

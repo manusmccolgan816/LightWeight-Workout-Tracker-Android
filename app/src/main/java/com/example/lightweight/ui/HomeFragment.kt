@@ -91,7 +91,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                                     adapter.exerciseNames.add(exerciseName)
                                     if (i == it.size - 1) {
                                         Log.d(null, "Notifying HomeParentWorkoutAdapter data set change")
-                                        adapter.notifyDataSetChanged()
+                                        adapter.notifyItemInserted(it.size - 1)
                                     }
                                 }
                             }
