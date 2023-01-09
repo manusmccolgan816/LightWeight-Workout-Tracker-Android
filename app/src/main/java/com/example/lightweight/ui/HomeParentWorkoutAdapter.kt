@@ -56,18 +56,8 @@ class HomeParentWorkoutAdapter(
         textViewExerciseName = holder.itemView.findViewById(R.id.text_view_exercise_name)
         recyclerViewTrainingSets = holder.itemView.findViewById(R.id.recycler_view_training_sets)
 
-        val ref = fragment.activity
-
         // Set the text to the name of the exercise
         if (exerciseNames.size > position) textViewExerciseName.text = exerciseNames[position]
-//        fragment.lifecycleScope.launch(Dispatchers.IO) {
-//            val exercise = exerciseViewModel.getExerciseOfID(curExerciseInstance.exerciseID)
-//
-//            ref?.runOnUiThread {
-//                textViewExerciseName.text = exercise.exerciseName
-//                Log.d(null, "Exercise name at position $position: ${exercise.exerciseName}")
-//            }
-//        }
 
         // Set up the child recycler view
         val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf(), fragment)

@@ -83,7 +83,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                 exerciseInstanceViewModel.getExerciseInstancesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
                         adapter.exerciseInstances = it
-//                        adapter.notifyDataSetChanged()
+
                         for (i in it.indices) {
                             lifecycleScope.launch(Dispatchers.IO) {
                                 val exerciseName = exerciseViewModel.getExerciseOfID(it[i].exerciseID).exerciseName

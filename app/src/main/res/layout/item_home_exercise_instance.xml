@@ -14,8 +14,11 @@
             android:id="@+id/text_view_exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/string_exercise"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +26,7 @@
             android:id="@+id/recycler_view_training_sets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/text_view_exercise_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
