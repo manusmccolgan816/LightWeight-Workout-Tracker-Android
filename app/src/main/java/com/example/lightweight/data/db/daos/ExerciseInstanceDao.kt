@@ -21,4 +21,7 @@ interface ExerciseInstanceDao {
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE workout_ID = :workoutID AND exercise_ID = :exerciseID")
     fun getExerciseInstance(workoutID: Int?, exerciseID: Int?): ExerciseInstance?
+
+    @Query("SELECT * FROM EXERCISE_INSTANCE WHERE exercise_ID = :exerciseID")
+    fun getExerciseInstancesOfExercise(exerciseID: Int?): LiveData<List<ExerciseInstance>>
 }

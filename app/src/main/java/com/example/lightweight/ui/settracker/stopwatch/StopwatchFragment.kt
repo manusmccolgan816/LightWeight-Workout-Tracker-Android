@@ -24,10 +24,12 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
         buttonReset = view.findViewById(R.id.button_reset)
 
         buttonStart.setOnClickListener {
+            // If the chronometer is not running, start it
             if (!chronometer.isRunning)
                 chronometer.start()
         }
         buttonPause.setOnClickListener {
+            // If the chronometer is running, stop it
             if (chronometer.isRunning)
                 chronometer.stop()
         }
