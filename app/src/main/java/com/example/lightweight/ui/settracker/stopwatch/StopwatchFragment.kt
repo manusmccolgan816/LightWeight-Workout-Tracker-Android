@@ -10,9 +10,6 @@ import com.example.lightweight.R
 
 class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
 
-    private var running = false
-    private var pauseOffset: Long = 0
-
     private lateinit var chronometer: ChronometerWithPause
     private lateinit var buttonStart: Button
     private lateinit var buttonPause: Button
@@ -27,48 +24,25 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
         buttonReset = view.findViewById(R.id.button_reset)
 
         buttonStart.setOnClickListener {
-            startChronometer()
+            if (!chronometer.isRunning)
+                chronometer.start()
         }
         buttonPause.setOnClickListener {
-            pauseChronometer()
+            if (chronometer.isRunning)
+                chronometer.stop()
         }
         buttonReset.setOnClickListener {
-            resetChronometer()
+            chronometer.reset()
         }
 
         if (savedInstanceState != null) {
             chronometer.restoreInstanceState(savedInstanceState)
-//            running = savedInstanceState.getBoolean("running")
-//            pauseOffset = savedInstanceState.getLong("pauseOffset")
         }
-    }
-
-    private fun startChronometer() {
-        if (!running) {
-            chronometer.base = SystemClock.elapsedRealtime() - pauseOffset
-            chronometer.start()
-            running = true
-        }
-    }
-
-    private fun pauseChronometer() {
-        if (running) {
-            chronometer.stop()
-            pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
-            running = false
-        }
-    }
-
-    private fun resetChronometer() {
-        chronometer.base = SystemClock.elapsedRealtime()
-        pauseOffset = 0
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         chronometer.saveInstanceState(outState)
-//        outState.putBoolean("running", running)
-//        outState.putLong("pauseOffset", pauseOffset)
     }
 }
