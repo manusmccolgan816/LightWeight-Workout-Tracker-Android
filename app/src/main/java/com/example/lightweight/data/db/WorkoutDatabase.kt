@@ -37,6 +37,6 @@ abstract class WorkoutDatabase : RoomDatabase() {
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db")
-            .fallbackToDestructiveMigration().build()
+            .fallbackToDestructiveMigration().createFromAsset("database/lightweighttest.db").build()
     }
 }
