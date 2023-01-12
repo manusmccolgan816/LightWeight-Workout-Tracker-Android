@@ -16,12 +16,12 @@ interface ExerciseDao {
     @Delete
     suspend fun delete(exercise: Exercise)
 
-    @Query("SELECT * FROM EXERCISE")
+    @Query("SELECT * FROM EXERCISE  ORDER BY exercise_name")
     fun getAllExercises(): LiveData<List<Exercise>>
 
     @Query("SELECT * FROM EXERCISE WHERE exercise_ID = :exerciseID")
     fun getExerciseOfID(exerciseID: Int?): Exercise
 
-    @Query("SELECT * FROM EXERCISE WHERE category_ID = :categoryID")
+    @Query("SELECT * FROM EXERCISE WHERE category_ID = :categoryID ORDER BY exercise_name")
     fun getExercisesOfCategory(categoryID: Int?): LiveData<List<Exercise>>
 }
