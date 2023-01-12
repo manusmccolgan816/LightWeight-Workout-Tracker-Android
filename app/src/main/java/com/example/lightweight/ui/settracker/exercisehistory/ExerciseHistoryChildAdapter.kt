@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.settracker.exercisehistory
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 
-class HomeChildWorkoutAdapter(
+class ExerciseHistoryChildAdapter(
     var trainingSets: List<TrainingSet>,
-) : RecyclerView.Adapter<HomeChildWorkoutAdapter.HomeChildWorkoutViewHolder>() {
-
+) : RecyclerView.Adapter<ExerciseHistoryChildAdapter.ExerciseHistoryChildViewHolder>() {
 
     private lateinit var parent: ViewGroup
 
@@ -22,14 +21,14 @@ class HomeChildWorkoutAdapter(
     private lateinit var textViewSetReps: TextView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-    : HomeChildWorkoutViewHolder {
+    : ExerciseHistoryChildViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_home_training_set, parent, false)
+            .inflate(R.layout.item_exercise_history_child, parent, false)
         this.parent = parent
-        return HomeChildWorkoutViewHolder(view)
+        return ExerciseHistoryChildViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeChildWorkoutViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ExerciseHistoryChildViewHolder, position: Int) {
         val curTrainingSet = trainingSets[position]
 
         imageViewTrophy = holder.itemView.findViewById(R.id.image_view_trophy)
@@ -50,5 +49,5 @@ class HomeChildWorkoutAdapter(
         return trainingSets.size
     }
 
-    inner class HomeChildWorkoutViewHolder(setView: View): RecyclerView.ViewHolder(setView)
+    inner class ExerciseHistoryChildViewHolder(view: View): RecyclerView.ViewHolder(view)
 }

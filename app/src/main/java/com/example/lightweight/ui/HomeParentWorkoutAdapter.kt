@@ -26,11 +26,8 @@ class HomeParentWorkoutAdapter(
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
 
     override val kodein by kodein(fragment.requireContext())
-    private val exerciseFactory: ExerciseViewModelFactory by instance()
-    private val exerciseViewModel: ExerciseViewModel by fragment.viewModels { exerciseFactory }
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
     private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels { trainingSetFactory }
-
 
     private lateinit var parent: ViewGroup
 
@@ -57,17 +54,17 @@ class HomeParentWorkoutAdapter(
         if (exerciseNames.size > position) textViewExerciseName.text = exerciseNames[position]
 
         // Set up the child recycler view
-        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf(), fragment)
+        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf())
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         recyclerViewTrainingSets.adapter = homeChildWorkoutAdapter
 
-        trainingSetViewModel.getTrainingSetsOfExerciseInstance(curExerciseInstance.exerciseInstanceID)
-            .observe(fragment.viewLifecycleOwner) {
+        trainingSetViewModel.getTrainingSetsOfExerciseInstance(
+            curExerciseInstance.exerciseInstanceID).observe(fragment.viewLifecycleOwner) {
                 homeChildWorkoutAdapter.trainingSets = it
                 homeChildWorkoutAdapter.notifyItemRangeChanged(0, it.size)
                 Log.d(null, "Data set changed at position $position")
-        }
+            }
     }
 
     override fun getItemCount(): Int {

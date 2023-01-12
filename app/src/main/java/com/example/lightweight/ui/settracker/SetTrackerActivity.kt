@@ -1,5 +1,7 @@
 package com.example.lightweight.ui.settracker
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,9 +24,13 @@ class SetTrackerActivity : AppCompatActivity() {
     private lateinit var toolbarSetTracker: Toolbar
     private lateinit var bottomNavSetTracker: BottomNavigationView
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_tracker)
+
+        // Lock the orientation to portrait
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment

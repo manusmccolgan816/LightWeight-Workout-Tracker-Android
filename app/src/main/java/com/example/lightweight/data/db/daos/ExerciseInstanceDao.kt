@@ -24,4 +24,12 @@ interface ExerciseInstanceDao {
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE exercise_ID = :exerciseID")
     fun getExerciseInstancesOfExercise(exerciseID: Int?): LiveData<List<ExerciseInstance>>
+
+    @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "date")
+    @Query("SELECT EI.workout_ID, EI.exercise_ID, EI.note, EI.exercise_instance_ID, W.date " +
+            "FROM EXERCISE_INSTANCE AS EI " +
+            "INNER JOIN WORKOUT AS W " +
+            "ON EI.workout_ID = W.workout_ID " +
+            "WHERE exercise_ID = :exerciseID")
+    fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?): LiveData<Map<Int?, String>>
 }
