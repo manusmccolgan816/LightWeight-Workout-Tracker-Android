@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.home
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel

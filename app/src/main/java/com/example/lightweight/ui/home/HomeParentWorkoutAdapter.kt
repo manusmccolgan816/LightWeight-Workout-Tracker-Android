@@ -1,4 +1,4 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.home
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.ExerciseInstance
-import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
 import org.kodein.di.KodeinAware

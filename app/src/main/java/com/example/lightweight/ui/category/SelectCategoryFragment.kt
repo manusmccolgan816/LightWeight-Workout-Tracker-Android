@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.ui.HomeFragmentArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein

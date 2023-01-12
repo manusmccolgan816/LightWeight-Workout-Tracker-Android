@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.lightweight.ui.HomeFragment"
+        android:name="com.example.lightweight.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_selectCategoryFragment"

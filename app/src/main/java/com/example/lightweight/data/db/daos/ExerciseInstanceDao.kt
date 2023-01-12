@@ -30,6 +30,7 @@ interface ExerciseInstanceDao {
             "FROM EXERCISE_INSTANCE AS EI " +
             "INNER JOIN WORKOUT AS W " +
             "ON EI.workout_ID = W.workout_ID " +
-            "WHERE exercise_ID = :exerciseID")
+            "WHERE exercise_ID = :exerciseID " +
+            "ORDER BY date DESC")
     fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?): LiveData<Map<Int?, String>>
 }

@@ -1,5 +1,6 @@
-package com.example.lightweight.ui
+package com.example.lightweight.ui.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ class HomeChildWorkoutAdapter(
     private lateinit var parent: ViewGroup
 
     private lateinit var imageViewTrophy: ImageView
-    private lateinit var textViewSetNumber: TextView
+    private lateinit var imageViewSetNote: ImageView
     private lateinit var textViewSetWeight: TextView
     private lateinit var textViewSetReps: TextView
 
@@ -29,17 +30,28 @@ class HomeChildWorkoutAdapter(
         return HomeChildWorkoutViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HomeChildWorkoutViewHolder, position: Int) {
         val curTrainingSet = trainingSets[position]
 
         imageViewTrophy = holder.itemView.findViewById(R.id.image_view_trophy)
-        textViewSetNumber = holder.itemView.findViewById(R.id.text_view_training_set_number)
+        imageViewSetNote = holder.itemView.findViewById(R.id.image_view_training_set_note)
         textViewSetWeight = holder.itemView.findViewById(R.id.text_view_training_set_weight)
         textViewSetReps = holder.itemView.findViewById(R.id.text_view_training_set_reps)
 
-        textViewSetNumber.text = curTrainingSet.trainingSetNumber.toString()
-        textViewSetWeight.text = curTrainingSet.weight.toString()
-        textViewSetReps.text = curTrainingSet.reps.toString()
+        textViewSetWeight.text = curTrainingSet.weight.toString() + "kg"
+        if (curTrainingSet.reps == 1) {
+            textViewSetReps.text = curTrainingSet.reps.toString() + " rep"
+        }
+        else {
+            textViewSetReps.text = curTrainingSet.reps.toString() + " reps"
+        }
+
+        // If the training set has a note...
+        if (!curTrainingSet.note.isNullOrBlank()) {
+            // ...display the text bubble icon
+            imageViewSetNote.visibility = View.VISIBLE
+        }
 
         // Display the trophy if the set is a PR
         if (curTrainingSet.isPR) imageViewTrophy.visibility = View.VISIBLE

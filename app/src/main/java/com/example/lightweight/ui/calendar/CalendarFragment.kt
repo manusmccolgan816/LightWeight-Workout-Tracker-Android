@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.ui.HomeFragmentDirections
+import com.example.lightweight.ui.home.HomeFragmentDirections
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter

@@ -18,28 +18,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_trophy_24" />
 
-    <TextView
-        android:id="@+id/text_view_training_set_number"
-        android:layout_width="0dp"
+    <ImageView
+        android:id="@+id/image_view_training_set_note"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/string_set"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/text_view_training_set_weight"
+        android:contentDescription="@string/string_text_bubble"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_view_training_set_weight"
-        app:layout_constraintStart_toEndOf="@+id/image_view_trophy" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/image_view_trophy"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_filled_comment_24" />
 
     <TextView
         android:id="@+id/text_view_training_set_weight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/string_weight"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_view_training_set_reps"
-        app:layout_constraintStart_toEndOf="@+id/text_view_training_set_number"
+        app:layout_constraintStart_toEndOf="@id/image_view_training_set_note"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -52,6 +55,5 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/text_view_training_set_weight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_view_training_set_weight" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
