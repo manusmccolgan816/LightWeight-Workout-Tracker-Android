@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.example.lightweight.data.db.daos.*
 import com.example.lightweight.data.db.entities.*
 
@@ -37,6 +36,6 @@ abstract class WorkoutDatabase : RoomDatabase() {
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db")
-            .fallbackToDestructiveMigration().createFromAsset("database/lightweighttest.db").build()
+            .fallbackToDestructiveMigration().createFromAsset("database/lightweightdb.db").build()
     }
 }
