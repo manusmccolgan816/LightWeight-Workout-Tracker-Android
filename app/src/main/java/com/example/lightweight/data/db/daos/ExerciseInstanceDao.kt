@@ -27,6 +27,15 @@ interface ExerciseInstanceDao {
             "ORDER BY exercise_instance_number")
     fun getExerciseInstancesOfWorkout(workoutID: Int?): LiveData<List<ExerciseInstance>>
 
+    @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "exercise_name")
+    @Query("SELECT EI.exercise_instance_ID, E.exercise_name " +
+            "FROM EXERCISE_INSTANCE AS EI " +
+            "INNER JOIN EXERCISE AS E " +
+            "ON EI.exercise_ID = E.exercise_ID " +
+            "WHERE workout_ID = :workoutID " +
+            "ORDER BY exercise_instance_number")
+    fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<Map<Int?, String>>
+
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE workout_ID = :workoutID AND exercise_ID = :exerciseID")
     fun getExerciseInstance(workoutID: Int?, exerciseID: Int?): ExerciseInstance?
 
@@ -34,7 +43,7 @@ interface ExerciseInstanceDao {
     fun getExerciseInstancesOfExercise(exerciseID: Int?): LiveData<List<ExerciseInstance>>
 
     @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "date")
-    @Query("SELECT EI.workout_ID, EI.exercise_ID, EI.note, EI.exercise_instance_ID, W.date " +
+    @Query("SELECT EI.exercise_instance_ID, W.date " +
             "FROM EXERCISE_INSTANCE AS EI " +
             "INNER JOIN WORKOUT AS W " +
             "ON EI.workout_ID = W.workout_ID " +

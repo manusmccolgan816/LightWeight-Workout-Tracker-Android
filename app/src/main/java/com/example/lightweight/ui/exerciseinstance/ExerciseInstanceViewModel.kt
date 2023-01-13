@@ -25,6 +25,9 @@ class ExerciseInstanceViewModel(private val repository: ExerciseInstanceReposito
     fun getExerciseInstancesOfWorkout(workoutID: Int?) =
         repository.getExerciseInstancesOfWorkout(workoutID)
 
+    fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?) =
+        repository.getExerciseInstancesAndNamesOfWorkout(workoutID)
+
     fun getExerciseInstance(workoutID: Int?, exerciseID: Int?) =
         repository.getExerciseInstance(workoutID, exerciseID)
 

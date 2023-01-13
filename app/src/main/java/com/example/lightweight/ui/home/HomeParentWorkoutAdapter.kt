@@ -18,10 +18,13 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class HomeParentWorkoutAdapter(
-    var exerciseInstances: List<ExerciseInstance>,
-    var exerciseNames: ArrayList<String>,
+//    var exerciseInstances: List<ExerciseInstance>,
+//    var exerciseNames: ArrayList<String>,
+    var idNameMappings: Map<Int?, String>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
+
+    private val logTag = "HomeParentWorkoutAdapter"
 
     override val kodein by kodein(fragment.requireContext())
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
@@ -42,14 +45,18 @@ class HomeParentWorkoutAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeParentWorkoutViewHolder, position: Int) {
-        val curExerciseInstance = exerciseInstances[position]
-        Log.d(null, "onBindViewHolder at position $position")
+//        val curExerciseInstance = exerciseInstances[position]
+        val curName = idNameMappings.values.toTypedArray()[position]
+        val curID = idNameMappings.keys.toTypedArray()[position]
+        Log.d(logTag, "onBindViewHolder at position $position")
 
         textViewExerciseName = holder.itemView.findViewById(R.id.text_view_exercise_name)
         recyclerViewTrainingSets = holder.itemView.findViewById(R.id.recycler_view_training_sets)
 
-        // Set the text to the name of the exercise
-        if (exerciseNames.size > position) textViewExerciseName.text = exerciseNames[position]
+//        // Set the text to the name of the exercise
+//        if (exerciseNames.size > position) textViewExerciseName.text = exerciseNames[position]
+
+        textViewExerciseName.text = curName
 
         // Set up the child recycler view
         val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf())
@@ -57,16 +64,16 @@ class HomeParentWorkoutAdapter(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         recyclerViewTrainingSets.adapter = homeChildWorkoutAdapter
 
-        trainingSetViewModel.getTrainingSetsOfExerciseInstance(
-            curExerciseInstance.exerciseInstanceID).observe(fragment.viewLifecycleOwner) {
+        trainingSetViewModel.getTrainingSetsOfExerciseInstance(curID)
+            .observe(fragment.viewLifecycleOwner) {
                 homeChildWorkoutAdapter.trainingSets = it
                 homeChildWorkoutAdapter.notifyItemRangeChanged(0, it.size)
-                Log.d(null, "Data set changed at position $position")
+                Log.d(logTag, "Data set changed at position $position")
             }
     }
 
     override fun getItemCount(): Int {
-        return exerciseInstances.size
+        return idNameMappings.size
     }
 
     inner class HomeParentWorkoutViewHolder(setView: View): RecyclerView.ViewHolder(setView)

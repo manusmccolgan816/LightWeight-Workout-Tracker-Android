@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
-    private val TAG = "HomeFragment"
+    private val logTag = "HomeFragment"
 
     override val kodein by kodein()
     private val exerciseFactory: ExerciseViewModelFactory by instance()
@@ -76,35 +76,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
         textViewSelectedDate.text = selectedDate.format(formatter)
 
+        adapter = HomeParentWorkoutAdapter(mapOf(), this)
+        recyclerViewExerciseInstances.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewExerciseInstances.adapter = adapter
+
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
             workoutID = workoutViewModel.getWorkoutOfDate(selectedDate.toString())?.workoutID
 
             ref?.runOnUiThread {
-                exerciseInstanceViewModel.getExerciseInstancesOfWorkout(workoutID)
+                exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
-                        adapter.exerciseInstances = it
-                        Log.d(TAG, "Got exercise instances of workout")
-
-                        for (i in it.indices) {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                val exerciseName = exerciseViewModel.getExerciseOfID(it[i].exerciseID).exerciseName
-                                ref.runOnUiThread {
-                                    adapter.exerciseNames.add(exerciseName)
-                                    if (i == it.size - 1) {
-                                        Log.d(TAG, "Notifying HomeParentWorkoutAdapter data set change")
-                                        adapter.notifyItemInserted(it.size - 1)
-                                    }
-                                }
-                            }
-                        }
+                        adapter.idNameMappings = it
+                        adapter.notifyItemRangeChanged(0, it.size)
+                        Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
             }
         }
-
-        adapter = HomeParentWorkoutAdapter(listOf(), arrayListOf(), this)
-        recyclerViewExerciseInstances.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewExerciseInstances.adapter = adapter
 
         fabCalendar.setOnClickListener {
             // Navigate to CalendarFragment, passing the selected date
