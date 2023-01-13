@@ -43,7 +43,7 @@ class ExerciseHistoryFragment : Fragment(R.layout.fragment_exercise_history), Ko
         exerciseInstanceViewModel.getExerciseInstancesAndDatesOfExercise(exerciseID)
             .observe(viewLifecycleOwner) {
                 adapter.idDateMappings = it
-                adapter.notifyItemRangeChanged(0, adapter.idDateMappings.size - 1)
+                adapter.notifyItemRangeChanged(0, it.size)
             }
     }
 }
