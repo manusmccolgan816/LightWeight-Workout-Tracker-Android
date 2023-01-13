@@ -36,4 +36,7 @@ class ExerciseInstanceViewModel(private val repository: ExerciseInstanceReposito
 
     fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?) =
         repository.getExerciseInstancesAndDatesOfExercise(exerciseID)
+
+    fun getExerciseInstanceOfID(exerciseInstanceID: Int?) =
+        repository.getExerciseInstanceOfID(exerciseInstanceID)
 }

@@ -14,15 +14,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
+import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.HashSet
 
+
 class TrainingSetItemAdapter(
     var trainingSets: List<TrainingSet>,
     private val trainingSetViewModel: TrainingSetViewModel,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
     private val exerciseID: Int?,
     private val selectedDate: String,
     private val fragment: Fragment
@@ -183,12 +186,25 @@ class TrainingSetItemAdapter(
                             }
                         }
 
-                        // Decrement trainingSetNumber of all sets after curTrainingSet
-                        trainingSetViewModel
-                            .decrementTrainingSetNumbersAbove(curTrainingSet.exerciseInstanceID,
-                                curTrainingSet.trainingSetNumber)
-                        // Delete the training set
-                        trainingSetViewModel.delete(curTrainingSet)
+                        // If this is the only set in the exercise instance...
+                        if (this.itemCount <= 1) {
+                            fragment.lifecycleScope.launch(Dispatchers.IO) {
+                                // Delete the exercise instance
+                                val curExerciseInstance = exerciseInstanceViewModel
+                                    .getExerciseInstanceOfID(curTrainingSet.exerciseInstanceID)
+                                exerciseInstanceViewModel.delete(curExerciseInstance)
+                            }
+                        }
+                        else {
+                            // Decrement trainingSetNumber of all sets after curTrainingSet
+                            trainingSetViewModel
+                                .decrementTrainingSetNumbersAbove(curTrainingSet.exerciseInstanceID,
+                                    curTrainingSet.trainingSetNumber)
+
+                            // Delete the training set
+                            trainingSetViewModel.delete(curTrainingSet)
+                        }
+
                         Toast.makeText(parent.context, "Set has been deleted",
                             Toast.LENGTH_SHORT).show()
                         true

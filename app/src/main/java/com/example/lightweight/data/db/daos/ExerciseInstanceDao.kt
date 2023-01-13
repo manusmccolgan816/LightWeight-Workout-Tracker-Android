@@ -50,4 +50,7 @@ interface ExerciseInstanceDao {
             "WHERE exercise_ID = :exerciseID " +
             "ORDER BY date DESC")
     fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?): LiveData<Map<Int?, String>>
+
+    @Query("SELECT * FROM EXERCISE_INSTANCE WHERE exercise_instance_ID = :exerciseInstanceID")
+    fun getExerciseInstanceOfID(exerciseInstanceID: Int?): ExerciseInstance
 }

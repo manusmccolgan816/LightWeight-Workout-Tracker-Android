@@ -99,8 +99,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonSaveSet = view.findViewById(R.id.button_save_set)
         recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
 
-        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseID, selectedDate,
-            this)
+        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseInstanceViewModel,
+            exerciseID, selectedDate, this)
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
 
@@ -223,10 +223,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                         setupAdapter()
                         isAdapterSetup = true
                     }
-                }
-
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Set saved", Toast.LENGTH_SHORT).show()
                 }
             }
         }
