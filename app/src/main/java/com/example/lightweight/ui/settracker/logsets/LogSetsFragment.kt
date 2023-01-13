@@ -124,19 +124,25 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
             lifecycleScope.launch(Dispatchers.IO) {
                 // If no workout exists for the selected date...
                 if (workoutViewModel.getWorkoutOfDate(selectedDate) == null) {
-                    // ...create a new workout
+                    // Create a new workout
                     val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
                     insWorkoutJob.join() // Wait for the insertion to finish
+
                     workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
                 }
 
                 // If no exercise instance exists for the selected date and exercise...
                 if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID)
                     == null) {
-                    // ...create a new exercise instance
+                    // Get the exercise instance number to assign for ordering purposes
+                    val eiNumber = exerciseInstanceViewModel
+                        .getExerciseInstancesOfWorkoutNoLiveData(workoutID).size + 1
+
+                    // Create and insert a new exercise instance
                     val instExerciseInstanceJob = exerciseInstanceViewModel
-                        .insert(ExerciseInstance(workoutID, exerciseID, null))
+                        .insert(ExerciseInstance(workoutID, exerciseID,  eiNumber,null))
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
+
                     exerciseInstanceID = exerciseInstanceViewModel
                         .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
                 }

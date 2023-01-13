@@ -30,6 +30,8 @@ import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
+    private val TAG = "HomeFragment"
+
     override val kodein by kodein()
     private val exerciseFactory: ExerciseViewModelFactory by instance()
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
@@ -82,6 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                 exerciseInstanceViewModel.getExerciseInstancesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
                         adapter.exerciseInstances = it
+                        Log.d(TAG, "Got exercise instances of workout")
 
                         for (i in it.indices) {
                             lifecycleScope.launch(Dispatchers.IO) {
@@ -89,7 +92,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                                 ref.runOnUiThread {
                                     adapter.exerciseNames.add(exerciseName)
                                     if (i == it.size - 1) {
-                                        Log.d(null, "Notifying HomeParentWorkoutAdapter data set change")
+                                        Log.d(TAG, "Notifying HomeParentWorkoutAdapter data set change")
                                         adapter.notifyItemInserted(it.size - 1)
                                     }
                                 }

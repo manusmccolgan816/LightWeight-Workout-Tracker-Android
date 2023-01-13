@@ -26,6 +26,9 @@ data class ExerciseInstance(
     @ColumnInfo(name = "exercise_ID")
     val exerciseID: Int?,
 
+    @ColumnInfo(name = "exercise_instance_number")
+    val exerciseInstanceNumber: Int,
+
     @ColumnInfo(name = "note")
     val note: String?
 ) {

@@ -13,15 +13,18 @@ class ExerciseInstanceRepository(private val db: WorkoutDatabase) {
 
     fun getAllExerciseInstances() = db.getExerciseInstanceDao().getAllExerciseInstances()
 
+    fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?) =
+        db.getExerciseInstanceDao().getExerciseInstancesOfWorkoutNoLiveData(workoutID)
+
     fun getExerciseInstancesOfWorkout(workoutID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesOfWorkout(workoutID)
 
-    fun getExerciseInstance(workoutID: Int?, exerciseID: Int?) = db.getExerciseInstanceDao()
-        .getExerciseInstance(workoutID, exerciseID)
+    fun getExerciseInstance(workoutID: Int?, exerciseID: Int?) =
+        db.getExerciseInstanceDao().getExerciseInstance(workoutID, exerciseID)
 
-    fun getExerciseInstancesOfExercise(exerciseID: Int?) = db.getExerciseInstanceDao()
-        .getExerciseInstancesOfExercise(exerciseID)
+    fun getExerciseInstancesOfExercise(exerciseID: Int?) =
+        db.getExerciseInstanceDao().getExerciseInstancesOfExercise(exerciseID)
 
-    fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?) = db.getExerciseInstanceDao()
-        .getExerciseInstancesAndDatesOfExercise(exerciseID)
+    fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?) =
+        db.getExerciseInstanceDao().getExerciseInstancesAndDatesOfExercise(exerciseID)
 }

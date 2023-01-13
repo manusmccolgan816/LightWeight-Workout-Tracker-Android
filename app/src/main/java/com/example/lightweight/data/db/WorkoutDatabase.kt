@@ -15,7 +15,7 @@ import com.example.lightweight.data.db.entities.*
         ExerciseInstance::class,
         TrainingSet::class
     ],
-    version = 6,
+    version = 7,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 
@@ -36,6 +36,6 @@ abstract class WorkoutDatabase : RoomDatabase() {
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db")
-            .fallbackToDestructiveMigration().createFromAsset("database/lightweightdb.db").build()
+            .createFromAsset("database/lightweightdb.db").build()
     }
 }
