@@ -18,7 +18,7 @@ class CategoryItemAdapter(
     private val selectedDate: String,
     var categories: List<Category>,
     private val viewModel: CategoryViewModel,
-    var fragment: Fragment
+    var fragment: SelectCategoryFragment
 ) : RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -69,6 +69,9 @@ class CategoryItemAdapter(
         // Navigate to SelectExerciseFragment when a category item is selected, passing the category
         // as a parameter
         holder.itemView.setOnClickListener {
+            // Remove the search view text
+            fragment.searchViewCategories.setQuery("", false)
+
             val action = SelectCategoryFragmentDirections
                 .actionSelectCategoryFragmentToSelectExerciseFragment(
                     curCategory.categoryID!!, selectedDate)

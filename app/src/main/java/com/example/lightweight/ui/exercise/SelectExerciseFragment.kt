@@ -81,6 +81,7 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
                             filteredList.add(exercise)
                         }
                     }
+
                     adapter.exercises = filteredList
                     adapter.notifyDataSetChanged()
                 }
