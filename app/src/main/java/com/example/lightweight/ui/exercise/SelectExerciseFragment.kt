@@ -2,6 +2,7 @@ package com.example.lightweight.ui.exercise
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +28,9 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
     private val args: SelectExerciseFragmentArgs by navArgs()
 
+    private lateinit var exercises: List<Exercise>
+
+    private lateinit var searchViewExercises: SearchView
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var fabAddExercise: FloatingActionButton
 
@@ -39,6 +43,10 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
         val categoryID = args.categoryID
 
+        searchViewExercises = view.findViewById(R.id.search_view_exercises)
+        recyclerViewExercises = view.findViewById(R.id.recycler_view_exercises)
+        fabAddExercise = view.findViewById(R.id.fab_add_exercise)
+
         val ref = this.activity
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -49,16 +57,38 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
             }
         }
 
-        recyclerViewExercises = view.findViewById(R.id.recycler_view_exercises)
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter
 
         exerciseViewModel.getExercisesOfCategory(categoryID).observe(viewLifecycleOwner) {
+            exercises = it
             adapter.exercises = it
             adapter.notifyDataSetChanged()
         }
 
-        fabAddExercise = view.findViewById(R.id.fab_add_exercise)
+        searchViewExercises.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                TODO("Not yet implemented")
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // If text has been input...
+                if (newText != null) {
+                    val filteredList: ArrayList<Exercise> = ArrayList()
+
+                    for (exercise: Exercise in exercises) {
+                        if (exercise.exerciseName.lowercase().contains(newText.lowercase())) {
+                            filteredList.add(exercise)
+                        }
+                    }
+                    adapter.exercises = filteredList
+                    adapter.notifyDataSetChanged()
+                }
+
+                return true
+            }
+        })
+
         fabAddExercise.setOnClickListener {
             // Use a coroutine to execute the query and alter editTextDiaryEntry accordingly
             lifecycleScope.launch(Dispatchers.IO) {
@@ -72,8 +102,11 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
                     ).show()
                 }
             }
-
         }
+    }
+
+    private fun filterList(newText: String?) {
+
     }
 
 }

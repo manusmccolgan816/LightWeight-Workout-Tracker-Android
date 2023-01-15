@@ -34,6 +34,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.162" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/drawable/ic_baseline_filled_comment_24.xml" value="0.149" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/drawable/ic_baseline_trophy_24.xml" value="0.149" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/drawable/search_view_background.xml" value="0.1505" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_exercise.xml" value="0.25416666666666665" />
@@ -50,7 +51,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_home.xml" value="0.24728260869565216" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_log_sets.xml" value="0.264" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_category.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_exercise.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_exercise.xml" value="0.264" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_stopwatch.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_calendar_cell.xml" value="0.253125" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_category.xml" value="0.25416666666666665" />
