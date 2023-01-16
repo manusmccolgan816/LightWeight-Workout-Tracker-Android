@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
@@ -60,7 +61,7 @@ class HomeParentWorkoutAdapter(
 
         // Set up the child recycler view
         val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf(), curID, fragment)
-        recyclerViewTrainingSets.layoutManager = LinearLayoutManager(
+        recyclerViewTrainingSets.layoutManager = WrapContentLinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         recyclerViewTrainingSets.adapter = homeChildWorkoutAdapter
 
@@ -77,15 +78,18 @@ class HomeParentWorkoutAdapter(
     }
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
-        exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
-            .observe(fragment.viewLifecycleOwner) {
-                Log.d(logTag, "Exercise ID is $it")
 
-                val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
-                    it!!, fragment.selectedDate.toString()
-                )
-                findNavController(fragment).navigate(action)
-            }
+        val exerciseObs = exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+        exerciseObs.observe(fragment.viewLifecycleOwner) {
+            Log.d(logTag, "Exercise ID is $it")
+
+            val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
+                it!!, fragment.selectedDate.toString()
+            )
+            findNavController(fragment).navigate(action)
+
+            exerciseObs.removeObservers(fragment.viewLifecycleOwner)
+        }
     }
 
     override fun getItemCount(): Int {

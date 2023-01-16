@@ -80,15 +80,18 @@ class HomeChildWorkoutAdapter(
     }
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
-        exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
-            .observe(fragment.viewLifecycleOwner) {
-                Log.d(logTag, "Exercise ID is $it")
+        val exerciseObs = exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
 
-                val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
-                    it!!, fragment.selectedDate.toString()
-                )
-                NavHostFragment.findNavController(fragment).navigate(action)
-            }
+        exerciseObs.observe(fragment.viewLifecycleOwner) {
+            Log.d(logTag, "Exercise ID is $it")
+
+            val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
+                it!!, fragment.selectedDate.toString()
+            )
+            NavHostFragment.findNavController(fragment).navigate(action)
+
+            exerciseObs.removeObservers(fragment.viewLifecycleOwner)
+        }
     }
 
     override fun getItemCount(): Int {

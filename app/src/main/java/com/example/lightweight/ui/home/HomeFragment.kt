@@ -10,11 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
+import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workout.WorkoutViewModel
@@ -75,7 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         textViewSelectedDate.text = selectedDate.format(formatter)
 
         adapter = HomeParentWorkoutAdapter(mapOf(), this)
-        recyclerViewExerciseInstances.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewExerciseInstances.layoutManager = WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
 
         val ref = this.activity
@@ -86,7 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                 exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
                         adapter.idNameMappings = it
-                        adapter.notifyItemRangeChanged(0, it.size)
+                        adapter.notifyDataSetChanged()
                         Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
             }
