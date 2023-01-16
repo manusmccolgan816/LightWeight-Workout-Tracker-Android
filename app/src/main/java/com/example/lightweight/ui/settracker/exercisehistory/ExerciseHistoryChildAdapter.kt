@@ -11,7 +11,7 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 
 class ExerciseHistoryChildAdapter(
-    var trainingSets: List<TrainingSet>,
+    var trainingSets: List<TrainingSet>
 ) : RecyclerView.Adapter<ExerciseHistoryChildAdapter.ExerciseHistoryChildViewHolder>() {
 
     private lateinit var parent: ViewGroup

@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Lightweight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/indigo_p</item>
-        <item name="colorPrimaryVariant">@color/indigo_d</item>
+        <item name="colorPrimary">@color/cyan_p</item>
+        <item name="colorPrimaryVariant">@color/cyan_d</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/pink_l</item>

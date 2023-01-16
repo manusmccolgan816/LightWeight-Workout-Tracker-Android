@@ -27,4 +27,12 @@
     <color name="indigo_p">#303f9f</color>
     <color name="indigo_l">#666ad1</color>
     <color name="indigo_d">#001970</color>
+
+    <color name="cyan_p">#00bcd4</color>
+    <color name="cyan_l">#62efff</color>
+    <color name="cyan_d">#008ba3</color>
+
+    <color name="blue_p">#0d47a1</color>
+    <color name="blue_l">#5472d3</color>
+    <color name="blue_d">#002171</color>
 </resources>

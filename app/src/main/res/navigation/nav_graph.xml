@@ -20,6 +20,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="today" />
+        <action
+            android:id="@+id/action_homeFragment_to_setTrackerActivity"
+            app:destination="@id/setTrackerActivity" />
     </fragment>
     <fragment
         android:id="@+id/selectCategoryFragment"

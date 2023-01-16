@@ -48,7 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     private lateinit var adapter: HomeParentWorkoutAdapter
 
     // The selected date defaults to the current day
-    private var selectedDate: LocalDate = LocalDate.now()
+    var selectedDate: LocalDate = LocalDate.now()
     private var workoutID: Int? = null
 
     private lateinit var textViewSelectedDate: TextView
