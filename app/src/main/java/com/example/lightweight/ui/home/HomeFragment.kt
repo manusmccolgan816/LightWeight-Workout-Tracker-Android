@@ -33,8 +33,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     private val logTag = "HomeFragment"
 
     override val kodein by kodein()
-    private val exerciseFactory: ExerciseViewModelFactory by instance()
-    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
     private val workoutFactory: WorkoutViewModelFactory by instance()
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
 
