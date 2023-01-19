@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 
@@ -17,9 +18,12 @@ class CalendarAdapter(
 
     private val logTag = "CalenderAdapter"
 
+    private lateinit var parent: ViewGroup
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_calendar_cell, parent, false)
+        this.parent = parent
         val layoutParams = view.layoutParams
         layoutParams.height = (parent.height * 0.166666666).toInt()
         return CalendarViewHolder(view, onItemListener)
@@ -28,8 +32,10 @@ class CalendarAdapter(
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         holder.dayOfMonth.text = daysOfMonth[position]
 
-        if (selectedDayOfMonthPosition != null && position == selectedDayOfMonthPosition)
+        if (selectedDayOfMonthPosition != null && position == selectedDayOfMonthPosition) {
+            holder.dayOfMonth.background = ContextCompat.getDrawable(parent.context, R.drawable.circle)
             holder.dayOfMonth.setTextColor(Color.RED)
+        }
 
         // Embolden today's date
         if (todayPosition != null && position == todayPosition) {
