@@ -3,6 +3,7 @@ package com.example.lightweight.data.db.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lightweight.data.db.entities.Workout
+import java.time.LocalDate
 
 @Dao
 interface WorkoutDao {
@@ -18,4 +19,7 @@ interface WorkoutDao {
 
     @Query("SELECT * FROM WORKOUT WHERE date = :date")
     fun getWorkoutOfDate(date: String): Workout?
+
+    @Query("SELECT date FROM WORKOUT ORDER BY date")
+    fun getWorkoutDates(): LiveData<List<String>>
 }

@@ -1,6 +1,5 @@
 package com.example.lightweight.ui.calendar
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val selectedDayOfMonthPosition: Int?,
     private val todayPosition: Int?,
+    private val workoutPositions: ArrayList<Int>,
     private val onItemListener: OnItemListener
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -32,9 +32,27 @@ class CalendarAdapter(
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         holder.dayOfMonth.text = daysOfMonth[position]
 
+        holder.dayOfMonth.background = null
+
         if (selectedDayOfMonthPosition != null && position == selectedDayOfMonthPosition) {
-            holder.dayOfMonth.background = ContextCompat.getDrawable(parent.context, R.drawable.circle)
-            holder.dayOfMonth.setTextColor(Color.RED)
+            if (workoutPositions.contains(selectedDayOfMonthPosition)) {
+                // Set the background for a selected date that has a workout
+                holder.dayOfMonth.background = ContextCompat.getDrawable(parent.context,
+                    R.drawable.selected_date_workout_background)
+            }
+            else {
+                // Set the background for a selected date that has no workout
+                holder.dayOfMonth.background = ContextCompat.getDrawable(parent.context,
+                    R.drawable.selected_date_no_workout_background)
+            }
+        }
+
+        if (workoutPositions.contains(position)) {
+            if (position != selectedDayOfMonthPosition) {
+                // Set the background for a non-selected date that has a workout
+                holder.dayOfMonth.background = ContextCompat.getDrawable(parent.context,
+                    R.drawable.not_selected_date_workout_background)
+            }
         }
 
         // Embolden today's date

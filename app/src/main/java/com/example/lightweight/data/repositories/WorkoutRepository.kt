@@ -12,4 +12,6 @@ class WorkoutRepository(private val db: WorkoutDatabase) {
     fun getAllWorkouts() = db.getWorkoutDao().getAllWorkouts()
 
     fun getWorkoutOfDate(date: String) = db.getWorkoutDao().getWorkoutOfDate(date)
+
+    fun getWorkoutDates() = db.getWorkoutDao().getWorkoutDates()
 }
