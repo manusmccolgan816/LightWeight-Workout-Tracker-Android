@@ -1,28 +1,31 @@
 package com.example.lightweight.ui.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.ui.home.HomeFragmentDirections
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.OnItemListener {
 
+    private val logTag = "CalendarFragment"
+
     private val args: CalendarFragmentArgs by navArgs()
 
     private lateinit var selectedDate: LocalDate
     private var selectedDatePosition: Int? = null
     private lateinit var displayDate: LocalDate
+    private val today: LocalDate = LocalDate.now()
+    private var todayPosition: Int? = null
 
     private lateinit var textViewMonthYear: TextView
     private lateinit var recyclerViewCalendar: RecyclerView
@@ -64,13 +67,19 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         textViewMonthYear.text = monthYearFromDate(displayDate)
         val daysInMonth = daysInMonthArray(displayDate)
 
+        // today's position is set to null if the displayed month is not the current month
+        if (!(displayDate.month.equals(today.month))) {
+            todayPosition = null
+        }
+
         // If the selected date's month is the same as the month being displayed...
         val calendarAdapter: CalendarAdapter = if (displayDate.month.equals(selectedDate.month)) {
             // ...pass selectedDatePosition to highlight the selected date
-            CalendarAdapter(daysInMonth, selectedDatePosition, this)
+            CalendarAdapter(daysInMonth, selectedDatePosition, todayPosition, this)
+
         } else {
             // ...pass a null value so that no date is highlighted
-            CalendarAdapter(daysInMonth, null, this)
+            CalendarAdapter(daysInMonth, null, todayPosition, this)
         }
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -106,6 +115,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
 
                 if (displayDate.equals(selectedDate) && selectedDate.dayOfMonth == monthDay) {
                     selectedDatePosition = i - 1
+                    Log.d(logTag, "Selected date position is $selectedDatePosition")
+                }
+                if (today.dayOfMonth == monthDay) {
+                    todayPosition = i - 1
+                    Log.d(logTag, "Today position is $todayPosition")
                 }
             }
         }

@@ -1,6 +1,8 @@
 package com.example.lightweight.ui.calendar
 
 import android.graphics.Color
+import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +11,11 @@ import com.example.lightweight.R
 class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val selectedDayOfMonthPosition: Int?,
+    private val todayPosition: Int?,
     private val onItemListener: OnItemListener
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
+
+    private val logTag = "CalenderAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,10 +26,19 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.dayOfMonth.text = daysOfMonth.get(position)
+        holder.dayOfMonth.text = daysOfMonth[position]
 
         if (selectedDayOfMonthPosition != null && position == selectedDayOfMonthPosition)
             holder.dayOfMonth.setTextColor(Color.RED)
+
+        // Embolden today's date
+        if (todayPosition != null && position == todayPosition) {
+            holder.dayOfMonth.typeface = Typeface.DEFAULT_BOLD
+            Log.d(logTag, "Emboldening position $position")
+        }
+        else {
+            holder.dayOfMonth.typeface = Typeface.DEFAULT
+        }
     }
 
     override fun getItemCount(): Int {
