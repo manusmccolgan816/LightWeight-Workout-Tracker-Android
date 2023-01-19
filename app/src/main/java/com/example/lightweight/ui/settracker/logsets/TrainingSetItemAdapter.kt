@@ -10,14 +10,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
+import com.example.lightweight.ui.workout.WorkoutViewModel
+import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -29,7 +35,11 @@ class TrainingSetItemAdapter(
     private val exerciseID: Int?,
     private val selectedDate: String,
     private val fragment: Fragment
-) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>() {
+) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>(), KodeinAware {
+
+    override val kodein by kodein(fragment.requireContext())
+    private val workoutFactory: WorkoutViewModelFactory by instance()
+    private val workoutViewModel: WorkoutViewModel by fragment.viewModels { workoutFactory }
 
     private lateinit var parent: ViewGroup
 
@@ -192,7 +202,27 @@ class TrainingSetItemAdapter(
                                 // Delete the exercise instance
                                 val curExerciseInstance = exerciseInstanceViewModel
                                     .getExerciseInstanceOfID(curTrainingSet.exerciseInstanceID)
-                                exerciseInstanceViewModel.delete(curExerciseInstance)
+                                val delExInstanceJob = exerciseInstanceViewModel.delete(curExerciseInstance)
+
+                                delExInstanceJob.join()
+
+                                fragment.lifecycleScope.launch(Dispatchers.IO) {
+                                    val workout = workoutViewModel.getWorkoutOfDate(selectedDate)
+
+                                    val exInstOfWorkoutObs = exerciseInstanceViewModel
+                                        .getExerciseInstancesOfWorkout(workout?.workoutID)
+                                    val ref = fragment.activity
+                                    ref?.runOnUiThread {
+                                        exInstOfWorkoutObs.observe(fragment.viewLifecycleOwner) { exInstancesOfWorkout ->
+                                            Log.d(null, "Entered exInstOfWorkoutObs")
+                                            if (exInstancesOfWorkout.isEmpty()) {
+                                                Log.d(null, "No exercise instances of workout found")
+                                                workoutViewModel.deleteWorkoutOfID(workout?.workoutID)
+                                            }
+                                            exInstOfWorkoutObs.removeObservers(fragment.viewLifecycleOwner)
+                                        }
+                                    }
+                                }
                             }
                         }
                         else {

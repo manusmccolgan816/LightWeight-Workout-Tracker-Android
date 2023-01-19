@@ -9,6 +9,8 @@ class WorkoutRepository(private val db: WorkoutDatabase) {
 
     suspend fun delete(workout: Workout) = db.getWorkoutDao().delete(workout)
 
+    suspend fun deleteWorkoutOfID(workoutID: Int?) = db.getWorkoutDao().deleteWorkoutOfID(workoutID)
+
     fun getAllWorkouts() = db.getWorkoutDao().getAllWorkouts()
 
     fun getWorkoutOfDate(date: String) = db.getWorkoutDao().getWorkoutOfDate(date)

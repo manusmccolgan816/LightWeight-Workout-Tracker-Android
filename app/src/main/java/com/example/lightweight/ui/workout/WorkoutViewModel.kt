@@ -17,6 +17,10 @@ class WorkoutViewModel(private val repository: WorkoutRepository) : ViewModel() 
         repository.delete(workout)
     }
 
+    fun deleteWorkoutOfID(workoutID: Int?) = CoroutineScope(Dispatchers.Main).launch {
+        repository.deleteWorkoutOfID(workoutID)
+    }
+
     fun getAllWorkouts() = repository.getAllWorkouts()
 
     fun getWorkoutOfDate(date: String) = repository.getWorkoutOfDate(date)
