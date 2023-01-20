@@ -58,4 +58,13 @@ public class SessionManager {
     public Long getCurrentTime() {
         return sharedPreferences.getLong("KEY_TIME", 0);
     }
+
+    public void setPauseOffset(Long pauseOffset) {
+        editor.putLong("KEY_PAUSE_OFFSET", pauseOffset);
+        editor.commit();
+    }
+
+    public Long getPauseOffset() {
+        return sharedPreferences.getLong("KEY_PAUSE_OFFSET", 0);
+    }
 }

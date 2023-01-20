@@ -37,24 +37,35 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
 
         sessionManager = SessionManager(this.activity?.applicationContext)
 
+        Log.d(logTag, "Chronometer base when onViewCreated called: ${chronometer.base}")
         val isRunningBackground = sessionManager.stopwatchRunningBackground
-        Log.d(logTag, "isRunningBackground: $isRunningBackground")
-        Log.d(logTag, "stopwatchRunning: ${sessionManager.stopwatchRunning}")
         if (isRunningBackground) {
-            val smCurrentTime: Long = sessionManager.currentTime
-            if (sessionManager.stopwatchRunning) {
-                val currentTime: Long = SystemClock.elapsedRealtime()
-                val mils: Long = currentTime - smCurrentTime
-                chronometer.base = SystemClock.elapsedRealtime() - mils
-                chronometer.start()
+            chronometer.base = SystemClock.elapsedRealtime() - sessionManager.pauseOffset
 
-                Log.d(logTag, "smCurrentTime: $smCurrentTime")
-                Log.d(logTag, "currentTime: $currentTime")
-                Log.d(logTag, "mils: $mils")
+            if (sessionManager.stopwatchRunning) {
+                chronometer.start()
+                sessionManager.pauseOffset = 0
             } else {
-                chronometer.base = smCurrentTime
+
             }
         }
+//        Log.d(logTag, "isRunningBackground: $isRunningBackground")
+//        Log.d(logTag, "stopwatchRunning: ${sessionManager.stopwatchRunning}")
+//        if (isRunningBackground) {
+//            val smCurrentTime: Long = sessionManager.currentTime
+//            if (sessionManager.stopwatchRunning) {
+//                val currentTime: Long = SystemClock.elapsedRealtime()
+//                val mils: Long = currentTime - smCurrentTime
+//                chronometer.base = SystemClock.elapsedRealtime() - mils
+//                chronometer.start()
+//
+//                Log.d(logTag, "smCurrentTime: $smCurrentTime")
+//                Log.d(logTag, "currentTime: $currentTime")
+//                Log.d(logTag, "mils: $mils")
+//            } else {
+//                chronometer.base = smCurrentTime
+//            }
+//        }
 
 
 //        sessionManager = SessionManager(this.activity?.applicationContext)
@@ -109,7 +120,8 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
         buttonStart.setOnClickListener {
             // If the chronometer is not running, start it
             if (!sessionManager.stopwatchRunning) {
-                chronometer.base = SystemClock.elapsedRealtime() - pauseOffset
+                chronometer.base = SystemClock.elapsedRealtime() - sessionManager.pauseOffset
+                Log.d(logTag, "Chronometer base when started: ${chronometer.base}")
                 chronometer.start()
                 sessionManager.stopwatchRunning = true
                 sessionManager.stopwatchRunningBackground = true
@@ -119,13 +131,14 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
             // If the chronometer is running, stop it
             if (sessionManager.stopwatchRunning) {
                 chronometer.stop()
-                pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
+                sessionManager.pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
+                Log.d(logTag, "Chronometer base when stopped: ${chronometer.base}")
                 sessionManager.stopwatchRunning = false
             }
         }
         buttonReset.setOnClickListener {
             chronometer.base = SystemClock.elapsedRealtime()
-            pauseOffset = 0
+            sessionManager.pauseOffset = 0
             chronometer.stop()
             sessionManager.stopwatchRunning = false
             sessionManager.stopwatchRunningBackground = false
@@ -141,10 +154,6 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
 //
 //        chronometer.saveInstanceState(outState)
 //    }
-
-    private fun startStopwatch() {
-
-    }
 
     override fun onPause() {
         super.onPause()
