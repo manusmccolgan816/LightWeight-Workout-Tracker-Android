@@ -38,8 +38,10 @@ class EditCategoryDialog(
                 return@setOnClickListener
             }
 
-            Toast.makeText(context, "${category.categoryName} has been renamed to $name",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "${category.categoryName} has been renamed to $name",
+                Toast.LENGTH_SHORT
+            ).show()
             // Call the passed lambda function, giving the categoryID and the new name
             editCategory(category.categoryID, name)
             dismiss()

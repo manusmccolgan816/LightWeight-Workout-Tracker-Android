@@ -7,7 +7,8 @@ class CategoryRepository(private val db: WorkoutDatabase) {
 
     suspend fun insert(category: Category) = db.getCategoryDao().insert(category)
 
-    suspend fun update(categoryID: Int?, newName: String) = db.getCategoryDao().update(categoryID, newName)
+    suspend fun update(categoryID: Int?, newName: String) =
+        db.getCategoryDao().update(categoryID, newName)
 
     suspend fun delete(category: Category) = db.getCategoryDao().delete(category)
 

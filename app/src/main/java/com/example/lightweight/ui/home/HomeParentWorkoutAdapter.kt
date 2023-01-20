@@ -61,7 +61,8 @@ class HomeParentWorkoutAdapter(
         // Set up the child recycler view
         val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf(), curID, fragment)
         recyclerViewTrainingSets.layoutManager = WrapContentLinearLayoutManager(
-            holder.itemView.context, LinearLayoutManager.VERTICAL, false)
+            holder.itemView.context, LinearLayoutManager.VERTICAL, false
+        )
         recyclerViewTrainingSets.adapter = homeChildWorkoutAdapter
 
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(curID)
@@ -78,7 +79,8 @@ class HomeParentWorkoutAdapter(
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
 
-        val exerciseObs = exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+        val exerciseObs =
+            exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
         exerciseObs.observe(fragment.viewLifecycleOwner) {
             Log.d(logTag, "Exercise ID is $it")
 
@@ -95,5 +97,5 @@ class HomeParentWorkoutAdapter(
         return idNameMappings.size
     }
 
-    inner class HomeParentWorkoutViewHolder(setView: View): RecyclerView.ViewHolder(setView)
+    inner class HomeParentWorkoutViewHolder(setView: View) : RecyclerView.ViewHolder(setView)
 }

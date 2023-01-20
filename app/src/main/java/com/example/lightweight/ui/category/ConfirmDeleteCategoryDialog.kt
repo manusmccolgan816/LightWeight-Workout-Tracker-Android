@@ -11,7 +11,7 @@ import com.example.lightweight.data.db.entities.Category
 class ConfirmDeleteCategoryDialog(
     context: Context,
     val category: Category,
-    val deleteCategory:(Category) -> Unit
+    val deleteCategory: (Category) -> Unit
 ) : AppCompatDialog(context) {
 
     private lateinit var buttonConfirmDeleteCategory: Button
@@ -24,8 +24,10 @@ class ConfirmDeleteCategoryDialog(
         buttonConfirmDeleteCategory = findViewById(R.id.button_confirm_delete_category)!!
         buttonConfirmDeleteCategory.setOnClickListener {
             deleteCategory(category)
-            Toast.makeText(context, "${category.categoryName} has been deleted",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "${category.categoryName} has been deleted",
+                Toast.LENGTH_SHORT
+            ).show()
             dismiss()
         }
 

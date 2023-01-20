@@ -6,7 +6,8 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "EXERCISE",
+@Entity(
+    tableName = "EXERCISE",
     foreignKeys = [ForeignKey(
         entity = Category::class,
         childColumns = ["category_ID"],

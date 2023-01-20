@@ -29,13 +29,13 @@ class LightweightApplication : Application(), KodeinAware {
         bind() from singleton { ExerciseRepository(instance()) }
         bind() from provider { ExerciseViewModelFactory(instance()) }
 
-        bind() from singleton { WorkoutRepository(instance())}
-        bind() from provider { WorkoutViewModelFactory(instance())}
+        bind() from singleton { WorkoutRepository(instance()) }
+        bind() from provider { WorkoutViewModelFactory(instance()) }
 
         bind() from singleton { ExerciseInstanceRepository(instance()) }
-        bind() from provider { ExerciseInstanceViewModelFactory(instance())}
+        bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
 
         bind() from singleton { TrainingSetRepository(instance()) }
-        bind() from provider { TrainingSetViewModelFactory(instance())}
+        bind() from provider { TrainingSetViewModelFactory(instance()) }
     }
 }

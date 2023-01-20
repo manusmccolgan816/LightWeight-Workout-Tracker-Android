@@ -11,7 +11,7 @@ import com.example.lightweight.data.db.entities.Exercise
 class ConfirmDeleteExerciseDialog(
     context: Context,
     val exercise: Exercise,
-    val deleteExercise:(Exercise) -> Unit
+    val deleteExercise: (Exercise) -> Unit
 ) : AppCompatDialog(context) {
 
     private lateinit var buttonConfirmDeleteExercise: Button
@@ -24,8 +24,10 @@ class ConfirmDeleteExerciseDialog(
         buttonConfirmDeleteExercise = findViewById(R.id.button_confirm_delete_exercise)!!
         buttonConfirmDeleteExercise.setOnClickListener {
             deleteExercise(exercise)
-            Toast.makeText(context, "${exercise.exerciseName} has been deleted",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "${exercise.exerciseName} has been deleted",
+                Toast.LENGTH_SHORT
+            ).show()
             dismiss()
         }
 

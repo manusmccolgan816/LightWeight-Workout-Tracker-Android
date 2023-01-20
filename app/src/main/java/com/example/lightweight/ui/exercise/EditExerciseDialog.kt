@@ -12,7 +12,7 @@ import com.example.lightweight.data.db.entities.Exercise
 class EditExerciseDialog(
     context: Context,
     val exercise: Exercise,
-    val editExercise:(exerciseID: Int?, newName: String) -> Unit
+    val editExercise: (exerciseID: Int?, newName: String) -> Unit
 ) : AppCompatDialog(context) {
 
     private lateinit var editTextEditExerciseName: EditText
@@ -36,8 +36,10 @@ class EditExerciseDialog(
                 return@setOnClickListener
             }
 
-            Toast.makeText(context, "${exercise.exerciseName} has been renamed to $name",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "${exercise.exerciseName} has been renamed to $name",
+                Toast.LENGTH_SHORT
+            ).show()
             // Call the passed lambda function, giving the categoryID and the new name
             editExercise(exercise.exerciseID, name)
             dismiss()

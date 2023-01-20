@@ -13,9 +13,10 @@ class ExerciseViewModel(private val repository: ExerciseRepository) : ViewModel(
         repository.insert(exercise)
     }
 
-    fun updateName(exerciseID: Int?, exerciseName: String) = CoroutineScope(Dispatchers.Main).launch {
-        repository.updateName(exerciseID, exerciseName)
-    }
+    fun updateName(exerciseID: Int?, exerciseName: String) =
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.updateName(exerciseID, exerciseName)
+        }
 
     fun delete(exercise: Exercise) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(exercise)

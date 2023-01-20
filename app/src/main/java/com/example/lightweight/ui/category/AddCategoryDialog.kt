@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatDialog
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 
-class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
-    : AppCompatDialog(context) {
+class AddCategoryDialog(context: Context, val addCategory: (Category) -> Unit) :
+    AppCompatDialog(context) {
 
     private lateinit var editTextNewCategoryName: EditText
     private lateinit var buttonSaveNewCategory: Button
@@ -33,8 +33,10 @@ class AddCategoryDialog(context: Context, val addCategory:(Category) -> Unit)
 
             val category = Category(name)
             addCategory(category)
-            Toast.makeText(context, "$name category has been created",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "$name category has been created",
+                Toast.LENGTH_SHORT
+            ).show()
             dismiss()
         }
 

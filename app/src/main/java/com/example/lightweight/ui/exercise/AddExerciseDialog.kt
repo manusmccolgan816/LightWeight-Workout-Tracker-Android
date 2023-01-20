@@ -14,7 +14,7 @@ import com.example.lightweight.data.db.entities.Exercise
 class AddExerciseDialog(
     context: Context,
     val category: Category,
-    val addExercise:(Exercise) -> Unit,
+    val addExercise: (Exercise) -> Unit,
 ) : AppCompatDialog(context) {
 
     private lateinit var textViewNewExerciseCategoryName: TextView
@@ -42,8 +42,10 @@ class AddExerciseDialog(
 
             val exercise = Exercise(name, category.categoryID)
             addExercise(exercise)
-            Toast.makeText(context, "$name exercise has been created under category: " +
-                    category.categoryName, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "$name exercise has been created under category: " +
+                        category.categoryName, Toast.LENGTH_SHORT
+            ).show()
             dismiss()
         }
 

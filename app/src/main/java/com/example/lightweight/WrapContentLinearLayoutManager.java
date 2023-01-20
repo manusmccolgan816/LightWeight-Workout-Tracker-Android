@@ -21,7 +21,7 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
                                           int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-    
+
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {

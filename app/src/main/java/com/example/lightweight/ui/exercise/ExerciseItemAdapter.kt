@@ -23,7 +23,7 @@ class ExerciseItemAdapter(
     private lateinit var parent: ViewGroup
     private lateinit var imageViewExerciseOptions: ImageView
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ExerciseItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_exercise, parent, false)
         this.parent = parent
@@ -48,14 +48,14 @@ class ExerciseItemAdapter(
                     R.id.menu_item_edit_exercise -> {
                         // Display the edit exercise dialog
                         EditExerciseDialog(parent.context, curExercise,
-                            fun (exerciseID: Int?, newName: String) {
+                            fun(exerciseID: Int?, newName: String) {
                                 viewModel.updateName(exerciseID, newName)
                             }).show()
                         true
                     }
                     R.id.menu_item_delete_exercise -> {
                         ConfirmDeleteExerciseDialog(parent.context, curExercise,
-                            fun (curExercise: Exercise) { viewModel.delete(curExercise) }).show()
+                            fun(curExercise: Exercise) { viewModel.delete(curExercise) }).show()
                         true
                     }
                     else -> true
@@ -69,7 +69,8 @@ class ExerciseItemAdapter(
         holder.itemView.setOnClickListener {
             val action = SelectExerciseFragmentDirections
                 .actionSelectExerciseFragmentToSetTrackerActivity(
-                    curExercise.exerciseID!!, selectedDate)
+                    curExercise.exerciseID!!, selectedDate
+                )
             NavHostFragment.findNavController(fragment).navigate(action)
         }
     }
@@ -78,5 +79,5 @@ class ExerciseItemAdapter(
         return exercises.size
     }
 
-    inner class ExerciseItemViewHolder(exerciseView: View): RecyclerView.ViewHolder(exerciseView)
+    inner class ExerciseItemViewHolder(exerciseView: View) : RecyclerView.ViewHolder(exerciseView)
 }

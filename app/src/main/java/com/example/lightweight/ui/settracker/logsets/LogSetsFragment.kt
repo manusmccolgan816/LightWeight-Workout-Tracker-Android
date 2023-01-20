@@ -99,8 +99,9 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         buttonSaveSet = view.findViewById(R.id.button_save_set)
         recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
 
-        adapter = TrainingSetItemAdapter(listOf(), trainingSetViewModel, exerciseInstanceViewModel,
-            exerciseID, selectedDate, this)
+        adapter = TrainingSetItemAdapter(
+            listOf(), trainingSetViewModel, exerciseID, selectedDate, this
+        )
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
 
@@ -133,14 +134,15 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
                 // If no exercise instance exists for the selected date and exercise...
                 if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID)
-                    == null) {
+                    == null
+                ) {
                     // Get the exercise instance number to assign for ordering purposes
                     val eiNumber = exerciseInstanceViewModel
                         .getExerciseInstancesOfWorkoutNoLiveData(workoutID).size + 1
 
                     // Create and insert a new exercise instance
                     val instExerciseInstanceJob = exerciseInstanceViewModel
-                        .insert(ExerciseInstance(workoutID, exerciseID,  eiNumber,null))
+                        .insert(ExerciseInstance(workoutID, exerciseID, eiNumber, null))
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
 
                     exerciseInstanceID = exerciseInstanceViewModel
@@ -163,11 +165,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                             if (prSets.isEmpty()) {
                                 // ...the new set will be a PR
                                 isPR = true
-                            }
-                            else {
+                            } else {
                                 val repWeightMappings: HashMap<Int, Float> = HashMap()
                                 // If the new set has more reps than any other of the exercise...
-                                if (prSets[prSets.size -1].reps < reps) {
+                                if (prSets[prSets.size - 1].reps < reps) {
                                     // ...it will be a PR
                                     isPR = true
                                 }
@@ -192,7 +193,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                                     if ((i.reps < reps && i.weight <= weight)
                                         || (i.reps == reps && i.weight < weight)
                                         || (i.reps == reps && i.weight == weight
-                                                && selectedDate < prDates[count])) {
+                                                && selectedDate < prDates[count])
+                                    ) {
                                         // ...i is no longer a PR
                                         trainingSetViewModel.updateIsPR(i.trainingSetID, 0)
                                         // The new set is a PR
@@ -207,8 +209,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                             prDatesObs.removeObservers(viewLifecycleOwner)
 
                             // Insert the new training set
-                            val trainingSet = TrainingSet(exerciseInstanceID,
-                                adapter.itemCount + 1, weight, reps, null, isPR)
+                            val trainingSet = TrainingSet(
+                                exerciseInstanceID,
+                                adapter.itemCount + 1, weight, reps, null, isPR
+                            )
                             trainingSetViewModel.insert(trainingSet)
                         }
 
@@ -225,8 +229,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     }
                 }
             }
-        }
-        else {
+        } else {
             Toast.makeText(requireContext(), "Enter weight and reps", Toast.LENGTH_SHORT).show()
         }
     }

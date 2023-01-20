@@ -73,7 +73,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         textViewSelectedDate.text = selectedDate.format(formatter)
 
         adapter = HomeParentWorkoutAdapter(mapOf(), this)
-        recyclerViewExerciseInstances.layoutManager = WrapContentLinearLayoutManager(requireContext())
+        recyclerViewExerciseInstances.layoutManager =
+            WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
 
         val ref = this.activity
@@ -97,7 +98,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             findNavController().navigate(action)
         }
 
-        extendedFabAddExercises.setOnClickListener{
+        extendedFabAddExercises.setOnClickListener {
             // Navigate to SelectCategoryFragment
             val action = HomeFragmentDirections
                 .actionHomeFragmentToSelectCategoryFragment(selectedDate.toString())

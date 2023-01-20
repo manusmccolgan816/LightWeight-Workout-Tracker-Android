@@ -18,7 +18,8 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
         db.getTrainingSetDao().updateNote(trainingSetID, note)
 
     suspend fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int) =
-        db.getTrainingSetDao().decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
+        db.getTrainingSetDao()
+            .decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
 
     fun getAllTrainingSets() = db.getTrainingSetDao().getAllTrainingSets()
 

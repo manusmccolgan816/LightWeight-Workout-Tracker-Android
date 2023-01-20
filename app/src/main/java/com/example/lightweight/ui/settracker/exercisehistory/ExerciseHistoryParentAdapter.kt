@@ -21,8 +21,8 @@ import java.time.format.FormatStyle
 class ExerciseHistoryParentAdapter(
     var idDateMappings: Map<Int?, String>,
     private val fragment: Fragment
-) : RecyclerView.Adapter<ExerciseHistoryParentAdapter.ExerciseHistoryParentViewHolder>()
-    , KodeinAware {
+) : RecyclerView.Adapter<ExerciseHistoryParentAdapter.ExerciseHistoryParentViewHolder>(),
+    KodeinAware {
 
     override val kodein by kodein(fragment.requireContext())
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
@@ -33,13 +33,16 @@ class ExerciseHistoryParentAdapter(
     private lateinit var textViewDate: TextView
     private lateinit var recyclerViewTrainingSets: RecyclerView
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHistoryParentViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ExerciseHistoryParentViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_exercise_history_parent, parent, false)
 
         this.parent = parent
 
-        return  ExerciseHistoryParentViewHolder(view)
+        return ExerciseHistoryParentViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ExerciseHistoryParentViewHolder, position: Int) {
@@ -50,14 +53,16 @@ class ExerciseHistoryParentAdapter(
         textViewDate = holder.itemView.findViewById(R.id.text_view_date)
         recyclerViewTrainingSets = holder.itemView.findViewById(R.id.recycler_view_training_sets)
 
-        val date: String? = LocalDate.parse(curDate).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+        val date: String? =
+            LocalDate.parse(curDate).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
         // Display the date of the exercise instance
         textViewDate.text = date.toString()
 
         // Set up the child recycler view
         val adapter = ExerciseHistoryChildAdapter(listOf())
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(
-            holder.itemView.context, LinearLayoutManager.VERTICAL, false)
+            holder.itemView.context, LinearLayoutManager.VERTICAL, false
+        )
         recyclerViewTrainingSets.adapter = adapter
 
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(curID)
@@ -71,5 +76,5 @@ class ExerciseHistoryParentAdapter(
         return idDateMappings.size
     }
 
-    inner class ExerciseHistoryParentViewHolder(view: View): RecyclerView.ViewHolder(view)
+    inner class ExerciseHistoryParentViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

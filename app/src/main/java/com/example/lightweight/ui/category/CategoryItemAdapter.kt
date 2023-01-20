@@ -72,7 +72,8 @@ class CategoryItemAdapter(
 
             val action = SelectCategoryFragmentDirections
                 .actionSelectCategoryFragmentToSelectExerciseFragment(
-                    curCategory.categoryID!!, selectedDate)
+                    curCategory.categoryID!!, selectedDate
+                )
             findNavController(fragment).navigate(action)
         }
     }
@@ -81,5 +82,5 @@ class CategoryItemAdapter(
         return categories.size
     }
 
-    inner class CategoryItemViewHolder(categoryView: View): RecyclerView.ViewHolder(categoryView)
+    inner class CategoryItemViewHolder(categoryView: View) : RecyclerView.ViewHolder(categoryView)
 }

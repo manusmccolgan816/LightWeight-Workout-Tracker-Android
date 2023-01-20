@@ -16,24 +16,30 @@ interface ExerciseInstanceDao {
     @Query("SELECT * FROM EXERCISE_INSTANCE")
     fun getAllExerciseInstances(): LiveData<List<ExerciseInstance>>
 
-    @Query("SELECT * " +
-            "FROM EXERCISE_INSTANCE " +
-            "WHERE workout_ID = :workoutID")
+    @Query(
+        "SELECT * " +
+                "FROM EXERCISE_INSTANCE " +
+                "WHERE workout_ID = :workoutID"
+    )
     fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?): List<ExerciseInstance>
 
-    @Query("SELECT * " +
-            "FROM EXERCISE_INSTANCE " +
-            "WHERE workout_ID = :workoutID " +
-            "ORDER BY exercise_instance_number")
+    @Query(
+        "SELECT * " +
+                "FROM EXERCISE_INSTANCE " +
+                "WHERE workout_ID = :workoutID " +
+                "ORDER BY exercise_instance_number"
+    )
     fun getExerciseInstancesOfWorkout(workoutID: Int?): LiveData<List<ExerciseInstance>>
 
     @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "exercise_name")
-    @Query("SELECT EI.exercise_instance_ID, E.exercise_name " +
-            "FROM EXERCISE_INSTANCE AS EI " +
-            "INNER JOIN EXERCISE AS E " +
-            "ON EI.exercise_ID = E.exercise_ID " +
-            "WHERE workout_ID = :workoutID " +
-            "ORDER BY exercise_instance_number")
+    @Query(
+        "SELECT EI.exercise_instance_ID, E.exercise_name " +
+                "FROM EXERCISE_INSTANCE AS EI " +
+                "INNER JOIN EXERCISE AS E " +
+                "ON EI.exercise_ID = E.exercise_ID " +
+                "WHERE workout_ID = :workoutID " +
+                "ORDER BY exercise_instance_number"
+    )
     fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<Map<Int?, String>>
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE workout_ID = :workoutID AND exercise_ID = :exerciseID")
@@ -43,19 +49,23 @@ interface ExerciseInstanceDao {
     fun getExerciseInstancesOfExercise(exerciseID: Int?): LiveData<List<ExerciseInstance>>
 
     @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "date")
-    @Query("SELECT EI.exercise_instance_ID, W.date " +
-            "FROM EXERCISE_INSTANCE AS EI " +
-            "INNER JOIN WORKOUT AS W " +
-            "ON EI.workout_ID = W.workout_ID " +
-            "WHERE exercise_ID = :exerciseID " +
-            "ORDER BY date DESC")
+    @Query(
+        "SELECT EI.exercise_instance_ID, W.date " +
+                "FROM EXERCISE_INSTANCE AS EI " +
+                "INNER JOIN WORKOUT AS W " +
+                "ON EI.workout_ID = W.workout_ID " +
+                "WHERE exercise_ID = :exerciseID " +
+                "ORDER BY date DESC"
+    )
     fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?): LiveData<Map<Int?, String>>
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE exercise_instance_ID = :exerciseInstanceID")
     fun getExerciseInstanceOfID(exerciseInstanceID: Int?): ExerciseInstance
 
-    @Query("SELECT exercise_ID " +
-            "FROM EXERCISE_INSTANCE " +
-            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    @Query(
+        "SELECT exercise_ID " +
+                "FROM EXERCISE_INSTANCE " +
+                "WHERE exercise_instance_ID = :exerciseInstanceID"
+    )
     fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?): LiveData<Int?>
 }

@@ -35,7 +35,7 @@ abstract class WorkoutDatabase : RoomDatabase() {
         }
 
         private fun createDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db")
-            .createFromAsset("database/lightweightdb.db").build()
+            context.applicationContext, WorkoutDatabase::class.java, "WorkoutDB.db"
+        ).createFromAsset("database/lightweightdb.db").build()
     }
 }

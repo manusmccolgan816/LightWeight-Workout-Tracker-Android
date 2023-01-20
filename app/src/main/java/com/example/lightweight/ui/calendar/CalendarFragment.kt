@@ -98,7 +98,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         // If the selected date's month is the same as the month being displayed...
         val calendarAdapter: CalendarAdapter = if (displayDate.month.equals(selectedDate.month)) {
             // ...pass selectedDatePosition to highlight the selected date
-            CalendarAdapter(daysInMonth, selectedDatePosition, todayPosition, workoutPositions, this)
+            CalendarAdapter(
+                daysInMonth,
+                selectedDatePosition,
+                todayPosition,
+                workoutPositions,
+                this
+            )
 
         } else {
             // ...pass a null value so that no date is highlighted

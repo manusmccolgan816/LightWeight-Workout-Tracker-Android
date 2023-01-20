@@ -22,7 +22,7 @@ class ExerciseHistoryChildAdapter(
     private lateinit var textViewSetReps: TextView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-    : ExerciseHistoryChildViewHolder {
+            : ExerciseHistoryChildViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_exercise_history_child, parent, false)
         this.parent = parent
@@ -41,8 +41,7 @@ class ExerciseHistoryChildAdapter(
         textViewSetWeight.text = curTrainingSet.weight.toString() + "kg"
         if (curTrainingSet.reps == 1) {
             textViewSetReps.text = curTrainingSet.reps.toString() + " rep"
-        }
-        else {
+        } else {
             textViewSetReps.text = curTrainingSet.reps.toString() + " reps"
         }
 
@@ -61,5 +60,5 @@ class ExerciseHistoryChildAdapter(
         return trainingSets.size
     }
 
-    inner class ExerciseHistoryChildViewHolder(view: View): RecyclerView.ViewHolder(view)
+    inner class ExerciseHistoryChildViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

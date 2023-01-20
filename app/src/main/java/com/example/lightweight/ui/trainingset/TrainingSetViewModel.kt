@@ -31,13 +31,13 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
 
     fun decrementTrainingSetNumbersAbove(exerciseInstanceID: Int?, trainingSetNumber: Int) =
         CoroutineScope(Dispatchers.Main).launch {
-        repository.decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
-    }
+            repository.decrementTrainingSetNumbersAbove(exerciseInstanceID, trainingSetNumber)
+        }
 
     fun getAllTrainingSets() = repository.getAllTrainingSets()
 
     fun getTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int) =
-         repository.getTrainingSetDatesOfExerciseIsPR(exerciseID, isPR)
+        repository.getTrainingSetDatesOfExerciseIsPR(exerciseID, isPR)
 
     fun getTrainingSetsOfExerciseAndIsPR(exerciseID: Int?, isPR: Int) =
         repository.getTrainingSetsOfExerciseAndIsPR(exerciseID, isPR)

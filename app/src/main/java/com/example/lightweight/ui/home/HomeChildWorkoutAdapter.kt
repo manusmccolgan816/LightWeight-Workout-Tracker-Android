@@ -40,7 +40,7 @@ class HomeChildWorkoutAdapter(
     private lateinit var textViewSetReps: TextView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-    : HomeChildWorkoutViewHolder {
+            : HomeChildWorkoutViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_home_training_set, parent, false)
         this.parent = parent
@@ -59,8 +59,7 @@ class HomeChildWorkoutAdapter(
         textViewSetWeight.text = curTrainingSet.weight.toString() + "kg"
         if (curTrainingSet.reps == 1) {
             textViewSetReps.text = curTrainingSet.reps.toString() + " rep"
-        }
-        else {
+        } else {
             textViewSetReps.text = curTrainingSet.reps.toString() + " reps"
         }
 
@@ -80,7 +79,8 @@ class HomeChildWorkoutAdapter(
     }
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
-        val exerciseObs = exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+        val exerciseObs =
+            exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
 
         exerciseObs.observe(fragment.viewLifecycleOwner) {
             Log.d(logTag, "Exercise ID is $it")
@@ -98,5 +98,5 @@ class HomeChildWorkoutAdapter(
         return trainingSets.size
     }
 
-    inner class HomeChildWorkoutViewHolder(setView: View): RecyclerView.ViewHolder(setView)
+    inner class HomeChildWorkoutViewHolder(setView: View) : RecyclerView.ViewHolder(setView)
 }

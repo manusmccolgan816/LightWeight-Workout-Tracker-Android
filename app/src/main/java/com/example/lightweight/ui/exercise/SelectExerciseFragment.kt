@@ -105,9 +105,4 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
             }
         }
     }
-
-    private fun filterList(newText: String?) {
-
-    }
-
 }
