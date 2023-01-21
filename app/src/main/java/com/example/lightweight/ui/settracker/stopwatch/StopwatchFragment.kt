@@ -1,166 +1,159 @@
 package com.example.lightweight.ui.settracker.stopwatch
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.SystemClock
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.Chronometer
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.lightweight.R
-import com.example.lightweight.SessionManager
-import java.text.SimpleDateFormat
+import com.google.android.material.button.MaterialButton
 
 class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
 
     private val logTag = "StopwatchFragment"
 
-    private lateinit var sessionManager: SessionManager
-    private lateinit var format: SimpleDateFormat
-    private lateinit var currentTime: String
-    private lateinit var chronometer: Chronometer
-    private var pauseOffset: Long = 0
-    //private var running = false
+    private var isStopwatchRunning = false
 
-    //private lateinit var chronometer: ChronometerWithPause
-    private lateinit var buttonStart: Button
-    private lateinit var buttonPause: Button
-    private lateinit var buttonReset: Button
+    private lateinit var statusReceiver: BroadcastReceiver
+    private lateinit var timeReceiver: BroadcastReceiver
+
+    private lateinit var stopwatchValueTextView: TextView
+    private lateinit var resetImageView: ImageView
+    private lateinit var toggleButton: MaterialButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chronometer = view.findViewById(R.id.chronometer)
-        buttonStart = view.findViewById(R.id.button_start)
-        buttonPause = view.findViewById(R.id.button_pause)
-        buttonReset = view.findViewById(R.id.button_reset)
+        stopwatchValueTextView = view.findViewById(R.id.stopwatch_value_text_view)
+        resetImageView = view.findViewById(R.id.reset_image_view)
+        toggleButton = view.findViewById(R.id.toggle_button)
 
-        sessionManager = SessionManager(this.activity?.applicationContext)
-
-        Log.d(logTag, "Chronometer base when onViewCreated called: ${chronometer.base}")
-        val isRunningBackground = sessionManager.stopwatchRunningBackground
-        if (isRunningBackground) {
-            chronometer.base = SystemClock.elapsedRealtime() - sessionManager.pauseOffset
-
-            if (sessionManager.stopwatchRunning) {
-                chronometer.start()
-                sessionManager.pauseOffset = 0
-            } else {
-
-            }
-        }
-//        Log.d(logTag, "isRunningBackground: $isRunningBackground")
-//        Log.d(logTag, "stopwatchRunning: ${sessionManager.stopwatchRunning}")
-//        if (isRunningBackground) {
-//            val smCurrentTime: Long = sessionManager.currentTime
-//            if (sessionManager.stopwatchRunning) {
-//                val currentTime: Long = SystemClock.elapsedRealtime()
-//                val mils: Long = currentTime - smCurrentTime
-//                chronometer.base = SystemClock.elapsedRealtime() - mils
-//                chronometer.start()
-//
-//                Log.d(logTag, "smCurrentTime: $smCurrentTime")
-//                Log.d(logTag, "currentTime: $currentTime")
-//                Log.d(logTag, "mils: $mils")
-//            } else {
-//                chronometer.base = smCurrentTime
-//            }
-//        }
-
-
-//        sessionManager = SessionManager(this.activity?.applicationContext)
-//        format = SimpleDateFormat("hh:mm:ss aa")
-//        // Get current time
-//        currentTime = format.format(Date())
-//
-//        // Get flag from session manager
-//        var flag = sessionManager.flag
-//        if (!flag){
-//            // Set current time
-//            sessionManager.currentTime = currentTime
-//            sessionManager.flag = true
-//            chronometer.start()
-//        } else {
-//            // Get session manager current time
-//            val sessionManagerCurrentTime = sessionManager.currentTime
-//            // Convert String to date
-//            val date1 = format.parse(sessionManagerCurrentTime)
-//            val date2 = format.parse(currentTime)
-//            // Calculate time difference
-//            val mils: Long = date2.time - date1.time
-//            chronometer.base = SystemClock.elapsedRealtime() - mils
-//            chronometer.start()
-//        }
-//
-//        buttonReset.setOnClickListener {
-//            chronometer.base = SystemClock.elapsedRealtime()
-//            sessionManager.currentTime = currentTime
-//            chronometer.start()
-//        }
-
-//        buttonStart.setOnClickListener {
-//            // If the chronometer is not running, start it
-//            if (!chronometer.isRunning) {
-//                chronometer.start()
-//                sessionManager.stopwatchRunning = true
-//            }
-//        }
-//        buttonPause.setOnClickListener {
-//            // If the chronometer is running, stop it
-//            if (chronometer.isRunning) {
-//                chronometer.stop()
-//                sessionManager.stopwatchRunning = false
-//            }
-//        }
-//        buttonReset.setOnClickListener {
-//            chronometer.reset()
-//            sessionManager.stopwatchRunning = false
-//        }
-
-        buttonStart.setOnClickListener {
-            // If the chronometer is not running, start it
-            if (!sessionManager.stopwatchRunning) {
-                chronometer.base = SystemClock.elapsedRealtime() - sessionManager.pauseOffset
-                Log.d(logTag, "Chronometer base when started: ${chronometer.base}")
-                chronometer.start()
-                sessionManager.stopwatchRunning = true
-                sessionManager.stopwatchRunningBackground = true
-            }
-        }
-        buttonPause.setOnClickListener {
-            // If the chronometer is running, stop it
-            if (sessionManager.stopwatchRunning) {
-                chronometer.stop()
-                sessionManager.pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
-                Log.d(logTag, "Chronometer base when stopped: ${chronometer.base}")
-                sessionManager.stopwatchRunning = false
-            }
-        }
-        buttonReset.setOnClickListener {
-            chronometer.base = SystemClock.elapsedRealtime()
-            sessionManager.pauseOffset = 0
-            chronometer.stop()
-            sessionManager.stopwatchRunning = false
-            sessionManager.stopwatchRunningBackground = false
+        toggleButton.setOnClickListener {
+            if (isStopwatchRunning) pauseStopwatch() else startStopwatch()
         }
 
-//        if (savedInstanceState != null) {
-//            chronometer.restoreInstanceState(savedInstanceState)
-//        }
+        resetImageView.setOnClickListener {
+            resetStopwatch()
+        }
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//
-//        chronometer.saveInstanceState(outState)
-//    }
+    override fun onResume() {
+        super.onResume()
+
+        getStopwatchStatus()
+
+        // Receiving stopwatch status from service
+        val statusFilter = IntentFilter()
+        statusFilter.addAction(StopwatchService.STOPWATCH_STATUS)
+        statusReceiver = object : BroadcastReceiver() {
+            @SuppressLint("SetTextI18n")
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                val isRunning = p1?.getBooleanExtra(StopwatchService.IS_STOPWATCH_RUNNING, false)!!
+                isStopwatchRunning = isRunning
+                val timeElapsed = p1.getIntExtra(StopwatchService.TIME_ELAPSED, 0)
+
+                updateLayout(isStopwatchRunning)
+                updateStopwatchValue(timeElapsed)
+            }
+        }
+        requireActivity().registerReceiver(statusReceiver, statusFilter)
+
+        // Receiving time values from service
+        val timeFilter = IntentFilter()
+        timeFilter.addAction(StopwatchService.STOPWATCH_TICK)
+        timeReceiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, p1: Intent?) {
+                val timeElapsed = p1?.getIntExtra(StopwatchService.TIME_ELAPSED, 0)!!
+                updateStopwatchValue(timeElapsed)
+            }
+        }
+        requireActivity().registerReceiver(timeReceiver, timeFilter)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateStopwatchValue(timeElapsed: Int) {
+        val hours: Int = (timeElapsed / 60) / 60
+        val minutes: Int = timeElapsed / 60
+        val seconds: Int = timeElapsed % 60
+        stopwatchValueTextView.text =
+            "${"%02d".format(hours)}:${"%02d".format(minutes)}:${"%02d".format(seconds)}"
+    }
+
+    private fun updateLayout(isStopwatchRunning: Boolean) {
+        if (isStopwatchRunning) {
+            toggleButton.icon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_pause_24)
+            resetImageView.visibility = View.INVISIBLE
+        } else {
+            toggleButton.icon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_play_arrow_24)
+            resetImageView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getStopwatchStatus() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(StopwatchService.STOPWATCH_ACTION, StopwatchService.GET_STATUS)
+        requireActivity().startService(stopwatchService)
+    }
+
+    private fun startStopwatch() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(StopwatchService.STOPWATCH_ACTION, StopwatchService.START)
+        requireActivity().startService(stopwatchService)
+    }
+
+    private fun pauseStopwatch() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(StopwatchService.STOPWATCH_ACTION, StopwatchService.PAUSE)
+        requireActivity().startService(stopwatchService)
+    }
+
+    private fun resetStopwatch() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(StopwatchService.STOPWATCH_ACTION, StopwatchService.RESET)
+        requireActivity().startService(stopwatchService)
+    }
+
+    private fun moveToForeground() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(
+            StopwatchService.STOPWATCH_ACTION,
+            StopwatchService.MOVE_TO_FOREGROUND
+        )
+        requireActivity().startService(stopwatchService)
+    }
+
+    private fun moveToBackground() {
+        val stopwatchService = Intent(requireContext(), StopwatchService::class.java)
+        stopwatchService.putExtra(
+            StopwatchService.STOPWATCH_ACTION,
+            StopwatchService.MOVE_TO_BACKGROUND
+        )
+        requireActivity().startService(stopwatchService)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Moving the service to background when the app is visible
+        moveToBackground()
+    }
 
     override fun onPause() {
         super.onPause()
 
-        if (sessionManager.stopwatchRunningBackground) {
-            Log.d(logTag, "Chronometer base when onPause called: ${chronometer.base}")
-            sessionManager.currentTime = chronometer.base
-        }
+        // Unregister the receivers to avoid leaks
+        requireActivity().unregisterReceiver(statusReceiver)
+        requireActivity().unregisterReceiver(timeReceiver)
+
+        // Moving the service to foreground when the app is in background / not visible
+        moveToForeground()
     }
 }

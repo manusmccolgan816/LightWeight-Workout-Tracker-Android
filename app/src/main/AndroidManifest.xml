@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.lightweight">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".LightweightApplication"
         android:allowBackup="true"
@@ -14,16 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lightweight"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".ui.settracker.SetTrackerActivity"/>
+
+        <activity android:name=".ui.settracker.SetTrackerActivity" />
+
+        <service
+            android:name=".ui.settracker.stopwatch.StopwatchService"
+            android:enabled="true" />
     </application>
 
 </manifest>
