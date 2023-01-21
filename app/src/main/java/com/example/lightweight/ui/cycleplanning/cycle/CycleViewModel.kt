@@ -17,5 +17,5 @@ class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
         repository.delete(cycle)
     }
 
-    fun getAllCategories() = repository.getAllCycles()
+    fun getAllCycles() = repository.getAllCycles()
 }

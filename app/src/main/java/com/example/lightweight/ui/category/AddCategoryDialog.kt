@@ -21,8 +21,9 @@ class AddCategoryDialog(context: Context, val addCategory: (Category) -> Unit) :
         setContentView(R.layout.dialog_add_category)
 
         editTextNewCategoryName = findViewById(R.id.edit_text_new_category_name)!!
-
         buttonSaveNewCategory = findViewById(R.id.button_save_new_category)!!
+        buttonCancelNewCategory = findViewById(R.id.button_cancel_new_category)!!
+
         buttonSaveNewCategory.setOnClickListener {
             val name = editTextNewCategoryName.text.toString().trim()
 
@@ -40,7 +41,6 @@ class AddCategoryDialog(context: Context, val addCategory: (Category) -> Unit) :
             dismiss()
         }
 
-        buttonCancelNewCategory = findViewById(R.id.button_cancel_new_category)!!
         buttonCancelNewCategory.setOnClickListener {
             cancel()
         }

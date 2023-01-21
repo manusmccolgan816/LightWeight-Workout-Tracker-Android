@@ -8,7 +8,7 @@
     tools:context=".ui.cycleplanning.SelectTrainingCycleFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_training_cycle"
+        android:id="@+id/recycler_view_training_cycles"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
