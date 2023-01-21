@@ -3,7 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/4thYear/CSCU9YH/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_stopwatch.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/Lightweight/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2555" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/Lightweight/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.168" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/Lightweight/app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -56,6 +55,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_log_sets.xml" value="0.264" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_exercise.xml" value="0.264" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_select_training_cycle.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_stopwatch.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_calendar_cell.xml" value="0.253125" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_category.xml" value="0.25416666666666665" />

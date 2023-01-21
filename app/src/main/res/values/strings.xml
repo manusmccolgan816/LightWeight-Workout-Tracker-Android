@@ -48,4 +48,5 @@
     <string name="string_exercise">Exercise</string>
     <string name="string_reset_stopwatch">Reset stopwatch</string>
     <string name="string_toggle_stopwatch">Toggle stopwatch</string>
+    <string name="string_training_cycle">Training Cycle</string>
 </resources>

@@ -13,7 +13,8 @@ import com.example.lightweight.data.db.entities.*
         Exercise::class,
         Workout::class,
         ExerciseInstance::class,
-        TrainingSet::class
+        TrainingSet::class,
+        Cycle::class
     ],
     version = 7,
 )
@@ -24,6 +25,7 @@ abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun getWorkoutDao(): WorkoutDao
     abstract fun getExerciseInstanceDao(): ExerciseInstanceDao
     abstract fun getTrainingSetDao(): TrainingSetDao
+    abstract fun getCycleDao(): CycleDao
 
     companion object {
         @Volatile

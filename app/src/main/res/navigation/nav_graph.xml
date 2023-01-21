@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectTrainingCycleFragment"
-        android:name="com.example.lightweight.ui.SelectTrainingCycleFragment"
+        android:name="com.example.lightweight.ui.cycleplanning.SelectTrainingCycleFragment"
         tools:layout="@layout/fragment_select_training_cycle" />
     <fragment
         android:id="@+id/selectExerciseFragment"
