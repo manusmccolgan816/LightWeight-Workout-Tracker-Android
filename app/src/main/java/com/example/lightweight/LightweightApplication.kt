@@ -4,6 +4,10 @@ import android.app.Application
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.repositories.*
 import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
@@ -37,5 +41,17 @@ class LightweightApplication : Application(), KodeinAware {
 
         bind() from singleton { TrainingSetRepository(instance()) }
         bind() from provider { TrainingSetViewModelFactory(instance()) }
+
+        bind() from singleton { CycleRepository(instance()) }
+        bind() from provider { CycleViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayRepository(instance()) }
+        bind() from provider { CycleDayViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayCategoryRepository(instance()) }
+        bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayExerciseRepository(instance()) }
+        bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
     }
 }
