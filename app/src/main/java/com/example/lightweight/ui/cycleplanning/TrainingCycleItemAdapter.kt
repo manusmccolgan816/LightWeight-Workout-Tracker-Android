@@ -94,6 +94,7 @@ class TrainingCycleItemAdapter(
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_edit_training_cycle -> {
+                        // Display the edit training cycle dialog
                         EditTrainingCycleDialog(
                             parent.context,
                             curCycle,
@@ -104,6 +105,14 @@ class TrainingCycleItemAdapter(
                         true
                     }
                     R.id.menu_item_delete_training_cycle -> {
+                        // Display the confirm delete training cycle dialog
+                        ConfirmDeleteTrainingCycleDialog(
+                            parent.context,
+                            curCycle,
+                            fun(cycle: Cycle) {
+                                cycleViewModel.delete(cycle)
+                            }
+                        ).show()
                         true
                     }
                     else -> true

@@ -22,6 +22,8 @@ class ConfirmDeleteCategoryDialog(
         setContentView(R.layout.dialog_confirm_delete_category)
 
         buttonConfirmDeleteCategory = findViewById(R.id.button_confirm_delete_category)!!
+        buttonCancelDeleteCategory = findViewById(R.id.button_cancel_delete_category)!!
+
         buttonConfirmDeleteCategory.setOnClickListener {
             deleteCategory(category)
             Toast.makeText(
@@ -31,7 +33,6 @@ class ConfirmDeleteCategoryDialog(
             dismiss()
         }
 
-        buttonCancelDeleteCategory = findViewById(R.id.button_cancel_delete_category)!!
         buttonCancelDeleteCategory.setOnClickListener {
             cancel()
         }
