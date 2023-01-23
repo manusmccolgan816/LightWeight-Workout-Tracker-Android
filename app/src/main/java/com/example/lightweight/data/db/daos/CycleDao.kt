@@ -10,6 +10,9 @@ interface CycleDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(cycle: Cycle)
 
+    @Update
+    suspend fun update(cycle: Cycle)
+
     @Delete
     suspend fun delete(cycle: Cycle)
 

@@ -51,4 +51,5 @@
     <string name="string_training_cycle">Training Cycle</string>
     <string name="string_description">Description</string>
     <string name="string_new_training_cycle">New Training Cycle</string>
+    <string name="string_edit_training_cycle">Edit Training Cycle</string>
 </resources>

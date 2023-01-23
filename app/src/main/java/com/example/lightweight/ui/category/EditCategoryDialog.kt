@@ -33,7 +33,7 @@ class EditCategoryDialog(
         buttonSaveEditCategory.setOnClickListener {
             val name = editTextEditCategoryName.text.toString().trim()
 
-            if (name.isBlank()) {
+            if (name.isEmpty()) {
                 Toast.makeText(context, "No category name given", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -42,7 +42,7 @@ class EditCategoryDialog(
                 context, "${category.categoryName} has been renamed to $name",
                 Toast.LENGTH_SHORT
             ).show()
-            // Call the passed lambda function, giving the categoryID and the new name
+            // Call the passed lambda function to edit the given category
             editCategory(category.categoryID, name)
             dismiss()
         }

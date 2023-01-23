@@ -13,6 +13,10 @@ class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
         repository.insert(cycle)
     }
 
+    fun update(cycle: Cycle) = CoroutineScope(Dispatchers.Main).launch {
+        repository.update(cycle)
+    }
+
     fun delete(cycle: Cycle) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(cycle)
     }
