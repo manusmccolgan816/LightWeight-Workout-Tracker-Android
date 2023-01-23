@@ -22,4 +22,6 @@ class CycleViewModel(private val repository: CycleRepository) : ViewModel() {
     }
 
     fun getAllCycles() = repository.getAllCycles()
+
+    fun getCycleOfID(cycleID: Int?) = repository.getCycleOfID(cycleID)
 }

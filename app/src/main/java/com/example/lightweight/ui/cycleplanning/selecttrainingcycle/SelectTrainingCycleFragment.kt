@@ -1,4 +1,4 @@
-package com.example.lightweight.ui.cycleplanning
+package com.example.lightweight.ui.cycleplanning.selecttrainingcycle
 
 import android.os.Bundle
 import android.view.View

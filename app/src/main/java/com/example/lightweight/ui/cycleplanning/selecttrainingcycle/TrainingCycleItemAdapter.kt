@@ -1,4 +1,4 @@
-package com.example.lightweight.ui.cycleplanning
+package com.example.lightweight.ui.cycleplanning.selecttrainingcycle
 
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Cycle
@@ -19,7 +20,7 @@ import org.kodein.di.generic.instance
 
 class TrainingCycleItemAdapter(
     var cycles: List<Cycle>,
-    fragment: SelectTrainingCycleFragment
+    private val fragment: SelectTrainingCycleFragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
 
     private val logTag = "TrainingCycleItemAdapter"
@@ -119,6 +120,15 @@ class TrainingCycleItemAdapter(
                 }
             }
             popupMenu.show()
+        }
+
+        // Navigate to ViewTrainingCycleFragment when a training cycle is selected
+        holder.itemView.setOnClickListener {
+            val action =
+                SelectTrainingCycleFragmentDirections.actionSelectTrainingCycleFragmentToViewTrainingCycleFragment(
+                    curCycle.cycleID!!
+                )
+            findNavController(fragment).navigate(action)
         }
     }
 

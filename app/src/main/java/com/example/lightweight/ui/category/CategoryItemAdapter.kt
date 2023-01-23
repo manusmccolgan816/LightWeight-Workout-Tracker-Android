@@ -64,8 +64,7 @@ class CategoryItemAdapter(
             popupMenu.show()
         }
 
-        // Navigate to SelectExerciseFragment when a category item is selected, passing the category
-        // as a parameter
+        // Navigate to SelectExerciseFragment when a category item is selected
         holder.itemView.setOnClickListener {
             // Remove the search view text
             fragment.searchViewCategories.setQuery("", false)

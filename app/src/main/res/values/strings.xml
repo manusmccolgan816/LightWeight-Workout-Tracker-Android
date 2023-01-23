@@ -54,4 +54,5 @@
     <string name="string_edit_training_cycle">Edit Training Cycle</string>
     <string name="string_delete_training_cycle">Delete Training Cycle</string>
     <string name="string_delete_training_cycle_desc">Are you sure you want to delete this Training Cycle?</string>
+    <string name="string_add_training_cycle_day">Add training cycle day</string>
 </resources>
