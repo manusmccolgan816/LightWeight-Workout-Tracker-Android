@@ -29,6 +29,7 @@ class AddTrainingCycleDialog(context: Context, val addTrainingCycle: (Cycle) -> 
         buttonSaveNewTrainingCycle.setOnClickListener {
             val name: String = editTextNewTrainingCycleName.text.toString().trim()
             var desc: String? = editTextNewTrainingCycleDesc.text.toString().trim()
+
             // If the user has not entered a description, set it to null
             if (desc.isNullOrEmpty()) {
                 desc = null
