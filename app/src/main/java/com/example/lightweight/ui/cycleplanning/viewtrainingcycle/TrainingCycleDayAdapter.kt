@@ -3,63 +3,48 @@ package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
-import com.example.lightweight.data.db.entities.CycleDayCategory
-import com.example.lightweight.data.db.entities.CycleDayExercise
 
 class TrainingCycleDayAdapter(
     var cycleDays: List<CycleDay>,
-    var cycleDayCategories: List<CycleDayCategory>,
-    var cycleDayExercises: List<CycleDayExercise>,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val fragment: Fragment
+) : RecyclerView.Adapter<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>() {
 
     private lateinit var parent: ViewGroup
 
-    private val nameLayout = 0
-    private val categoryLayout = 1
-    private val exerciseLayout = 2
+    private lateinit var textViewTrainingCycleDayName: TextView
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingCycleDayViewHolder {
         this.parent = parent
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_training_cycle_day_name, parent, false)
+        return TrainingCycleDayViewHolder(view)
+    }
 
-        val viewHolder: RecyclerView.ViewHolder = when (viewType) {
-            nameLayout -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_training_cycle_day_name, parent, false)
-                TrainingCycleDayNameViewHolder(view)
-            }
-            categoryLayout -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_training_cycle_day_category, parent, false)
-                TrainingCycleDayCategoryViewHolder(view)
-            }
-            else -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_training_cycle_day_exercise, parent, false)
-                TrainingCycleDayExerciseViewHolder(view)
-            }
+    override fun onBindViewHolder(holder: TrainingCycleDayViewHolder, position: Int) {
+        val curCycleDay = cycleDays[position]
+
+        textViewTrainingCycleDayName =
+            holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)!!
+
+        textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
+
+        textViewTrainingCycleDayName.setOnClickListener {
+            val dialog = AddTrainingCycleDayCategoryDialogFragment()
+            dialog.show(
+                fragment.requireActivity().supportFragmentManager,
+                "AddTrainingCycleDayCategory"
+            )
         }
-
-        return viewHolder
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        TODO()
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return cycleDays.size
     }
 
-    inner class TrainingCycleDayNameViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    inner class TrainingCycleDayCategoryViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    inner class TrainingCycleDayExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class TrainingCycleDayViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

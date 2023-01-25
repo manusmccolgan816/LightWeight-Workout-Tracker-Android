@@ -6,9 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.data.db.entities.Cycle
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
@@ -55,10 +56,23 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
 
+        val cycleDayAdapter = TrainingCycleDayAdapter(listOf(), this)
+//        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(listOf(), listOf(), listOf())
+//        val concatAdapter = ConcatAdapter(cycleDayAdapter, cycleDayCategoryAdapter)
+
+        recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewTrainingCycleDays.adapter = cycleDayAdapter
+
+        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) {
+            cycleDayAdapter.cycleDays = it
+            cycleDayAdapter.notifyDataSetChanged()
+        }
+
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(
                 requireContext(),
                 cycleID,
+                cycleDayAdapter.itemCount,
                 fun(cycleDay: CycleDay) { cycleDayViewModel.insert(cycleDay) }
             ).show()
         }

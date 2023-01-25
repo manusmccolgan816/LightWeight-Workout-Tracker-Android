@@ -15,4 +15,7 @@ interface CycleDayDao {
 
     @Query("SELECT * FROM CYCLE_DAY ORDER BY cycle_day_number")
     fun getAllCycleDays(): LiveData<List<CycleDay>>
+
+    @Query("SELECT * FROM CYCLE_DAY WHERE cycle_ID = :cycleID")
+    fun getCycleDaysOfCycle(cycleID: Int?): LiveData<List<CycleDay>>
 }

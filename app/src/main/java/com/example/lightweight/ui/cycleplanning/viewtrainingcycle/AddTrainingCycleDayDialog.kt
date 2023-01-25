@@ -12,6 +12,7 @@ import com.example.lightweight.data.db.entities.CycleDay
 class AddTrainingCycleDayDialog(
     context: Context,
     val cycleID: Int?,
+    val numCycleDays: Int,
     val addTrainingCycleDay: (CycleDay) -> Unit
 ) : AppCompatDialog(context) {
 
@@ -35,8 +36,7 @@ class AddTrainingCycleDayDialog(
                 return@setOnClickListener
             }
 
-            // TODO Ensure cycleDayNumber is calculated
-            val cycleDay = CycleDay(cycleID, name, 0)
+            val cycleDay = CycleDay(cycleID, name, numCycleDays + 1)
             addTrainingCycleDay(cycleDay)
             dismiss()
         }
