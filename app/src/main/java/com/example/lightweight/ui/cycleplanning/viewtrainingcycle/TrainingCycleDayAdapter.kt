@@ -5,14 +5,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
+import com.example.lightweight.data.db.entities.CycleDayCategory
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
 class TrainingCycleDayAdapter(
     var cycleDays: List<CycleDay>,
     private val fragment: Fragment
-) : RecyclerView.Adapter<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>() {
+) : RecyclerView.Adapter<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(), KodeinAware {
+
+    override val kodein by kodein(fragment.requireContext())
+    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by fragment.viewModels {
+        cycleDayCategoryFactory
+    }
 
     private lateinit var parent: ViewGroup
 
@@ -34,7 +48,13 @@ class TrainingCycleDayAdapter(
         textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
 
         textViewTrainingCycleDayName.setOnClickListener {
-            val dialog = AddTrainingCycleDayCategoryDialogFragment()
+            val dialog = AddTrainingCycleDayCategoryDialogFragment(
+                fun(categoryID: Int?) {
+                    // TODO Sort out cycleDayCategoryNumber
+                    val cycleDayCategory = CycleDayCategory(curCycleDay.cycleDayID, categoryID, 0)
+                    cycleDayCategoryViewModel.insert(cycleDayCategory)
+                }
+            )
             dialog.show(
                 fragment.requireActivity().supportFragmentManager,
                 "AddTrainingCycleDayCategory"

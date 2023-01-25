@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
 import org.kodein.di.KodeinAware
@@ -17,7 +18,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class AddTrainingCycleDayCategoryDialogFragment(
-
+    val addCycleDayCategory: (Int?) -> Unit
 ) : DialogFragment(), KodeinAware {
 
     override val kodein by kodein()
@@ -31,11 +32,18 @@ class AddTrainingCycleDayCategoryDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.dialog_add_training_cycle_day_category, container, false)
+        val view =
+            inflater.inflate(R.layout.dialog_add_training_cycle_day_category, container, false)
 
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
 
-        val adapter = SelectCategoryForCycleAdapter(listOf())
+        val adapter = SelectCategoryForCycleAdapter(
+            listOf(),
+            fun(category: Category) {
+                addCycleDayCategory(category.categoryID)
+                dismiss()
+            }
+        )
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
 

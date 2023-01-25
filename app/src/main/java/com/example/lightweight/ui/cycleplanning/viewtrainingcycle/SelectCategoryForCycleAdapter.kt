@@ -9,7 +9,8 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 
 class SelectCategoryForCycleAdapter(
-    var categories: List<Category>
+    var categories: List<Category>,
+    val selectCategory: (Category) -> Unit
 ) : RecyclerView.Adapter<SelectCategoryForCycleAdapter.SelectCategoryForCycleViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -34,7 +35,7 @@ class SelectCategoryForCycleAdapter(
         textViewCategoryName.text = curCategory.categoryName
 
         textViewCategoryName.setOnClickListener {
-
+            selectCategory(curCategory)
         }
     }
 
