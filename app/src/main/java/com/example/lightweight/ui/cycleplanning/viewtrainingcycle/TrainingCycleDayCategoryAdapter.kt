@@ -10,7 +10,7 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
 class TrainingCycleDayCategoryAdapter(
-    var cycleDayCategories: List<CycleDayCategory>,
+    var idNameMappings: Map<Int?, String>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<TrainingCycleDayCategoryAdapter.TrainingCycleDayCategoryViewHolder>() {
 
@@ -29,16 +29,17 @@ class TrainingCycleDayCategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: TrainingCycleDayCategoryViewHolder, position: Int) {
-        val curCycleDayCategory = cycleDayCategories[position]
+        val curCategoryName = idNameMappings.values.toTypedArray()[position]
+        val curCycleDayCategoryID = idNameMappings.keys.toTypedArray()[position]
 
         textViewTrainingCycleDayCategory =
             holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
 
-        textViewTrainingCycleDayCategory.text // TODO
+        textViewTrainingCycleDayCategory.text = curCategoryName
     }
 
     override fun getItemCount(): Int {
-        return cycleDayCategories.size
+        return idNameMappings.size
     }
 
     inner class TrainingCycleDayCategoryViewHolder(view: View) : RecyclerView.ViewHolder(view)

@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,8 @@ class TrainingCycleDayAdapter(
     val setCategory: (Category) -> Unit,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(), KodeinAware {
+
+    private val logTag = "TrainingCycleDayAdapter"
 
     override val kodein by kodein(fragment.requireContext())
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
@@ -51,11 +54,23 @@ class TrainingCycleDayAdapter(
         textViewTrainingCycleDayName.setOnClickListener {
             val dialog = AddTrainingCycleDayCategoryDialogFragment(
                 fun(category: Category) {
-                    // TODO Sort out cycleDayCategoryNumber
-                    val cycleDayCategory =
-                        CycleDayCategory(curCycleDay.cycleDayID, category.categoryID, 0)
-                    cycleDayCategoryViewModel.insert(cycleDayCategory)
-                    setCategory(category)
+                    val numCycleDaysObs =
+                        cycleDayCategoryViewModel.getNumCycleDayCategoriesOfCycleDay(
+                            curCycleDay.cycleDayID
+                        )
+                    numCycleDaysObs.observe(fragment.viewLifecycleOwner) { numCycleDays ->
+                        val cycleDayCategory =
+                            CycleDayCategory(
+                                curCycleDay.cycleDayID,
+                                category.categoryID,
+                                numCycleDays + 1
+                            )
+                        cycleDayCategoryViewModel.insert(cycleDayCategory)
+                        Log.d(logTag, "Inserting cycleDayCategory")
+                        setCategory(category)
+
+                        numCycleDaysObs.removeObservers(fragment.viewLifecycleOwner)
+                    }
                 }
             )
             dialog.show(

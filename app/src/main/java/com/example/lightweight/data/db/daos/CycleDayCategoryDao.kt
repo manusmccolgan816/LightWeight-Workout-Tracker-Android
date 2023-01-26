@@ -30,4 +30,7 @@ interface CycleDayCategoryDao {
             "WHERE cycle_day_ID = :cycleDayID " +
             "ORDER BY cycle_day_category_number")
     fun getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID: Int?): LiveData<Map<Int?, String>>
+
+    @Query("SELECT COUNT(cycle_day_number) FROM CYCLE_DAY WHERE cycle_day_ID = :cycleDayID")
+    fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int>
 }

@@ -1,6 +1,7 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +27,8 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle), KodeinAware {
+
+    private val logTag = "ViewTrainingCycleFragment"
 
     override val kodein by kodein()
     private val cycleFactory: CycleViewModelFactory by instance()
@@ -71,24 +74,26 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             fun(category: Category) { this.category = category },
             this
         )
-        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(listOf(), this)
-//        val concatAdapter = ConcatAdapter(cycleDayAdapter, cycleDayCategoryAdapter)
+        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(mapOf(), this)
+        val concatAdapter = ConcatAdapter(cycleDayAdapter, cycleDayCategoryAdapter)
 
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewTrainingCycleDays.adapter = cycleDayAdapter
+        recyclerViewTrainingCycleDays.adapter = concatAdapter
 
-        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) {
-            cycleDayAdapter.cycleDays = it
+        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
+            cycleDayAdapter.cycleDays = cycleDays
             cycleDayAdapter.notifyDataSetChanged()
+            Log.d(logTag, "cycleDayAdapter data set changed")
 
-            for (cycleDay in it) {
-                cycleDaysAndCategories = arrayListOf()
-
-                //cycleDaysAndCategories.add(cycleDay)
+            for (cycleDay in cycleDays) {
+                cycleDayCategoryViewModel.getCycleDayCategoriesAndNamesOfCycleDay(cycleDay.cycleDayID)
+                    .observe(viewLifecycleOwner) { idNameMappings ->
+                        cycleDayCategoryAdapter.idNameMappings = idNameMappings
+                        cycleDayCategoryAdapter.notifyDataSetChanged()
+                        Log.d(logTag, "cycleDayCategoryAdapter data set changed")
+                    }
             }
         }
-
-
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(
