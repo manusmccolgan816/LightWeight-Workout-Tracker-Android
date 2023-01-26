@@ -18,7 +18,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class AddTrainingCycleDayCategoryDialogFragment(
-    val addCycleDayCategory: (Int?) -> Unit
+    val addCycleDayCategory: (Category) -> Unit
 ) : DialogFragment(), KodeinAware {
 
     override val kodein by kodein()
@@ -40,7 +40,7 @@ class AddTrainingCycleDayCategoryDialogFragment(
         val adapter = SelectCategoryForCycleAdapter(
             listOf(),
             fun(category: Category) {
-                addCycleDayCategory(category.categoryID)
+                addCycleDayCategory(category)
                 dismiss()
             }
         )

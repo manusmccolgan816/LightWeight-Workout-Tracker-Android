@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,13 +30,20 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
     override val kodein by kodein()
     private val cycleFactory: CycleViewModelFactory by instance()
     private val cycleDayFactory: CycleDayViewModelFactory by instance()
+    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
 
     private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
     private val cycleDayViewModel: CycleDayViewModel by viewModels { cycleDayFactory }
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by viewModels {
+        cycleDayCategoryFactory
+    }
 
     private val args: ViewTrainingCycleFragmentArgs by navArgs()
 
     private var cycleID: Int? = null
+    private lateinit var category: Category
+
+    private var cycleDaysAndCategories: ArrayList<ArrayList<CycleDay>> = ArrayList()
 
     private lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
@@ -56,8 +66,12 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
 
-        val cycleDayAdapter = TrainingCycleDayAdapter(listOf(), this)
-//        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(listOf(), listOf(), listOf())
+        val cycleDayAdapter = TrainingCycleDayAdapter(
+            listOf(),
+            fun(category: Category) { this.category = category },
+            this
+        )
+        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(listOf(), this)
 //        val concatAdapter = ConcatAdapter(cycleDayAdapter, cycleDayCategoryAdapter)
 
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
@@ -66,7 +80,15 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) {
             cycleDayAdapter.cycleDays = it
             cycleDayAdapter.notifyDataSetChanged()
+
+            for (cycleDay in it) {
+                cycleDaysAndCategories = arrayListOf()
+
+                //cycleDaysAndCategories.add(cycleDay)
+            }
         }
+
+
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(

@@ -12,4 +12,10 @@ class CycleDayCategoryRepository(private val db: WorkoutDatabase) {
         db.getCycleDayCategoryDao().delete(cycleDayCategory)
 
     fun getAllCycleDayCategories() = db.getCycleDayCategoryDao().getAllCycleDayCategories()
+
+    fun getCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
+        db.getCycleDayCategoryDao().getCycleDayCategoriesOfCycleDay(cycleDayID)
+
+    fun getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID: Int?) =
+        db.getCycleDayCategoryDao().getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID)
 }
