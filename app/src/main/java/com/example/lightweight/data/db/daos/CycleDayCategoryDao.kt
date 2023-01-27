@@ -2,6 +2,7 @@ package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.lightweight.CycleDayCategoryCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
 @Dao
@@ -31,6 +32,14 @@ interface CycleDayCategoryDao {
             "ORDER BY cycle_day_category_number")
     fun getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID: Int?): LiveData<Map<Int?, String>>
 
-    @Query("SELECT COUNT(cycle_day_number) FROM CYCLE_DAY WHERE cycle_day_ID = :cycleDayID")
+    @Query("SELECT CDC.cycle_day_category_ID, C.category_name, CDC.cycle_day_ID " +
+            "FROM CYCLE_DAY_CATEGORY AS CDC " +
+            "INNER JOIN CATEGORY AS C " +
+            "ON CDC.category_ID = C.category_ID " +
+            "WHERE cycle_day_ID = :cycleDayID " +
+            "ORDER BY cycle_day_category_number")
+    fun getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDayID: Int?): LiveData<List<CycleDayCategoryCombo>>
+
+    @Query("SELECT COUNT(cycle_day_category_number) FROM CYCLE_DAY_CATEGORY WHERE cycle_day_ID = :cycleDayID")
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int>
 }

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.CycleDayCategoryCombo
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.db.entities.CycleDay
@@ -19,6 +20,8 @@ import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter1.Companion.LAYOUT_CYCLE_DAY
+import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter1.Companion.LAYOUT_CYCLE_DAY_CAT
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,9 +49,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
     private var cycleID: Int? = null
     private lateinit var category: Category
 
-    private var adapters: ArrayList<TrainingCycleDayAdapter1> = ArrayList()
-
-    private var items = arrayListOf<Int>()
+    private var items = arrayListOf<Pair<Int, Int?>>()
+    private var combos = arrayListOf<CycleDayCategoryCombo>()
 
     private lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
@@ -76,26 +78,25 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 //            fun(category: Category) { this.category = category },
 //            this
 //        )
-        val cycleDayAdapter1: TrainingCycleDayAdapter1 = TrainingCycleDayAdapter1(
+        val cycleDayAdapter1 = TrainingCycleDayAdapter1(
             arrayListOf(),
             listOf(),
             fun(category: Category) { this.category = category },
-            mapOf(),
-            TrainingCycleDayAdapter1.LAYOUT_CYCLE_DAY,
+            arrayListOf(),
             this
         )
-        adapters.add(cycleDayAdapter1)
-        val cycleDayCategoryAdapter = TrainingCycleDayCategoryAdapter(mapOf(), this)
-        //val concatAdapter = ConcatAdapter(cycleDayAdapter, cycleDayCategoryAdapter)
 
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingCycleDays.adapter = cycleDayAdapter1
 //        recyclerViewTrainingCycleDays.adapter = concatAdapter
 
         cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
+            if (cycleDays.isEmpty()) return@observe
+
             for (i in cycleDays.indices) {
-                if (cycleDayAdapter1.items.size <= i) {
-                    cycleDayAdapter1.items.add(TrainingCycleDayAdapter1.LAYOUT_CYCLE_DAY)
+                if (cycleDayAdapter1.items.size - combos.size <= i) {
+                    cycleDayAdapter1.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
+                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
                     Log.d(logTag, "items.add: 0")
                     //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.items.size + i)
                 }
@@ -106,63 +107,67 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             Log.d(logTag, "cycleDayAdapter1 data set changed")
 
             for (cycleDay in cycleDays) {
-                cycleDayCategoryViewModel.getCycleDayCategoriesAndNamesOfCycleDay(cycleDay.cycleDayID)
-                    .observe(viewLifecycleOwner) { idNameMappings ->
-                        if (idNameMappings.isNotEmpty()) {
-                            for (i in idNameMappings.values.toTypedArray().indices) {
-                                cycleDayAdapter1.items.add(TrainingCycleDayAdapter1.LAYOUT_CYCLE_DAY_CAT)
-                                Log.d(logTag, "items.add: 1")
-//                                if (cycleDayAdapter1.items.size <= i) {
-//                                    cycleDayAdapter1.items.add(TrainingCycleDayAdapter1.LAYOUT_CYCLE_DAY_CAT)
-//                                    Log.d(logTag, "items.add: 1")
-//                                }
-                            }
-                            items = cycleDayAdapter1.items
-                            cycleDayAdapter1.idNameMappings = idNameMappings
+                cycleDayCategoryViewModel.getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDay.cycleDayID)
+                    .observe(viewLifecycleOwner) { cycleDayCatCombos ->
+                        if (cycleDayCatCombos.isNotEmpty()) {
+                            for (combo in cycleDayCatCombos) {
+                                if (combo !in combos) {
+                                    Loop@ for (i in 0 until cycleDayAdapter1.items.size) {
+                                        if (cycleDayAdapter1.items[i].second == combo.cycle_day_ID) {
+                                            var sameDayCatCount = 0
+                                            for (j in combos.indices) {
+                                                if (combos[j].cycle_day_ID == combo.cycle_day_ID) {
+                                                    sameDayCatCount++
+                                                }
+                                            }
+//                                            // If the item in this position is a category
+//                                            if (cycleDayAdapter1.items[i].first == LAYOUT_CYCLE_DAY_CAT) {
+//                                                // Ensure it is added to the correct position
+//                                            }
 
-                            cycleDayAdapter1.notifyDataSetChanged()
+                                            if (i + 1 >= cycleDayAdapter1.items.size) {
+                                                cycleDayAdapter1.items.add(
+                                                    Pair(
+                                                        LAYOUT_CYCLE_DAY_CAT,
+                                                        null
+                                                    )
+                                                )
+                                                cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
+                                            } else {
+                                                cycleDayAdapter1.items.add(
+                                                    i + sameDayCatCount + 1,
+                                                    Pair(LAYOUT_CYCLE_DAY_CAT, null)
+                                                )
+                                                cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
+                                            }
+                                            combos.add(combo)
+                                            break@Loop
+                                        }
+                                    }
+                                }
+                            }
+
+                            //items = cycleDayAdapter1.items
+                            cycleDayAdapter1.idNamePairs = arrayListOf()
+                            for (i in combos) {
+                                cycleDayAdapter1.idNamePairs.add(
+                                    Pair(
+                                        i.cycle_day_category_ID,
+                                        i.category_name
+                                    )
+                                )
+                            }
+
+                            //cycleDayAdapter1.notifyDataSetChanged()
 
                             Log.d(
                                 logTag,
-                                "cda1 data set changed, idNameMappings size: ${idNameMappings.size}"
+                                "cda1 data set changed, idNamePairs size: ${cycleDayAdapter1.idNamePairs.size}"
                             )
-//                        adapters.add(cda1)
-//                        recyclerViewTrainingCycleDays.adapter = ConcatAdapter(adapters)
                         }
                     }
             }
         }
-
-//        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
-//            cycleDayAdapter.cycleDays = cycleDays
-//            cycleDayAdapter.notifyDataSetChanged()
-//            Log.d(logTag, "cycleDayAdapter data set changed")
-//
-//            for (cycleDay in cycleDays) {
-//                cycleDayCategoryViewModel.getCycleDayCategoriesAndNamesOfCycleDay(cycleDay.cycleDayID)
-//                    .observe(viewLifecycleOwner) { idNameMappings ->
-//                        cycleDayCategoryAdapter.idNameMappings = idNameMappings
-//                        cycleDayCategoryAdapter.notifyDataSetChanged()
-//                        Log.d(logTag, "cycleDayCategoryAdapter data set changed")
-//
-//                        adapters = arrayListOf()
-//
-//                        adapters.add(
-//                            TrainingCycleDayAdapter1(
-//                                cycleDays,
-//                                fun(category: Category) { this.category = category },
-//                                idNameMappings,
-//                                this
-//                            ) as RecyclerView.Adapter<RecyclerView.ViewHolder>
-//                        )
-//
-////                        val concatAdapterConfig =
-////                            ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build()
-//                        recyclerViewTrainingCycleDays.adapter =
-//                            ConcatAdapter(adapters)
-//                    }
-//            }
-//        }
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(

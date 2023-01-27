@@ -19,11 +19,11 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class TrainingCycleDayAdapter1(
-    var items: ArrayList<Int>,
+    var items: ArrayList<Pair<Int, Int?>>,
     var cycleDays: List<CycleDay>?,
     val setCategory: (Category) -> Unit,
-    var idNameMappings: Map<Int?, String>?,
-    var viewType: Int,
+    //var idNameMappings: Map<Int?, String>?,
+    var idNamePairs: ArrayList<Pair<Int?, String>>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
 
@@ -69,7 +69,15 @@ class TrainingCycleDayAdapter1(
         when (holder.itemViewType) {
             LAYOUT_CYCLE_DAY -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDay")
-                val curCycleDay = cycleDays?.get(position)
+
+                var numPriorValues = 0
+                for (i in 0..position) {
+                    if (items[i].first == LAYOUT_CYCLE_DAY_CAT) {
+                        numPriorValues++
+                    }
+                }
+
+                val curCycleDay = cycleDays?.get(position - numPriorValues)
 
                 textViewTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)!!
@@ -106,16 +114,17 @@ class TrainingCycleDayAdapter1(
             }
             LAYOUT_CYCLE_DAY_CAT -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayCategory")
+                Log.d(logTag, items[position].first.toString())
 
                 var numPriorValues = 0
                 for (i in 0..position) {
-                    if (items[i] == LAYOUT_CYCLE_DAY) {
+                    if (items[i].first == LAYOUT_CYCLE_DAY) {
                         numPriorValues++
                     }
                 }
 
-                val curCategoryName = idNameMappings?.values?.toTypedArray()?.get(position - numPriorValues)
-                val curCycleDayCategoryID = idNameMappings?.keys?.toTypedArray()?.get(position - numPriorValues)
+                val curCategoryName = idNamePairs[position - numPriorValues].second
+                val curCycleDayCategoryID = idNamePairs[position - numPriorValues].first
 
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
@@ -126,12 +135,7 @@ class TrainingCycleDayAdapter1(
     }
 
     override fun getItemViewType(position: Int): Int {
-//        return if (viewType == LAYOUT_CYCLE_DAY) {
-//            LAYOUT_CYCLE_DAY
-//        } else {
-//            LAYOUT_CYCLE_DAY_CAT
-//        }
-        return if (items[position] == LAYOUT_CYCLE_DAY) {
+        return if (items[position].first == LAYOUT_CYCLE_DAY) {
             LAYOUT_CYCLE_DAY
         } else {
             LAYOUT_CYCLE_DAY_CAT
