@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.CycleDayCategoryCombo
@@ -28,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+import java.util.*
 
 class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle), KodeinAware {
 
@@ -73,11 +73,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
 
-//        val cycleDayAdapter = TrainingCycleDayAdapter(
-//            listOf(),
-//            fun(category: Category) { this.category = category },
-//            this
-//        )
         val cycleDayAdapter1 = TrainingCycleDayAdapter1(
             arrayListOf(),
             listOf(),
@@ -88,86 +83,199 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingCycleDays.adapter = cycleDayAdapter1
-//        recyclerViewTrainingCycleDays.adapter = concatAdapter
 
-        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
-            if (cycleDays.isEmpty()) return@observe
+        cycleDayCategoryViewModel.getCycleDayAndCycleDayCategoriesOfCycle(cycleID)
+            .observe(viewLifecycleOwner) {
+                if (it.isEmpty()) return@observe
 
-            for (i in cycleDays.indices) {
-                if (cycleDayAdapter1.items.size - combos.size <= i) {
-                    cycleDayAdapter1.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
-                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
-                    Log.d(logTag, "items.add: 0")
-                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.items.size + i)
+                val cycleDays: ArrayList<CycleDay> = arrayListOf()
+                val cycleDayCatCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
+
+                cycleDayAdapter1.items = arrayListOf()
+
+                for (i in it) {
+                    val cycleDay = CycleDay(cycleID, i.cycle_day_name, i.cycle_day_number)
+                    cycleDay.cycleDayID = i.cycle_day_ID
+                    if (cycleDay !in cycleDays) {
+                        cycleDays.add(cycleDay)
+                    }
+
+                    if (i.category_name != null) {
+                        val cycleDayCat = CycleDayCategoryCombo(
+                            i.cycle_day_category_ID,
+                            i.category_name,
+                            i.cycle_day_ID
+                        )
+                        if (cycleDayCat !in cycleDayCatCombos) {
+                            cycleDayCatCombos.add(cycleDayCat)
+                        }
+                    }
                 }
-            }
-            items = cycleDayAdapter1.items
-            cycleDayAdapter1.cycleDays = cycleDays
-            cycleDayAdapter1.notifyDataSetChanged()
-            Log.d(logTag, "cycleDayAdapter1 data set changed")
 
-            for (cycleDay in cycleDays) {
-                cycleDayCategoryViewModel.getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDay.cycleDayID)
-                    .observe(viewLifecycleOwner) { cycleDayCatCombos ->
-                        if (cycleDayCatCombos.isNotEmpty()) {
-                            for (combo in cycleDayCatCombos) {
-                                if (combo !in combos) {
-                                    Loop@ for (i in 0 until cycleDayAdapter1.items.size) {
-                                        if (cycleDayAdapter1.items[i].second == combo.cycle_day_ID) {
-                                            var sameDayCatCount = 0
-                                            for (j in combos.indices) {
-                                                if (combos[j].cycle_day_ID == combo.cycle_day_ID) {
-                                                    sameDayCatCount++
-                                                }
-                                            }
-//                                            // If the item in this position is a category
-//                                            if (cycleDayAdapter1.items[i].first == LAYOUT_CYCLE_DAY_CAT) {
-//                                                // Ensure it is added to the correct position
-//                                            }
+                for (i in cycleDays.indices) {
+                    if (cycleDayAdapter1.items.size - combos.size <= i) {
+                        cycleDayAdapter1.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
+                    }
+                }
+                items = cycleDayAdapter1.items
+                cycleDayAdapter1.cycleDays = cycleDays
 
-                                            if (i + 1 >= cycleDayAdapter1.items.size) {
-                                                cycleDayAdapter1.items.add(
-                                                    Pair(
-                                                        LAYOUT_CYCLE_DAY_CAT,
-                                                        null
-                                                    )
-                                                )
-                                                cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
-                                            } else {
-                                                cycleDayAdapter1.items.add(
-                                                    i + sameDayCatCount + 1,
-                                                    Pair(LAYOUT_CYCLE_DAY_CAT, null)
-                                                )
-                                                cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
+
+                combos = arrayListOf()
+
+                for (cycleDay in cycleDays) {
+                    if (cycleDayCatCombos.isNotEmpty()) {
+                        for (combo in cycleDayCatCombos) {
+                            if (combo !in combos) {
+                                Loop@ for (i in 0 until cycleDayAdapter1.items.size) {
+                                    if (cycleDayAdapter1.items[i].second == combo.cycle_day_ID) {
+                                        var sameDayCatCount = 0
+                                        for (j in combos.indices) {
+                                            if (combos[j].cycle_day_ID == combo.cycle_day_ID) {
+                                                sameDayCatCount++
                                             }
-                                            combos.add(combo)
-                                            break@Loop
                                         }
+                                        if (i + 1 >= cycleDayAdapter1.items.size) {
+                                            cycleDayAdapter1.items.add(
+                                                Pair(
+                                                    LAYOUT_CYCLE_DAY_CAT,
+                                                    null
+                                                )
+                                            )
+                                            //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
+                                        } else {
+                                            cycleDayAdapter1.items.add(
+                                                i + sameDayCatCount + 1,
+                                                Pair(LAYOUT_CYCLE_DAY_CAT, null)
+                                            )
+                                            //cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
+                                        }
+                                        combos.add(combo)
+                                        break@Loop
                                     }
                                 }
                             }
-
-                            //items = cycleDayAdapter1.items
-                            cycleDayAdapter1.idNamePairs = arrayListOf()
-                            for (i in combos) {
-                                cycleDayAdapter1.idNamePairs.add(
-                                    Pair(
-                                        i.cycle_day_category_ID,
-                                        i.category_name
-                                    )
+                        }
+                        cycleDayAdapter1.idNamePairs = arrayListOf()
+                        for (i in combos) {
+                            cycleDayAdapter1.idNamePairs.add(
+                                Pair(
+                                    i.cycle_day_category_ID,
+                                    i.category_name
                                 )
-                            }
-
-                            //cycleDayAdapter1.notifyDataSetChanged()
-
-                            Log.d(
-                                logTag,
-                                "cda1 data set changed, idNamePairs size: ${cycleDayAdapter1.idNamePairs.size}"
                             )
                         }
+                        cycleDayAdapter1.notifyDataSetChanged()
                     }
             }
-        }
+
+//                for (i in cycleDays.indices) {
+//                    cycleDayAdapter1.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
+//
+//                    for (combo in cycleDayCatCombos) {
+//                        if (cycleDayAdapter1.items[x].second == combo.cycle_day_ID) {
+//                            } else {
+//                                cycleDayAdapter1.items.add(
+//                                    x + 1,
+//                                    Pair(LAYOUT_CYCLE_DAY_CAT, null)
+//                                )
+//                                //cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
+//                            }
+//                        }
+//                    }
+//                    //items = cycleDayAdapter1.items
+//                    cycleDayAdapter1.idNamePairs = arrayListOf()
+//                    for (i in combos) {
+//                        cycleDayAdapter1.idNamePairs.add(
+//                            Pair(
+//                                i.cycle_day_category_ID,
+//                                i.category_name
+//                            )
+//                        )
+//                    }
+//
+//                    Log.d(
+//                        logTag,
+//                        "cda1 data set changed, idNamePairs size: ${cycleDayAdapter1.idNamePairs.size}"
+//                    )
+//                }
+//                items = cycleDayAdapter1.items
+//                cycleDayAdapter1.cycleDays = cycleDays
+//                cycleDayAdapter1.notifyDataSetChanged()
+            }
+
+//        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
+//            if (cycleDays.isEmpty()) return@observe
+//
+//            for (i in cycleDays.indices) {
+//                if (cycleDayAdapter1.items.size - combos.size <= i) {
+//                    cycleDayAdapter1.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
+//                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
+//                    Log.d(logTag, "items.add: 0")
+//                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.items.size + i)
+//                }
+//            }
+//            items = cycleDayAdapter1.items
+//            cycleDayAdapter1.cycleDays = cycleDays
+//            cycleDayAdapter1.notifyDataSetChanged()
+//            Log.d(logTag, "cycleDayAdapter1 data set changed")
+//            for (cycleDay in cycleDays) {
+//                cycleDayCategoryViewModel.getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDay.cycleDayID)
+//                    .observe(viewLifecycleOwner) { cycleDayCatCombos ->
+//                        Log.d(logTag, "Started observing cycleDayID: ${cycleDay.cycleDayID}")
+//
+//                        if (cycleDayCatCombos.isNotEmpty()) {
+//                            for (combo in cycleDayCatCombos) {
+//                                if (combo !in combos) {
+//                                    Loop@ for (i in 0 until cycleDayAdapter1.items.size) {
+//                                        if (cycleDayAdapter1.items[i].second == combo.cycle_day_ID) {
+//                                            var sameDayCatCount = 0
+//                                            for (j in combos.indices) {
+//                                                if (combos[j].cycle_day_ID == combo.cycle_day_ID) {
+//                                                    sameDayCatCount++
+//                                                }
+//                                            }
+//                                            if (i + 1 >= cycleDayAdapter1.items.size) {
+//                                                cycleDayAdapter1.items.add(
+//                                                    Pair(
+//                                                        LAYOUT_CYCLE_DAY_CAT,
+//                                                        null
+//                                                    )
+//                                                )
+//                                                cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
+//                                            } else {
+//                                                cycleDayAdapter1.items.add(
+//                                                    i + sameDayCatCount + 1,
+//                                                    Pair(LAYOUT_CYCLE_DAY_CAT, null)
+//                                                )
+//                                                cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
+//                                            }
+//                                            combos.add(combo)
+//                                            break@Loop
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            //items = cycleDayAdapter1.items
+//                            cycleDayAdapter1.idNamePairs = arrayListOf()
+//                            for (i in combos) {
+//                                cycleDayAdapter1.idNamePairs.add(
+//                                    Pair(
+//                                        i.cycle_day_category_ID,
+//                                        i.category_name
+//                                    )
+//                                )
+//                            }
+//                            //cycleDayAdapter1.notifyDataSetChanged()
+//                            Log.d(
+//                                logTag,
+//                                "cda1 data set changed, idNamePairs size: ${cycleDayAdapter1.idNamePairs.size}"
+//                            )
+//                        }
+//                        Log.d(logTag, "Finished observing cycleDayID: ${cycleDay.cycleDayID}")
+//                    }
+//            }
+//        }
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(

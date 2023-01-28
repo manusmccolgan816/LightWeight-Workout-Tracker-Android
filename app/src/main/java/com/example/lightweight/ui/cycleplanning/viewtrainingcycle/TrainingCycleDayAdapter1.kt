@@ -22,7 +22,6 @@ class TrainingCycleDayAdapter1(
     var items: ArrayList<Pair<Int, Int?>>,
     var cycleDays: List<CycleDay>?,
     val setCategory: (Category) -> Unit,
-    //var idNameMappings: Map<Int?, String>?,
     var idNamePairs: ArrayList<Pair<Int?, String>>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
@@ -143,7 +142,6 @@ class TrainingCycleDayAdapter1(
     }
 
     override fun getItemCount(): Int {
-        // TODO Ensure idNameMappings is returned when appropriate
         //return cycleDays?.size!!
         return items.size
     }
