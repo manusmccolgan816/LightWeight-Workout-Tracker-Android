@@ -71,7 +71,7 @@ class TrainingCycleDayAdapter(
 
                 var numPriorValues = 0
                 for (i in 0..position) {
-                    if (items[i].first == LAYOUT_CYCLE_DAY_CAT) {
+                    if (items[i].first != LAYOUT_CYCLE_DAY) {
                         numPriorValues++
                     }
                 }
@@ -117,7 +117,7 @@ class TrainingCycleDayAdapter(
 
                 var numPriorValues = 0
                 for (i in 0..position) {
-                    if (items[i].first == LAYOUT_CYCLE_DAY) {
+                    if (items[i].first != LAYOUT_CYCLE_DAY_CAT) {
                         numPriorValues++
                     }
                 }
@@ -142,7 +142,6 @@ class TrainingCycleDayAdapter(
     }
 
     override fun getItemCount(): Int {
-        //return cycleDays?.size!!
         return items.size
     }
 
