@@ -24,6 +24,9 @@ data class CycleDayExercise(
     @ColumnInfo(name = "cycle_day_ID")
     val cycleDayID: Int?,
 
+    @ColumnInfo(name = "cycle_day_category_ID")
+    val cycleDayCategoryID: Int?,
+
     @ColumnInfo(name = "exercise_ID")
     val exerciseID: Int?,
 

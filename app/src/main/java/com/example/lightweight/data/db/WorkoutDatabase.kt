@@ -19,7 +19,7 @@ import com.example.lightweight.data.db.entities.*
         CycleDayCategory::class,
         CycleDayExercise::class
     ],
-    version = 8,
+    version = 10,
 )
 abstract class WorkoutDatabase : RoomDatabase() {
 

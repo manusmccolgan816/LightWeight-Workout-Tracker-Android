@@ -47,7 +47,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
     private val args: ViewTrainingCycleFragmentArgs by navArgs()
 
     private var cycleID: Int? = null
-    private lateinit var category: Category
 
     private var items = arrayListOf<Pair<Int, Int?>>()
     private var combos = arrayListOf<CycleDayCategoryCombo>()
@@ -76,7 +75,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         val cycleDayAdapter = TrainingCycleDayAdapter(
             arrayListOf(),
             listOf(),
-            fun(category: Category) { this.category = category },
             arrayListOf(),
             this
         )

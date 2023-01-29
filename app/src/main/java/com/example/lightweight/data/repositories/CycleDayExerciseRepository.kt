@@ -12,4 +12,7 @@ class CycleDayExerciseRepository(private val db: WorkoutDatabase) {
         db.getCycleDayExerciseDao().delete(cycleDayExercise)
 
     fun getAllCycleDayExercises() = db.getCycleDayExerciseDao().getAllCycleDayExercises()
+
+    fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?) =
+        db.getCycleDayExerciseDao().getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID)
 }

@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
-import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.data.db.entities.CycleDay
-import com.example.lightweight.data.db.entities.CycleDayCategory
+import com.example.lightweight.data.db.entities.*
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
+import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -21,7 +21,6 @@ import org.kodein.di.generic.instance
 class TrainingCycleDayAdapter(
     var items: ArrayList<Pair<Int, Int?>>,
     var cycleDays: List<CycleDay>,
-    val setCategory: (Category) -> Unit,
     var idNamePairs: ArrayList<Pair<Int?, String>>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
@@ -35,8 +34,13 @@ class TrainingCycleDayAdapter(
 
     override val kodein by kodein(fragment.requireContext())
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
+    private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
+
     private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by fragment.viewModels {
         cycleDayCategoryFactory
+    }
+    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by fragment.viewModels {
+        cycleDayExerciseFactory
     }
 
     private lateinit var parent: ViewGroup
@@ -99,7 +103,6 @@ class TrainingCycleDayAdapter(
                                     )
                                 cycleDayCategoryViewModel.insert(cycleDayCategory)
                                 Log.d(logTag, "Inserting cycleDayCategory")
-                                setCategory(category)
 
                                 numCycleDaysObs.removeObservers(fragment.viewLifecycleOwner)
                             }
@@ -129,6 +132,50 @@ class TrainingCycleDayAdapter(
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
 
                 textViewTrainingCycleDayCategory.text = curCategoryName
+
+                textViewTrainingCycleDayCategory.setOnClickListener {
+                    val categoryIDObs = cycleDayCategoryViewModel.getCategoryIDOfCycleDayCategoryID(
+                        curCycleDayCategoryID
+                    )
+                    // Observe to get the category ID
+                    categoryIDObs.observe(fragment.viewLifecycleOwner) { categoryID ->
+                        val dialog = AddTrainingCycleDayExerciseDialogFragment(
+                            categoryID,
+                            fun(exercise: Exercise) {
+                                val numExerciseObs =
+                                    cycleDayExerciseViewModel.getNumCycleDayExercisesOfCycleDayCategory(
+                                        curCycleDayCategoryID
+                                    )
+                                numExerciseObs.observe(fragment.viewLifecycleOwner) { numExercises ->
+                                    val cycleDayIDObs =
+                                        cycleDayCategoryViewModel.getCycleDayIDOfCycleDayCategoryID(
+                                            curCycleDayCategoryID
+                                        )
+                                    cycleDayIDObs.observe(fragment.viewLifecycleOwner) { cycleDayID ->
+                                        val cycleDayExercise = CycleDayExercise(
+                                            cycleDayID,
+                                            curCycleDayCategoryID,
+                                            exercise.exerciseID,
+                                            numExercises + 1
+                                        )
+
+                                        cycleDayExerciseViewModel.insert(cycleDayExercise)
+                                        Log.d(logTag, "Inserting cycleDayExercise")
+
+                                        cycleDayIDObs.removeObservers(fragment.viewLifecycleOwner)
+                                    }
+
+                                    numExerciseObs.removeObservers(fragment.viewLifecycleOwner)
+                                }
+                            }
+                        )
+                        dialog.show(
+                            fragment.requireActivity().supportFragmentManager,
+                            "AddTrainingCycleDayExercise"
+                        )
+                        categoryIDObs.removeObservers(fragment.viewLifecycleOwner)
+                    }
+                }
             }
         }
     }

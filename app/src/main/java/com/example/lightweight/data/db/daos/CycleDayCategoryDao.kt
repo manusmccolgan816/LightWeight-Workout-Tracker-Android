@@ -51,6 +51,12 @@ interface CycleDayCategoryDao {
             "ORDER BY cycle_day_number, cycle_day_category_number")
     fun getCycleDayAndCycleDayCategoriesOfCycle(cycleID: Int?): LiveData<List<CycleDayCycleDayCatCombo>>
 
+    @Query("SELECT category_ID FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int?>
+
+    @Query("SELECT cycle_day_ID FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    fun getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int>
+
     @Query("SELECT COUNT(cycle_day_category_number) FROM CYCLE_DAY_CATEGORY WHERE cycle_day_ID = :cycleDayID")
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int>
 }

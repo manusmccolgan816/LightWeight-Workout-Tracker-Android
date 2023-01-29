@@ -15,4 +15,9 @@ interface CycleDayExerciseDao {
 
     @Query("SELECT * FROM CYCLE_DAY_EXERCISE ORDER BY cycle_day_exercise_number")
     fun getAllCycleDayExercises(): LiveData<List<CycleDayExercise>>
+
+    @Query("SELECT COUNT(cycle_day_exercise_number)" +
+            "FROM CYCLE_DAY_EXERCISE " +
+            "WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?): LiveData<Int>
 }

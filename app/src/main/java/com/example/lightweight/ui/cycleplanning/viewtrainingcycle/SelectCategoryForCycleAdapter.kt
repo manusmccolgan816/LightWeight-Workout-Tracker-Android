@@ -22,7 +22,7 @@ class SelectCategoryForCycleAdapter(
         viewType: Int
     ): SelectCategoryForCycleViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_category_for_cycle, parent, false)
         this.parent = parent
         return SelectCategoryForCycleViewHolder(view)
     }
