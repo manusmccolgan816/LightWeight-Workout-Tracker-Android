@@ -21,13 +21,15 @@ import org.kodein.di.generic.instance
 class TrainingCycleDayAdapter(
     var items: ArrayList<Pair<Int, Int?>>,
     var cycleDays: List<CycleDay>,
-    var idNamePairs: ArrayList<Pair<Int?, String>>,
+    var idNamePairsCategory: ArrayList<Pair<Int?, String>>,
+    var idNamePairsExercise: ArrayList<Pair<Int?, String>>,
     private val fragment: Fragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
 
     companion object {
         const val LAYOUT_CYCLE_DAY = 0
         const val LAYOUT_CYCLE_DAY_CAT = 1
+        const val LAYOUT_CYCLE_DAY_EX = 2
     }
 
     private val logTag = "TrainingCycleDayAdapter"
@@ -49,6 +51,8 @@ class TrainingCycleDayAdapter(
 
     private lateinit var textViewTrainingCycleDayCategory: TextView
 
+    private lateinit var textViewTrainingCycleDayExercise: TextView
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.parent = parent
 
@@ -58,10 +62,15 @@ class TrainingCycleDayAdapter(
                     .inflate(R.layout.item_training_cycle_day_name, parent, false)
                 TrainingCycleDayViewHolder(view)
             }
-            else -> {
+            LAYOUT_CYCLE_DAY_CAT -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_training_cycle_day_category, parent, false)
                 TrainingCycleDayCategoryViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_training_cycle_day_exercise, parent, false)
+                TrainingCycleDayExerciseViewHolder(view)
             }
         }
 
@@ -116,7 +125,6 @@ class TrainingCycleDayAdapter(
             }
             LAYOUT_CYCLE_DAY_CAT -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayCategory")
-                Log.d(logTag, items[position].first.toString())
 
                 var numPriorValues = 0
                 for (i in 0..position) {
@@ -125,8 +133,8 @@ class TrainingCycleDayAdapter(
                     }
                 }
 
-                val curCategoryName = idNamePairs[position - numPriorValues].second
-                val curCycleDayCategoryID = idNamePairs[position - numPriorValues].first
+                val curCategoryName = idNamePairsCategory[position - numPriorValues].second
+                val curCycleDayCategoryID = idNamePairsCategory[position - numPriorValues].first
 
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
@@ -146,11 +154,13 @@ class TrainingCycleDayAdapter(
                                     cycleDayExerciseViewModel.getNumCycleDayExercisesOfCycleDayCategory(
                                         curCycleDayCategoryID
                                     )
+                                // Observe to get the number of CycleDayExercises in the CycleDayCategory
                                 numExerciseObs.observe(fragment.viewLifecycleOwner) { numExercises ->
                                     val cycleDayIDObs =
                                         cycleDayCategoryViewModel.getCycleDayIDOfCycleDayCategoryID(
                                             curCycleDayCategoryID
                                         )
+                                    // Observe to get the cycleDayID
                                     cycleDayIDObs.observe(fragment.viewLifecycleOwner) { cycleDayID ->
                                         val cycleDayExercise = CycleDayExercise(
                                             cycleDayID,
@@ -177,14 +187,31 @@ class TrainingCycleDayAdapter(
                     }
                 }
             }
+            LAYOUT_CYCLE_DAY_EX -> {
+                Log.d(logTag, "onBindViewHolder layoutCycleDayExercise")
+
+                var numPriorValues = 0
+                for (i in 0..position) {
+                    if (items[i].first != LAYOUT_CYCLE_DAY_EX) {
+                        numPriorValues++
+                    }
+                }
+
+                val curExerciseName = idNamePairsExercise[position - numPriorValues].second
+
+                textViewTrainingCycleDayExercise =
+                    holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)
+
+                textViewTrainingCycleDayExercise.text = curExerciseName
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position].first == LAYOUT_CYCLE_DAY) {
-            LAYOUT_CYCLE_DAY
-        } else {
-            LAYOUT_CYCLE_DAY_CAT
+        return when (items[position].first) {
+            LAYOUT_CYCLE_DAY -> LAYOUT_CYCLE_DAY
+            LAYOUT_CYCLE_DAY_CAT -> LAYOUT_CYCLE_DAY_CAT
+            else -> LAYOUT_CYCLE_DAY_EX
         }
     }
 
@@ -195,4 +222,6 @@ class TrainingCycleDayAdapter(
     inner class TrainingCycleDayViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class TrainingCycleDayCategoryViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    inner class TrainingCycleDayExerciseViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

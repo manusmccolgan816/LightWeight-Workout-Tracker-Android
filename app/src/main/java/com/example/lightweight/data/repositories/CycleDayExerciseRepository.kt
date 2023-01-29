@@ -13,6 +13,9 @@ class CycleDayExerciseRepository(private val db: WorkoutDatabase) {
 
     fun getAllCycleDayExercises() = db.getCycleDayExerciseDao().getAllCycleDayExercises()
 
+    fun getCycleDataOfCycleID(cycleID: Int?) =
+        db.getCycleDayExerciseDao().getCycleDataOfCycleID(cycleID)
+
     fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?) =
         db.getCycleDayExerciseDao().getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID)
 }

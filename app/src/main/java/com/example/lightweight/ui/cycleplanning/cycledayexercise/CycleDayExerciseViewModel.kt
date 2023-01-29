@@ -19,6 +19,8 @@ class CycleDayExerciseViewModel(private val repository: CycleDayExerciseReposito
 
     fun getAllCycleDayExercises() = repository.getAllCycleDayExercises()
 
+    fun getCycleDataOfCycleID(cycleID: Int?) = repository.getCycleDataOfCycleID(cycleID)
+
     fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?) =
         repository.getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID)
 }
