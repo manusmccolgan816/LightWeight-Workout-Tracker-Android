@@ -2,6 +2,7 @@ package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.lightweight.IdNamePair
 import com.example.lightweight.data.db.entities.ExerciseInstance
 
 @Dao
@@ -9,6 +10,11 @@ interface ExerciseInstanceDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(exerciseInstance: ExerciseInstance)
+
+    @Query("UPDATE EXERCISE_INSTANCE " +
+            "SET exercise_instance_number = :eiNumber " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int)
 
     @Delete
     suspend fun delete(exerciseInstance: ExerciseInstance)
@@ -31,16 +37,15 @@ interface ExerciseInstanceDao {
     )
     fun getExerciseInstancesOfWorkout(workoutID: Int?): LiveData<List<ExerciseInstance>>
 
-    @MapInfo(keyColumn = "exercise_instance_ID", valueColumn = "exercise_name")
     @Query(
-        "SELECT EI.exercise_instance_ID, E.exercise_name " +
+        "SELECT EI.exercise_instance_ID AS id, E.exercise_name AS name " +
                 "FROM EXERCISE_INSTANCE AS EI " +
                 "INNER JOIN EXERCISE AS E " +
                 "ON EI.exercise_ID = E.exercise_ID " +
                 "WHERE workout_ID = :workoutID " +
                 "ORDER BY exercise_instance_number"
     )
-    fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<Map<Int?, String>>
+    fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<List<IdNamePair>>
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE workout_ID = :workoutID AND exercise_ID = :exerciseID")
     fun getExerciseInstance(workoutID: Int?, exerciseID: Int?): ExerciseInstance?

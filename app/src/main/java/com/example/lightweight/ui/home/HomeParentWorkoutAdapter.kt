@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
@@ -20,7 +21,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class HomeParentWorkoutAdapter(
-    var idNameMappings: Map<Int?, String>,
+    var idNamePairs: List<IdNamePair>,
     private val fragment: HomeFragment
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
 
@@ -49,8 +50,8 @@ class HomeParentWorkoutAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeParentWorkoutViewHolder, position: Int) {
-        val curName = idNameMappings.values.toTypedArray()[position]
-        val curID = idNameMappings.keys.toTypedArray()[position]
+        val curID = idNamePairs[position].id
+        val curName = idNamePairs[position].name
         Log.d(logTag, "onBindViewHolder at position $position")
 
         textViewExerciseName = holder.itemView.findViewById(R.id.text_view_exercise_name)
@@ -94,7 +95,7 @@ class HomeParentWorkoutAdapter(
     }
 
     override fun getItemCount(): Int {
-        return idNameMappings.size
+        return idNamePairs.size
     }
 
     inner class HomeParentWorkoutViewHolder(setView: View) : RecyclerView.ViewHolder(setView)

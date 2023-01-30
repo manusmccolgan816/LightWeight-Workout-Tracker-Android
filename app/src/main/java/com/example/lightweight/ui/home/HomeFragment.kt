@@ -74,28 +74,42 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
         textViewSelectedDate.text = selectedDate.format(formatter)
 
-        adapter = HomeParentWorkoutAdapter(mapOf(), this)
+        adapter = HomeParentWorkoutAdapter(listOf(), this)
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
 
-//        val itemTouchHelper = ItemTouchHelper(object :
-//            ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                source: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                val sourcePos = source.absoluteAdapterPosition
-//                val targetPos = target.absoluteAdapterPosition
-//
-//                // TODO Swap items and notify item moved
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                TODO("Not yet implemented")
-//            }
-//        }
+        val itemTouchHelper = ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                source: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val sourcePos = source.absoluteAdapterPosition
+                val targetPos = target.absoluteAdapterPosition
+
+                // Swap the positions of the two exercise instances
+                Collections.swap(adapter.idNamePairs, sourcePos, targetPos)
+                adapter.notifyItemMoved(sourcePos, targetPos)
+                Log.d(logTag, "sourcePos: $sourcePos, targetPos: $targetPos")
+
+                // Update the exercise instance numbers of the two exercise instances to reflect
+                // the swap
+                val sourceID = adapter.idNamePairs[sourcePos].id
+                val targetID = adapter.idNamePairs[targetPos].id
+//                exerciseInstanceViewModel.updateExerciseInstanceNumber(sourceID, targetPos + 1)
+//                exerciseInstanceViewModel.updateExerciseInstanceNumber(targetID, sourcePos + 1)
+
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recyclerViewExerciseInstances)
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
@@ -104,7 +118,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             ref?.runOnUiThread {
                 exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
-                        adapter.idNameMappings = it
+                        adapter.idNamePairs = it
                         adapter.notifyDataSetChanged()
                         Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
