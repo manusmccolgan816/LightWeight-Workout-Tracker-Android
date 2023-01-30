@@ -82,7 +82,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
         val cycleDayAdapter = TrainingCycleDayAdapter(
             arrayListOf(),
-            listOf(),
+            arrayListOf(),
             arrayListOf(),
             arrayListOf(),
             this
@@ -99,6 +99,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
 
             cycleDayAdapter.items = arrayListOf()
+            cycleDayAdapter.cycleDays = arrayListOf()
+            cycleDayAdapter.idNamePairsCategory = arrayListOf()
+            cycleDayAdapter.idNamePairsExercise = arrayListOf()
 
             for (i in it) {
                 val cycleDay = CycleDay(cycleID, i.cycle_day_name, i.cycle_day_number)
@@ -130,186 +133,34 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 }
             }
 
-            for (i in cycleDays.indices) {
-                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
-//                    if (cycleDayAdapter.items.size - combos.size <= i) {
-//                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
-//                    }
-            }
-            items = cycleDayAdapter.items
-            cycleDayAdapter.cycleDays = cycleDays
-
-            cycleDayCatCombos = arrayListOf()
-            cycleDayCatExCombos = arrayListOf()
-
             for (cycleDay in cycleDays) {
+                // Add the cycle day to the end of items
+                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
+                cycleDayAdapter.cycleDays.add(cycleDay)
+
                 for (catCombo in catCombos) {
-                    if (catCombo !in cycleDayCatCombos) {
-                        Loop@ for (i in 0 until cycleDayAdapter.items.size) {
-                            if (cycleDayAdapter.items[i].second == catCombo.cycle_day_ID) {
-                                var sameDayCatCount = 0
-                                for (j in cycleDayCatCombos.indices) {
-                                    if (cycleDayCatCombos[j].cycle_day_ID == catCombo.cycle_day_ID) {
-                                        sameDayCatCount++
-                                    }
-                                }
-                                if (i + 1 >= cycleDayAdapter.items.size) {
-                                    cycleDayAdapter.items.add(
-                                        Pair(
-                                            LAYOUT_CYCLE_DAY_CAT,
-                                            null
-                                        )
-                                    )
-                                    //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
-                                } else {
-                                    cycleDayAdapter.items.add(
-                                        i + sameDayCatCount + 1,
-                                        Pair(LAYOUT_CYCLE_DAY_CAT, null)
-                                    )
-                                    //cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
-                                }
-                                cycleDayCatCombos.add(catCombo)
+                    if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
+                        // Add the cycle day category to the end of items
+                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_CAT, null))
+                        cycleDayAdapter.idNamePairsCategory.add(
+                            Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
+                        )
 
-                                for (exCombo in exCombos) {
-                                    if (exCombo !in cycleDayCatExCombos) {
-                                        if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
-                                            var sameCatExCount = 0
-                                            for (j in cycleDayCatExCombos.indices) {
-                                                if (cycleDayCatExCombos[j].cycle_day_category_ID ==
-                                                    exCombo.cycle_day_category_ID) {
-                                                    sameCatExCount++
-                                                }
-                                            }
-                                            if (i + 1 >= cycleDayAdapter.items.size) {
-                                                cycleDayAdapter.items.add(
-                                                    Pair(LAYOUT_CYCLE_DAY_EX, null)
-                                                )
-                                            } else {
-                                                cycleDayAdapter.items.add(
-                                                    i + sameDayCatCount + sameCatExCount + 1,
-                                                    Pair(LAYOUT_CYCLE_DAY_EX, null)
-                                                )
-                                            }
-
-                                            Log.d(
-                                                logTag,
-                                                "Exercise added: ${exCombo.exercise_name}"
-                                            )
-
-                                            cycleDayCatExCombos.add(exCombo)
-                                        }
-                                    }
-                                }
-
-                                break@Loop
+                        for (exCombo in exCombos) {
+                            // Add the cycle day exercise to the end of items
+                            if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
+                                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_EX, null))
+                                cycleDayAdapter.idNamePairsExercise.add(
+                                    Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
+                                )
                             }
                         }
                     }
                 }
-                cycleDayAdapter.idNamePairsCategory = arrayListOf()
-                for (i in cycleDayCatCombos) {
-                    cycleDayAdapter.idNamePairsCategory.add(
-                        Pair(i.cycle_day_category_ID, i.category_name)
-                    )
-                }
-
-                cycleDayAdapter.idNamePairsExercise = arrayListOf()
-                for (i in cycleDayCatExCombos) {
-                    cycleDayAdapter.idNamePairsExercise.add(
-                        Pair(i.cycle_day_exercise_ID, i.exercise_name)
-                    )
-                    Log.d(
-                        logTag,
-                        "idNamePairsExercise added: ${i.cycle_day_exercise_ID}, ${i.exercise_name}"
-                    )
-                }
-                cycleDayAdapter.notifyDataSetChanged()
             }
-        }
 
-//        cycleDayCategoryViewModel.getCycleDayAndCycleDayCategoriesOfCycle(cycleID)
-//            .observe(viewLifecycleOwner) {
-//                if (it.isEmpty()) return@observe
-//
-//                val cycleDays: ArrayList<CycleDay> = arrayListOf()
-//                val cycleDayCatCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
-//
-//                cycleDayAdapter.items = arrayListOf()
-//
-//                for (i in it) {
-//                    val cycleDay = CycleDay(cycleID, i.cycle_day_name, i.cycle_day_number)
-//                    cycleDay.cycleDayID = i.cycle_day_ID
-//                    if (cycleDay !in cycleDays) {
-//                        cycleDays.add(cycleDay)
-//                    }
-//
-//                    if (i.category_name != null) {
-//                        val cycleDayCat = CycleDayCategoryCombo(
-//                            i.cycle_day_category_ID,
-//                            i.category_name,
-//                            i.cycle_day_ID
-//                        )
-//                        if (cycleDayCat !in cycleDayCatCombos) {
-//                            cycleDayCatCombos.add(cycleDayCat)
-//                        }
-//                    }
-//                }
-//
-//                for (i in cycleDays.indices) {
-//                    cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
-////                    if (cycleDayAdapter.items.size - combos.size <= i) {
-////                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDays[i].cycleDayID))
-////                    }
-//                }
-//                items = cycleDayAdapter.items
-//                cycleDayAdapter.cycleDays = cycleDays
-//
-//                this.cycleDayCatCombos = arrayListOf()
-//
-//                for (cycleDay in cycleDays) {
-//                    for (combo in cycleDayCatCombos) {
-//                        if (combo !in this.cycleDayCatCombos) {
-//                            Loop@ for (i in 0 until cycleDayAdapter.items.size) {
-//                                if (cycleDayAdapter.items[i].second == combo.cycle_day_ID) {
-//                                    var sameDayCatCount = 0
-//                                    for (j in this.cycleDayCatCombos.indices) {
-//                                        if (this.cycleDayCatCombos[j].cycle_day_ID == combo.cycle_day_ID) {
-//                                            sameDayCatCount++
-//                                        }
-//                                    }
-//                                    if (i + 1 >= cycleDayAdapter.items.size) {
-//                                        cycleDayAdapter.items.add(
-//                                            Pair(
-//                                                LAYOUT_CYCLE_DAY_CAT,
-//                                                null
-//                                            )
-//                                        )
-//                                        //cycleDayAdapter1.notifyItemInserted(cycleDayAdapter1.itemCount - 1)
-//                                    } else {
-//                                        cycleDayAdapter.items.add(
-//                                            i + sameDayCatCount + 1,
-//                                            Pair(LAYOUT_CYCLE_DAY_CAT, null)
-//                                        )
-//                                        //cycleDayAdapter1.notifyItemInserted(i + sameDayCatCount + 1)
-//                                    }
-//                                    this.cycleDayCatCombos.add(combo)
-//                                    break@Loop
-//                                }
-//                            }
-//                        }
-//                    }
-//                    cycleDayAdapter.idNamePairsCategory = arrayListOf()
-//                    for (i in this.cycleDayCatCombos) {
-//                        cycleDayAdapter.idNamePairsCategory.add(
-//                            Pair(
-//                                i.cycle_day_category_ID,
-//                                i.category_name
-//                            )
-//                        )
-//                    }
-//                    cycleDayAdapter.notifyDataSetChanged()
-//                }
-//            }
+            cycleDayAdapter.notifyDataSetChanged()
+        }
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(

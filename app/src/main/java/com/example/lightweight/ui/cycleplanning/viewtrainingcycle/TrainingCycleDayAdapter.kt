@@ -20,7 +20,7 @@ import org.kodein.di.generic.instance
 
 class TrainingCycleDayAdapter(
     var items: ArrayList<Pair<Int, Int?>>,
-    var cycleDays: List<CycleDay>,
+    var cycleDays: ArrayList<CycleDay>,
     var idNamePairsCategory: ArrayList<Pair<Int?, String>>,
     var idNamePairsExercise: ArrayList<Pair<Int?, String>>,
     private val fragment: Fragment
