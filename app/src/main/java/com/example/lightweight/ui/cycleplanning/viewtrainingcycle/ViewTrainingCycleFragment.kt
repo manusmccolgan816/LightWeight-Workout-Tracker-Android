@@ -103,6 +103,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             cycleDayAdapter.idNamePairsCategory = arrayListOf()
             cycleDayAdapter.idNamePairsExercise = arrayListOf()
 
+            // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
+            // amended
             for (i in it) {
                 val cycleDay = CycleDay(cycleID, i.cycle_day_name, i.cycle_day_number)
                 cycleDay.cycleDayID = i.cycle_day_ID

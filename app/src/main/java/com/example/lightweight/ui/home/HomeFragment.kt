@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
@@ -25,6 +26,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
@@ -76,6 +78,24 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
+
+//        val itemTouchHelper = ItemTouchHelper(object :
+//            ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+//            override fun onMove(
+//                recyclerView: RecyclerView,
+//                source: RecyclerView.ViewHolder,
+//                target: RecyclerView.ViewHolder
+//            ): Boolean {
+//                val sourcePos = source.absoluteAdapterPosition
+//                val targetPos = target.absoluteAdapterPosition
+//
+//                // TODO Swap items and notify item moved
+//            }
+//
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                TODO("Not yet implemented")
+//            }
+//        }
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {

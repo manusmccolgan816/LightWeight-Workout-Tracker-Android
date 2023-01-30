@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -48,8 +49,10 @@ class TrainingCycleDayAdapter(
     private lateinit var parent: ViewGroup
 
     private lateinit var textViewTrainingCycleDayName: TextView
+    private lateinit var imageViewAddCategory: ImageView
 
     private lateinit var textViewTrainingCycleDayCategory: TextView
+    private lateinit var imageViewAddExercise: ImageView
 
     private lateinit var textViewTrainingCycleDayExercise: TextView
 
@@ -92,11 +95,12 @@ class TrainingCycleDayAdapter(
                 val curCycleDay = cycleDays[position - numPriorValues]
 
                 textViewTrainingCycleDayName =
-                    holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)!!
+                    holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)
+                imageViewAddCategory = holder.itemView.findViewById(R.id.image_view_add_category)
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
 
-                textViewTrainingCycleDayName.setOnClickListener {
+                imageViewAddCategory.setOnClickListener {
                     val dialog = AddTrainingCycleDayCategoryDialogFragment(
                         fun(category: Category) {
                             val numCycleDaysObs =
@@ -138,10 +142,11 @@ class TrainingCycleDayAdapter(
 
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
+                imageViewAddExercise = holder.itemView.findViewById(R.id.image_view_add_exercise)
 
                 textViewTrainingCycleDayCategory.text = curCategoryName
 
-                textViewTrainingCycleDayCategory.setOnClickListener {
+                imageViewAddExercise.setOnClickListener {
                     val categoryIDObs = cycleDayCategoryViewModel.getCategoryIDOfCycleDayCategoryID(
                         curCycleDayCategoryID
                     )
