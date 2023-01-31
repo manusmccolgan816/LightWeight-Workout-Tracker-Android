@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.category
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
