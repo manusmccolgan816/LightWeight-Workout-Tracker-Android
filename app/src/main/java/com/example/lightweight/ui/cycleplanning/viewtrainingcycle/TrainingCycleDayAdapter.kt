@@ -50,11 +50,14 @@ class TrainingCycleDayAdapter(
 
     private lateinit var textViewTrainingCycleDayName: TextView
     private lateinit var imageViewAddCategory: ImageView
+    private lateinit var imageViewDeleteDay: ImageView
 
     private lateinit var textViewTrainingCycleDayCategory: TextView
     private lateinit var imageViewAddExercise: ImageView
+    private lateinit var imageViewDeleteCategory: ImageView
 
     private lateinit var textViewTrainingCycleDayExercise: TextView
+    private lateinit var imageViewDeleteExercise: ImageView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.parent = parent
@@ -97,6 +100,7 @@ class TrainingCycleDayAdapter(
                 textViewTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)
                 imageViewAddCategory = holder.itemView.findViewById(R.id.image_view_add_category)
+                imageViewDeleteDay = holder.itemView.findViewById(R.id.image_view_delete_day)
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
 
@@ -143,6 +147,7 @@ class TrainingCycleDayAdapter(
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
                 imageViewAddExercise = holder.itemView.findViewById(R.id.image_view_add_exercise)
+                imageViewDeleteCategory = holder.itemView.findViewById(R.id.image_view_delete_category)
 
                 textViewTrainingCycleDayCategory.text = curCategoryName
 
@@ -206,6 +211,7 @@ class TrainingCycleDayAdapter(
 
                 textViewTrainingCycleDayExercise =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)
+                imageViewDeleteExercise = holder.itemView.findViewById(R.id.image_view_delete_exercise)
 
                 textViewTrainingCycleDayExercise.text = curExerciseName
             }
