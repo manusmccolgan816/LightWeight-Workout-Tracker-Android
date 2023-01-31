@@ -55,8 +55,14 @@
     <string name="string_new_training_cycle">New Training Cycle</string>
     <string name="string_edit_training_cycle">Edit Training Cycle</string>
     <string name="string_delete_training_cycle">Delete Training Cycle</string>
-    <string name="string_delete_training_cycle_desc">Are you sure you want to delete this Training Cycle?</string>
+    <string name="string_delete_training_cycle_desc">Are you sure you want to delete this training cycle?</string>
     <string name="string_add_training_cycle_day">Add training cycle day</string>
     <string name="string_name_eg_leg_day">Name (e.g. Leg Day)</string>
     <string name="string_new_training_day">New Training Day</string>
+    <string name="string_delete_training_day">Delete Training Day</string>
+    <string name="string_delete_training_cycle_day_desc">Are you sure you want to delete this training cycle day?</string>
+    <string name="string_remove_category">Remove Category</string>
+    <string name="string_delete_training_cycle_day_category_desc">Are you sure you want to remove this category and its exercises from the training cycle day?</string>
+    <string name="string_remove_exercise">Remove Exercise</string>
+    <string name="string_delete_training_cycle_day_exercise_desc">Are you sure you want to remove this exercise from the training cycle day?</string>
 </resources>
