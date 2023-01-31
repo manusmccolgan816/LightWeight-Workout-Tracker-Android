@@ -18,6 +18,11 @@ class ExerciseInstanceViewModel(private val repository: ExerciseInstanceReposito
             repository.updateExerciseInstanceNumber(exerciseInstanceID, eiNumber)
         }
 
+    fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID, eiNumber)
+        }
+
     fun delete(exerciseInstance: ExerciseInstance) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(exerciseInstance)
     }

@@ -216,8 +216,15 @@ class TrainingSetItemAdapter(
                                 val delExInstanceJob =
                                     exerciseInstanceViewModel.delete(curExerciseInstance)
 
+                                val updateExInstanceNumbersJob =
+                                    exerciseInstanceViewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
+                                        curExerciseInstance.workoutID,
+                                        curExerciseInstance.exerciseInstanceNumber
+                                    )
+
                                 // Wait until the deletion is completed
                                 delExInstanceJob.join()
+                                updateExInstanceNumbersJob.join()
 
                                 fragment.lifecycleScope.launch(Dispatchers.IO) {
                                     val workout = workoutViewModel.getWorkoutOfDate(selectedDate)

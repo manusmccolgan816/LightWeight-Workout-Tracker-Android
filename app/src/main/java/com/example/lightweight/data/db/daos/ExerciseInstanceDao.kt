@@ -16,6 +16,15 @@ interface ExerciseInstanceDao {
             "WHERE exercise_instance_ID = :exerciseInstanceID")
     suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int)
 
+    @Query("UPDATE EXERCISE_INSTANCE " +
+            "SET exercise_instance_number = exercise_instance_number - 1 " +
+            "WHERE (SELECT W.workout_ID " +
+            "       FROM EXERCISE_INSTANCE AS EI " +
+            "       INNER JOIN WORKOUT AS W " +
+            "       ON EI.workout_ID = W.workout_ID) = :workoutID " +
+            "AND exercise_instance_number > :eiNumber")
+    suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int)
+
     @Delete
     suspend fun delete(exerciseInstance: ExerciseInstance)
 

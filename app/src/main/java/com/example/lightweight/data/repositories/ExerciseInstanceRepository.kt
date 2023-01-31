@@ -11,6 +11,10 @@ class ExerciseInstanceRepository(private val db: WorkoutDatabase) {
     suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int) =
         db.getExerciseInstanceDao().updateExerciseInstanceNumber(exerciseInstanceID, eiNumber)
 
+    suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int) =
+        db.getExerciseInstanceDao()
+            .decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID, eiNumber)
+
     suspend fun delete(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
         .delete(exerciseInstance)
 
