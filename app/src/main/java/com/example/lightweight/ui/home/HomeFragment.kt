@@ -49,6 +49,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     var selectedDate: LocalDate = LocalDate.now()
     private var workoutID: Int? = null
 
+    // This stores the exercise instance IDs and a Boolean indicating whether the exercise instance
+    // has been moved. This ensures that only the changed exercise instance numbers are updated in
+    // onPause().
+    private var exerciseInstanceIDisMoved: ArrayList<Pair<Int?, Boolean>> = arrayListOf()
+
     private lateinit var textViewSelectedDate: TextView
     private lateinit var recyclerViewExerciseInstances: RecyclerView
     private lateinit var fabCalendar: FloatingActionButton
@@ -92,15 +97,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
                 // Swap the positions of the two exercise instances
                 Collections.swap(adapter.idNamePairs, sourcePos, targetPos)
-                adapter.notifyItemMoved(sourcePos, targetPos)
-                Log.d(logTag, "sourcePos: $sourcePos, targetPos: $targetPos")
+                Collections.swap(exerciseInstanceIDisMoved, sourcePos, targetPos)
 
-                // Update the exercise instance numbers of the two exercise instances to reflect
-                // the swap
-                val sourceID = adapter.idNamePairs[sourcePos].id
-                val targetID = adapter.idNamePairs[targetPos].id
-//                exerciseInstanceViewModel.updateExerciseInstanceNumber(sourceID, targetPos + 1)
-//                exerciseInstanceViewModel.updateExerciseInstanceNumber(targetID, sourcePos + 1)
+                // The second item in exerciseInstanceIDisMoved is set to true to indicate that the
+                // database values must be changed for exercise instances of the respective IDs
+                exerciseInstanceIDisMoved[sourcePos] =
+                    exerciseInstanceIDisMoved[sourcePos].copy(second = true)
+                exerciseInstanceIDisMoved[targetPos] =
+                    exerciseInstanceIDisMoved[targetPos].copy(second = true)
+
+                adapter.notifyItemMoved(sourcePos, targetPos)
+
+                Log.d(logTag, "sourcePos: $sourcePos, targetPos: $targetPos")
 
                 return true
             }
@@ -119,6 +127,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                 exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
                         adapter.idNamePairs = it
+
+                        exerciseInstanceIDisMoved.clear()
+                        // Populate the list with every exercise instance's ID and associated
+                        // number used for ordering
+                        for (i in it.indices) {
+                            exerciseInstanceIDisMoved.add(Pair(it[i].id, false))
+                        }
+
                         adapter.notifyDataSetChanged()
                         Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
@@ -137,6 +153,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             val action = HomeFragmentDirections
                 .actionHomeFragmentToSelectCategoryFragment(selectedDate.toString())
             findNavController().navigate(action)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        // Update the exercise instance numbers of those that were moved
+        for (i in exerciseInstanceIDisMoved.indices) {
+            if (exerciseInstanceIDisMoved[i].second) {
+                exerciseInstanceViewModel.updateExerciseInstanceNumber(
+                    exerciseInstanceIDisMoved[i].first,
+                    i + 1
+                )
+            }
         }
     }
 }
