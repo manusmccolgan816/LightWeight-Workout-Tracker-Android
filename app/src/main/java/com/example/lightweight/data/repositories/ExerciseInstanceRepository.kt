@@ -41,6 +41,9 @@ class ExerciseInstanceRepository(private val db: WorkoutDatabase) {
     fun getExerciseInstanceOfID(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstanceOfID(exerciseInstanceID)
 
+    fun getExerciseInstanceOfIDObs(exerciseInstanceID: Int?) =
+        db.getExerciseInstanceDao().getExerciseInstanceOfIDObs(exerciseInstanceID)
+
     fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseOfExerciseInstance(exerciseInstanceID)
 }
