@@ -1,9 +1,12 @@
 package com.example.lightweight.ui.home
 
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.fragment.app.viewModels
@@ -21,7 +24,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class HomeParentWorkoutAdapter(
-    var idNamePairs: List<IdNamePair>,
+    var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: HomeFragment
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
 
@@ -38,6 +41,7 @@ class HomeParentWorkoutAdapter(
     private lateinit var parent: ViewGroup
 
     private lateinit var textViewExerciseName: TextView
+    private lateinit var imageViewExerciseInstanceOptions: ImageView
     private lateinit var recyclerViewTrainingSets: RecyclerView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeParentWorkoutViewHolder {
@@ -55,6 +59,8 @@ class HomeParentWorkoutAdapter(
         Log.d(logTag, "onBindViewHolder at position $position")
 
         textViewExerciseName = holder.itemView.findViewById(R.id.text_view_exercise_name)
+        imageViewExerciseInstanceOptions =
+            holder.itemView.findViewById(R.id.image_view_exercise_instance_options)
         recyclerViewTrainingSets = holder.itemView.findViewById(R.id.recycler_view_training_sets)
 
         textViewExerciseName.text = curName
@@ -72,6 +78,36 @@ class HomeParentWorkoutAdapter(
                 homeChildWorkoutAdapter.notifyItemRangeChanged(0, it.size)
                 Log.d(logTag, "Data set changed at position $position")
             }
+
+        imageViewExerciseInstanceOptions.setOnClickListener {
+            val popupMenu = PopupMenu(parent.context, holder.itemView, Gravity.END)
+
+            popupMenu.inflate(R.menu.exercise_instance_popup_menu)
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_item_delete_exercise_instance -> {
+                        val getEiObserver =
+                            exerciseInstanceViewModel.getExerciseInstanceOfIDObs(curID)
+                        getEiObserver.observe(fragment.viewLifecycleOwner) { exerciseInstance ->
+                            // Delete the exercise instance
+                            exerciseInstanceViewModel.delete(exerciseInstance)
+                            // Decrement the exercise instance number of all exercise instances in
+                            // the workout with a higher exercise instance number to preserve ordering
+                            exerciseInstanceViewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
+                                exerciseInstance.workoutID,
+                                exerciseInstance.exerciseInstanceNumber
+                            )
+
+                            getEiObserver.removeObservers(fragment.viewLifecycleOwner)
+                        }
+
+                        true
+                    }
+                    else -> true
+                }
+            }
+            popupMenu.show()
+        }
 
         holder.itemView.setOnClickListener {
             navigateToExercise(curID)
