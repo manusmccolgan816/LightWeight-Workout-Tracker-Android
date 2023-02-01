@@ -92,8 +92,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays.adapter = cycleDayAdapter
 
         cycleDayExerciseViewModel.getCycleDataOfCycleID(cycleID).observe(viewLifecycleOwner) {
-            if (it.isEmpty()) return@observe
-
             val cycleDays: ArrayList<CycleDay> = arrayListOf()
             val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
             val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()

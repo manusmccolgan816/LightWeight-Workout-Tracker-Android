@@ -14,6 +14,9 @@ interface CycleDayExerciseDao {
     @Delete
     suspend fun delete(cycleDayExercise: CycleDayExercise)
 
+    @Query("DELETE FROM CYCLE_DAY_EXERCISE WHERE cycle_day_exercise_ID = :cycleDayExerciseID")
+    suspend fun deleteOfID(cycleDayExerciseID: Int?)
+
     @Query("SELECT * FROM CYCLE_DAY_EXERCISE ORDER BY cycle_day_exercise_number")
     fun getAllCycleDayExercises(): LiveData<List<CycleDayExercise>>
 

@@ -11,6 +11,9 @@ class CycleDayExerciseRepository(private val db: WorkoutDatabase) {
     suspend fun delete(cycleDayExercise: CycleDayExercise) =
         db.getCycleDayExerciseDao().delete(cycleDayExercise)
 
+    suspend fun deleteOfID(cycleDayExerciseID: Int?) =
+        db.getCycleDayExerciseDao().deleteOfID(cycleDayExerciseID)
+
     fun getAllCycleDayExercises() = db.getCycleDayExerciseDao().getAllCycleDayExercises()
 
     fun getCycleDataOfCycleID(cycleID: Int?) =

@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.*
+import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
+import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
@@ -36,9 +38,11 @@ class TrainingCycleDayAdapter(
     private val logTag = "TrainingCycleDayAdapter"
 
     override val kodein by kodein(fragment.requireContext())
+    private val cycleDayFactory: CycleDayViewModelFactory by instance()
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
     private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
 
+    private val cycleDayViewModel: CycleDayViewModel by fragment.viewModels { cycleDayFactory }
     private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by fragment.viewModels {
         cycleDayCategoryFactory
     }
@@ -130,6 +134,16 @@ class TrainingCycleDayAdapter(
                         "AddTrainingCycleDayCategory"
                     )
                 }
+
+                imageViewDeleteDay.setOnClickListener {
+                    ConfirmDeleteTrainingCycleDayDialog(
+                        parent.context,
+                        curCycleDay,
+                        fun(cycleDay: CycleDay) {
+                            cycleDayViewModel.delete(cycleDay)
+                        }
+                    ).show()
+                }
             }
             LAYOUT_CYCLE_DAY_CAT -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayCategory")
@@ -196,6 +210,16 @@ class TrainingCycleDayAdapter(
                         categoryIDObs.removeObservers(fragment.viewLifecycleOwner)
                     }
                 }
+
+                imageViewDeleteCategory.setOnClickListener {
+                    ConfirmDeleteTrainingCycleDayCategoryDialog(
+                        parent.context,
+                        curCycleDayCategoryID,
+                        fun(curCycleDayCategoryID: Int?) {
+                            cycleDayCategoryViewModel.deleteOfID(curCycleDayCategoryID)
+                        }
+                    ).show()
+                }
             }
             LAYOUT_CYCLE_DAY_EX -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayExercise")
@@ -208,12 +232,23 @@ class TrainingCycleDayAdapter(
                 }
 
                 val curExerciseName = idNamePairsExercise[position - numPriorValues].second
+                val curCycleDayExerciseID = idNamePairsExercise[position - numPriorValues].first
 
                 textViewTrainingCycleDayExercise =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)
                 imageViewDeleteExercise = holder.itemView.findViewById(R.id.image_view_delete_exercise)
 
                 textViewTrainingCycleDayExercise.text = curExerciseName
+
+                imageViewDeleteExercise.setOnClickListener {
+                    ConfirmDeleteTrainingCycleDayExerciseDialog(
+                        parent.context,
+                        curCycleDayExerciseID,
+                        fun(curCycleDayExerciseID: Int?) {
+                            cycleDayExerciseViewModel.deleteOfID(curCycleDayExerciseID)
+                        }
+                    ).show()
+                }
             }
         }
     }

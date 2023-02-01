@@ -15,6 +15,9 @@ interface CycleDayCategoryDao {
     @Delete
     suspend fun delete(cycleDayCategory: CycleDayCategory)
 
+    @Query("DELETE FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    suspend fun deleteOfID(cycleDayCategoryID: Int?)
+
     @Query("SELECT * FROM CYCLE_DAY_CATEGORY ORDER BY cycle_day_category_number")
     fun getAllCycleDayCategories(): LiveData<List<CycleDayCategory>>
 

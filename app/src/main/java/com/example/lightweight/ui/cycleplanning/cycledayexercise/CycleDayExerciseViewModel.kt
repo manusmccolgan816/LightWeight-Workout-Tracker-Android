@@ -17,6 +17,10 @@ class CycleDayExerciseViewModel(private val repository: CycleDayExerciseReposito
         repository.delete(cycleDayExercise)
     }
 
+    fun deleteOfID(cycleDayExerciseID: Int?) = CoroutineScope(Dispatchers.Main).launch {
+        repository.deleteOfID(cycleDayExerciseID)
+    }
+
     fun getAllCycleDayExercises() = repository.getAllCycleDayExercises()
 
     fun getCycleDataOfCycleID(cycleID: Int?) = repository.getCycleDataOfCycleID(cycleID)

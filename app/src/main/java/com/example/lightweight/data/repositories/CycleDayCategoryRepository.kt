@@ -11,6 +11,9 @@ class CycleDayCategoryRepository(private val db: WorkoutDatabase) {
     suspend fun delete(cycleDayCategory: CycleDayCategory) =
         db.getCycleDayCategoryDao().delete(cycleDayCategory)
 
+    suspend fun deleteOfID(cycleDayCategoryID: Int?) =
+        db.getCycleDayCategoryDao().deleteOfID(cycleDayCategoryID)
+
     fun getAllCycleDayCategories() = db.getCycleDayCategoryDao().getAllCycleDayCategories()
 
     fun getCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =

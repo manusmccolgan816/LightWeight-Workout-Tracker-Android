@@ -17,6 +17,10 @@ class CycleDayCategoryViewModel(private val repository: CycleDayCategoryReposito
         repository.delete(cycleDayCategory)
     }
 
+    fun deleteOfID(cycleDayCategoryID: Int?) = CoroutineScope(Dispatchers.Main).launch {
+        repository.deleteOfID(cycleDayCategoryID)
+    }
+
     fun getAllCycleDayCategories() = repository.getAllCycleDayCategories()
 
     fun getCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
