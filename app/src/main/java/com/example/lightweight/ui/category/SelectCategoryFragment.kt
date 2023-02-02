@@ -1,6 +1,5 @@
 package com.example.lightweight.ui.category
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.data.db.entities.Exercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein

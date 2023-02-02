@@ -25,4 +25,6 @@ class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(
     fun getAllCategories() = repository.getAllCategories()
 
     fun getCategoryOfID(categoryID: Int?) = repository.getCategoryOfID(categoryID)
+
+    fun getCategoryOfIDObs(categoryID: Int?) = repository.getCategoryOfIDObs(categoryID)
 }

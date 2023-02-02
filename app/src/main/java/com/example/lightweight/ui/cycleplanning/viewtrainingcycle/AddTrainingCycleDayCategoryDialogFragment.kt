@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.ui.category.AddCategoryDialog
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -26,6 +28,7 @@ class AddTrainingCycleDayCategoryDialogFragment(
     private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
 
     private lateinit var recyclerViewCategories: RecyclerView
+    private lateinit var fabAddCategory: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +39,7 @@ class AddTrainingCycleDayCategoryDialogFragment(
             inflater.inflate(R.layout.dialog_add_training_cycle_day_category, container, false)
 
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
+        fabAddCategory = view.findViewById(R.id.fab_add_category)
 
         val adapter = SelectCategoryForCycleAdapter(
             listOf(),
@@ -50,6 +54,13 @@ class AddTrainingCycleDayCategoryDialogFragment(
         categoryViewModel.getAllCategories().observe(viewLifecycleOwner) {
             adapter.categories = it
             adapter.notifyDataSetChanged()
+        }
+
+        fabAddCategory.setOnClickListener {
+            AddCategoryDialog(
+                requireContext(),
+                fun(category: Category) { categoryViewModel.insert(category) }
+            ).show()
         }
 
         return view

@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.ui.category.CategoryViewModel
+import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.example.lightweight.ui.exercise.AddExerciseDialog
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -23,10 +27,15 @@ class AddTrainingCycleDayExerciseDialogFragment(
 ) : DialogFragment(), KodeinAware {
 
     override val kodein by kodein()
+    private val categoryFactory: CategoryViewModelFactory by instance()
+    private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
     private val exerciseFactory: ExerciseViewModelFactory by instance()
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
 
+    private val ref = this.parentFragment?.activity
+
     private lateinit var recyclerViewExercises: RecyclerView
+    private lateinit var fabAddExercise: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +46,7 @@ class AddTrainingCycleDayExerciseDialogFragment(
             inflater.inflate(R.layout.dialog_add_training_cycle_day_exercise, container, false)
 
         recyclerViewExercises = view.findViewById(R.id.recycler_view_exercises)
+        fabAddExercise = view.findViewById(R.id.fab_add_exercise)
 
         val adapter = SelectExerciseForCycleAdapter(
             listOf(),
@@ -51,6 +61,20 @@ class AddTrainingCycleDayExerciseDialogFragment(
         exerciseViewModel.getExercisesOfCategory(categoryID).observe(viewLifecycleOwner) {
             adapter.exercises = it
             adapter.notifyDataSetChanged()
+        }
+
+        fabAddExercise.setOnClickListener {
+            val getCategoryObs = categoryViewModel.getCategoryOfIDObs(categoryID)
+            getCategoryObs.observe(viewLifecycleOwner) { category ->
+                // Display the add category dialog
+                AddExerciseDialog(
+                    requireContext(),
+                    category,
+                    fun(exercise: Exercise) { exerciseViewModel.insert(exercise) }
+                ).show()
+
+                getCategoryObs.removeObservers(viewLifecycleOwner)
+            }
         }
 
         return view

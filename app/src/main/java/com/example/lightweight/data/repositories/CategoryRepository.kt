@@ -15,4 +15,6 @@ class CategoryRepository(private val db: WorkoutDatabase) {
     fun getAllCategories() = db.getCategoryDao().getAllCategories()
 
     fun getCategoryOfID(categoryID: Int?) = db.getCategoryDao().getCategoryOfID(categoryID)
+
+    fun getCategoryOfIDObs(categoryID: Int?) = db.getCategoryDao().getCategoryOfIDObs(categoryID)
 }

@@ -21,4 +21,7 @@ interface CategoryDao {
 
     @Query("SELECT * FROM CATEGORY WHERE category_ID = :categoryID")
     fun getCategoryOfID(categoryID: Int?): Category
+
+    @Query("SELECT * FROM CATEGORY WHERE category_ID = :categoryID")
+    fun getCategoryOfIDObs(categoryID: Int?): LiveData<Category>
 }
