@@ -70,7 +70,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
             if (numWorkouts == 1) {
                 textViewNumWorkouts.text = resources.getString(R.string.string_workout, numWorkouts)
             }
-            else if (numWorkouts > 1) {
+            else {
                 textViewNumWorkouts.text = resources.getString(R.string.string_workouts, numWorkouts)
             }
 

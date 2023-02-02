@@ -47,7 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
     // The selected date defaults to the current day
     var selectedDate: LocalDate = LocalDate.now()
-    private var workoutID: Int? = null
+    var workoutID: Int? = null
 
     // This stores the exercise instance IDs and a Boolean indicating whether the exercise instance
     // has been moved. This ensures that only the changed exercise instance numbers are updated in

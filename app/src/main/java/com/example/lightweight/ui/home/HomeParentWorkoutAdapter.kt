@@ -19,6 +19,8 @@ import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
+import com.example.lightweight.ui.workout.WorkoutViewModel
+import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -31,6 +33,8 @@ class HomeParentWorkoutAdapter(
     private val logTag = "HomeParentWorkoutAdapter"
 
     override val kodein by kodein(fragment.requireContext())
+    private val workoutFactory: WorkoutViewModelFactory by instance()
+    private val workoutViewModel: WorkoutViewModel by fragment.viewModels { workoutFactory }
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel by fragment.viewModels {
         exerciseInstanceFactory
@@ -89,8 +93,17 @@ class HomeParentWorkoutAdapter(
                         val getEiObserver =
                             exerciseInstanceViewModel.getExerciseInstanceOfIDObs(curID)
                         getEiObserver.observe(fragment.viewLifecycleOwner) { exerciseInstance ->
+                            // If this is the only exercise instance in the workout, the workout
+                            // will be deleted
+                            val deleteWorkout: Boolean = idNamePairs.size == 1
+
                             // Delete the exercise instance
                             exerciseInstanceViewModel.delete(exerciseInstance)
+
+                            if (deleteWorkout) {
+                                workoutViewModel.deleteWorkoutOfID(fragment.workoutID)
+                            }
+
                             // Decrement the exercise instance number of all exercise instances in
                             // the workout with a higher exercise instance number to preserve ordering
                             exerciseInstanceViewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
