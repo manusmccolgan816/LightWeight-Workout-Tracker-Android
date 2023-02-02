@@ -22,7 +22,7 @@ class SelectExerciseForCycleAdapter(
         viewType: Int
     ): SelectExerciseForCycleViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_exercise_for_cycle, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
         this.parent = parent
         return SelectExerciseForCycleViewHolder(view)
     }

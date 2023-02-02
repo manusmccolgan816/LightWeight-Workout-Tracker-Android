@@ -46,7 +46,8 @@ class AddTrainingCycleDayCategoryDialogFragment(
             fun(category: Category) {
                 addCycleDayCategory(category)
                 dismiss()
-            }
+            },
+            this
         )
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
