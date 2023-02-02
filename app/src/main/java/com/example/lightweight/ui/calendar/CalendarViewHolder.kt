@@ -17,6 +17,6 @@ class CalendarViewHolder(
     }
 
     override fun onClick(p0: View?) {
-        onItemListener.onItemClick(adapterPosition, dayOfMonth.text.toString())
+        onItemListener.onItemClick(absoluteAdapterPosition, dayOfMonth.text.toString())
     }
 }

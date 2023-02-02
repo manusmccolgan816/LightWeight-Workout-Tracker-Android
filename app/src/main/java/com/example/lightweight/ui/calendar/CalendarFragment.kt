@@ -3,7 +3,7 @@ package com.example.lightweight.ui.calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -42,8 +42,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
 
     private lateinit var textViewMonthYear: TextView
     private lateinit var recyclerViewCalendar: RecyclerView
-    private lateinit var buttonBack: Button
-    private lateinit var buttonForward: Button
+    private lateinit var imageViewPrevMonth: ImageView
+    private lateinit var imageViewNextMonth: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,8 +53,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
 
         textViewMonthYear = view.findViewById(R.id.text_view_month_year)
         recyclerViewCalendar = view.findViewById(R.id.recycler_view_calendar)
-        buttonBack = view.findViewById(R.id.button_back)
-        buttonForward = view.findViewById(R.id.button_forward)
+        imageViewPrevMonth = view.findViewById(R.id.image_view_prev_month)
+        imageViewNextMonth = view.findViewById(R.id.image_view_next_month)
 
         selectedDate = LocalDate.parse(args.selectedDate)
         displayDate = selectedDate // The selected date will be the date displayed by default
@@ -69,13 +69,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
             }
         }
 
-        buttonBack.setOnClickListener {
+        imageViewPrevMonth.setOnClickListener {
             // Display the previous month
             displayDate = displayDate.minusMonths(1)
             setMonthView()
         }
 
-        buttonForward.setOnClickListener {
+        imageViewNextMonth.setOnClickListener {
             // Display the next month
             displayDate = displayDate.plusMonths(1)
             setMonthView()

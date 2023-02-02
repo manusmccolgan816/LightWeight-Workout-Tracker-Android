@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.calendar.CalendarFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
-        <Button
-            android:id="@+id/button_back"
+        <ImageView
+            android:id="@+id/image_view_prev_month"
+            style="@style/Widget.AppCompat.ActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_background"
-            android:text="@string/string_back_arrow"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/cyan_d" />
 
         <TextView
             android:id="@+id/text_view_month_year"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text=""
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/image_view_next_month"
+            app:layout_constraintStart_toEndOf="@id/image_view_prev_month"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_forward"
+        <ImageView
+            android:id="@+id/image_view_next_month"
+            style="@style/Widget.AppCompat.ActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/button_background"
-            android:text="@string/string_forward_arrow"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/cyan_d" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

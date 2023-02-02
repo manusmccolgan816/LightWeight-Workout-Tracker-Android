@@ -3,20 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/activity_set_tracker.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_training_cycle_day_category.xml" value="0.33" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_category.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_training_cycle_day.xml" value="0.22" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_training_cycle_day_category.xml" value="0.18697916666666667" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_training_cycle_day_exercise.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_calendar.xml" value="0.3640625" />
+        <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_stopwatch.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/fragment_view_training_cycle.xml" value="0.3640625" />
+        <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_calendar_cell.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_exercise_history_child.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_exercise_history_parent.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_home_exercise_instance.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle_day.xml" value="0.29786324786324786" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle_day_category.xml" value="0.22" />
-        <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle_day_name.xml" value="0.22" />
+        <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle_day_name.xml" value="0.33" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_cycle_desc.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/category_popup_menu.xml" value="0.3640625" />
         <entry key="..\:/4thYear/CSCU9Z7/Honors Project/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/exercise_instance_popup_menu.xml" value="0.36302083333333335" />
