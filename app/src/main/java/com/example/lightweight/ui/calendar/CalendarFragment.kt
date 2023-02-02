@@ -44,6 +44,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     private lateinit var recyclerViewCalendar: RecyclerView
     private lateinit var imageViewPrevMonth: ImageView
     private lateinit var imageViewNextMonth: ImageView
+    private lateinit var textViewNumWorkouts: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +56,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         recyclerViewCalendar = view.findViewById(R.id.recycler_view_calendar)
         imageViewPrevMonth = view.findViewById(R.id.image_view_prev_month)
         imageViewNextMonth = view.findViewById(R.id.image_view_next_month)
+        textViewNumWorkouts = view.findViewById(R.id.text_view_num_workouts)
 
         selectedDate = LocalDate.parse(args.selectedDate)
         displayDate = selectedDate // The selected date will be the date displayed by default
@@ -63,10 +65,16 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
             // Convert each String date to LocalDate
             workoutDates = workoutDateStrings.map { LocalDate.parse(it) }
 
-            setMonthView()
-            for (i in workoutDates) {
-                Log.d(logTag, "Workout dates: $i")
+            // Display the total number of workouts completed
+            val numWorkouts = workoutDateStrings.size
+            if (numWorkouts == 1) {
+                textViewNumWorkouts.text = resources.getString(R.string.string_workout, numWorkouts)
             }
+            else if (numWorkouts > 1) {
+                textViewNumWorkouts.text = resources.getString(R.string.string_workouts, numWorkouts)
+            }
+
+            setMonthView()
         }
 
         imageViewPrevMonth.setOnClickListener {
