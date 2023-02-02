@@ -32,8 +32,6 @@ class AddTrainingCycleDayExerciseDialogFragment(
     private val exerciseFactory: ExerciseViewModelFactory by instance()
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
 
-    private val ref = this.parentFragment?.activity
-
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var fabAddExercise: FloatingActionButton
 
@@ -53,7 +51,8 @@ class AddTrainingCycleDayExerciseDialogFragment(
             fun(exercise: Exercise) {
                 addCycleDayExercise(exercise)
                 dismiss()
-            }
+            },
+            this
         )
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter
