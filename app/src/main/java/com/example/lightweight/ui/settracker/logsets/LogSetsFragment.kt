@@ -31,6 +31,8 @@ import org.kodein.di.generic.instance
 
 class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
+    private val logTag = "LogSetsFragment"
+
     override val kodein by kodein()
     private val exerciseFactory: ExerciseViewModelFactory by instance()
     private val workoutFactory: WorkoutViewModelFactory by instance()
@@ -133,16 +135,15 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                 }
 
                 // If no exercise instance exists for the selected date and exercise...
-                if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID)
-                    == null
-                ) {
+                if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) == null) {
                     // Get the exercise instance number to assign for ordering purposes
                     val eiNumber = exerciseInstanceViewModel
                         .getExerciseInstancesOfWorkoutNoLiveData(workoutID).size + 1
 
                     // Create and insert a new exercise instance
-                    val instExerciseInstanceJob = exerciseInstanceViewModel
-                        .insert(ExerciseInstance(workoutID, exerciseID, eiNumber, null))
+                    val instExerciseInstanceJob = exerciseInstanceViewModel.insert(
+                        ExerciseInstance(workoutID, exerciseID, eiNumber, null)
+                    )
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
 
                     exerciseInstanceID = exerciseInstanceViewModel
@@ -237,9 +238,16 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     private fun setupAdapter() {
         trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
             .observe(viewLifecycleOwner) {
-                Log.d(null, "Training sets data changed")
+                Log.d(logTag, "Training sets data changed")
                 adapter.trainingSets = it
                 adapter.notifyDataSetChanged()
+
+                if (it.isNotEmpty()) {
+                    // Set the text of the edit text fields to the last set completed in the
+                    // exercise instance
+                    editTextWeight.setText(it[it.size - 1].weight.toString())
+                    editTextNumReps.setText(it[it.size - 1].reps.toString())
+                }
             }
     }
 }
