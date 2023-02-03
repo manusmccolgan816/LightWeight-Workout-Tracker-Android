@@ -7,50 +7,95 @@
     android:paddingTop="80dp"
     tools:context=".ui.settracker.logsets.LogSetsFragment">
 
-    <LinearLayout
-        android:id="@+id/linear_layout_training_set_text_prompts"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_view_weight"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/edit_text_weight"
+        android:text="@string/string_weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="weight"
+        android:ems="5"
         android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/linear_layout_training_set_buttons"
-        app:layout_constraintTop_toTopOf="parent">
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_weight" />
 
-        <TextView
-            android:id="@+id/text_view_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/edit_text_weight"
-            android:text="@string/string_weight" />
+    <ImageView
+        android:id="@+id/image_view_reduce_weight"
+        style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_minus_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_weight"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text_weight"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_weight"
+        app:tint="@color/cyan_d" />
 
-        <EditText
-            android:id="@+id/edit_text_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="weight"
-            android:ems="5"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:minHeight="48dp" />
+    <ImageView
+        android:id="@+id/image_view_add_weight"
+        style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_weight"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_weight"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_weight"
+        app:tint="@color/pink_p" />
 
-        <TextView
-            android:id="@+id/text_view_num_reps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/edit_text_num_reps"
-            android:text="@string/string_reps" />
+    <TextView
+        android:id="@+id/text_view_num_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edit_text_num_reps"
+        android:text="@string/string_reps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_weight" />
 
-        <EditText
-            android:id="@+id/edit_text_num_reps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="reps"
-            android:ems="5"
-            android:gravity="center"
-            android:inputType="number"
-            android:minHeight="48dp" />
+    <EditText
+        android:id="@+id/edit_text_num_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="reps"
+        android:ems="5"
+        android:gravity="center"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_num_reps" />
 
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/image_view_reduce_reps"
+        style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_minus_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_num_reps"
+        app:layout_constraintEnd_toStartOf="@+id/edit_text_num_reps"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_num_reps"
+        app:tint="@color/cyan_d" />
+
+    <ImageView
+        android:id="@+id/image_view_add_reps"
+        style="@style/Widget.AppCompat.ActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_num_reps"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_num_reps"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_num_reps"
+        app:tint="@color/pink_p" />
 
     <LinearLayout
         android:id="@+id/linear_layout_training_set_buttons"
@@ -58,7 +103,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout_training_set_text_prompts">
+        app:layout_constraintTop_toBottomOf="@id/edit_text_num_reps">
 
         <Button
             android:id="@+id/button_clear_set"
@@ -68,13 +113,15 @@
             android:background="@drawable/button_background"
             android:text="@string/string_clear" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/button_save_set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/button_background"
-            android:text="@string/string_save" />
+            android:backgroundTint="@color/pink_l"
+            android:text="@string/string_save"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
