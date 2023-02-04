@@ -36,6 +36,10 @@ class EditTrainingSetDialog(
             val weight = editTextEditSetWeight.text.toString()
             val reps = editTextEditSetReps.text.toString()
 
+            if (reps == "0") {
+                Toast.makeText(context, "Reps must not be 0", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (weight.isBlank() || reps.isBlank()) {
                 Toast.makeText(context, "Enter weight and reps", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

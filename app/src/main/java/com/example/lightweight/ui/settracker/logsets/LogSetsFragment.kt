@@ -150,7 +150,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                 if (reps > repIncrement) {
                     editTextNumReps.setText((reps - repIncrement).toString())
                 } else {
-                    editTextNumReps.setText("0")
+                    editTextNumReps.setText("")
                 }
             }
         }
@@ -178,8 +178,12 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     private fun saveTrainingSet() {
         val weight = editTextWeight.text.toString().toFloatOrNull()
         val reps = editTextNumReps.text.toString().toIntOrNull()
-        // If weight and reps have been input...
-        if (weight != null && reps != null) {
+
+        if (reps != null && reps <= 0) {
+            Toast.makeText(requireContext(), "Reps must not be 0", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if ((weight != null) && (reps != null)) {
             val ref = this.activity
 
             lifecycleScope.launch(Dispatchers.IO) {
