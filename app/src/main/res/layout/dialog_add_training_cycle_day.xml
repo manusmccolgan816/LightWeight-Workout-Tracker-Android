@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:autofillHints="trainingDayName"
-        android:maxLength="20"
         android:ems="10"
         android:hint="@string/string_name_eg_leg_day"
         android:inputType="textPersonName"
