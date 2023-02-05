@@ -35,7 +35,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     override val kodein by kodein()
     private val workoutFactory: WorkoutViewModelFactory by instance()
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-
     private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
         exerciseInstanceFactory
