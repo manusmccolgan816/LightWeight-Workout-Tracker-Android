@@ -1,6 +1,5 @@
 package com.example.lightweight.ui.home
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class HomeChildWorkoutAdapter(
+    private val recyclerViewPopulated: () -> Unit,
     var trainingSets: List<TrainingSet>,
     val exerciseInstanceID: Int?,
     private val fragment: HomeFragment
@@ -47,7 +47,6 @@ class HomeChildWorkoutAdapter(
         return HomeChildWorkoutViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HomeChildWorkoutViewHolder, position: Int) {
         val curTrainingSet = trainingSets[position]
 
@@ -75,6 +74,12 @@ class HomeChildWorkoutAdapter(
 
         holder.itemView.setOnClickListener {
             navigateToExercise(exerciseInstanceID)
+        }
+
+        // If the recycler view has been populated
+        if (position == itemCount - 1) {
+            // Call the function to display the recycler view
+            recyclerViewPopulated()
         }
     }
 

@@ -19,15 +19,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_exercise_instances"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/fab_calendar"
-        app:layout_constraintTop_toBottomOf="@id/text_view_selected_date"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintBottom_toTopOf="@id/fab_calendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_selected_date">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_exercise_instances"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/fab_calendar"
+            app:layout_constraintTop_toBottomOf="@id/text_view_selected_date"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_calendar"

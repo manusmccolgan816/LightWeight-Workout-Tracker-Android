@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -54,6 +55,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     private var exerciseInstanceIDisMoved: ArrayList<Pair<Int?, Boolean>> = arrayListOf()
 
     private lateinit var textViewSelectedDate: TextView
+    private lateinit var progressBar: ProgressBar
     private lateinit var recyclerViewExerciseInstances: RecyclerView
     private lateinit var fabCalendar: FloatingActionButton
     private lateinit var extendedFabAddExercises: Button
@@ -65,9 +67,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         activity?.title = "Track Workouts"
 
         textViewSelectedDate = view.findViewById(R.id.text_view_selected_date)
+        progressBar = view.findViewById(R.id.progress_bar)
         recyclerViewExerciseInstances = view.findViewById(R.id.recycler_view_exercise_instances)
         fabCalendar = view.findViewById(R.id.fab_calendar)
         extendedFabAddExercises = view.findViewById(R.id.extended_fab_add_exercises)
+
+        recyclerViewExerciseInstances.visibility = View.INVISIBLE
 
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
         // If the parameter value is not the default...
@@ -78,7 +83,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
 
         textViewSelectedDate.text = selectedDate.format(formatter)
 
-        adapter = HomeParentWorkoutAdapter(listOf(), this)
+        adapter = HomeParentWorkoutAdapter(
+            fun() {
+                Log.d(logTag, "recyclerViewPopulated called")
+                // When the recycler view has been populated, display it and hide the progress bar
+                progressBar.visibility = View.GONE
+                recyclerViewExerciseInstances.visibility = View.VISIBLE
+            },
+            listOf(),
+            this)
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
@@ -125,6 +138,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             ref?.runOnUiThread {
                 exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
+                        if (it.isNullOrEmpty()) {
+                            progressBar.visibility = View.GONE
+                        }
+
                         adapter.idNamePairs = it
 
                         exerciseInstanceIDisMoved.clear()

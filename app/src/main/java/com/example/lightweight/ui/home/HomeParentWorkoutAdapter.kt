@@ -23,6 +23,7 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class HomeParentWorkoutAdapter(
+    private val recyclerViewPopulated: () -> Unit,
     var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: HomeFragment
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
@@ -67,7 +68,11 @@ class HomeParentWorkoutAdapter(
         textViewExerciseName.text = curName
 
         // Set up the child recycler view
-        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(listOf(), curID, fragment)
+        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(recyclerViewPopulated,
+            listOf(),
+            curID,
+            fragment
+        )
         recyclerViewTrainingSets.layoutManager = WrapContentLinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false
         )
