@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_baseline_history_24"
         android:title="@string/string_history" />
 
+    <item
+        android:id="@+id/exerciseInsightsFragment"
+        android:icon="@drawable/ic_baseline_insights_24"
+        android:title="@string/string_insights" />
+
 </menu>
