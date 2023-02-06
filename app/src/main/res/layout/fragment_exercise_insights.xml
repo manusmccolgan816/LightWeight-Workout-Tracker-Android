@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_exercise_insights"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="60dp"
     android:layout_marginBottom="56dp"
+    android:animateLayoutChanges="true"
     tools:context=".ui.settracker.exerciseinsights.ExerciseInsightsFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -35,7 +37,7 @@
                 android:id="@+id/text_view_total_instances_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_total_instances" />
@@ -71,7 +73,7 @@
                 android:id="@+id/text_view_total_sets_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_total_sets" />
@@ -107,7 +109,7 @@
                 android:id="@+id/text_view_total_reps_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_total_reps" />
@@ -126,27 +128,49 @@
         app:layout_constraintTop_toBottomOf="@id/card_view_total_reps">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_max_weight"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/image_view_expand_max_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_expand_more_24"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_max_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_view_max_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="Max weight"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_weight"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_view_max_weight_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_max_weight" />
+
+            <TextView
+                android:id="@+id/text_view_max_weight_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="test"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_weight"
+                app:layout_constraintStart_toStartOf="@+id/text_view_max_weight"
+                app:layout_constraintTop_toBottomOf="@id/image_view_expand_max_weight" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,40 +186,79 @@
         app:layout_constraintTop_toBottomOf="@id/card_view_max_weight">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_max_reps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/image_view_expand_max_reps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_expand_more_24"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_max_reps"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_view_max_reps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="Max reps"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_reps"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_view_max_reps_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_view_max_reps" />
+
+            <TextView
+                android:id="@+id/text_view_max_reps_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="test"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_reps"
+                app:layout_constraintStart_toStartOf="@+id/text_view_max_reps"
+                app:layout_constraintTop_toBottomOf="@id/image_view_expand_max_reps" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/text_view_personal_records"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_personal_records"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Personal records"
-        android:textSize="20sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_view_max_reps" />
+        app:layout_constraintTop_toBottomOf="@id/card_view_max_reps">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/text_view_personal_records"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personal records"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

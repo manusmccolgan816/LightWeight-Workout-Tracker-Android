@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -138,6 +139,7 @@ class HomeParentWorkoutAdapter(
             val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
                 it!!, fragment.selectedDate.toString()
             )
+
             findNavController(fragment).navigate(action)
 
             exerciseObs.removeObservers(fragment.viewLifecycleOwner)

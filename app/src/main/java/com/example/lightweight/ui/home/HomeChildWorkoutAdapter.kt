@@ -93,6 +93,7 @@ class HomeChildWorkoutAdapter(
             val action = HomeFragmentDirections.actionHomeFragmentToSetTrackerActivity(
                 it!!, fragment.selectedDate.toString()
             )
+
             NavHostFragment.findNavController(fragment).navigate(action)
 
             exerciseObs.removeObservers(fragment.viewLifecycleOwner)

@@ -185,4 +185,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        Log.d(logTag, parentFragment.toString())
+    }
 }
