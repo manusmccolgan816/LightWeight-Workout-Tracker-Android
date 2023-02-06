@@ -69,4 +69,5 @@
     <string name="string_workouts">%1$d workouts</string>
     <string name="string_statistics">Statistics</string>
     <string name="string_insights">Insights</string>
+    <string name="string_training_set_desc">%1$skg, %2$d reps on %3$s</string>
 </resources>

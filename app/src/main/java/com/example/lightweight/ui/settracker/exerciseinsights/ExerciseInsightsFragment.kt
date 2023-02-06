@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
@@ -33,8 +32,8 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
 
     private var exerciseID: Int? = null
 
-    private var maxWeightTrainingSet: TrainingSet? = null
-    private var maxRepsTrainingSet: TrainingSet? = null
+    private var maxWeightSet: TrainingSet? = null
+    private var maxRepsSet: TrainingSet? = null
 
     private lateinit var layout: ConstraintLayout
     private lateinit var constraintLayoutMaxWeight: ConstraintLayout
@@ -92,16 +91,49 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
             var maxReps = 0
             for (trainingSet in trainingSets) {
                 totalReps += trainingSet.reps
-                if (trainingSet.weight > maxWeight) {
+                if (trainingSet.weight >= maxWeight) {
                     maxWeight = trainingSet.weight
+                    if (maxRepsSet == null || trainingSet.reps > maxWeightSet?.reps!!) {
+                        maxWeightSet = trainingSet
+                    }
                 }
                 if (trainingSet.reps > maxReps) {
                     maxReps = trainingSet.reps
+                    maxRepsSet = trainingSet
                 }
             }
             textViewTotalRepsValue.text = totalReps.toString()
             textViewMaxWeightValue.text = maxWeight.toString()
             textViewMaxRepsValue.text = maxReps.toString()
+
+            if (maxWeightSet != null) {
+                val dateObs =
+                    exerciseInstanceViewModel.getExerciseInstanceDate(maxWeightSet!!.exerciseInstanceID)
+                dateObs.observe(viewLifecycleOwner) { date ->
+                    textViewMaxWeightSet.text = resources.getString(
+                        R.string.string_training_set_desc,
+                        maxWeightSet!!.weight.toString(),
+                        maxWeightSet!!.reps,
+                        date
+                    )
+                    dateObs.removeObservers(viewLifecycleOwner)
+                }
+
+            }
+            if (maxRepsSet != null) {
+                val dateObs =
+                    exerciseInstanceViewModel.getExerciseInstanceDate(maxWeightSet!!.exerciseInstanceID)
+                dateObs.observe(viewLifecycleOwner) { date ->
+                    textViewMaxRepsSet.text = resources.getString(
+                        R.string.string_training_set_desc,
+                        maxRepsSet!!.weight.toString(),
+                        maxRepsSet!!.reps,
+                        date
+                    )
+                    dateObs.removeObservers(viewLifecycleOwner)
+                }
+
+            }
 
             trainingSetsObs.removeObservers(viewLifecycleOwner)
         }

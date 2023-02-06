@@ -85,4 +85,11 @@ interface ExerciseInstanceDao {
                 "WHERE exercise_instance_ID = :exerciseInstanceID"
     )
     fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?): LiveData<Int?>
+
+    @Query("SELECT date " +
+            "FROM EXERCISE_INSTANCE AS EI " +
+            "INNER JOIN WORKOUT AS W " +
+            "ON EI.workout_ID = W.workout_ID " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    fun getExerciseInstanceDate(exerciseInstanceID: Int?): LiveData<String>
 }
