@@ -18,6 +18,6 @@
         tools:layout="@layout/fragment_exercise_history" />
     <fragment
         android:id="@+id/exerciseInsightsFragment"
-        android:name="com.example.lightweight.ui.settracker.exercisestats.ExerciseInsightsFragment"
+        android:name="com.example.lightweight.ui.settracker.exerciseinsights.ExerciseInsightsFragment"
         tools:layout="@layout/fragment_exercise_insights" />
 </navigation>

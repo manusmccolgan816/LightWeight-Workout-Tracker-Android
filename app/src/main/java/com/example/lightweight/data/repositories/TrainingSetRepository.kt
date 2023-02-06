@@ -37,4 +37,7 @@ class TrainingSetRepository(private val db: WorkoutDatabase) {
 
     fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int) =
         db.getTrainingSetDao().getTrainingSetsOfExerciseFewerReps(exerciseID, reps)
+
+    fun getTrainingSetsOfExercise(exerciseID: Int?) =
+        db.getTrainingSetDao().getTrainingSetsOfExercise(exerciseID)
 }

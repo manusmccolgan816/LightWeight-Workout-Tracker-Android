@@ -51,6 +51,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     private lateinit var adapter: TrainingSetItemAdapter
     private var isAdapterSetup = false
 
+    // Used when pressing increment and decrement buttons
     private val repIncrement = 1
     private val weightIncrement = 2.5
 

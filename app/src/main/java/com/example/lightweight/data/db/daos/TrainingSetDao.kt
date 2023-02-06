@@ -81,4 +81,14 @@ interface TrainingSetDao {
                 "ORDER BY reps DESC, weight DESC, date, training_set_number"
     )
     fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int): LiveData<List<TrainingSet>>
+
+    @Query("SELECT * " +
+            "FROM TRAINING_SET AS TS " +
+            "INNER JOIN EXERCISE_INSTANCE AS EI " +
+            "ON TS.exercise_instance_ID = EI.exercise_instance_ID " +
+            "INNER JOIN WORKOUT AS W " +
+            "ON EI.workout_ID = W.workout_ID " +
+            "WHERE exercise_ID = :exerciseID " +
+            "ORDER BY date, training_set_number")
+    fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>>
 }

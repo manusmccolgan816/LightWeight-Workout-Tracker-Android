@@ -37,7 +37,12 @@ class SetTrackerActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.logSetsFragment, R.id.stopwatchFragment, R.id.exerciseHistoryFragment)
+            setOf(
+                R.id.logSetsFragment,
+                R.id.stopwatchFragment,
+                R.id.exerciseHistoryFragment,
+                R.id.exerciseInsightsFragment
+            )
         )
 
         toolbarSetTracker = findViewById(R.id.toolbar_set_tracker)

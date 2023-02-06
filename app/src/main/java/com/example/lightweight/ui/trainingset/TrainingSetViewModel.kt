@@ -50,4 +50,7 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
 
     fun getTrainingSetsOfExerciseFewerReps(exerciseID: Int?, reps: Int) =
         repository.getTrainingSetsOfExerciseFewerReps(exerciseID, reps)
+
+    fun getTrainingSetsOfExercise(exerciseID: Int?) =
+        repository.getTrainingSetsOfExercise(exerciseID)
 }

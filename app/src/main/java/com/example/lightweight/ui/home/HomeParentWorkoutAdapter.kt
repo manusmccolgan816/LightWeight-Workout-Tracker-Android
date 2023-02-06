@@ -130,7 +130,6 @@ class HomeParentWorkoutAdapter(
     }
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
-
         val exerciseObs =
             exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
         exerciseObs.observe(fragment.viewLifecycleOwner) {
