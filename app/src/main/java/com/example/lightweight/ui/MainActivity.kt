@@ -32,7 +32,11 @@ class MainActivity : AppCompatActivity() {
 
         // Passing the top-level fragments
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.selectTrainingCycleFragment),
+            setOf(
+                R.id.homeFragment,
+                R.id.selectTrainingCycleFragment,
+                R.id.settingsFragment
+            ),
             drawerLayout, // This puts the hamburger icon into the toolbar
         )
 
