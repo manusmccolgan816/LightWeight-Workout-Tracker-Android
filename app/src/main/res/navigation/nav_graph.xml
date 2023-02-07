@@ -92,5 +92,6 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.lightweight.ui.settings.SettingsFragment"
+        android:label="@string/string_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

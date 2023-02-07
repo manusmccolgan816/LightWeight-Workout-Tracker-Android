@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_baseline_fitness_center_24"
         android:title="@string/string_track_workouts" />
 
     <item
         android:id="@+id/selectTrainingCycleFragment"
+        android:icon="@drawable/ic_baseline_note_alt_24"
         android:title="@string/string_plan_training_cycles" />
 
     <item
         android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/string_settings" />
 
 </menu>
