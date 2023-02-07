@@ -53,9 +53,9 @@ class ExerciseHistoryParentAdapter(
         textViewDate = holder.itemView.findViewById(R.id.text_view_date)
         recyclerViewTrainingSets = holder.itemView.findViewById(R.id.recycler_view_training_sets)
 
+        // Get the date formatted as (for example) 24 Jan 2023
         val date: String? =
             LocalDate.parse(curDate).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-        // Display the date of the exercise instance
         textViewDate.text = date.toString()
 
         // Set up the child recycler view

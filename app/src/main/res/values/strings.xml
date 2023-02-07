@@ -70,4 +70,6 @@
     <string name="string_statistics">Statistics</string>
     <string name="string_insights">Insights</string>
     <string name="string_training_set_desc">%1$skg, %2$d reps on %3$s</string>
+    <string name="string_pr_rep_desc">%1$dRM</string>
+    <string name="string_pr_weight_desc">%1$skg</string>
 </resources>
