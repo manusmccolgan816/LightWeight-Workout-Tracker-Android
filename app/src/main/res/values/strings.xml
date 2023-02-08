@@ -72,4 +72,15 @@
     <string name="string_training_set_desc">%1$skg, %2$d reps on %3$s</string>
     <string name="string_pr_rep_desc">%1$dRM</string>
     <string name="string_pr_weight_desc">%1$skg</string>
+    <string name="string_theme">Theme</string>
+    <string name="string_unit_of_measurement">Unit of measurement</string>
+    <string name="string_weight_increment">Weight increment</string>
+    <string name="string_highlight_personal_records">Highlight personal records</string>
+    <string name="string_keep_screen_on">Keep screen on</string>
+    <string name="string_total_instances">Total instances</string>
+    <string name="string_total_sets">Total sets</string>
+    <string name="string_total_reps">Total reps</string>
+    <string name="string_max_weight">Max weight</string>
+    <string name="string_max_reps">Max reps</string>
+    <string name="string_personal_records">Personal records</string>
 </resources>

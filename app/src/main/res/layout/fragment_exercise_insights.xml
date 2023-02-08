@@ -28,7 +28,7 @@
                 android:id="@+id/text_view_total_instances"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total instances"
+                android:text="@string/string_total_instances"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +64,7 @@
                 android:id="@+id/text_view_total_sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total sets"
+                android:text="@string/string_total_sets"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +100,7 @@
                 android:id="@+id/text_view_total_reps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total reps"
+                android:text="@string/string_total_reps"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -147,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Max weight"
+                android:text="@string/string_max_weight"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_weight"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Max reps"
+                android:text="@string/string_max_reps"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/image_view_expand_max_reps"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -262,7 +262,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Personal records"
+                android:text="@string/string_personal_records"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/image_view_expand_personal_records"
                 app:layout_constraintTop_toTopOf="parent" />
