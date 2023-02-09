@@ -3,12 +3,14 @@ package com.example.lightweight.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
+import androidx.preference.PreferenceManager
 import com.example.lightweight.R
 import com.google.android.material.navigation.NavigationView
 
@@ -49,6 +51,15 @@ class MainActivity : AppCompatActivity() {
 
         navView = findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        // If the keepScreenOn preference is set to true, ensure the display does not sleep
+        if (sharedPreferences.getBoolean("keepScreenOn", false)) {
+            this.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            this.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     /**
