@@ -1,0 +1,46 @@
+<resources>
+    <!-- Theme Preference -->
+    <string-array name="theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <!-- Unit Preference -->
+    <string-array name="unit_entries">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+
+    <string-array name="unit_values">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+
+    <!-- Weight increment Preference -->
+    <string-array name="weight_increment_entries">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="weight_increment_values">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+</resources>

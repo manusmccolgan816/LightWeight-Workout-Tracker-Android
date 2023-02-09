@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -53,7 +54,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
     // Used when pressing increment and decrement buttons
     private val repIncrement = 1
-    private val weightIncrement = 2.5
+    private var weightIncrement: Float = 0F
 
     private var exerciseID: Int? = null
     private var workoutID: Int? = null
@@ -77,6 +78,12 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
         val act: SetTrackerActivity = this.activity as SetTrackerActivity
         exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
         selectedDate = act.args.selectedDate // Set selectedDate from the SetTrackerActivity arg
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        // The weight increment is taken from shared preferences
+        weightIncrement = sharedPreferences.getString("weightIncrement", "2.5")
+            ?.toFloat()!!
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
