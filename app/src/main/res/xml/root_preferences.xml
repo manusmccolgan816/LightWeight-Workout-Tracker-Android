@@ -23,7 +23,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="2.5F"
+            app:defaultValue="2.5"
             app:entries="@array/weight_increment_entries"
             app:entryValues="@array/weight_increment_values"
             app:key="weightIncrement"

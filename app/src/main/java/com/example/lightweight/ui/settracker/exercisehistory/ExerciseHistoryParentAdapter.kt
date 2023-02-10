@@ -59,7 +59,7 @@ class ExerciseHistoryParentAdapter(
         textViewDate.text = date.toString()
 
         // Set up the child recycler view
-        val adapter = ExerciseHistoryChildAdapter(listOf())
+        val adapter = ExerciseHistoryChildAdapter(listOf(), fragment)
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false
         )

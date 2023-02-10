@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -67,6 +68,8 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
         val act: SetTrackerActivity = this.activity as SetTrackerActivity
         exerciseID = act.args.exerciseID
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
         getViewReferences(view)
 
         // Provides smooth animation which is clear when expanding and minimising views
@@ -119,12 +122,22 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
                     val formattedDate = LocalDate.parse(date)
                         .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
-                    textViewMaxWeightSet.text = resources.getString(
-                        R.string.string_training_set_desc,
-                        maxWeightSet!!.weight.toString(),
-                        maxWeightSet!!.reps,
-                        formattedDate
-                    )
+                    if (sharedPreferences.getString("unit", "kg") == "kg") {
+                        textViewMaxWeightSet.text = resources.getString(
+                            R.string.string_training_set_desc_kg,
+                            maxWeightSet!!.weight.toString(),
+                            maxWeightSet!!.reps,
+                            formattedDate
+                        )
+                    } else {
+                        textViewMaxWeightSet.text = resources.getString(
+                            R.string.string_training_set_desc_lbs,
+                            maxWeightSet!!.weight.toString(),
+                            maxWeightSet!!.reps,
+                            formattedDate
+                        )
+                    }
+
                     dateObs.removeObservers(viewLifecycleOwner)
                 }
 
@@ -137,12 +150,22 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
                     val formattedDate = LocalDate.parse(date)
                         .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
-                    textViewMaxRepsSet.text = resources.getString(
-                        R.string.string_training_set_desc,
-                        maxRepsSet!!.weight.toString(),
-                        maxRepsSet!!.reps,
-                        formattedDate
-                    )
+                    if (sharedPreferences.getString("unit", "kg") == "kg") {
+                        textViewMaxRepsSet.text = resources.getString(
+                            R.string.string_training_set_desc_kg,
+                            maxRepsSet!!.weight.toString(),
+                            maxRepsSet!!.reps,
+                            formattedDate
+                        )
+                    } else {
+                        textViewMaxRepsSet.text = resources.getString(
+                            R.string.string_training_set_desc_lbs,
+                            maxRepsSet!!.weight.toString(),
+                            maxRepsSet!!.reps,
+                            formattedDate
+                        )
+                    }
+
                     dateObs.removeObservers(viewLifecycleOwner)
                 }
             }

@@ -69,9 +69,11 @@
     <string name="string_workouts">%1$d workouts</string>
     <string name="string_statistics">Statistics</string>
     <string name="string_insights">Insights</string>
-    <string name="string_training_set_desc">%1$skg, %2$d reps on %3$s</string>
+    <string name="string_training_set_desc_kg">%1$skg, %2$d reps on %3$s</string>
+    <string name="string_training_set_desc_lbs">%1$slbs, %2$d reps on %3$s</string>
     <string name="string_pr_rep_desc">%1$dRM</string>
-    <string name="string_pr_weight_desc">%1$skg</string>
+    <string name="string_pr_weight_desc_kg">%1$skg</string>
+    <string name="string_pr_weight_desc_lbs">%1$slbs</string>
     <string name="string_theme">Theme</string>
     <string name="string_unit_of_measurement">Unit of measurement</string>
     <string name="string_weight_increment">Weight increment</string>
@@ -88,6 +90,10 @@
     <string name="string_unit_of_measurement_title">Unit of Measurement</string>
     <string name="string_light">Light</string>
     <string name="string_dark">Dark</string>
+    <string name="string_weight_kg">%1skg</string>
+    <string name="string_weight_lbs">%1slbs</string>
+    <string name="string_number_rep">%1d rep</string>
+    <string name="string_number_reps">%1d reps</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
