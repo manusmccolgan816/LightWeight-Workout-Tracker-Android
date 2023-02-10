@@ -3,6 +3,7 @@ package com.example.lightweight.ui.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.lightweight.R
@@ -23,6 +24,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
                 requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            }
+
+            if (sharedPreferences.getString(
+                    "theme",
+                    resources.getString(R.string.string_light)
+                ) == "Light"
+            ) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else if (sharedPreferences.getString(
+                    "theme",
+                    resources.getString(R.string.string_dark)
+                ) == "Dark"
+            ) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
         }
     }

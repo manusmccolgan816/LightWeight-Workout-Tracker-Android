@@ -6,7 +6,7 @@
             app:defaultValue="@string/string_light"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
-            app:key="@string/string_light"
+            app:key="theme"
             app:title="@string/string_theme"
             app:useSimpleSummaryProvider="true" />
 

@@ -2,8 +2,10 @@ package com.example.lightweight.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -16,6 +18,8 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private val logTag = "MainActivity"
+
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -23,6 +27,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        // Set the theme to light or dark based on the theme preference
+        if (sharedPreferences.getString(
+                "theme",
+                resources.getString(R.string.string_light)
+            ) == "Light"
+        ) {
+            Log.d(logTag, "Theme is Light")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else if (sharedPreferences.getString(
+                "theme",
+                resources.getString(R.string.string_dark)
+            ) == "Dark"
+        ) {
+            Log.d(logTag, "Theme is Dark")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -51,8 +74,6 @@ class MainActivity : AppCompatActivity() {
 
         navView = findViewById(R.id.nav_view)
         navView.setupWithNavController(navController)
-
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         // If the keepScreenOn preference is set to true, ensure the display does not sleep
         if (sharedPreferences.getBoolean("keepScreenOn", false)) {
