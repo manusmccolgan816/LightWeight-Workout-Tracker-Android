@@ -121,9 +121,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/button_background"
-            android:backgroundTint="@color/pink_l"
+            android:backgroundTint="?colorSecondary"
             android:text="@string/string_save"
-            android:textColor="@color/white" />
+            android:textColor="?colorOnSecondary" />
 
     </LinearLayout>
 
