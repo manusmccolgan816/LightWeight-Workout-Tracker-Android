@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="8dp"
     tools:context=".ui.exercise.SelectExerciseFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_exercises"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:background="@drawable/search_view_background"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"

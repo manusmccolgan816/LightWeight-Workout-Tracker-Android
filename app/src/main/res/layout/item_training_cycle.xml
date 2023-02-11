@@ -9,6 +9,7 @@
         android:id="@+id/text_view_training_cycle_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Cycle name"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,12 +19,13 @@
 
     <ImageView
         android:id="@+id/image_view_training_cycle_options"
+        style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/string_options"
-        android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
