@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_clear_24"
-        app:tint="?colorPrimaryVariant" />
+        app:tint="?colorPrimary" />
 
     <ImageView
         android:id="@+id/image_view_add_category"
@@ -35,6 +35,6 @@
         app:layout_constraintEnd_toStartOf="@id/image_view_delete_day"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        app:tint="?colorSecondaryVariant" />
+        app:tint="?colorSecondary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

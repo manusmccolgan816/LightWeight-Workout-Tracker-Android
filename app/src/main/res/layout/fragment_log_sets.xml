@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_weight"
         app:layout_constraintEnd_toStartOf="@+id/edit_text_weight"
         app:layout_constraintTop_toTopOf="@+id/edit_text_weight"
-        app:tint="?colorPrimaryVariant" />
+        app:tint="?colorPrimary" />
 
     <ImageView
         android:id="@+id/image_view_add_weight"
@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_weight"
         app:layout_constraintStart_toEndOf="@+id/edit_text_weight"
         app:layout_constraintTop_toTopOf="@+id/edit_text_weight"
-        app:tint="?colorSecondaryVariant" />
+        app:tint="?colorSecondary" />
 
     <TextView
         android:id="@+id/text_view_num_reps"
@@ -86,7 +86,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_num_reps"
         app:layout_constraintEnd_toStartOf="@+id/edit_text_num_reps"
         app:layout_constraintTop_toTopOf="@+id/edit_text_num_reps"
-        app:tint="?colorPrimaryVariant" />
+        app:tint="?colorPrimary" />
 
     <ImageView
         android:id="@+id/image_view_add_reps"
@@ -97,7 +97,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/edit_text_num_reps"
         app:layout_constraintStart_toEndOf="@+id/edit_text_num_reps"
         app:layout_constraintTop_toTopOf="@+id/edit_text_num_reps"
-        app:tint="?colorSecondaryVariant" />
+        app:tint="?colorSecondary" />
 
     <LinearLayout
         android:id="@+id/linear_layout_training_set_buttons"

@@ -36,5 +36,9 @@
     <color name="blue_l">#5472d3</color>
     <color name="blue_d">#002171</color>
 
+    <color name="orange_200">#ffab40</color>
+    <color name="orange_400">#ff9100</color>
+    <color name="orange_700">#ff6d00</color>
+
     <color name="iconColor">#000000</color>
 </resources>
