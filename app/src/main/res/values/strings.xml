@@ -69,8 +69,10 @@
     <string name="string_workouts">%1$d workouts</string>
     <string name="string_statistics">Statistics</string>
     <string name="string_insights">Insights</string>
-    <string name="string_training_set_desc_kg">%1$skg, %2$d reps on %3$s</string>
-    <string name="string_training_set_desc_lbs">%1$slbs, %2$d reps on %3$s</string>
+    <string name="string_training_set_desc_kg_reps">%1$skg, %2$d reps on %3$s</string>
+    <string name="string_training_set_desc_kg_rep">%1$skg, %2$d rep on %3$s</string>
+    <string name="string_training_set_desc_lbs_reps">%1$slbs, %2$d reps on %3$s</string>
+    <string name="string_training_set_desc_lbs_rep">%1$slbs, %2$d rep on %3$s</string>
     <string name="string_pr_rep_desc">%1$dRM</string>
     <string name="string_pr_weight_desc_kg">%1$skg</string>
     <string name="string_pr_weight_desc_lbs">%1$slbs</string>

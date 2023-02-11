@@ -92,11 +92,12 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
             var maxReps = 0
             for (trainingSet in trainingSets) {
                 totalReps += trainingSet.reps
-                if (trainingSet.weight >= maxWeight) {
+                if (trainingSet.weight > maxWeight ||
+                    (trainingSet.weight == maxWeight && maxWeightSet != null &&
+                            trainingSet.reps > maxWeightSet?.reps!!)
+                ) {
                     maxWeight = trainingSet.weight
-                    if (maxRepsSet == null || trainingSet.reps > maxWeightSet?.reps!!) {
-                        maxWeightSet = trainingSet
-                    }
+                    maxWeightSet = trainingSet
                 }
                 if (trainingSet.reps > maxReps) {
                     maxReps = trainingSet.reps
@@ -123,19 +124,41 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
                         .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
                     if (sharedPreferences.getString("unit", "kg") == "kg") {
-                        textViewMaxWeightSet.text = resources.getString(
-                            R.string.string_training_set_desc_kg,
-                            maxWeightSet!!.weight.toString(),
-                            maxWeightSet!!.reps,
-                            formattedDate
-                        )
+                        if (maxWeightSet!!.reps == 1) {
+                            // Display the set in kg using the singular 'rep'
+                            textViewMaxWeightSet.text = resources.getString(
+                                R.string.string_training_set_desc_kg_rep,
+                                maxWeightSet!!.weight.toString(),
+                                maxWeightSet!!.reps,
+                                formattedDate
+                            )
+                        } else {
+                            // Display the set in kg using the plural 'reps'
+                            textViewMaxWeightSet.text = resources.getString(
+                                R.string.string_training_set_desc_kg_reps,
+                                maxWeightSet!!.weight.toString(),
+                                maxWeightSet!!.reps,
+                                formattedDate
+                            )
+                        }
                     } else {
-                        textViewMaxWeightSet.text = resources.getString(
-                            R.string.string_training_set_desc_lbs,
-                            maxWeightSet!!.weight.toString(),
-                            maxWeightSet!!.reps,
-                            formattedDate
-                        )
+                        if (maxWeightSet!!.reps == 1) {
+                            // Display the set in lbs using the singular 'rep'
+                            textViewMaxWeightSet.text = resources.getString(
+                                R.string.string_training_set_desc_lbs_rep,
+                                maxWeightSet!!.weight.toString(),
+                                maxWeightSet!!.reps,
+                                formattedDate
+                            )
+                        } else {
+                            // Display the set in lbs using the plural 'reps'
+                            textViewMaxWeightSet.text = resources.getString(
+                                R.string.string_training_set_desc_lbs_reps,
+                                maxWeightSet!!.weight.toString(),
+                                maxWeightSet!!.reps,
+                                formattedDate
+                            )
+                        }
                     }
 
                     dateObs.removeObservers(viewLifecycleOwner)
@@ -151,19 +174,43 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
                         .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
                     if (sharedPreferences.getString("unit", "kg") == "kg") {
-                        textViewMaxRepsSet.text = resources.getString(
-                            R.string.string_training_set_desc_kg,
-                            maxRepsSet!!.weight.toString(),
-                            maxRepsSet!!.reps,
-                            formattedDate
-                        )
+                        if (maxRepsSet!!.reps == 1) {
+                            // Display the set in kg using the singular 'rep'
+                            textViewMaxRepsSet.text = resources.getString(
+                                R.string.string_training_set_desc_kg_rep,
+                                maxRepsSet!!.weight.toString(),
+                                maxRepsSet!!.reps,
+                                formattedDate
+                            )
+                        } else {
+                            // Display the set in kg using the plural 'reps'
+                            textViewMaxRepsSet.text = resources.getString(
+                                R.string.string_training_set_desc_kg_reps,
+                                maxRepsSet!!.weight.toString(),
+                                maxRepsSet!!.reps,
+                                formattedDate
+                            )
+                        }
+
                     } else {
-                        textViewMaxRepsSet.text = resources.getString(
-                            R.string.string_training_set_desc_lbs,
-                            maxRepsSet!!.weight.toString(),
-                            maxRepsSet!!.reps,
-                            formattedDate
-                        )
+                        if (maxRepsSet!!.reps == 1) {
+                            // Display the set in lbs using the singular 'rep'
+                            textViewMaxRepsSet.text = resources.getString(
+                                R.string.string_training_set_desc_lbs_rep,
+                                maxRepsSet!!.weight.toString(),
+                                maxRepsSet!!.reps,
+                                formattedDate
+                            )
+                        } else {
+                            // Display the set in lbs using the plural 'reps'
+                            textViewMaxRepsSet.text = resources.getString(
+                                R.string.string_training_set_desc_lbs_reps,
+                                maxRepsSet!!.weight.toString(),
+                                maxRepsSet!!.reps,
+                                formattedDate
+                            )
+                        }
+
                     }
 
                     dateObs.removeObservers(viewLifecycleOwner)
