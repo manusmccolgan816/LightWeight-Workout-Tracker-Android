@@ -35,4 +35,6 @@
     <color name="blue_p">#0d47a1</color>
     <color name="blue_l">#5472d3</color>
     <color name="blue_d">#002171</color>
+
+    <color name="iconColor">#000000</color>
 </resources>

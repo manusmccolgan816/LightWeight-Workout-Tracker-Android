@@ -25,6 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_clear_24"
-        app:tint="@color/cyan_d" />
+        app:tint="?colorPrimaryVariant" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

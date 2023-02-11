@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_trophy_24" />
+        app:srcCompat="@drawable/ic_baseline_trophy_24"
+        app:tint="@color/iconColor" />
 
     <ImageView
         android:id="@+id/image_view_training_set_note"
@@ -29,7 +30,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/image_view_trophy"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_empty_comment_24" />
+        app:srcCompat="@drawable/ic_baseline_empty_comment_24"
+        app:tint="@color/iconColor" />
 
     <TextView
         android:id="@+id/text_view_training_set_number"
@@ -79,6 +81,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_view_training_set_reps"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+        app:srcCompat="@drawable/ic_baseline_more_vert_24"
+        app:tint="@color/iconColor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

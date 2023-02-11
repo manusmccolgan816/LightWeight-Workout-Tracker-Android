@@ -25,7 +25,7 @@
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/cyan_d" />
+            app:tint="?colorPrimaryVariant" />
 
         <TextView
             android:id="@+id/text_view_month_year"
@@ -50,7 +50,7 @@
             android:src="@drawable/ic_baseline_arrow_forward_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/cyan_d" />
+            app:tint="?colorPrimaryVariant" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

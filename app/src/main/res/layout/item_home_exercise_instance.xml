@@ -37,7 +37,8 @@
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_training_sets"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/iconColor" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_training_sets"

@@ -38,7 +38,7 @@
             android:layout_marginTop="32dp"
             android:contentDescription="@string/string_reset_stopwatch"
             android:src="@drawable/ic_baseline_refresh_24"
-            app:tint="@color/black" />
+            app:tint="@color/iconColor" />
 
     </RelativeLayout>
 
