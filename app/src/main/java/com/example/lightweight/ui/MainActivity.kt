@@ -32,19 +32,43 @@ class MainActivity : AppCompatActivity() {
         // Set the theme to light or dark based on the theme preference
         if (sharedPreferences.getString(
                 "theme",
-                resources.getString(R.string.string_light)
+                "System default"
+            ) == "System default"
+        ) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            Log.d(logTag, "Theme is System default")
+        }
+        else if (sharedPreferences.getString(
+                "theme",
+                "System default"
             ) == "Light"
         ) {
-            Log.d(logTag, "Theme is Light")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Log.d(logTag, "Theme is Light")
         } else if (sharedPreferences.getString(
                 "theme",
-                resources.getString(R.string.string_dark)
+                "System default"
             ) == "Dark"
         ) {
-            Log.d(logTag, "Theme is Dark")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            Log.d(logTag, "Theme is Dark")
         }
+
+//        if (sharedPreferences.getString(
+//                "theme",
+//                resources.getString(R.string.string_light)
+//            ) == "Light"
+//        ) {
+//            Log.d(logTag, "Theme is Light")
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//        } else if (sharedPreferences.getString(
+//                "theme",
+//                resources.getString(R.string.string_dark)
+//            ) == "Dark"
+//        ) {
+//            Log.d(logTag, "Theme is Dark")
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

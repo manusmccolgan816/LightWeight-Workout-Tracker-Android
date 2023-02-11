@@ -28,13 +28,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
             if (sharedPreferences.getString(
                     "theme",
-                    "Light"
+                    "System default"
+                ) == "System default"
+            ) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            else if (sharedPreferences.getString(
+                    "theme",
+                        "System default"
                 ) == "Light"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             } else if (sharedPreferences.getString(
                     "theme",
-                    "Light"
+                        "System default"
                 ) == "Dark"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
