@@ -54,22 +54,6 @@ class MainActivity : AppCompatActivity() {
             Log.d(logTag, "Theme is Dark")
         }
 
-//        if (sharedPreferences.getString(
-//                "theme",
-//                resources.getString(R.string.string_light)
-//            ) == "Light"
-//        ) {
-//            Log.d(logTag, "Theme is Light")
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//        } else if (sharedPreferences.getString(
-//                "theme",
-//                resources.getString(R.string.string_dark)
-//            ) == "Dark"
-//        ) {
-//            Log.d(logTag, "Theme is Dark")
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
