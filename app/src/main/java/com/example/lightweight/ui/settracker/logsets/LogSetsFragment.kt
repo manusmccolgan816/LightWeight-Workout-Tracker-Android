@@ -71,7 +71,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     private lateinit var buttonSaveSet: Button
     private lateinit var recyclerViewTrainingSets: RecyclerView
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -4,13 +4,13 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
     android:paddingVertical="8dp">
 
     <ImageView
         android:id="@+id/image_view_trophy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:contentDescription="@string/string_trophy"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,9 +20,9 @@
 
     <ImageView
         android:id="@+id/image_view_training_set_note"
+        style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:contentDescription="@string/string_text_bubble"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_view_training_set_number"
@@ -33,9 +33,9 @@
 
     <TextView
         android:id="@+id/text_view_training_set_number"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:text="@string/string_set"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:text="@string/string_weight"
         android:textAlignment="center"
+
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_view_training_set_reps"
@@ -61,6 +62,7 @@
         android:layout_height="wrap_content"
         android:text="@string/string_reps"
         android:textAlignment="center"
+
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/text_view_training_set_weight"
         app:layout_constraintEnd_toStartOf="@+id/image_view_training_set_options"
@@ -68,9 +70,9 @@
 
     <ImageView
         android:id="@+id/image_view_training_set_options"
+        style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:contentDescription="@string/string_options"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

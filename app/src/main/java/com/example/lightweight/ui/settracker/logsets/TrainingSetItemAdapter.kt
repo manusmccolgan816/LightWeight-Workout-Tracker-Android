@@ -1,5 +1,6 @@
 package com.example.lightweight.ui.settracker.logsets
 
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
@@ -45,6 +47,8 @@ class TrainingSetItemAdapter(
         exerciseInstanceFactory
     }
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var parent: ViewGroup
 
     private lateinit var imageViewSetNote: ImageView
@@ -57,7 +61,9 @@ class TrainingSetItemAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingSetItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_training_set, parent, false)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext())
         this.parent = parent
+
         return TrainingSetItemViewHolder(view)
     }
 
@@ -72,8 +78,32 @@ class TrainingSetItemAdapter(
         textViewSetReps = holder.itemView.findViewById(R.id.text_view_training_set_reps)
 
         textViewSetNumber.text = curTrainingSet.trainingSetNumber.toString()
-        textViewSetWeight.text = curTrainingSet.weight.toString()
-        textViewSetReps.text = curTrainingSet.reps.toString()
+        if (sharedPreferences.getString("unit", "kg") == "kg") {
+            // Display the weight followed by kg
+            textViewSetWeight.text = fragment.resources.getString(
+                R.string.string_weight_kg,
+                curTrainingSet.weight.toString()
+            )
+        } else {
+            // Display the weight followed by lbs
+            textViewSetWeight.text = fragment.resources.getString(
+                R.string.string_weight_lbs,
+                curTrainingSet.weight.toString()
+            )
+        }
+        if (curTrainingSet.reps == 1) {
+            // Display the number followed by 'rep'
+            textViewSetReps.text = fragment.resources.getString(
+                R.string.string_number_rep,
+                curTrainingSet.reps
+            )
+        } else {
+            // Display the number followed by 'reps'
+            textViewSetReps.text = fragment.resources.getString(
+                R.string.string_number_reps,
+                curTrainingSet.reps
+            )
+        }
 
         // If the training set has a note...
         if (!curTrainingSet.note.isNullOrBlank()) {
