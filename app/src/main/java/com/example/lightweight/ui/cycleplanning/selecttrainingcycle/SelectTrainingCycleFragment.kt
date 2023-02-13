@@ -3,6 +3,8 @@ package com.example.lightweight.ui.cycleplanning.selecttrainingcycle
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,8 +29,13 @@ class SelectTrainingCycleFragment : Fragment(R.layout.fragment_select_training_c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the action bar title
-        activity?.title = resources.getString(R.string.string_plan_training_cycles)
+        // Set the toolbar title
+        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+        textViewToolbarTitle.text = resources.getString(R.string.string_plan_training_cycles)
+
+        // Remove the select date icon
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.GONE
 
         recyclerViewTrainingCycles = view.findViewById(R.id.recycler_view_training_cycles)
         fabAddTrainingCycle = view.findViewById(R.id.extended_fab_add_training_cycle)

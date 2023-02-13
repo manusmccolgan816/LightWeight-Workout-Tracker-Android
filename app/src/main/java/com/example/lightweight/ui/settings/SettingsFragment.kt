@@ -2,8 +2,12 @@ package com.example.lightweight.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat.recreate
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.lightweight.R
@@ -11,15 +15,32 @@ import com.example.lightweight.R
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private var prefsChanged = false
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+    }
 
-        // Set the action bar title
-        activity?.title = resources.getString(R.string.string_settings)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set the toolbar title
+        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+        if (textViewToolbarTitle != null) {
+            textViewToolbarTitle.text = resources.getString(R.string.string_settings)
+        }
+
+        // Remove the select date icon
+        val imageViewSelectDate = requireActivity().findViewById<ImageView>(R.id.image_view_select_date)
+        if (imageViewSelectDate != null) {
+            imageViewSelectDate.visibility = View.GONE
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (sharedPreferences != null) {
+            prefsChanged = true
+
             if (sharedPreferences.getBoolean("keepScreenOn", false)) {
                 requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
@@ -39,6 +60,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 ) == "Light"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                requireActivity().recreate()
             } else if (sharedPreferences.getString(
                     "theme",
                         "System default"

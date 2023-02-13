@@ -3,6 +3,7 @@ package com.example.lightweight.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.homeFragment,
                 R.id.selectTrainingCycleFragment,
-                R.id.settingsFragment
+                R.id.settingsFragment,
             ),
             drawerLayout, // This puts the hamburger icon into the toolbar
         )

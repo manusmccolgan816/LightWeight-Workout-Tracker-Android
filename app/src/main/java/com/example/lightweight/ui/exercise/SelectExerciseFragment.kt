@@ -2,6 +2,8 @@ package com.example.lightweight.ui.exercise
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -52,10 +54,16 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
         lifecycleScope.launch(Dispatchers.IO) {
             val category = categoryViewModel.getCategoryOfID(categoryID)
             ref?.runOnUiThread {
-                // Set the action bar title
-                activity?.title = category.categoryName
+                // Set the toolbar title
+                val textViewToolbarTitle =
+                    requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+                textViewToolbarTitle.text = category.categoryName
             }
         }
+
+        // Remove the select date icon
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.GONE
 
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter

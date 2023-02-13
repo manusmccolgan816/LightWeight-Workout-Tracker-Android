@@ -3,6 +3,8 @@ package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -72,10 +74,15 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         lifecycleScope.launch(Dispatchers.IO) {
             val cycle = cycleViewModel.getCycleOfID(cycleID)
             ref?.runOnUiThread {
-                // Set the action bar title
-                activity?.title = cycle.cycleName
+                // Set the toolbar title
+                val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+                textViewToolbarTitle.text = cycle.cycleName
             }
         }
+
+        // Remove the select date icon
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.GONE
 
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)

@@ -49,8 +49,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the action bar title
-        activity?.title = resources.getString(R.string.string_select_date)
+        // Set the toolbar title
+        val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
+        textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
+
+        // Remove the select date icon
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.GONE
 
         textViewMonthYear = view.findViewById(R.id.text_view_month_year)
         recyclerViewCalendar = view.findViewById(R.id.recycler_view_calendar)

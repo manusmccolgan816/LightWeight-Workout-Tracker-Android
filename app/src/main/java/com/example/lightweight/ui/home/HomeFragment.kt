@@ -3,9 +3,7 @@ package com.example.lightweight.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,20 +57,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     private lateinit var textViewSelectedDate: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerViewExerciseInstances: RecyclerView
-    private lateinit var fabCalendar: FloatingActionButton
-    private lateinit var extendedFabAddExercises: Button
+    private lateinit var buttonAddExercises: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the action bar title
-        activity?.title = "Track Workouts"
+        // Set the toolbar title
+        val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
+        textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
+
+        // Set the select date icon to be visible
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.VISIBLE
 
         textViewSelectedDate = view.findViewById(R.id.text_view_selected_date)
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerViewExerciseInstances = view.findViewById(R.id.recycler_view_exercise_instances)
-        fabCalendar = view.findViewById(R.id.fab_calendar)
-        extendedFabAddExercises = view.findViewById(R.id.extended_fab_add_exercises)
+        buttonAddExercises = view.findViewById(R.id.button_add_exercises)
 
         recyclerViewExerciseInstances.visibility = View.INVISIBLE
 
@@ -159,14 +160,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
             }
         }
 
-        fabCalendar.setOnClickListener {
+        imageViewSelectDate.setOnClickListener {
             // Navigate to CalendarFragment, passing the selected date
             val action = HomeFragmentDirections
                 .actionHomeFragmentToCalendarFragment(selectedDate.toString())
             findNavController().navigate(action)
         }
 
-        extendedFabAddExercises.setOnClickListener {
+        buttonAddExercises.setOnClickListener {
             // Navigate to SelectCategoryFragment
             val action = HomeFragmentDirections
                 .actionHomeFragmentToSelectCategoryFragment(selectedDate.toString())

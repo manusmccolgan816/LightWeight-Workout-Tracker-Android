@@ -2,6 +2,8 @@ package com.example.lightweight.ui.category
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -33,8 +35,13 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
         val viewModel: CategoryViewModel by viewModels { factory }
 
-        // Set the action bar title
-        activity?.title = "Select Category"
+        // Set the toolbar title
+        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+        textViewToolbarTitle.text = resources.getString(R.string.string_select_category)
+
+        // Remove the select date icon
+        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+        imageViewSelectDate.visibility = View.GONE
 
         searchViewCategories = view.findViewById(R.id.search_view_categories)
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
