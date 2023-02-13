@@ -80,6 +80,10 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             }
         }
 
+        // Remove the share icon
+        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        imageViewShareWorkout.visibility = View.GONE
+
         // Remove the select date icon
         val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
         imageViewSelectDate.visibility = View.GONE

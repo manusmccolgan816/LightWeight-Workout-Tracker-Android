@@ -66,6 +66,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
         textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
 
+        // Set the share icon to be visible
+        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        imageViewShareWorkout.visibility = View.VISIBLE
+
         // Set the select date icon to be visible
         val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
         imageViewSelectDate.visibility = View.VISIBLE
@@ -158,6 +162,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                         Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
             }
+        }
+
+        imageViewShareWorkout.setOnClickListener {
+
         }
 
         imageViewSelectDate.setOnClickListener {

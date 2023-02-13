@@ -25,13 +25,22 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onViewCreated(view, savedInstanceState)
 
         // Set the toolbar title
-        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+        val textViewToolbarTitle =
+            requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
         if (textViewToolbarTitle != null) {
             textViewToolbarTitle.text = resources.getString(R.string.string_settings)
         }
 
+        // Remove the share icon
+        val imageViewShareWorkout =
+            requireActivity().findViewById<ImageView>(R.id.image_view_share_workout)
+        if (imageViewShareWorkout != null) {
+            imageViewShareWorkout.visibility = View.GONE
+        }
+
         // Remove the select date icon
-        val imageViewSelectDate = requireActivity().findViewById<ImageView>(R.id.image_view_select_date)
+        val imageViewSelectDate =
+            requireActivity().findViewById<ImageView>(R.id.image_view_select_date)
         if (imageViewSelectDate != null) {
             imageViewSelectDate.visibility = View.GONE
         }
@@ -53,17 +62,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 ) == "System default"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
-            else if (sharedPreferences.getString(
+            } else if (sharedPreferences.getString(
                     "theme",
-                        "System default"
+                    "System default"
                 ) == "Light"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 requireActivity().recreate()
             } else if (sharedPreferences.getString(
                     "theme",
-                        "System default"
+                    "System default"
                 ) == "Dark"
             ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
