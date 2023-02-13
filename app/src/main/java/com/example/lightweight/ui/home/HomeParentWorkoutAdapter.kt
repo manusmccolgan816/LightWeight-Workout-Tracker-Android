@@ -39,7 +39,9 @@ class HomeParentWorkoutAdapter(
         exerciseInstanceFactory
     }
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-    private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels { trainingSetFactory }
+    private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels {
+        trainingSetFactory
+    }
 
     private lateinit var parent: ViewGroup
 

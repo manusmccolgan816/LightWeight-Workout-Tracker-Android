@@ -75,13 +75,15 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             val cycle = cycleViewModel.getCycleOfID(cycleID)
             ref?.runOnUiThread {
                 // Set the toolbar title
-                val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+                val textViewToolbarTitle =
+                    requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
                 textViewToolbarTitle.text = cycle.cycleName
             }
         }
 
         // Remove the share icon
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        val imageViewShareWorkout =
+            activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.GONE
 
         // Remove the select date icon

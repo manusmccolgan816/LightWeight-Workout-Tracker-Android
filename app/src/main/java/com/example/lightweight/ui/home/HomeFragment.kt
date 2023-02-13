@@ -168,7 +168,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         }
 
         imageViewShareWorkout.setOnClickListener {
-            ShareWorkoutDialog(requireContext(), idNamePairs).show()
+//            ShareWorkoutDialog(requireContext(), idNamePairs, this).show()
+            val dialog = ShareWorkoutDialogFragment(idNamePairs, this)
+            dialog.show(requireActivity().supportFragmentManager, "ShareWorkout")
         }
 
         imageViewSelectDate.setOnClickListener {
