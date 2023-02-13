@@ -27,11 +27,12 @@ class AddExerciseDialog(
         setContentView(R.layout.dialog_add_exercise)
 
         textViewNewExerciseCategoryName = findViewById(R.id.text_view_new_exercise_category_name)!!
+        editTextNewExerciseName = findViewById(R.id.edit_text_new_exercise_name)!!
+        buttonSaveNewExercise = findViewById(R.id.button_save_new_exercise)!!
+        buttonCancelNewExercise = findViewById(R.id.button_cancel_new_exercise)!!
+
         textViewNewExerciseCategoryName.text = category.categoryName
 
-        editTextNewExerciseName = findViewById(R.id.edit_text_new_exercise_name)!!
-
-        buttonSaveNewExercise = findViewById(R.id.button_save_new_exercise)!!
         buttonSaveNewExercise.setOnClickListener {
             val name = editTextNewExerciseName.text.toString().trim()
 
@@ -49,7 +50,6 @@ class AddExerciseDialog(
             dismiss()
         }
 
-        buttonCancelNewExercise = findViewById(R.id.button_cancel_new_exercise)!!
         buttonCancelNewExercise.setOnClickListener {
             cancel()
         }

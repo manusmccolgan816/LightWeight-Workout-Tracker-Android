@@ -69,7 +69,8 @@ class HomeParentWorkoutAdapter(
         textViewExerciseName.text = curName
 
         // Set up the child recycler view
-        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(recyclerViewPopulated,
+        val homeChildWorkoutAdapter = HomeChildWorkoutAdapter(
+            recyclerViewPopulated,
             listOf(),
             curID,
             fragment

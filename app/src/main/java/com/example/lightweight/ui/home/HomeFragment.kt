@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
@@ -53,6 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     // has been moved. This ensures that only the changed exercise instance numbers are updated in
     // onPause().
     private var exerciseInstanceIDisMoved: ArrayList<Pair<Int?, Boolean>> = arrayListOf()
+    private var idNamePairs: List<IdNamePair> = listOf()
 
     private lateinit var textViewSelectedDate: TextView
     private lateinit var progressBar: ProgressBar
@@ -150,6 +152,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                         }
 
                         adapter.idNamePairs = it
+                        idNamePairs = it
 
                         exerciseInstanceIDisMoved.clear()
                         // Populate the list with every exercise instance's ID and associated
@@ -165,7 +168,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         }
 
         imageViewShareWorkout.setOnClickListener {
-
+            ShareWorkoutDialog(requireContext(), idNamePairs).show()
         }
 
         imageViewSelectDate.setOnClickListener {
