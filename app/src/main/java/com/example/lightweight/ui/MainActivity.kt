@@ -38,8 +38,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             Log.d(logTag, "Theme is System default")
-        }
-        else if (sharedPreferences.getString(
+        } else if (sharedPreferences.getString(
                 "theme",
                 "System default"
             ) == "Light"

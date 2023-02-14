@@ -26,4 +26,7 @@ class WorkoutViewModel(private val repository: WorkoutRepository) : ViewModel() 
     fun getWorkoutOfDate(date: String) = repository.getWorkoutOfDate(date)
 
     fun getWorkoutDates() = repository.getWorkoutDates()
+
+    fun getWorkoutOfExerciseInstance(exerciseInstanceID: Int?) =
+        repository.getWorkoutOfExerciseInstance(exerciseInstanceID)
 }

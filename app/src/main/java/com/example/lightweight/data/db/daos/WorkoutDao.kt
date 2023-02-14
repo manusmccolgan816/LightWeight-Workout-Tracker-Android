@@ -25,4 +25,11 @@ interface WorkoutDao {
 
     @Query("SELECT date FROM WORKOUT ORDER BY date")
     fun getWorkoutDates(): LiveData<List<String>>
+
+    @Query("SELECT W.workout_ID " +
+            "FROM WORKOUT AS W " +
+            "INNER JOIN EXERCISE_INSTANCE AS EI " +
+            "ON W.workout_ID = EI.workout_ID " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    fun getWorkoutOfExerciseInstance(exerciseInstanceID: Int?): Int?
 }
