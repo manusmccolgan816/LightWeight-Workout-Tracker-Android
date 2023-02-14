@@ -69,7 +69,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
 
         // Set the share icon to be visible
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        val imageViewShareWorkout =
+            activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.VISIBLE
 
         // Set the select date icon to be visible
@@ -100,7 +101,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                 recyclerViewExerciseInstances.visibility = View.VISIBLE
             },
             listOf(),
-            this)
+            this
+        )
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
@@ -168,8 +170,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         }
 
         imageViewShareWorkout.setOnClickListener {
-//            ShareWorkoutDialog(requireContext(), idNamePairs, this).show()
-            val dialog = ShareWorkoutDialogFragment(idNamePairs, this)
+            if (idNamePairs.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "There is no workout to share on this date",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+            updateMovedExerciseInstanceNumbers()
+
+            val dialog = ShareWorkoutDialogFragment(selectedDate, idNamePairs, this)
             dialog.show(requireActivity().supportFragmentManager, "ShareWorkout")
         }
 
@@ -191,6 +203,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
     override fun onPause() {
         super.onPause()
 
+        updateMovedExerciseInstanceNumbers()
+    }
+
+    private fun updateMovedExerciseInstanceNumbers() {
         // Update the exercise instance numbers of those that were moved
         for (i in exerciseInstanceIDisMoved.indices) {
             if (exerciseInstanceIDisMoved[i].second) {

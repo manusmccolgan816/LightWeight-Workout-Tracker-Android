@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 
-class ShareWorkoutTrainingSetAdapter(
+class ShareWorkoutChildAdapter(
     var trainingSets: List<TrainingSet>,
     val exerciseInstanceID: Int?,
     private val fragment: Fragment
-) : RecyclerView.Adapter<ShareWorkoutTrainingSetAdapter.ShareWorkoutTrainingSetViewHolder>() {
+) : RecyclerView.Adapter<ShareWorkoutChildAdapter.ShareWorkoutTrainingSetViewHolder>() {
 
     private lateinit var sharedPreferences: SharedPreferences
 

@@ -8,6 +8,7 @@
         android:id="@+id/check_box_exercise_instance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -54,8 +54,17 @@ interface TrainingSetDao {
     )
     fun getTrainingSetsOfExerciseAndIsPR(exerciseID: Int?, isPR: Int): LiveData<List<TrainingSet>>
 
-    @Query("SELECT * FROM TRAINING_SET WHERE exercise_instance_ID = :exerciseInstanceID")
+    @Query("SELECT * " +
+            "FROM TRAINING_SET " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID " +
+            "ORDER BY training_set_number")
     fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>>
+
+    @Query("SELECT * " +
+            "FROM TRAINING_SET " +
+            "WHERE exercise_instance_ID = :exerciseInstanceID " +
+            "ORDER BY training_set_number")
+    fun getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID: Int?): List<TrainingSet>
 
     @Query(
         "SELECT * " +

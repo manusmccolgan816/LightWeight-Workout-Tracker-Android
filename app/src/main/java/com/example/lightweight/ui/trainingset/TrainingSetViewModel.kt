@@ -45,6 +45,9 @@ class TrainingSetViewModel(private val repository: TrainingSetRepository) : View
     fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?) =
         repository.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
 
+    fun getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID: Int?) =
+        repository.getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID)
+
     fun getTrainingSetsOfExerciseRepsIsPR(exerciseID: Int?, reps: Int, isPR: Int) =
         repository.getTrainingSetsOfExerciseRepsIsPR(exerciseID, reps, isPR)
 

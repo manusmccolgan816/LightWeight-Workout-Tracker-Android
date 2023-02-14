@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
@@ -18,10 +19,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-class ShareWorkoutAdapter(
+class ShareWorkoutParentAdapter(
     var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: Fragment
-) : RecyclerView.Adapter<ShareWorkoutAdapter.ShareWorkoutViewHolder>(), KodeinAware {
+) : RecyclerView.Adapter<ShareWorkoutParentAdapter.ShareWorkoutViewHolder>(), KodeinAware {
 
     override val kodein by kodein(fragment.requireContext())
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
@@ -32,6 +33,8 @@ class ShareWorkoutAdapter(
     private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels {
         trainingSetFactory
     }
+
+    val checkedIDNamePairs: ArrayList<IdNamePair> = arrayListOf()
 
     private lateinit var checkBoxExerciseInstance: AppCompatCheckBox
     private lateinit var recyclerViewShareTrainingSets: RecyclerView
@@ -52,19 +55,27 @@ class ShareWorkoutAdapter(
             holder.itemView.findViewById(R.id.recycler_view_share_training_sets)
 
         checkBoxExerciseInstance.text = curName
+        checkedIDNamePairs.add(idNamePairs[position])
+        checkBoxExerciseInstance.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                checkedIDNamePairs.add(idNamePairs[position])
+            } else {
+                checkedIDNamePairs.remove(idNamePairs[position])
+            }
+        }
 
-        val shareWorkoutTrainingSetAdapter = ShareWorkoutTrainingSetAdapter(
+        val shareWorkoutChildAdapter = ShareWorkoutChildAdapter(
             listOf(),
             curID,
             fragment
         )
         recyclerViewShareTrainingSets.layoutManager = LinearLayoutManager(holder.itemView.context)
-        recyclerViewShareTrainingSets.adapter = shareWorkoutTrainingSetAdapter
+        recyclerViewShareTrainingSets.adapter = shareWorkoutChildAdapter
 
         val trainingSetsObs = trainingSetViewModel.getTrainingSetsOfExerciseInstance(curID)
         trainingSetsObs.observe(fragment.viewLifecycleOwner) {
-            shareWorkoutTrainingSetAdapter.trainingSets = it
-            shareWorkoutTrainingSetAdapter.notifyItemRangeChanged(0, it.size)
+            shareWorkoutChildAdapter.trainingSets = it
+            shareWorkoutChildAdapter.notifyItemRangeChanged(0, it.size)
 
             trainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
         }
