@@ -69,8 +69,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
 
         // Set the share icon to be visible
-        val imageViewShareWorkout =
-            activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.VISIBLE
 
         // Set the select date icon to be visible

@@ -76,7 +76,6 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
         requireActivity().registerReceiver(timeReceiver, timeFilter)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun updateStopwatchValue(timeElapsed: Int) {
         val hours: Int = (timeElapsed / 60) / 60
         val minutes: Int = timeElapsed / 60

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -81,10 +82,10 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             }
         }
 
-        // Remove the share icon
+        // Set the share icon to be visible
         val imageViewShareWorkout =
             activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.GONE
+        imageViewShareWorkout.visibility = View.VISIBLE
 
         // Remove the select date icon
         val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
@@ -182,6 +183,10 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 cycleDayAdapter.cycleDays.size,
                 fun(cycleDay: CycleDay) { cycleDayViewModel.insert(cycleDay) }
             ).show()
+        }
+
+        imageViewShareWorkout.setOnClickListener {
+
         }
     }
 }
