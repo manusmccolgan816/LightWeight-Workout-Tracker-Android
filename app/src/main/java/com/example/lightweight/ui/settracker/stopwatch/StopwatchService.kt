@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import com.example.lightweight.R
 import com.example.lightweight.ui.MainActivity
@@ -171,8 +172,13 @@ class StopwatchService : Service() {
         val minutes: Int = timeElapsed.div(60)
         val seconds: Int = timeElapsed.rem(60)
 
-        val intent = Intent(this, MainActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+//        val intent = Intent(this, MainActivity::class.java)
+//        val pIntent = PendingIntent.getActivity(
+//            this,
+//            0,
+//            intent,
+//            PendingIntent.FLAG_ONE_SHOT
+//        )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
@@ -188,7 +194,7 @@ class StopwatchService : Service() {
             .setColor(Color.parseColor("#BEAEE2"))
             .setSmallIcon(R.drawable.ic_baseline_timer_24)
             .setOnlyAlertOnce(true)
-            .setContentIntent(pIntent)
+//            .setContentIntent(pIntent)
             .setAutoCancel(true)
             .build()
     }
@@ -210,7 +216,6 @@ class StopwatchService : Service() {
      * Another timer is run to update the notification every second.
      */
     private fun moveToForeground() {
-
         if (isStopWatchRunning) {
             startForeground(1, buildNotification())
 

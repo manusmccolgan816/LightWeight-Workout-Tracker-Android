@@ -52,7 +52,6 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
         val statusFilter = IntentFilter()
         statusFilter.addAction(StopwatchService.STOPWATCH_STATUS)
         statusReceiver = object : BroadcastReceiver() {
-            @SuppressLint("SetTextI18n")
             override fun onReceive(p0: Context?, p1: Intent?) {
                 val isRunning = p1?.getBooleanExtra(StopwatchService.IS_STOPWATCH_RUNNING, false)!!
                 isStopwatchRunning = isRunning
