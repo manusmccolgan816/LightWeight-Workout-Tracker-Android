@@ -1,6 +1,6 @@
 package com.example.lightweight
 
-data class CycleData(
+data class CycleItem(
     var cycle_day_exercise_ID: Int?,
     val cycle_day_exercise_number: Int?,
     val exercise_name: String?,

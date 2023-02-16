@@ -22,7 +22,7 @@ import org.kodein.di.generic.instance
 class ShareWorkoutParentAdapter(
     var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: Fragment
-) : RecyclerView.Adapter<ShareWorkoutParentAdapter.ShareWorkoutViewHolder>(), KodeinAware {
+) : RecyclerView.Adapter<ShareWorkoutParentAdapter.ShareWorkoutParentViewHolder>(), KodeinAware {
 
     override val kodein by kodein(fragment.requireContext())
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
@@ -39,14 +39,14 @@ class ShareWorkoutParentAdapter(
     private lateinit var checkBoxExerciseInstance: AppCompatCheckBox
     private lateinit var recyclerViewShareTrainingSets: RecyclerView
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShareWorkoutViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShareWorkoutParentViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_share_workout, parent, false)
 
-        return ShareWorkoutViewHolder(view)
+        return ShareWorkoutParentViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ShareWorkoutViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ShareWorkoutParentViewHolder, position: Int) {
         val curID = idNamePairs[position].id
         val curName = idNamePairs[position].name
 
@@ -85,5 +85,5 @@ class ShareWorkoutParentAdapter(
         return idNamePairs.size
     }
 
-    inner class ShareWorkoutViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class ShareWorkoutParentViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

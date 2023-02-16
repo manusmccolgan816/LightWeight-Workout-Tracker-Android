@@ -58,9 +58,9 @@ class ShareWorkoutDialogFragment(
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         recyclerViewExerciseInstances =
-            view.findViewById(R.id.recycler_view_share_exercise_instances)!!
-        buttonShareWorkout = view.findViewById(R.id.button_share_workout)!!
-        buttonCancelShareWorkout = view.findViewById(R.id.button_cancel_share_workout)!!
+            view.findViewById(R.id.recycler_view_share_exercise_instances)
+        buttonShareWorkout = view.findViewById(R.id.button_share_workout)
+        buttonCancelShareWorkout = view.findViewById(R.id.button_cancel_share_workout)
 
         val adapter = ShareWorkoutParentAdapter(idNamePairs, fragment)
         recyclerViewExerciseInstances.layoutManager = LinearLayoutManager(context)

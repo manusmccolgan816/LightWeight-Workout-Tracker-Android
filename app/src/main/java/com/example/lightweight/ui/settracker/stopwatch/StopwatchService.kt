@@ -172,14 +172,6 @@ class StopwatchService : Service() {
         val minutes: Int = timeElapsed.div(60)
         val seconds: Int = timeElapsed.rem(60)
 
-//        val intent = Intent(this, MainActivity::class.java)
-//        val pIntent = PendingIntent.getActivity(
-//            this,
-//            0,
-//            intent,
-//            PendingIntent.FLAG_ONE_SHOT
-//        )
-
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
             .setOngoing(true)
@@ -194,7 +186,6 @@ class StopwatchService : Service() {
             .setColor(Color.parseColor("#BEAEE2"))
             .setSmallIcon(R.drawable.ic_baseline_timer_24)
             .setOnlyAlertOnce(true)
-//            .setContentIntent(pIntent)
             .setAutoCancel(true)
             .build()
     }

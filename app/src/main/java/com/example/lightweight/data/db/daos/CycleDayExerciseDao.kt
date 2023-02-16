@@ -2,7 +2,7 @@ package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.lightweight.CycleData
+import com.example.lightweight.CycleItem
 import com.example.lightweight.data.db.entities.CycleDayExercise
 
 @Dao
@@ -34,7 +34,7 @@ interface CycleDayExerciseDao {
             "ON CDE.exercise_ID = E.exercise_ID " +
             "WHERE cycle_ID = :cycleID " +
             "ORDER BY cycle_day_number, cycle_day_category_number, cycle_day_exercise_number")
-    fun getCycleDataOfCycleID(cycleID: Int?): LiveData<List<CycleData>>
+    fun getCycleItemsOfCycleID(cycleID: Int?): LiveData<List<CycleItem>>
 
     @Query("SELECT COUNT(cycle_day_exercise_number)" +
             "FROM CYCLE_DAY_EXERCISE " +

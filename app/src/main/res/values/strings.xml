@@ -98,7 +98,7 @@
     <string name="string_number_rep">%1d rep</string>
     <string name="string_number_reps">%1d reps</string>
     <string name="string_select_date_low">Select date</string>
-    <string name="string_share_workout">Share workout</string>
-    <string name="string_share_workout_title">Share Workout</string>
+    <string name="string_share_workout">Share Workout</string>
+    <string name="string_share_training_cycle">Share Training Cycle</string>
     <string name="string_share">Share</string>
 </resources>

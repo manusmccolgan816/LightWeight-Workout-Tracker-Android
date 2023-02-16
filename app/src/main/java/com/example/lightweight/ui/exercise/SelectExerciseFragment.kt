@@ -30,8 +30,6 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
     private val args: SelectExerciseFragmentArgs by navArgs()
 
-    private lateinit var exercises: List<Exercise>
-
     private lateinit var searchViewExercises: SearchView
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var fabAddExercise: FloatingActionButton
@@ -44,6 +42,7 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
         val adapter = ExerciseItemAdapter(args.selectedDate, listOf(), exerciseViewModel, this)
 
         val categoryID = args.categoryID
+        var exercises: List<Exercise> = listOf()
 
         searchViewExercises = view.findViewById(R.id.search_view_exercises)
         recyclerViewExercises = view.findViewById(R.id.recycler_view_exercises)
@@ -62,7 +61,8 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
         }
 
         // Remove the share icon
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        val imageViewShareWorkout =
+            activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.GONE
 
         // Remove the select date icon

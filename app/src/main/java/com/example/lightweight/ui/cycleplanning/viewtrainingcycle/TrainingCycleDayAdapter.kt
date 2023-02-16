@@ -161,7 +161,8 @@ class TrainingCycleDayAdapter(
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
                 imageViewAddExercise = holder.itemView.findViewById(R.id.image_view_add_exercise)
-                imageViewDeleteCategory = holder.itemView.findViewById(R.id.image_view_delete_category)
+                imageViewDeleteCategory =
+                    holder.itemView.findViewById(R.id.image_view_delete_category)
 
                 textViewTrainingCycleDayCategory.text = curCategoryName
 
@@ -236,7 +237,8 @@ class TrainingCycleDayAdapter(
 
                 textViewTrainingCycleDayExercise =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)
-                imageViewDeleteExercise = holder.itemView.findViewById(R.id.image_view_delete_exercise)
+                imageViewDeleteExercise =
+                    holder.itemView.findViewById(R.id.image_view_delete_exercise)
 
                 textViewTrainingCycleDayExercise.text = curExerciseName
 

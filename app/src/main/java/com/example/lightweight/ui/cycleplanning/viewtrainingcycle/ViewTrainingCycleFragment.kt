@@ -105,7 +105,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingCycleDays.adapter = cycleDayAdapter
 
-        cycleDayExerciseViewModel.getCycleDataOfCycleID(cycleID).observe(viewLifecycleOwner) {
+        cycleDayExerciseViewModel.getCycleItemsOfCycleID(cycleID).observe(viewLifecycleOwner) { cycleItems ->
             val cycleDays: ArrayList<CycleDay> = arrayListOf()
             val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
             val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
@@ -117,28 +117,28 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
             // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
             // amended
-            for (i in it) {
-                val cycleDay = CycleDay(cycleID, i.cycle_day_name, i.cycle_day_number)
-                cycleDay.cycleDayID = i.cycle_day_ID
+            for (item in cycleItems) {
+                val cycleDay = CycleDay(cycleID, item.cycle_day_name, item.cycle_day_number)
+                cycleDay.cycleDayID = item.cycle_day_ID
                 if (cycleDay !in cycleDays) {
                     cycleDays.add(cycleDay)
                 }
 
-                if (i.category_name != null) {
+                if (item.category_name != null) {
                     val cycleDayCat = CycleDayCategoryCombo(
-                        i.cycle_day_category_ID,
-                        i.category_name,
-                        i.cycle_day_ID
+                        item.cycle_day_category_ID,
+                        item.category_name,
+                        item.cycle_day_ID
                     )
                     if (cycleDayCat !in catCombos) {
                         catCombos.add(cycleDayCat)
                     }
 
-                    if (i.exercise_name != null) {
+                    if (item.exercise_name != null) {
                         val cycleDayCatEx = CycleDayCategoryExerciseCombo(
-                            i.cycle_day_exercise_ID,
-                            i.exercise_name,
-                            i.cycle_day_category_ID
+                            item.cycle_day_exercise_ID,
+                            item.exercise_name,
+                            item.cycle_day_category_ID
                         )
                         if (cycleDayCatEx !in exCombos) {
                             exCombos.add(cycleDayCatEx)
