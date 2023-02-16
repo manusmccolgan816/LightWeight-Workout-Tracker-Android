@@ -58,10 +58,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
     private var cycleID: Int? = null
 
-    private var items = arrayListOf<Pair<Int, Int?>>()
-    private var cycleDayCatCombos = arrayListOf<CycleDayCategoryCombo>()
-    private var cycleDayCatExCombos = arrayListOf<CycleDayCategoryExerciseCombo>()
-
     private lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
 
@@ -73,12 +69,12 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         val ref = this.activity
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val cycle = cycleViewModel.getCycleOfID(cycleID)
+            val cycleName = cycleViewModel.getCycleOfID(cycleID).cycleName
             ref?.runOnUiThread {
                 // Set the toolbar title
                 val textViewToolbarTitle =
                     requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
-                textViewToolbarTitle.text = cycle.cycleName
+                textViewToolbarTitle.text = cycleName
             }
         }
 
@@ -186,7 +182,19 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         }
 
         imageViewShareWorkout.setOnClickListener {
+            // If there are no cycle items (training days, categories or exercises)...
+            if (cycleDayAdapter.items.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "There is nothing to share in this training cycle",
+                    Toast.LENGTH_SHORT
+                ).show()
 
+                return@setOnClickListener
+            }
+
+            val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
+            dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
         }
     }
 }

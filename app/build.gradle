@@ -82,6 +82,4 @@ dependencies {
 
     // Preference library
     implementation "androidx.preference:preference-ktx:1.2.0"
-
-    implementation 'androidx.work:work-runtime-ktx:2.8.0'
 }

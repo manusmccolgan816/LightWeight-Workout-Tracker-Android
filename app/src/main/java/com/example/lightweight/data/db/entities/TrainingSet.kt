@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
         entity = ExerciseInstance::class,
         childColumns = ["exercise_instance_ID"],
         parentColumns = ["exercise_instance_ID"],
-        onDelete = CASCADE // When an exercise instance is deleted, so is the set
+        onDelete = CASCADE
     )]
 )
 class TrainingSet(

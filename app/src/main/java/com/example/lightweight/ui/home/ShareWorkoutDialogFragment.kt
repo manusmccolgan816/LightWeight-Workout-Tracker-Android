@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
-import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +38,7 @@ class ShareWorkoutDialogFragment(
 
     override val kodein by kodein(fragment.requireContext())
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-    private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels {
+    private val trainingSetViewModel: TrainingSetViewModel by viewModels {
         trainingSetFactory
     }
 
@@ -69,7 +67,7 @@ class ShareWorkoutDialogFragment(
         buttonShareWorkout.setOnClickListener {
             val checkedIDNamePairs = adapter.checkedIDNamePairs
 
-            // Only share the workout if at least one exercise instance has been selected
+            // Only share the workout if at least one exercise instance is selected
             if (checkedIDNamePairs.isEmpty()) {
                 Toast.makeText(context, "Select at least one exercise to share", Toast.LENGTH_SHORT)
                     .show()

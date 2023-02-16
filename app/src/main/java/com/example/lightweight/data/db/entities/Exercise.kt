@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
         entity = Category::class,
         childColumns = ["category_ID"],
         parentColumns = ["category_ID"],
-        onDelete = CASCADE // When a category is deleted, all its child exercises are too
+        onDelete = CASCADE
     )]
 )
 data class Exercise(

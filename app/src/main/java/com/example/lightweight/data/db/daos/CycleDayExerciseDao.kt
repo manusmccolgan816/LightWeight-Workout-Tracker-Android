@@ -2,6 +2,7 @@ package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.lightweight.CycleDayCategoryExerciseCombo
 import com.example.lightweight.CycleItem
 import com.example.lightweight.data.db.entities.CycleDayExercise
 
@@ -40,4 +41,14 @@ interface CycleDayExerciseDao {
             "FROM CYCLE_DAY_EXERCISE " +
             "WHERE cycle_day_category_ID = :cycleDayCategoryID")
     fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?): LiveData<Int>
+
+    @Query("SELECT CDE.cycle_day_exercise_ID, E.exercise_name, CDC.cycle_day_category_ID " +
+            "FROM CYCLE_DAY_CATEGORY AS CDC " +
+            "INNER JOIN CYCLE_DAY_EXERCISE AS CDE " +
+            "ON CDC.cycle_day_category_ID = CDE.cycle_day_category_ID " +
+            "INNER JOIN EXERCISE AS E " +
+            "ON CDE.exercise_ID = E.exercise_ID " +
+            "WHERE CDC.cycle_day_category_ID = :cycleDayCategoryID " +
+            "ORDER BY cycle_day_exercise_number")
+    fun getCycleDayCatExCombosOfCycleDayCategory(cycleDayCategoryID: Int?): List<CycleDayCategoryExerciseCombo>
 }
