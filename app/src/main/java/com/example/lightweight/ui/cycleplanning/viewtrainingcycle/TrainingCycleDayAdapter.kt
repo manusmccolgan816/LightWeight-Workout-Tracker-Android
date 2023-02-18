@@ -66,6 +66,7 @@ class TrainingCycleDayAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.parent = parent
 
+        // Inflate the view with a different layout depending on the item type
         val viewHolder: RecyclerView.ViewHolder = when (viewType) {
             LAYOUT_CYCLE_DAY -> {
                 val view = LayoutInflater.from(parent.context)
@@ -92,14 +93,14 @@ class TrainingCycleDayAdapter(
             LAYOUT_CYCLE_DAY -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDay")
 
-                var numPriorValues = 0
+                var numPriorCycleDays = 0
                 for (i in 0..position) {
                     if (items[i].first != LAYOUT_CYCLE_DAY) {
-                        numPriorValues++
+                        numPriorCycleDays++
                     }
                 }
 
-                val curCycleDay = cycleDays[position - numPriorValues]
+                val curCycleDay = cycleDays[position - numPriorCycleDays]
 
                 textViewTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)
@@ -148,15 +149,16 @@ class TrainingCycleDayAdapter(
             LAYOUT_CYCLE_DAY_CAT -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayCategory")
 
-                var numPriorValues = 0
+                var numPriorCycleDayCats = 0
                 for (i in 0..position) {
                     if (items[i].first != LAYOUT_CYCLE_DAY_CAT) {
-                        numPriorValues++
+                        numPriorCycleDayCats++
                     }
                 }
 
-                val curCategoryName = idNamePairsCategory[position - numPriorValues].second
-                val curCycleDayCategoryID = idNamePairsCategory[position - numPriorValues].first
+                val curCategoryName = idNamePairsCategory[position - numPriorCycleDayCats].second
+                val curCycleDayCategoryID =
+                    idNamePairsCategory[position - numPriorCycleDayCats].first
 
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
@@ -225,15 +227,16 @@ class TrainingCycleDayAdapter(
             LAYOUT_CYCLE_DAY_EX -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayExercise")
 
-                var numPriorValues = 0
+                var numPriorCycleDayExs = 0
                 for (i in 0..position) {
                     if (items[i].first != LAYOUT_CYCLE_DAY_EX) {
-                        numPriorValues++
+                        numPriorCycleDayExs++
                     }
                 }
 
-                val curExerciseName = idNamePairsExercise[position - numPriorValues].second
-                val curCycleDayExerciseID = idNamePairsExercise[position - numPriorValues].first
+                val curExerciseName = idNamePairsExercise[position - numPriorCycleDayExs].second
+                val curCycleDayExerciseID =
+                    idNamePairsExercise[position - numPriorCycleDayExs].first
 
                 textViewTrainingCycleDayExercise =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)

@@ -42,14 +42,10 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
     override val kodein by kodein()
     private val cycleFactory: CycleViewModelFactory by instance()
     private val cycleDayFactory: CycleDayViewModelFactory by instance()
-    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
     private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
 
     private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
     private val cycleDayViewModel: CycleDayViewModel by viewModels { cycleDayFactory }
-    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by viewModels {
-        cycleDayCategoryFactory
-    }
     private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by viewModels {
         cycleDayExerciseFactory
     }
@@ -182,7 +178,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         }
 
         imageViewShareWorkout.setOnClickListener {
-            // If there are no cycle items (training days, categories or exercises)...
+            // If there are no cycle items (cycle days, categories or exercises)...
             if (cycleDayAdapter.items.isEmpty()) {
                 Toast.makeText(
                     context,

@@ -22,7 +22,6 @@ class ExerciseViewModel(private val repository: ExerciseRepository) : ViewModel(
         repository.delete(exercise)
     }
 
-    // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllExercises() = repository.getAllExercises()
 
     fun getExerciseOfID(exerciseID: Int?) = repository.getExerciseOfID(exerciseID)

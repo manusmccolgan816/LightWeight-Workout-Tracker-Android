@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
 
@@ -59,14 +58,14 @@ class ShareTrainingCycleAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             LAYOUT_CYCLE_DAY -> {
-                var numPriorValues = 0
+                var numPriorCycleDays = 0
                 for (i in 0..position) {
                     if (items[i].first != TrainingCycleDayAdapter.LAYOUT_CYCLE_DAY) {
-                        numPriorValues++
+                        numPriorCycleDays++
                     }
                 }
 
-                val curCycleDay = cycleDays[position - numPriorValues]
+                val curCycleDay = cycleDays[position - numPriorCycleDays]
 
                 checkBoxCycleDay = holder.itemView.findViewById(R.id.check_box_cycle_day)
 
@@ -82,14 +81,14 @@ class ShareTrainingCycleAdapter(
                 }
             }
             LAYOUT_CYCLE_DAY_CAT -> {
-                var numPriorValues = 0
+                var numPriorCycleDayCats = 0
                 for (i in 0..position) {
                     if (items[i].first != TrainingCycleDayAdapter.LAYOUT_CYCLE_DAY_CAT) {
-                        numPriorValues++
+                        numPriorCycleDayCats++
                     }
                 }
 
-                val curCategoryName = idNamePairsCategory[position - numPriorValues].second
+                val curCategoryName = idNamePairsCategory[position - numPriorCycleDayCats].second
 
                 textViewTrainingCycleDayCategory =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_category)
@@ -97,14 +96,14 @@ class ShareTrainingCycleAdapter(
                 textViewTrainingCycleDayCategory.text = curCategoryName
             }
             LAYOUT_CYCLE_DAY_EX -> {
-                var numPriorValues = 0
+                var numPriorCycleDayExs = 0
                 for (i in 0..position) {
                     if (items[i].first != TrainingCycleDayAdapter.LAYOUT_CYCLE_DAY_EX) {
-                        numPriorValues++
+                        numPriorCycleDayExs++
                     }
                 }
 
-                val curExerciseName = idNamePairsExercise[position - numPriorValues].second
+                val curExerciseName = idNamePairsExercise[position - numPriorCycleDayExs].second
 
                 textViewTrainingCycleDayExercise =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)

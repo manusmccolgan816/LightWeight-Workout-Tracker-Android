@@ -23,15 +23,6 @@ class CycleDayCategoryViewModel(private val repository: CycleDayCategoryReposito
 
     fun getAllCycleDayCategories() = repository.getAllCycleDayCategories()
 
-    fun getCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
-        repository.getCycleDayCategoriesOfCycleDay(cycleDayID)
-
-    fun getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID: Int?) =
-        repository.getCycleDayCategoriesAndNamesOfCycleDay(cycleDayID)
-
-    fun getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDayID: Int?) =
-        repository.getCycleDayCategoriesNamesCycleDaysOfCycleDay(cycleDayID)
-
     fun getCycleDayCatCombosOfCycle(cycleID: Int?) =
         repository.getCycleDayCatCombosOfCycle(cycleID)
 
