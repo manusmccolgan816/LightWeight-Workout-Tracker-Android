@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -18,13 +19,14 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class CategoryDaoTest {
+class ExerciseDaoTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: WorkoutDatabase
-    private lateinit var dao: CategoryDao
+    private lateinit var categoryDao: CategoryDao
+    private lateinit var exerciseDao: ExerciseDao
 
     @Before
     fun setup() {
@@ -32,7 +34,8 @@ class CategoryDaoTest {
             ApplicationProvider.getApplicationContext(),
             WorkoutDatabase::class.java
         ).allowMainThreadQueries().build()
-        dao = database.getCategoryDao()
+        categoryDao = database.getCategoryDao()
+        exerciseDao = database.getExerciseDao()
     }
 
     @After
@@ -43,22 +46,28 @@ class CategoryDaoTest {
     @Test
     fun insertTest(): Unit = runBlocking {
         val category = Category("Full body")
-        dao.insert(category)
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exerciseDao.insert(exercise)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allExercises = exerciseDao.getAllExercises().getOrAwaitValue()
 
-        assertThat(allCategories).contains(category)
+        assertThat(allExercises).contains(exercise)
     }
 
     @Test
     fun deleteTest() = runBlocking {
         val category = Category("Neck")
         category.categoryID = 1
-        dao.insert(category)
-        dao.delete(category)
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        exerciseDao.delete(exercise)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allExercises = exerciseDao.getAllExercises().getOrAwaitValue()
 
-        assertThat(allCategories).doesNotContain(category)
+        assertThat(allExercises).doesNotContain(exercise)
     }
 }

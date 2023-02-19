@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.example.lightweight.data.db.WorkoutDatabase
-import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.data.db.entities.Workout
 import com.example.lightweight.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -18,13 +18,13 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class CategoryDaoTest {
+class WorkoutDaoTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: WorkoutDatabase
-    private lateinit var dao: CategoryDao
+    private lateinit var dao: WorkoutDao
 
     @Before
     fun setup() {
@@ -32,7 +32,7 @@ class CategoryDaoTest {
             ApplicationProvider.getApplicationContext(),
             WorkoutDatabase::class.java
         ).allowMainThreadQueries().build()
-        dao = database.getCategoryDao()
+        dao = database.getWorkoutDao()
     }
 
     @After
@@ -42,23 +42,23 @@ class CategoryDaoTest {
 
     @Test
     fun insertTest(): Unit = runBlocking {
-        val category = Category("Full body")
-        dao.insert(category)
+        val workout = Workout("07/10/2078", null)
+        dao.insert(workout)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allWorkouts = dao.getAllWorkouts().getOrAwaitValue()
 
-        assertThat(allCategories).contains(category)
+        assertThat(allWorkouts).contains(workout)
     }
 
     @Test
     fun deleteTest() = runBlocking {
-        val category = Category("Neck")
-        category.categoryID = 1
-        dao.insert(category)
-        dao.delete(category)
+        val workout = Workout("07/10/2078", null)
+        workout.workoutID = 1
+        dao.insert(workout)
+        dao.delete(workout)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allWorkouts = dao.getAllWorkouts().getOrAwaitValue()
 
-        assertThat(allCategories).doesNotContain(category)
+        assertThat(allWorkouts).doesNotContain(workout)
     }
 }

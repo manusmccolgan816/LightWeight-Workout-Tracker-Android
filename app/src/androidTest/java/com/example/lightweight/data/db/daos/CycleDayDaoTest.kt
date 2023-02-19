@@ -7,6 +7,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.data.db.entities.Cycle
+import com.example.lightweight.data.db.entities.CycleDay
+import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
@@ -18,13 +21,14 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class CategoryDaoTest {
+class CycleDayDaoTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: WorkoutDatabase
-    private lateinit var dao: CategoryDao
+    private lateinit var cycleDayDao: CycleDayDao
+    private lateinit var cycleDao: CycleDao
 
     @Before
     fun setup() {
@@ -32,7 +36,8 @@ class CategoryDaoTest {
             ApplicationProvider.getApplicationContext(),
             WorkoutDatabase::class.java
         ).allowMainThreadQueries().build()
-        dao = database.getCategoryDao()
+        cycleDayDao = database.getCycleDayDao()
+        cycleDao = database.getCycleDao()
     }
 
     @After
@@ -42,23 +47,29 @@ class CategoryDaoTest {
 
     @Test
     fun insertTest(): Unit = runBlocking {
-        val category = Category("Full body")
-        dao.insert(category)
+        val cycle = Cycle("3 Day Full Body", null)
+        cycle.cycleID = 1
+        cycleDao.insert(cycle)
+        val cycleDay = CycleDay(cycle.cycleID, "FB 1", 1)
+        cycleDayDao.insert(cycleDay)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allCycleDays = cycleDayDao.getAllCycleDays().getOrAwaitValue()
 
-        assertThat(allCategories).contains(category)
+        assertThat(allCycleDays).contains(cycleDay)
     }
 
     @Test
     fun deleteTest() = runBlocking {
-        val category = Category("Neck")
-        category.categoryID = 1
-        dao.insert(category)
-        dao.delete(category)
+        val cycle = Cycle("3 Day Full Body", null)
+        cycle.cycleID = 1
+        cycleDao.insert(cycle)
+        val cycleDay = CycleDay(cycle.cycleID, "FB 1", 1)
+        cycleDay.cycleDayID = 1
+        cycleDayDao.insert(cycleDay)
+        cycleDayDao.delete(cycleDay)
 
-        val allCategories = dao.getAllCategories().getOrAwaitValue()
+        val allCycleDays = cycleDayDao.getAllCycleDays().getOrAwaitValue()
 
-        assertThat(allCategories).doesNotContain(category)
+        assertThat(allCycleDays).doesNotContain(cycleDay)
     }
 }
