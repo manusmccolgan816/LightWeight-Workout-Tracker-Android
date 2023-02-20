@@ -1,11 +1,13 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -108,6 +110,27 @@ class TrainingCycleDayAdapter(
                 imageViewDeleteDay = holder.itemView.findViewById(R.id.image_view_delete_day)
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
+                textViewTrainingCycleDayName.setOnLongClickListener {
+                    val popupMenu = PopupMenu(parent.context, holder.itemView, Gravity.START)
+                    popupMenu.inflate(R.menu.cycle_day_popup_menu)
+                    popupMenu.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.menu_item_edit_cycle_day -> {
+                                EditTrainingCycleDayDialog(
+                                    fragment.requireContext(),
+                                    curCycleDay,
+                                    fun(cycleDay: CycleDay) {
+                                        cycleDayViewModel.update(cycleDay)
+                                    }
+                                ).show()
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    popupMenu.show()
+                    true
+                }
 
                 imageViewAddCategory.setOnClickListener {
                     val dialog = AddTrainingCycleDayCategoryDialogFragment(

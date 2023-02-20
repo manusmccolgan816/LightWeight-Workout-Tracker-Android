@@ -2,6 +2,8 @@ package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.CycleDayCategoryCombo
@@ -54,6 +57,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
     private var cycleID: Int? = null
 
+    private lateinit var cycleDayAdapter: TrainingCycleDayAdapter
+
     private lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
 
@@ -86,7 +91,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
 
-        val cycleDayAdapter = TrainingCycleDayAdapter(
+        cycleDayAdapter = TrainingCycleDayAdapter(
             arrayListOf(),
             arrayListOf(),
             arrayListOf(),
@@ -97,76 +102,77 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingCycleDays.adapter = cycleDayAdapter
 
-        cycleDayExerciseViewModel.getCycleItemsOfCycleID(cycleID).observe(viewLifecycleOwner) { cycleItems ->
-            val cycleDays: ArrayList<CycleDay> = arrayListOf()
-            val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
-            val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
+        cycleDayExerciseViewModel.getCycleItemsOfCycleID(cycleID)
+            .observe(viewLifecycleOwner) { cycleItems ->
+                val cycleDays: ArrayList<CycleDay> = arrayListOf()
+                val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
+                val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
 
-            cycleDayAdapter.items = arrayListOf()
-            cycleDayAdapter.cycleDays = arrayListOf()
-            cycleDayAdapter.idNamePairsCategory = arrayListOf()
-            cycleDayAdapter.idNamePairsExercise = arrayListOf()
+                cycleDayAdapter.items = arrayListOf()
+                cycleDayAdapter.cycleDays = arrayListOf()
+                cycleDayAdapter.idNamePairsCategory = arrayListOf()
+                cycleDayAdapter.idNamePairsExercise = arrayListOf()
 
-            // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
-            // amended
-            for (item in cycleItems) {
-                val cycleDay = CycleDay(cycleID, item.cycle_day_name, item.cycle_day_number)
-                cycleDay.cycleDayID = item.cycle_day_ID
-                if (cycleDay !in cycleDays) {
-                    cycleDays.add(cycleDay)
-                }
-
-                if (item.category_name != null) {
-                    val cycleDayCat = CycleDayCategoryCombo(
-                        item.cycle_day_category_ID,
-                        item.category_name,
-                        item.cycle_day_ID
-                    )
-                    if (cycleDayCat !in catCombos) {
-                        catCombos.add(cycleDayCat)
+                // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
+                // amended
+                for (item in cycleItems) {
+                    val cycleDay = CycleDay(cycleID, item.cycle_day_name, item.cycle_day_number)
+                    cycleDay.cycleDayID = item.cycle_day_ID
+                    if (cycleDay !in cycleDays) {
+                        cycleDays.add(cycleDay)
                     }
 
-                    if (item.exercise_name != null) {
-                        val cycleDayCatEx = CycleDayCategoryExerciseCombo(
-                            item.cycle_day_exercise_ID,
-                            item.exercise_name,
-                            item.cycle_day_category_ID
+                    if (item.category_name != null) {
+                        val cycleDayCat = CycleDayCategoryCombo(
+                            item.cycle_day_category_ID,
+                            item.category_name,
+                            item.cycle_day_ID
                         )
-                        if (cycleDayCatEx !in exCombos) {
-                            exCombos.add(cycleDayCatEx)
+                        if (cycleDayCat !in catCombos) {
+                            catCombos.add(cycleDayCat)
                         }
-                    }
-                }
-            }
 
-            for (cycleDay in cycleDays) {
-                // Add the cycle day to the end of items
-                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
-                cycleDayAdapter.cycleDays.add(cycleDay)
-
-                for (catCombo in catCombos) {
-                    if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
-                        // Add the cycle day category to the end of items
-                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_CAT, null))
-                        cycleDayAdapter.idNamePairsCategory.add(
-                            Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
-                        )
-
-                        for (exCombo in exCombos) {
-                            // Add the cycle day exercise to the end of items
-                            if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
-                                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_EX, null))
-                                cycleDayAdapter.idNamePairsExercise.add(
-                                    Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
-                                )
+                        if (item.exercise_name != null) {
+                            val cycleDayCatEx = CycleDayCategoryExerciseCombo(
+                                item.cycle_day_exercise_ID,
+                                item.exercise_name,
+                                item.cycle_day_category_ID
+                            )
+                            if (cycleDayCatEx !in exCombos) {
+                                exCombos.add(cycleDayCatEx)
                             }
                         }
                     }
                 }
-            }
 
-            cycleDayAdapter.notifyDataSetChanged()
-        }
+                for (cycleDay in cycleDays) {
+                    // Add the cycle day to the end of items
+                    cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
+                    cycleDayAdapter.cycleDays.add(cycleDay)
+
+                    for (catCombo in catCombos) {
+                        if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
+                            // Add the cycle day category to the end of items
+                            cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_CAT, null))
+                            cycleDayAdapter.idNamePairsCategory.add(
+                                Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
+                            )
+
+                            for (exCombo in exCombos) {
+                                // Add the cycle day exercise to the end of items
+                                if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
+                                    cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_EX, null))
+                                    cycleDayAdapter.idNamePairsExercise.add(
+                                        Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                cycleDayAdapter.notifyDataSetChanged()
+            }
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(

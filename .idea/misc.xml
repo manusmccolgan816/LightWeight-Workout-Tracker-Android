@@ -107,6 +107,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_exercise.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_training_cycle.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_training_cycle_day.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_training_cycle_day_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_add_training_cycle_day_exercise.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_category.xml" value="0.25416666666666665" />
@@ -114,6 +115,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_confirm_delete_training_set.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_edit_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_edit_exercise.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_edit_training_cycle_day.xml" value="0.264" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_edit_training_set.xml" value="0.264" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_set_note.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/dialog_share_training_cycle.xml" value="0.16" />
@@ -150,6 +152,7 @@
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_training_set.xml" value="0.4" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/layout/item_workout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/category_popup_menu.xml" value="0.1" />
+        <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/cycle_day_popup_menu.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/menu_bottom_nav_set_tracker.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/manus/LightWeight-Workout-Tracker-Android/app/src/main/res/menu/training_set_popup_menu.xml" value="0.25416666666666665" />
       </map>
