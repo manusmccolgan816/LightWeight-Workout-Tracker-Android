@@ -120,12 +120,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
                 selectedDatePosition,
                 todayPosition,
                 workoutPositions,
+                this,
                 this
             )
 
         } else {
             // ...pass a null value so that no date is highlighted
-            CalendarAdapter(daysInMonth, null, todayPosition, workoutPositions, this)
+            CalendarAdapter(daysInMonth, null, todayPosition, workoutPositions, this, this)
         }
 
         val layoutManager: RecyclerView.LayoutManager =

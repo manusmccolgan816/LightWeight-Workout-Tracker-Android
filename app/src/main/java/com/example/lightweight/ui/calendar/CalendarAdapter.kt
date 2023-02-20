@@ -1,10 +1,12 @@
 package com.example.lightweight.ui.calendar
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 
@@ -13,7 +15,8 @@ class CalendarAdapter(
     private val selectedDayOfMonthPosition: Int?,
     private val todayPosition: Int?,
     private val workoutPositions: ArrayList<Int>,
-    private val onItemListener: OnItemListener
+    private val onItemListener: OnItemListener,
+    private val fragment: Fragment
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     private val logTag = "CalenderAdapter"
@@ -60,9 +63,16 @@ class CalendarAdapter(
             }
         }
 
-        // Embolden today's date
         if (todayPosition != null && position == todayPosition) {
+            // Embolden today's date
             holder.dayOfMonth.typeface = Typeface.DEFAULT_BOLD
+            // Set the text colour to the theme's icon colour
+            holder.dayOfMonth.setTextColor(
+                fragment.resources.getColor(
+                    R.color.iconColor,
+                    fragment.requireContext().theme
+                )
+            )
             Log.d(logTag, "Emboldening position $position")
         } else {
             holder.dayOfMonth.typeface = Typeface.DEFAULT
