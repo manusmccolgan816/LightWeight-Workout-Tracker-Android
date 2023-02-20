@@ -11,18 +11,22 @@ interface ExerciseInstanceDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(exerciseInstance: ExerciseInstance)
 
-    @Query("UPDATE EXERCISE_INSTANCE " +
-            "SET exercise_instance_number = :eiNumber " +
-            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    @Query(
+        "UPDATE EXERCISE_INSTANCE " +
+                "SET exercise_instance_number = :eiNumber " +
+                "WHERE exercise_instance_ID = :exerciseInstanceID"
+    )
     suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int)
 
-    @Query("UPDATE EXERCISE_INSTANCE " +
-            "SET exercise_instance_number = exercise_instance_number - 1 " +
-            "WHERE (SELECT W.workout_ID " +
-            "       FROM EXERCISE_INSTANCE AS EI " +
-            "       INNER JOIN WORKOUT AS W " +
-            "       ON EI.workout_ID = W.workout_ID) = :workoutID " +
-            "AND exercise_instance_number > :eiNumber")
+    @Query(
+        "UPDATE EXERCISE_INSTANCE " +
+                "SET exercise_instance_number = exercise_instance_number - 1 " +
+                "WHERE (SELECT W.workout_ID " +
+                "       FROM EXERCISE_INSTANCE AS EI " +
+                "       INNER JOIN WORKOUT AS W " +
+                "       ON EI.workout_ID = W.workout_ID) = :workoutID " +
+                "AND exercise_instance_number > :eiNumber"
+    )
     suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int)
 
     @Delete
@@ -86,10 +90,12 @@ interface ExerciseInstanceDao {
     )
     fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?): LiveData<Int?>
 
-    @Query("SELECT date " +
-            "FROM EXERCISE_INSTANCE AS EI " +
-            "INNER JOIN WORKOUT AS W " +
-            "ON EI.workout_ID = W.workout_ID " +
-            "WHERE exercise_instance_ID = :exerciseInstanceID")
+    @Query(
+        "SELECT date " +
+                "FROM EXERCISE_INSTANCE AS EI " +
+                "INNER JOIN WORKOUT AS W " +
+                "ON EI.workout_ID = W.workout_ID " +
+                "WHERE exercise_instance_ID = :exerciseInstanceID"
+    )
     fun getExerciseInstanceDate(exerciseInstanceID: Int?): LiveData<String>
 }

@@ -69,6 +69,62 @@ class ExerciseInstanceDaoTest {
     }
 
     @Test
+    fun updateExerciseInstanceNumberTest() = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val newEiNumber = 2
+        exerciseInstanceDao.updateExerciseInstanceNumber(
+            exerciseInstance.exerciseInstanceID,
+            newEiNumber
+        )
+
+        val allExerciseInstances = exerciseInstanceDao.getAllExerciseInstances().getOrAwaitValue()
+
+        assertThat(allExerciseInstances[0].exerciseInstanceNumber).isEqualTo(newEiNumber)
+    }
+
+    @Test
+    fun decrementExerciseInstanceNumbersAfterTest() = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance1 = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance1.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance1)
+        val exerciseInstance2 = ExerciseInstance(workout.workoutID, exercise.exerciseID, 2, null)
+        exerciseInstance2.exerciseInstanceID = 2
+        exerciseInstanceDao.insert(exerciseInstance2)
+        val exerciseInstance3 = ExerciseInstance(workout.workoutID, exercise.exerciseID, 3, null)
+        exerciseInstance3.exerciseInstanceID = 3
+        exerciseInstanceDao.insert(exerciseInstance3)
+        exerciseInstanceDao.decrementExerciseInstanceNumbersOfWorkoutAfter(workout.workoutID, 1)
+
+        val dbExerciseInstance2 =
+            exerciseInstanceDao.getExerciseInstanceOfID(exerciseInstance2.exerciseInstanceID)
+        val dbExerciseInstance3 =
+            exerciseInstanceDao.getExerciseInstanceOfID(exerciseInstance3.exerciseInstanceID)
+
+        assertThat(dbExerciseInstance2.exerciseInstanceNumber).isEqualTo(1)
+        assertThat(dbExerciseInstance3.exerciseInstanceNumber).isEqualTo(2)
+    }
+
+    @Test
     fun deleteTest() = runBlocking {
         val category = Category("Full body")
         category.categoryID = 1

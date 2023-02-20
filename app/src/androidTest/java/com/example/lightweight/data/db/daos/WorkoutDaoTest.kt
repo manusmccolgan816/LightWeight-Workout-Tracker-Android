@@ -59,6 +59,18 @@ class WorkoutDaoTest {
 
         val allWorkouts = dao.getAllWorkouts().getOrAwaitValue()
 
-        assertThat(allWorkouts).doesNotContain(workout)
+        assertThat(allWorkouts).isEmpty()
+    }
+
+    @Test
+    fun deleteWorkoutOfIDTest() = runBlocking {
+        val workout = Workout("07/10/2078", null)
+        workout.workoutID = 1
+        dao.insert(workout)
+        dao.deleteWorkoutOfID(workout.workoutID)
+
+        val allWorkouts = dao.getAllWorkouts().getOrAwaitValue()
+
+        assertThat(allWorkouts).isEmpty()
     }
 }

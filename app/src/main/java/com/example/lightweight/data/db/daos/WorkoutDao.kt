@@ -3,7 +3,6 @@ package com.example.lightweight.data.db.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lightweight.data.db.entities.Workout
-import java.time.LocalDate
 
 @Dao
 interface WorkoutDao {

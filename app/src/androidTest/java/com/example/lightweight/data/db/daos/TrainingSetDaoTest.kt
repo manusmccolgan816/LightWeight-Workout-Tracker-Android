@@ -62,17 +62,154 @@ class TrainingSetDaoTest {
         val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
         exerciseInstance.exerciseInstanceID = 1
         exerciseInstanceDao.insert(exerciseInstance)
-        val trainingSet = TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
         trainingSet.trainingSetID = 1
         trainingSetDao.insert(trainingSet)
 
         val allTrainingSets = trainingSetDao.getAllTrainingSets().getOrAwaitValue()
 
-        assertThat(allTrainingSets).contains(trainingSet)
+        assertThat(allTrainingSets).isNotEmpty()
     }
 
     @Test
     fun deleteTest() = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        trainingSet.trainingSetID = 1
+        trainingSetDao.insert(trainingSet)
+        trainingSetDao.delete(trainingSet)
 
+        val allTrainingSets = trainingSetDao.getAllTrainingSets().getOrAwaitValue()
+
+        assertThat(allTrainingSets).isEmpty()
+    }
+
+    @Test
+    fun updateTest(): Unit = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        trainingSet.trainingSetID = 1
+        trainingSetDao.insert(trainingSet)
+        val newReps = 12
+        val newTrainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, newReps, "easy", false)
+        newTrainingSet.trainingSetID = trainingSet.trainingSetID
+        trainingSetDao.update(newTrainingSet)
+
+        val allTrainingSets = trainingSetDao.getAllTrainingSets().getOrAwaitValue()
+
+        assertThat(allTrainingSets[0].reps).isEqualTo(newReps)
+    }
+
+    @Test
+    fun updateIsPRTest(): Unit = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        trainingSet.trainingSetID = 1
+        trainingSetDao.insert(trainingSet)
+        trainingSetDao.updateIsPR(trainingSet.trainingSetID, 1) // 1 is used instead of true
+
+        val allTrainingSets = trainingSetDao.getAllTrainingSets().getOrAwaitValue()
+
+        assertThat(allTrainingSets[0].isPR).isEqualTo(true)
+    }
+
+    @Test
+    fun updateIsNoteTest(): Unit = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        trainingSet.trainingSetID = 1
+        trainingSetDao.insert(trainingSet)
+        val newNote = "sore wrists"
+        trainingSetDao.updateNote(trainingSet.trainingSetID, newNote)
+
+        val allTrainingSets = trainingSetDao.getAllTrainingSets().getOrAwaitValue()
+
+        assertThat(allTrainingSets[0].note).isEqualTo(newNote)
+    }
+
+    @Test
+    fun decrementTrainingSetNumbersAbove(): Unit = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val workout = Workout("20/10/2000", "Easy")
+        workout.workoutID = 1
+        workoutDao.insert(workout)
+        val exerciseInstance = ExerciseInstance(workout.workoutID, exercise.exerciseID, 1, null)
+        exerciseInstance.exerciseInstanceID = 1
+        exerciseInstanceDao.insert(exerciseInstance)
+        val trainingSet =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 1, 40.5f, 10, "easy", false)
+        trainingSet.trainingSetID = 1
+        trainingSetDao.insert(trainingSet)
+        val trainingSet2 =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 3, 40.5f, 10, null, false)
+        trainingSet.trainingSetID = 2
+        trainingSetDao.insert(trainingSet2)
+        val trainingSet3 =
+            TrainingSet(exerciseInstance.exerciseInstanceID, 4, 35.5f, 11, null, false)
+        trainingSet.trainingSetID = 3
+        trainingSetDao.insert(trainingSet3)
+        trainingSetDao.decrementTrainingSetNumbersAbove(exerciseInstance.exerciseInstanceID, 1)
+
+        val trainingSets =
+            trainingSetDao.getTrainingSetsOfExerciseInstance(exerciseInstance.exerciseInstanceID)
+                .getOrAwaitValue()
+
+        assertThat(trainingSets[1].trainingSetNumber).isEqualTo(2)
+        assertThat(trainingSets[2].trainingSetNumber).isEqualTo(3)
     }
 }

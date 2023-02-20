@@ -57,6 +57,22 @@ class ExerciseDaoTest {
     }
 
     @Test
+    fun updateNameTest(): Unit = runBlocking {
+        val category = Category("Full body")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Kickers", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val newName = "Twisters"
+        exerciseDao.updateName(exercise.exerciseID, newName)
+
+        val allExercises = exerciseDao.getAllExercises().getOrAwaitValue()
+
+        assertThat(allExercises[0].exerciseName).isEqualTo(newName)
+    }
+
+    @Test
     fun deleteTest() = runBlocking {
         val category = Category("Neck")
         category.categoryID = 1

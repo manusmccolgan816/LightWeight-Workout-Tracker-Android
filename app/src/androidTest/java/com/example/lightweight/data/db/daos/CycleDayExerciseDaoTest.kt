@@ -112,4 +112,36 @@ class CycleDayExerciseDaoTest {
 
         assertThat(allCycleDayExercises).doesNotContain(cycleDayExercise)
     }
+
+    @Test
+    fun deleteOfIDTest() = runBlocking {
+        val cycle = Cycle("3 Day Full Body", null)
+        cycle.cycleID = 1
+        cycleDao.insert(cycle)
+        val cycleDay = CycleDay(cycle.cycleID, "FB 1", 1)
+        cycleDay.cycleDayID = 1
+        cycleDayDao.insert(cycleDay)
+        val category = Category("Biceps")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Curls", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+        cycleDayCategoryDao.insert(cycleDayCategory)
+        val cycleDayExercise = CycleDayExercise(
+            cycleDay.cycleDayID,
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            1
+        )
+        cycleDayExercise.cycleDayExerciseID = 1
+        cycleDayExerciseDao.insert(cycleDayExercise)
+        cycleDayExerciseDao.deleteOfID(cycleDayExercise.cycleDayExerciseID)
+
+        val allCycleDayExercises = cycleDayExerciseDao.getAllCycleDayExercises().getOrAwaitValue()
+
+        assertThat(allCycleDayExercises).doesNotContain(cycleDayExercise)
+    }
 }

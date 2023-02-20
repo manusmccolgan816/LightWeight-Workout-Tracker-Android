@@ -51,6 +51,19 @@ class CategoryDaoTest {
     }
 
     @Test
+    fun updateTest(): Unit = runBlocking {
+        val category = Category("Full Body")
+        category.categoryID = 1
+        dao.insert(category)
+        val newName = "Neck"
+        dao.update(category.categoryID, newName)
+
+        val allCategories = dao.getAllCategories().getOrAwaitValue()
+
+        assertThat(allCategories[0].categoryName).isEqualTo(newName)
+    }
+
+    @Test
     fun deleteTest() = runBlocking {
         val category = Category("Neck")
         category.categoryID = 1
