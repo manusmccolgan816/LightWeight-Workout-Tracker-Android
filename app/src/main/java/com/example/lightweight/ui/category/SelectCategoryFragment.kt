@@ -89,7 +89,13 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
             // Display the add category dialog
             AddCategoryDialog(
                 requireContext(),
-                fun(category: Category) { viewModel.insert(category) }
+                fun(category: Category) {
+                    viewModel.insert(category)
+                    // Clear the search view text
+                    searchViewCategories.setQuery("", false)
+                    // Ensure the keyboard does not appear
+                    searchViewCategories.clearFocus()
+                }
             ).show()
         }
     }

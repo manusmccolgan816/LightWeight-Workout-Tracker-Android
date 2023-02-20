@@ -111,7 +111,13 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
                     AddExerciseDialog(
                         requireContext(),
                         category,
-                        fun(exercise: Exercise) { exerciseViewModel.insert(exercise) }
+                        fun(exercise: Exercise) {
+                            exerciseViewModel.insert(exercise)
+                            // Clear the search view text
+                            searchViewExercises.setQuery("", false)
+                            // Ensure the keyboard does not appear
+                            searchViewExercises.clearFocus()
+                        }
                     ).show()
                 }
             }
