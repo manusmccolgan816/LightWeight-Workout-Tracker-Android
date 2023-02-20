@@ -30,7 +30,9 @@
 
         </activity>
 
-        <activity android:name=".ui.settracker.SetTrackerActivity" />
+        <activity
+            android:name=".ui.settracker.SetTrackerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <service
             android:name=".ui.settracker.stopwatch.StopwatchService"
