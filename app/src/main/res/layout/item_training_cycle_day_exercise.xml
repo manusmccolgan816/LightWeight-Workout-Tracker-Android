@@ -8,7 +8,7 @@
         android:id="@+id/text_view_training_cycle_day_exercise"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="40dp"
         android:text="Training cycle day exercise"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

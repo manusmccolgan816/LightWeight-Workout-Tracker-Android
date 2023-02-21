@@ -1,18 +1,16 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
+import android.animation.LayoutTransition
 import android.os.Bundle
-import android.util.Log
-import android.view.ContextMenu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.CycleDayCategoryCombo
@@ -23,8 +21,6 @@ import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY
@@ -59,7 +55,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
     private lateinit var cycleDayAdapter: TrainingCycleDayAdapter
 
-    private lateinit var recyclerViewTrainingCycleDays: RecyclerView
+    lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,6 +108,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 cycleDayAdapter.cycleDays = arrayListOf()
                 cycleDayAdapter.idNamePairsCategory = arrayListOf()
                 cycleDayAdapter.idNamePairsExercise = arrayListOf()
+                cycleDayAdapter.displayItems = arrayListOf()
 
                 // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
                 // amended
@@ -149,6 +146,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     // Add the cycle day to the end of items
                     cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
                     cycleDayAdapter.cycleDays.add(cycleDay)
+                    cycleDayAdapter.displayItems.add(true)
 
                     for (catCombo in catCombos) {
                         if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
@@ -157,6 +155,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                             cycleDayAdapter.idNamePairsCategory.add(
                                 Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
                             )
+                            cycleDayAdapter.displayItems.add(true)
 
                             for (exCombo in exCombos) {
                                 // Add the cycle day exercise to the end of items
@@ -165,6 +164,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     cycleDayAdapter.idNamePairsExercise.add(
                                         Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
                                     )
+                                    cycleDayAdapter.displayItems.add(true)
                                 }
                             }
                         }
