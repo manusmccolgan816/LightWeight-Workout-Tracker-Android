@@ -1,12 +1,10 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
-import android.animation.LayoutTransition
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -117,17 +115,9 @@ class TrainingCycleDayAdapter(
 
                 // Set the default image so that when the day is expanded by default upon adding a
                 // category to it, it will go back to the default image
-                imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_more_24)
+                imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_less_24)
                 imageViewExpandTrainingCycleDayName.setOnClickListener {
-                    if (position + 1 < itemCount) {
-                        if (displayItems[position + 1] == true) {
-                            (it as ImageView).setImageResource(R.drawable.ic_baseline_expand_less_24)
-                            indicateForChildrenToNotBeVisible(position)
-                        } else {
-                            (it as ImageView).setImageResource(R.drawable.ic_baseline_expand_more_24)
-                            indicateForChildrenToBeVisible(position)
-                        }
-                    }
+                    hideOrShowChildren(position)
                 }
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
@@ -156,11 +146,14 @@ class TrainingCycleDayAdapter(
                 imageViewAddCategory.setOnClickListener {
                     val dialog = AddTrainingCycleDayCategoryDialogFragment(
                         fun(category: Category) {
+                            showChildren(position)
                             val numCycleDaysObs =
                                 cycleDayCategoryViewModel.getNumCycleDayCategoriesOfCycleDay(
                                     curCycleDay.cycleDayID
                                 )
                             numCycleDaysObs.observe(fragment.viewLifecycleOwner) { numCycleDays ->
+                                numCycleDaysObs.removeObservers(fragment.viewLifecycleOwner)
+
                                 val cycleDayCategory =
                                     CycleDayCategory(
                                         curCycleDay.cycleDayID,
@@ -169,8 +162,6 @@ class TrainingCycleDayAdapter(
                                     )
                                 cycleDayCategoryViewModel.insert(cycleDayCategory)
                                 Log.d(logTag, "Inserting cycleDayCategory")
-
-                                numCycleDaysObs.removeObservers(fragment.viewLifecycleOwner)
                             }
                         }
                     )
@@ -196,9 +187,13 @@ class TrainingCycleDayAdapter(
                 if (!displayItems[position]!!) {
                     holder.itemView.visibility = View.GONE
                     return
-
                 }
                 holder.itemView.visibility = View.VISIBLE
+                val params: ViewGroup.LayoutParams? = holder.itemView.layoutParams
+                val heightPixels = (48 * scale + 0.5f).toInt()
+                params?.height = heightPixels
+                params?.width = ViewGroup.LayoutParams.MATCH_PARENT
+                holder.itemView.layoutParams = params
 
                 var numPriorCycleDayCats = 0
                 for (i in 0..position) {
@@ -281,9 +276,13 @@ class TrainingCycleDayAdapter(
                 if (!displayItems[position]!!) {
                     holder.itemView.visibility = View.GONE
                     return
-
                 }
                 holder.itemView.visibility = View.VISIBLE
+                val params: ViewGroup.LayoutParams? = holder.itemView.layoutParams
+                val heightPixels = (48 * scale + 0.5f).toInt()
+                params?.height = heightPixels
+                params?.width = ViewGroup.LayoutParams.MATCH_PARENT
+                holder.itemView.layoutParams = params
 
                 var numPriorCycleDayExs = 0
                 for (i in 0..position) {
@@ -334,42 +333,64 @@ class TrainingCycleDayAdapter(
         return items.size
     }
 
+    private fun hideOrShowChildren(position: Int) {
+        if (position + 1 < itemCount) {
+            if (displayItems[position + 1] == true) {
+                hideChildren(position)
+            } else {
+                showChildren(position)
+            }
+        }
+    }
+
     /**
      * Assuming the position passed is the position of a cycle day, the displayItems value for each
      * of its categories and exercises is set to false.
      */
-    private fun indicateForChildrenToNotBeVisible(position: Int) {
+    private fun hideChildren(position: Int) {
+        // Change the image view icon to point downwards
+        fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(position)?.itemView
+            ?.findViewById<ImageView>(
+                R.id.image_view_expand_training_cycle_day_name
+            )?.setImageResource(R.drawable.ic_baseline_expand_more_24)
         for (i in position + 1 until itemCount) {
             if (items[i].first == LAYOUT_CYCLE_DAY) {
                 return
             }
             displayItems[i] = false
-            fragment.recyclerViewTrainingCycleDays
-                .findViewHolderForAdapterPosition(i)?.itemView?.visibility = View.GONE
-            val params: ViewGroup.LayoutParams? =
-                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView?.layoutParams
+            // Get a reference to the view at the given position
+            val view =
+                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
+            view?.visibility = View.GONE
+            // Set the layout parameters to take up no space so that there is no blank space
+            val params: ViewGroup.LayoutParams? = view?.layoutParams
             params?.height = 0
             params?.width = 0
-            fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView?.layoutParams =
-                params
+            view?.layoutParams = params
         }
     }
 
-    private fun indicateForChildrenToBeVisible(position: Int) {
+    private fun showChildren(position: Int) {
+        // Change the image view icon to point upwards
+        fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(position)?.itemView
+            ?.findViewById<ImageView>(
+                R.id.image_view_expand_training_cycle_day_name
+            )?.setImageResource(R.drawable.ic_baseline_expand_less_24)
         for (i in position + 1 until itemCount) {
             if (items[i].first == LAYOUT_CYCLE_DAY) {
                 return
             }
             displayItems[i] = true
-            fragment.recyclerViewTrainingCycleDays
-                .findViewHolderForAdapterPosition(i)?.itemView?.visibility = View.VISIBLE
-            val params: ViewGroup.LayoutParams? =
-                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView?.layoutParams
+            // Get a reference to the view at the given position
+            val view =
+                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
+            view?.visibility = View.VISIBLE
+            // Set the layout parameters to the same values as in the XML file
+            val params: ViewGroup.LayoutParams? = view?.layoutParams
             val heightPixels = (48 * scale + 0.5f).toInt()
             params?.height = heightPixels
             params?.width = ViewGroup.LayoutParams.MATCH_PARENT
-            fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView?.layoutParams =
-                params
+            view?.layoutParams = params
         }
     }
 
