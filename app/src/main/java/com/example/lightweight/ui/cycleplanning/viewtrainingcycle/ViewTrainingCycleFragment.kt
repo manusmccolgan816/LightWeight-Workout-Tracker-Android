@@ -103,75 +103,165 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 val cycleDays: ArrayList<CycleDay> = arrayListOf()
                 val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
                 val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
+                val items: ArrayList<Pair<Int, Int?>> = arrayListOf()
 
                 // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties
                 // can be amended
-                for (item in cycleItems) {
-                    val cycleDay = CycleDay(cycleID, item.cycle_day_name, item.cycle_day_number)
-                    cycleDay.cycleDayID = item.cycle_day_ID
+                for (cycleItem in cycleItems) {
+                    val cycleDay = CycleDay(cycleID, cycleItem.cycle_day_name, cycleItem.cycle_day_number)
+                    cycleDay.cycleDayID = cycleItem.cycle_day_ID
                     if (cycleDay !in cycleDays) {
                         cycleDays.add(cycleDay)
+                        items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
                     }
 
-                    if (item.category_name != null) {
+                    if (cycleItem.category_name != null) {
                         val cycleDayCat = CycleDayCategoryCombo(
-                            item.cycle_day_category_ID,
-                            item.category_name,
-                            item.cycle_day_ID
+                            cycleItem.cycle_day_category_ID,
+                            cycleItem.category_name,
+                            cycleItem.cycle_day_ID
                         )
                         if (cycleDayCat !in catCombos) {
                             catCombos.add(cycleDayCat)
+                            items.add(Pair(LAYOUT_CYCLE_DAY_CAT, cycleItem.cycle_day_category_ID))
                         }
 
-                        if (item.exercise_name != null) {
+                        if (cycleItem.exercise_name != null) {
                             val cycleDayCatEx = CycleDayCategoryExerciseCombo(
-                                item.cycle_day_exercise_ID,
-                                item.exercise_name,
-                                item.cycle_day_category_ID
+                                cycleItem.cycle_day_exercise_ID,
+                                cycleItem.exercise_name,
+                                cycleItem.cycle_day_category_ID
                             )
                             if (cycleDayCatEx !in exCombos) {
                                 exCombos.add(cycleDayCatEx)
+                                items.add(Pair(LAYOUT_CYCLE_DAY_EX, cycleItem.cycle_day_exercise_ID))
                             }
                         }
                     }
                 }
 
-                cycleDayAdapter.items = arrayListOf()
-                cycleDayAdapter.cycleDays = arrayListOf()
-                cycleDayAdapter.idNamePairsCategory = arrayListOf()
-                cycleDayAdapter.idNamePairsExercise = arrayListOf()
-                cycleDayAdapter.displayItems = arrayListOf()
-
-                for (cycleDay in cycleDays) {
-                    // Add the cycle day to the end of items
-                    cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
-                    cycleDayAdapter.cycleDays.add(cycleDay)
-                    cycleDayAdapter.displayItems.add(true)
-
-                    for (catCombo in catCombos) {
-                        if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
-                            // Add the cycle day category to the end of items
-                            cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_CAT, null))
-                            cycleDayAdapter.idNamePairsCategory.add(
-                                Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
-                            )
-                            cycleDayAdapter.displayItems.add(true)
-
-                            for (exCombo in exCombos) {
-                                // Add the cycle day exercise to the end of items
-                                if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
-                                    cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_EX, null))
-                                    cycleDayAdapter.idNamePairsExercise.add(
-                                        Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
-                                    )
-                                    cycleDayAdapter.displayItems.add(true)
+                // If an item has been added
+                if (items.size == cycleDayAdapter.itemCount + 1) {
+                    // If the added item was a cycle day
+                    if (cycleDays.size != cycleDayAdapter.cycleDays.size) {
+                        for (i in cycleDays.indices) {
+                            // If this is the item that was added
+                            if (i >= cycleDayAdapter.cycleDays.size || cycleDays[i].cycleDayID != cycleDayAdapter.cycleDays[i].cycleDayID) {
+                                for (j in items.indices) {
+                                    // If this is the position that the item was added
+                                    if (items[j].second == cycleDays[i].cycleDayID) {
+                                        // Update the adapter to include this item
+                                        cycleDayAdapter.items.add(j, Pair(LAYOUT_CYCLE_DAY, items[j].second))
+                                        cycleDayAdapter.cycleDays.add(i, cycleDays[i])
+                                        cycleDayAdapter.displayItems.add(j, true)
+                                        cycleDayAdapter.notifyItemInserted(j)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // If the added item was a category
+                    else if (catCombos.size != cycleDayAdapter.idNamePairsCategory.size) {
+                        for (i in catCombos.indices) {
+                            // If this is the item that was added
+                            if (i >= cycleDayAdapter.idNamePairsCategory.size || catCombos[i].cycle_day_category_ID != cycleDayAdapter.idNamePairsCategory[i].first) {
+                                for (j in items.indices) {
+                                    // If this is the position that the item was added
+                                    if (items[j].second == catCombos[i].cycle_day_category_ID) {
+                                        // Update the adapter to include this item
+                                        cycleDayAdapter.items.add(j, Pair(LAYOUT_CYCLE_DAY_CAT, null))
+                                        cycleDayAdapter.idNamePairsCategory.add(i, Pair(catCombos[i].cycle_day_category_ID, catCombos[i].category_name))
+                                        cycleDayAdapter.displayItems.add(j, true)
+                                        cycleDayAdapter.notifyItemInserted(j)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // If the added item was an exercise
+                    else if (exCombos.size != cycleDayAdapter.idNamePairsExercise.size) {
+                        for (i in exCombos.indices) {
+                            // If this is the item that was added
+                            if (i >= cycleDayAdapter.idNamePairsExercise.size || exCombos[i].cycle_day_exercise_ID != cycleDayAdapter.idNamePairsExercise[i].first) {
+                                for (j in items.indices) {
+                                    // If this is the position that the item was added
+                                    if (items[j].second == exCombos[i].cycle_day_exercise_ID) {
+                                        // Update the adapter to include this item
+                                        cycleDayAdapter.items.add(j, Pair(LAYOUT_CYCLE_DAY_EX, null))
+                                        cycleDayAdapter.idNamePairsExercise.add(i, Pair(exCombos[i].cycle_day_exercise_ID, exCombos[i].exercise_name))
+                                        cycleDayAdapter.displayItems.add(j, true)
+                                        cycleDayAdapter.notifyItemInserted(j)
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                // If an item has been removed
+                else if (items.size == cycleDayAdapter.itemCount - 1) {
+//                    // If the removed item was a cycle day
+//                    if (cycleDays.size != cycleDayAdapter.cycleDays.size) {
+//                        for (i in cycleDayAdapter.cycleDays.indices) {
+//                            // If this is where the item was removed
+//                            if (i >= cycleDays.size || cycleDayAdapter.cycleDays[i].cycleDayID != cycleDays[i].cycleDayID) {
+//
+//                            }
+//                        }
+//
+//                        for (i in cycleDays.indices) {
+//                            // If this is the item that was removed
+//                            if (i >= cycleDayAdapter.cycleDays.size || cycleDays[i].cycleDayID != cycleDayAdapter.cycleDays[i].cycleDayID) {
+//                                for (j in items.indices) {
+//                                    // If this is the position that the item was added
+//                                    if (items[j].second == cycleDays[i].cycleDayID) {
+//                                        // Update the adapter to include this item
+//                                        cycleDayAdapter.items.add(j, Pair(LAYOUT_CYCLE_DAY, items[j].second))
+//                                        cycleDayAdapter.cycleDays.add(i, cycleDays[i])
+//                                        cycleDayAdapter.displayItems.add(j, true)
+//                                        cycleDayAdapter.notifyItemInserted(j)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+                } else {
+                    cycleDayAdapter.items = arrayListOf()
+                    cycleDayAdapter.cycleDays = arrayListOf()
+                    cycleDayAdapter.idNamePairsCategory = arrayListOf()
+                    cycleDayAdapter.idNamePairsExercise = arrayListOf()
+                    cycleDayAdapter.displayItems = arrayListOf()
 
-                cycleDayAdapter.notifyDataSetChanged()
+                    for (cycleDay in cycleDays) {
+                        // Add the cycle day to the end of items
+                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
+                        cycleDayAdapter.cycleDays.add(cycleDay)
+                        cycleDayAdapter.displayItems.add(true)
+
+                        for (catCombo in catCombos) {
+                            if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
+                                // Add the cycle day category to the end of items
+                                cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_CAT, null))
+                                cycleDayAdapter.idNamePairsCategory.add(
+                                    Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
+                                )
+                                cycleDayAdapter.displayItems.add(true)
+
+                                for (exCombo in exCombos) {
+                                    // Add the cycle day exercise to the end of items
+                                    if (exCombo.cycle_day_category_ID == catCombo.cycle_day_category_ID) {
+                                        cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY_EX, null))
+                                        cycleDayAdapter.idNamePairsExercise.add(
+                                            Pair(exCombo.cycle_day_exercise_ID, exCombo.exercise_name)
+                                        )
+                                        cycleDayAdapter.displayItems.add(true)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    cycleDayAdapter.notifyDataSetChanged()
+                }
             }
 
         fabAddTrainingCycleDay.setOnClickListener {
