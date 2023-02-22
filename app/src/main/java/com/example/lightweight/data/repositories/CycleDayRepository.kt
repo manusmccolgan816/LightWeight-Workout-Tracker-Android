@@ -9,6 +9,9 @@ class CycleDayRepository(private val db: WorkoutDatabase) {
 
     suspend fun update(cycleDay: CycleDay) = db.getCycleDayDao().update(cycleDay)
 
+    suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) =
+        db.getCycleDayDao().decrementCycleDayNumbersAfter(cycleID, cycleDayNumber)
+
     suspend fun delete(cycleDay: CycleDay) = db.getCycleDayDao().delete(cycleDay)
 
     fun getAllCycleDays() = db.getCycleDayDao().getAllCycleDays()

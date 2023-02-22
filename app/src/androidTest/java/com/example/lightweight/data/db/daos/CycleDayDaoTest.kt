@@ -74,6 +74,33 @@ class CycleDayDaoTest {
     }
 
     @Test
+    fun decrementCycleDayNumbersAfterTest() = runBlocking {
+        val cycle = Cycle("3 Day Full Body", null)
+        cycle.cycleID = 1
+        cycleDao.insert(cycle)
+        val cycleDay1 = CycleDay(cycle.cycleID, "FB 1", 1)
+        cycleDay1.cycleDayID = 1
+        cycleDayDao.insert(cycleDay1)
+        val cycleDay2 = CycleDay(cycle.cycleID, "FB 2", 2)
+        cycleDay2.cycleDayID = 2
+        cycleDayDao.insert(cycleDay2)
+        val cycleDay3 = CycleDay(cycle.cycleID, "FB 3", 3)
+        cycleDay3.cycleDayID = 3
+        cycleDayDao.insert(cycleDay3)
+        cycleDayDao.decrementCycleDayNumbersAfter(cycle.cycleID, 1)
+
+        val allCycleDays = cycleDayDao.getAllCycleDays().getOrAwaitValue()
+
+        for (cd in allCycleDays) {
+            if (cd.cycleDayID == cycleDay2.cycleDayID) {
+                assertThat(cd.cycleDayNumber).isEqualTo(1)
+            } else if (cd.cycleDayID == cycleDay3.cycleDayID) {
+                assertThat(cd.cycleDayNumber).isEqualTo(2)
+            }
+        }
+    }
+
+    @Test
     fun deleteTest() = runBlocking {
         val cycle = Cycle("3 Day Full Body", null)
         cycle.cycleID = 1

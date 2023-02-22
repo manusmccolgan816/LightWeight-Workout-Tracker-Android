@@ -177,6 +177,10 @@ class TrainingCycleDayAdapter(
                         curCycleDay,
                         fun(cycleDay: CycleDay) {
                             cycleDayViewModel.delete(cycleDay)
+                            cycleDayViewModel.decrementCycleDayNumbersAfter(
+                                cycleDay.cycleID,
+                                cycleDay.cycleDayNumber
+                            )
                         }
                     ).show()
                 }

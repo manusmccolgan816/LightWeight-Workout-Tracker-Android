@@ -13,6 +13,12 @@ interface CycleDayDao {
     @Update
     suspend fun update(cycleDay: CycleDay)
 
+    @Query("UPDATE CYCLE_DAY " +
+            "SET cycle_day_number = cycle_day_number - 1 " +
+            "WHERE cycle_ID = :cycleID " +
+            "AND cycle_day_number > :cycleDayNumber")
+    suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int)
+
     @Delete
     suspend fun delete(cycleDay: CycleDay)
 

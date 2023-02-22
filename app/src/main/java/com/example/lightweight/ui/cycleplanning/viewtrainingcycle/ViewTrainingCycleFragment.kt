@@ -104,14 +104,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
                 val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
 
-                cycleDayAdapter.items = arrayListOf()
-                cycleDayAdapter.cycleDays = arrayListOf()
-                cycleDayAdapter.idNamePairsCategory = arrayListOf()
-                cycleDayAdapter.idNamePairsExercise = arrayListOf()
-                cycleDayAdapter.displayItems = arrayListOf()
-
-                // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties can
-                // amended
+                // Populate cycleDay, cycleDayCat and cycleDayCatEx so that the adapter properties
+                // can be amended
                 for (item in cycleItems) {
                     val cycleDay = CycleDay(cycleID, item.cycle_day_name, item.cycle_day_number)
                     cycleDay.cycleDayID = item.cycle_day_ID
@@ -141,6 +135,12 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                         }
                     }
                 }
+
+                cycleDayAdapter.items = arrayListOf()
+                cycleDayAdapter.cycleDays = arrayListOf()
+                cycleDayAdapter.idNamePairsCategory = arrayListOf()
+                cycleDayAdapter.idNamePairsExercise = arrayListOf()
+                cycleDayAdapter.displayItems = arrayListOf()
 
                 for (cycleDay in cycleDays) {
                     // Add the cycle day to the end of items

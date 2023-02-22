@@ -103,8 +103,6 @@ class HomeParentWorkoutAdapter(
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_item_delete_exercise_instance -> {
-
-
                         val getEiObserver =
                             exerciseInstanceViewModel.getExerciseInstanceOfIDObs(curID)
                         getEiObserver.observe(fragment.viewLifecycleOwner) { exerciseInstance ->

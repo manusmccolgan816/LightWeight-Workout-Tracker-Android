@@ -17,6 +17,11 @@ class CycleDayViewModel(private val repository: CycleDayRepository) : ViewModel(
         repository.update(cycleDay)
     }
 
+    fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.decrementCycleDayNumbersAfter(cycleID, cycleDayNumber)
+        }
+
     fun delete(cycleDay: CycleDay) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(cycleDay)
     }
