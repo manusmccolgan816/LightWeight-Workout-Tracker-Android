@@ -13,6 +13,13 @@ class CycleDayExerciseViewModel(private val repository: CycleDayExerciseReposito
         repository.insert(cycleDayExercise)
     }
 
+    fun decrementCycleDayExerciseNumbersAfter(
+        cycleDayCategoryID: Int?,
+        cycleDayExerciseNumber: Int
+    ) = CoroutineScope(Dispatchers.Main).launch {
+        repository.decrementCycleDayExerciseNumbersAfter(cycleDayCategoryID, cycleDayExerciseNumber)
+    }
+
     fun delete(cycleDayExercise: CycleDayExercise) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(cycleDayExercise)
     }
@@ -30,4 +37,7 @@ class CycleDayExerciseViewModel(private val repository: CycleDayExerciseReposito
 
     fun getCycleDayCatExCombosOfCycleDayCategory(cycleDayCategoryID: Int?) =
         repository.getCycleDayCatExCombosOfCycleDayCategory(cycleDayCategoryID)
+
+    fun getCycleDayExerciseOfID(cycleDayExerciseID: Int?) =
+        repository.getCycleDayExerciseOfID(cycleDayExerciseID)
 }

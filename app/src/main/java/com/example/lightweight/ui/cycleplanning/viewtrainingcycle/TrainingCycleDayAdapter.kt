@@ -269,7 +269,19 @@ class TrainingCycleDayAdapter(
                         parent.context,
                         curCycleDayCategoryID,
                         fun(curCycleDayCategoryID: Int?) {
-                            cycleDayCategoryViewModel.deleteOfID(curCycleDayCategoryID)
+                            val cycleDayCategoryObs =
+                                cycleDayCategoryViewModel.getCycleDayCategoryOfID(
+                                    curCycleDayCategoryID
+                                )
+                            cycleDayCategoryObs.observe(fragment.viewLifecycleOwner) { cycleDayCategory ->
+                                cycleDayCategoryObs.removeObservers(fragment.viewLifecycleOwner)
+
+                                cycleDayCategoryViewModel.delete(cycleDayCategory)
+                                cycleDayCategoryViewModel.decrementCycleDayCategoryNumbersAfter(
+                                    cycleDayCategory.cycleDayID,
+                                    cycleDayCategory.cycleDayCategoryNumber
+                                )
+                            }
                         }
                     ).show()
                 }
@@ -317,7 +329,19 @@ class TrainingCycleDayAdapter(
                         parent.context,
                         curCycleDayExerciseID,
                         fun(curCycleDayExerciseID: Int?) {
-                            cycleDayExerciseViewModel.deleteOfID(curCycleDayExerciseID)
+                            val cycleDayExerciseObs =
+                                cycleDayExerciseViewModel.getCycleDayExerciseOfID(
+                                    curCycleDayExerciseID
+                                )
+                            cycleDayExerciseObs.observe(fragment.viewLifecycleOwner) { cycleDayExercise ->
+                                cycleDayExerciseObs.removeObservers(fragment.viewLifecycleOwner)
+
+                                cycleDayExerciseViewModel.delete(cycleDayExercise)
+                                cycleDayExerciseViewModel.decrementCycleDayExerciseNumbersAfter(
+                                    cycleDayExercise.cycleDayCategoryID,
+                                    cycleDayExercise.cycleDayExerciseNumber
+                                )
+                            }
                         }
                     ).show()
                 }

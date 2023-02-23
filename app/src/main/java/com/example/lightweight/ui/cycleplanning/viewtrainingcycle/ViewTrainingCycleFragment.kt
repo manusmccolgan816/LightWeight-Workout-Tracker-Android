@@ -150,10 +150,14 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     if (cycleDays.size != cycleDayAdapter.cycleDays.size) {
                         for (i in cycleDays.indices) {
                             // If this is the item that was added
-                            if (i >= cycleDayAdapter.cycleDays.size || cycleDays[i].cycleDayID != cycleDayAdapter.cycleDays[i].cycleDayID) {
+                            if (i >= cycleDayAdapter.cycleDays.size ||
+                                cycleDays[i].cycleDayID != cycleDayAdapter.cycleDays[i].cycleDayID
+                            ) {
                                 for (j in items.indices) {
                                     // If this is the position that the item was added
-                                    if (items[j].second == cycleDays[i].cycleDayID) {
+                                    if (items[j].first == LAYOUT_CYCLE_DAY &&
+                                        items[j].second == cycleDays[i].cycleDayID
+                                    ) {
                                         // Update the adapter to include this item
                                         cycleDayAdapter.items.add(
                                             j,
@@ -171,10 +175,15 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     else if (catCombos.size != cycleDayAdapter.idNamePairsCategory.size) {
                         for (i in catCombos.indices) {
                             // If this is the item that was added
-                            if (i >= cycleDayAdapter.idNamePairsCategory.size || catCombos[i].cycle_day_category_ID != cycleDayAdapter.idNamePairsCategory[i].first) {
+                            if (i >= cycleDayAdapter.idNamePairsCategory.size ||
+                                catCombos[i].cycle_day_category_ID !=
+                                cycleDayAdapter.idNamePairsCategory[i].first
+                            ) {
                                 for (j in items.indices) {
                                     // If this is the position that the item was added
-                                    if (items[j].second == catCombos[i].cycle_day_category_ID) {
+                                    if (items[j].first == LAYOUT_CYCLE_DAY_CAT &&
+                                        items[j].second == catCombos[i].cycle_day_category_ID
+                                    ) {
                                         // Update the adapter to include this item
                                         cycleDayAdapter.items.add(
                                             j,
@@ -201,10 +210,15 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     else if (exCombos.size != cycleDayAdapter.idNamePairsExercise.size) {
                         for (i in exCombos.indices) {
                             // If this is the item that was added
-                            if (i >= cycleDayAdapter.idNamePairsExercise.size || exCombos[i].cycle_day_exercise_ID != cycleDayAdapter.idNamePairsExercise[i].first) {
+                            if (i >= cycleDayAdapter.idNamePairsExercise.size ||
+                                exCombos[i].cycle_day_exercise_ID !=
+                                cycleDayAdapter.idNamePairsExercise[i].first
+                            ) {
                                 for (j in items.indices) {
                                     // If this is the position that the item was added
-                                    if (items[j].second == exCombos[i].cycle_day_exercise_ID) {
+                                    if (items[j].first == LAYOUT_CYCLE_DAY_EX &&
+                                        items[j].second == exCombos[i].cycle_day_exercise_ID
+                                    ) {
                                         // Update the adapter to include this item
                                         cycleDayAdapter.items.add(
                                             j,
@@ -242,7 +256,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                             ) {
                                 // Remove the item from adapter's cycleDays
                                 loop@ for (i in cycleDayAdapter.cycleDays.indices) {
-                                    if (cycleDayAdapter.cycleDays[i].cycleDayID == cycleDayAdapter.items[j].second) {
+                                    if (cycleDayAdapter.cycleDays[i].cycleDayID ==
+                                        cycleDayAdapter.items[j].second
+                                    ) {
                                         cycleDayAdapter.cycleDays.removeAt(i)
                                         break@loop
                                     }
@@ -263,7 +279,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     if (cycleDayAdapter.items[j].first == LAYOUT_CYCLE_DAY_CAT) {
                                         // Remove the item from adapter's idNamePairsCategory
                                         loop@ for (i in cycleDayAdapter.idNamePairsCategory.indices) {
-                                            if (cycleDayAdapter.idNamePairsCategory[i].first == cycleDayAdapter.items[j].second) {
+                                            if (cycleDayAdapter.idNamePairsCategory[i].first
+                                                == cycleDayAdapter.items[j].second
+                                            ) {
                                                 cycleDayAdapter.idNamePairsCategory.removeAt(i)
                                                 break@loop
                                             }
@@ -272,7 +290,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     if (cycleDayAdapter.items[j].first == LAYOUT_CYCLE_DAY_EX) {
                                         // Remove the item from adapter's idNamePairsExercise
                                         loop@ for (i in cycleDayAdapter.idNamePairsExercise.indices) {
-                                            if (cycleDayAdapter.idNamePairsExercise[i].first == cycleDayAdapter.items[j].second) {
+                                            if (cycleDayAdapter.idNamePairsExercise[i].first
+                                                == cycleDayAdapter.items[j].second
+                                            ) {
                                                 cycleDayAdapter.idNamePairsExercise.removeAt(i)
                                                 break@loop
                                             }
@@ -299,7 +319,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                             ) {
                                 // Remove the item from adapter's idNamePairsCategory
                                 loop@ for (i in cycleDayAdapter.idNamePairsCategory.indices) {
-                                    if (cycleDayAdapter.idNamePairsCategory[i].first == cycleDayAdapter.items[j].second) {
+                                    if (cycleDayAdapter.idNamePairsCategory[i].first ==
+                                        cycleDayAdapter.items[j].second
+                                    ) {
                                         cycleDayAdapter.idNamePairsCategory.removeAt(i)
                                         break@loop
                                     }
@@ -319,7 +341,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     }
                                     // Remove the item from adapter's idNamePairsExercise
                                     loop@ for (i in cycleDayAdapter.idNamePairsExercise.indices) {
-                                        if (cycleDayAdapter.idNamePairsExercise[i].first == cycleDayAdapter.items[j].second) {
+                                        if (cycleDayAdapter.idNamePairsExercise[i].first ==
+                                            cycleDayAdapter.items[j].second
+                                        ) {
                                             cycleDayAdapter.idNamePairsExercise.removeAt(i)
                                             break@loop
                                         }
@@ -345,7 +369,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                             ) {
                                 // Remove the item from adapter's idNamePairsExercise
                                 loop@ for (i in cycleDayAdapter.idNamePairsExercise.indices) {
-                                    if (cycleDayAdapter.idNamePairsExercise[i].first == cycleDayAdapter.items[j].second) {
+                                    if (cycleDayAdapter.idNamePairsExercise[i].first ==
+                                        cycleDayAdapter.items[j].second
+                                    ) {
                                         cycleDayAdapter.idNamePairsExercise.removeAt(i)
                                         break@loop
                                     }

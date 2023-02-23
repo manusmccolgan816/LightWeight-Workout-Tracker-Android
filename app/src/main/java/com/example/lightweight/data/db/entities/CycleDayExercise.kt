@@ -14,6 +14,11 @@ import androidx.room.ForeignKey.Companion.CASCADE
         parentColumns = ["cycle_day_ID"],
         onDelete = CASCADE
     ), ForeignKey(
+        entity = CycleDayCategory::class,
+        childColumns = ["cycle_day_category_ID"],
+        parentColumns = ["cycle_day_category_ID"],
+        onDelete = CASCADE
+    ), ForeignKey(
         entity = Exercise::class,
         childColumns = ["exercise_ID"],
         parentColumns = ["exercise_ID"],

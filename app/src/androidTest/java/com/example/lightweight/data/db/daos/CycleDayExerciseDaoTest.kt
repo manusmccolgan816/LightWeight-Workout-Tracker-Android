@@ -82,6 +82,63 @@ class CycleDayExerciseDaoTest {
     }
 
     @Test
+    fun decrementCycleDayExerciseNumbersAfter() = runBlocking {
+        val cycle = Cycle("3 Day Full Body", null)
+        cycle.cycleID = 1
+        cycleDao.insert(cycle)
+        val cycleDay = CycleDay(cycle.cycleID, "FB 1", 1)
+        cycleDay.cycleDayID = 1
+        cycleDayDao.insert(cycleDay)
+        val category = Category("Biceps")
+        category.categoryID = 1
+        categoryDao.insert(category)
+        val exercise = Exercise("Curls", category.categoryID)
+        exercise.exerciseID = 1
+        exerciseDao.insert(exercise)
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+        cycleDayCategoryDao.insert(cycleDayCategory)
+        val cycleDayExercise1 = CycleDayExercise(
+            cycleDay.cycleDayID,
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            1
+        )
+        cycleDayExercise1.cycleDayExerciseID = 1
+        cycleDayExerciseDao.insert(cycleDayExercise1)
+        val cycleDayExercise2 = CycleDayExercise(
+            cycleDay.cycleDayID,
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            2
+        )
+        cycleDayExercise2.cycleDayExerciseID = 2
+        cycleDayExerciseDao.insert(cycleDayExercise2)
+        val cycleDayExercise3 = CycleDayExercise(
+            cycleDay.cycleDayID,
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            3
+        )
+        cycleDayExercise3.cycleDayExerciseID = 3
+        cycleDayExerciseDao.insert(cycleDayExercise3)
+        cycleDayExerciseDao.decrementCycleDayExerciseNumbersAfter(
+            cycleDayCategory.cycleDayCategoryID,
+            1
+        )
+
+        val allCycleDayExercises = cycleDayExerciseDao.getAllCycleDayExercises().getOrAwaitValue()
+
+        for (cde in allCycleDayExercises) {
+            if (cde.cycleDayExerciseID == cycleDayExercise2.cycleDayExerciseID) {
+                assertThat(cde.cycleDayExerciseNumber).isEqualTo(1)
+            } else if (cde.cycleDayExerciseID == cycleDayExercise3.cycleDayExerciseID) {
+                assertThat(cde.cycleDayExerciseNumber).isEqualTo(2)
+            }
+        }
+    }
+
+    @Test
     fun deleteTest() = runBlocking {
         val cycle = Cycle("3 Day Full Body", null)
         cycle.cycleID = 1

@@ -12,6 +12,12 @@ interface CycleDayCategoryDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(cycleDayCategory: CycleDayCategory)
 
+    @Query("UPDATE CYCLE_DAY_CATEGORY " +
+            "SET cycle_day_category_number = cycle_day_category_number - 1 " +
+            "WHERE cycle_day_ID = :cycleDayID " +
+            "AND cycle_day_category_number > :cycleDayCategoryNumber")
+    suspend fun decrementCycleDayCategoryNumbersAfter(cycleDayID: Int?, cycleDayCategoryNumber: Int)
+
     @Delete
     suspend fun delete(cycleDayCategory: CycleDayCategory)
 
@@ -39,4 +45,7 @@ interface CycleDayCategoryDao {
 
     @Query("SELECT COUNT(cycle_day_category_number) FROM CYCLE_DAY_CATEGORY WHERE cycle_day_ID = :cycleDayID")
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int>
+
+    @Query("SELECT * FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?): LiveData<CycleDayCategory>
 }

@@ -13,6 +13,11 @@ class CycleDayCategoryViewModel(private val repository: CycleDayCategoryReposito
         repository.insert(cycleDayCategory)
     }
 
+    fun decrementCycleDayCategoryNumbersAfter(cycleDayID: Int?, cycleDayCategoryNumber: Int) =
+        CoroutineScope(Dispatchers.Main).launch {
+            repository.decrementCycleDayCategoryNumbersAfter(cycleDayID, cycleDayCategoryNumber)
+        }
+
     fun delete(cycleDayCategory: CycleDayCategory) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(cycleDayCategory)
     }
@@ -34,4 +39,7 @@ class CycleDayCategoryViewModel(private val repository: CycleDayCategoryReposito
 
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
         repository.getNumCycleDayCategoriesOfCycleDay(cycleDayID)
+
+    fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?) =
+        repository.getCycleDayCategoryOfID(cycleDayCategoryID)
 }

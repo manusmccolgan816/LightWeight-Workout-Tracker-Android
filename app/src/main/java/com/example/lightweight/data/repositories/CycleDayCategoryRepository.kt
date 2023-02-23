@@ -8,6 +8,12 @@ class CycleDayCategoryRepository(private val db: WorkoutDatabase) {
     suspend fun insert(cycleDayCategory: CycleDayCategory) =
         db.getCycleDayCategoryDao().insert(cycleDayCategory)
 
+    suspend fun decrementCycleDayCategoryNumbersAfter(
+        cycleDayID: Int?,
+        cycleDayCategoryNumber: Int
+    ) = db.getCycleDayCategoryDao()
+        .decrementCycleDayCategoryNumbersAfter(cycleDayID, cycleDayCategoryNumber)
+
     suspend fun delete(cycleDayCategory: CycleDayCategory) =
         db.getCycleDayCategoryDao().delete(cycleDayCategory)
 
@@ -27,4 +33,7 @@ class CycleDayCategoryRepository(private val db: WorkoutDatabase) {
 
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
         db.getCycleDayCategoryDao().getNumCycleDayCategoriesOfCycleDay(cycleDayID)
+
+    fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?) =
+        db.getCycleDayCategoryDao().getCycleDayCategoryOfID(cycleDayCategoryID)
 }
