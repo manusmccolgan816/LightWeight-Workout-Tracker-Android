@@ -98,6 +98,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
         cycleDayExerciseViewModel.getCycleItemsOfCycleID(cycleID)
             .observe(viewLifecycleOwner) { cycleItems ->
+                Log.d(logTag, "Entered cycle items observer")
+
                 val cycleDays: ArrayList<CycleDay> = arrayListOf()
                 val catCombos: ArrayList<CycleDayCategoryCombo> = arrayListOf()
                 val exCombos: ArrayList<CycleDayCategoryExerciseCombo> = arrayListOf()
@@ -142,6 +144,11 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                             }
                         }
                     }
+                }
+
+                if (items == cycleDayAdapter.items) {
+                    Log.d(logTag, "Got kicked from cycle items observer")
+                    return@observe
                 }
 
                 // If an item has been added
@@ -388,6 +395,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                         }
                     }
                 } else {
+                    Log.d(logTag, "updating adapter from scratch")
+
                     cycleDayAdapter.items = arrayListOf()
                     cycleDayAdapter.cycleDays = arrayListOf()
                     cycleDayAdapter.idNamePairsCategory = arrayListOf()
