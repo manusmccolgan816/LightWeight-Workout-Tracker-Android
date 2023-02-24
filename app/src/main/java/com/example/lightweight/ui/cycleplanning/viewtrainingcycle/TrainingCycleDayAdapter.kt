@@ -49,6 +49,7 @@ class TrainingCycleDayAdapter(
         cycleDayExerciseFactory
     }
 
+    // Used to set the size of views in pixels
     private val scale: Float = fragment.requireContext().resources.displayMetrics.density
 
     var displayItems = ArrayList<Boolean?>()
@@ -117,7 +118,7 @@ class TrainingCycleDayAdapter(
                 // category to it, it will go back to the default image
                 imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_less_24)
                 imageViewExpandTrainingCycleDayName.setOnClickListener {
-                    hideOrShowChildren(position)
+                    hideOrShowChildren(holder.absoluteAdapterPosition)
                 }
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
@@ -362,6 +363,7 @@ class TrainingCycleDayAdapter(
     }
 
     private fun hideOrShowChildren(position: Int) {
+        Log.d(logTag, "hideOrShowChildren entered at position: $position")
         if (position + 1 < itemCount) {
             if (displayItems[position + 1] == true) {
                 hideChildren(position)
