@@ -29,4 +29,6 @@ class CycleDayViewModel(private val repository: CycleDayRepository) : ViewModel(
     fun getAllCycleDays() = repository.getAllCycleDays()
 
     fun getCycleDaysOfCycle(cycleID: Int?) = repository.getCycleDaysOfCycle(cycleID)
+
+    fun getCycleDayOfID(cycleDayID: Int?) = repository.getCycleDayOfID(cycleDayID)
 }

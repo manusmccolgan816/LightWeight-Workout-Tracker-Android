@@ -20,6 +20,8 @@ import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY
@@ -50,6 +52,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
     private val args: ViewTrainingCycleFragmentArgs by navArgs()
 
     private var cycleID: Int? = null
+    private var numItems = 0
 
     private lateinit var cycleDayAdapter: TrainingCycleDayAdapter
 
@@ -146,10 +149,12 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     }
                 }
 
-                if (items == cycleDayAdapter.items) {
-                    Log.d(logTag, "Got kicked from cycle items observer")
+                Log.d(logTag, "numItems: $numItems")
+                // If no item has been added or removed, do not continue
+                if (numItems == items.size) {
                     return@observe
                 }
+                numItems = items.size
 
                 // If an item has been added
                 if (items.size == cycleDayAdapter.itemCount + 1) {
@@ -449,6 +454,10 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 }
             }
 
+//        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
+//
+//        }
+
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(
                 requireContext(),
@@ -473,5 +482,9 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
             dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
         }
+    }
+
+    private fun updateAdapterFromScratch() {
+
     }
 }

@@ -105,7 +105,14 @@ class TrainingCycleDayAdapter(
                     }
                 }
 
-                val curCycleDay = cycleDays[position - numPriorCycleDays]
+//                val curCycleDay = cycleDays[position - numPriorCycleDays]
+                var curCycleDay = cycleDays[position - numPriorCycleDays]
+//                val curCycleDayObs = cycleDayViewModel.getCycleDayOfID(cycleDays[position - numPriorCycleDays].cycleDayID)
+//                curCycleDayObs.observe(fragment.viewLifecycleOwner) {
+//                    curCycleDayObs.removeObservers(fragment.viewLifecycleOwner)
+//
+//                    curCycleDay = it
+//                }
 
                 imageViewExpandTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.image_view_expand_training_cycle_day_name)
@@ -118,7 +125,7 @@ class TrainingCycleDayAdapter(
                 // category to it, it will go back to the default image
                 imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_less_24)
                 imageViewExpandTrainingCycleDayName.setOnClickListener {
-                    hideOrShowChildren(holder.absoluteAdapterPosition)
+                    hideOrShowChildren(position)
                 }
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
@@ -177,11 +184,19 @@ class TrainingCycleDayAdapter(
                         parent.context,
                         curCycleDay,
                         fun(cycleDay: CycleDay) {
-                            cycleDayViewModel.delete(cycleDay)
-                            cycleDayViewModel.decrementCycleDayNumbersAfter(
-                                cycleDay.cycleID,
-                                cycleDay.cycleDayNumber
-                            )
+                            val curCycleDayObs =
+                                cycleDayViewModel.getCycleDayOfID(cycleDay.cycleDayID)
+                            curCycleDayObs.observe(fragment.viewLifecycleOwner) {
+                                curCycleDayObs.removeObservers(fragment.viewLifecycleOwner)
+
+                                curCycleDay = it
+
+                                cycleDayViewModel.delete(curCycleDay)
+                                cycleDayViewModel.decrementCycleDayNumbersAfter(
+                                    curCycleDay.cycleID,
+                                    curCycleDay.cycleDayNumber
+                                )
+                            }
                         }
                     ).show()
                 }
