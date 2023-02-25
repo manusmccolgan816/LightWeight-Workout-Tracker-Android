@@ -20,8 +20,6 @@ import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY
@@ -56,7 +54,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
     private lateinit var cycleDayAdapter: TrainingCycleDayAdapter
 
-    lateinit var recyclerViewTrainingCycleDays: RecyclerView
+    private lateinit var recyclerViewTrainingCycleDays: RecyclerView
     private lateinit var fabAddTrainingCycleDay: FloatingActionButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -151,7 +149,7 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
                 Log.d(logTag, "numItems: $numItems")
                 // If no item has been added or removed, do not continue
-                if (numItems == items.size) {
+                if (numItems == items.size && cycleDays == cycleDayAdapter.cycleDays) {
                     return@observe
                 }
                 numItems = items.size
@@ -176,7 +174,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                             Pair(LAYOUT_CYCLE_DAY, items[j].second)
                                         )
                                         cycleDayAdapter.cycleDays.add(i, cycleDays[i])
-                                        cycleDayAdapter.displayItems.add(j, true)
                                         cycleDayAdapter.notifyItemInserted(j)
                                     }
                                 }
@@ -211,7 +208,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                                 catCombos[i].category_name
                                             )
                                         )
-                                        cycleDayAdapter.displayItems.add(j, true)
                                         cycleDayAdapter.notifyItemInserted(j)
                                     }
                                 }
@@ -246,7 +242,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                                 exCombos[i].exercise_name
                                             )
                                         )
-                                        cycleDayAdapter.displayItems.add(j, true)
                                         cycleDayAdapter.notifyItemInserted(j)
                                     }
                                 }
@@ -277,7 +272,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                 }
                                 // Remove the item from adapter's items
                                 cycleDayAdapter.items.removeAt(j)
-                                cycleDayAdapter.displayItems.removeAt(j)
                                 cycleDayAdapter.notifyItemRemoved(j)
 
                                 Log.d(logTag, "cycleDay removed at position $j")
@@ -312,7 +306,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     }
                                     // Remove the item from adapter's items
                                     cycleDayAdapter.items.removeAt(j)
-                                    cycleDayAdapter.displayItems.removeAt(j)
                                     cycleDayAdapter.notifyItemRemoved(j)
                                 }
                                 return@observe
@@ -340,7 +333,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                 }
                                 // Remove the item from adapter's items
                                 cycleDayAdapter.items.removeAt(j)
-                                cycleDayAdapter.displayItems.removeAt(j)
                                 cycleDayAdapter.notifyItemRemoved(j)
 
                                 Log.d(logTag, "cycleDayCategory removed at position $j")
@@ -362,7 +354,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                     }
                                     // Remove the item from adapter's items
                                     cycleDayAdapter.items.removeAt(j)
-                                    cycleDayAdapter.displayItems.removeAt(j)
                                     cycleDayAdapter.notifyItemRemoved(j)
                                 }
                                 return@observe
@@ -390,7 +381,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                 }
                                 // Remove the item from the adapter's items
                                 cycleDayAdapter.items.removeAt(j)
-                                cycleDayAdapter.displayItems.removeAt(j)
                                 cycleDayAdapter.notifyItemRemoved(j)
 
                                 Log.d(logTag, "cycleDayExercise removed at position $j")
@@ -406,13 +396,11 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     cycleDayAdapter.cycleDays = arrayListOf()
                     cycleDayAdapter.idNamePairsCategory = arrayListOf()
                     cycleDayAdapter.idNamePairsExercise = arrayListOf()
-                    cycleDayAdapter.displayItems = arrayListOf()
 
                     for (cycleDay in cycleDays) {
                         // Add the cycle day to the end of items
                         cycleDayAdapter.items.add(Pair(LAYOUT_CYCLE_DAY, cycleDay.cycleDayID))
                         cycleDayAdapter.cycleDays.add(cycleDay)
-                        cycleDayAdapter.displayItems.add(true)
 
                         for (catCombo in catCombos) {
                             if (catCombo.cycle_day_ID == cycleDay.cycleDayID) {
@@ -426,7 +414,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                 cycleDayAdapter.idNamePairsCategory.add(
                                     Pair(catCombo.cycle_day_category_ID, catCombo.category_name)
                                 )
-                                cycleDayAdapter.displayItems.add(true)
 
                                 for (exCombo in exCombos) {
                                     // Add the cycle day exercise to the end of items
@@ -443,7 +430,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                                                 exCombo.exercise_name
                                             )
                                         )
-                                        cycleDayAdapter.displayItems.add(true)
                                     }
                                 }
                             }
@@ -453,10 +439,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                     cycleDayAdapter.notifyDataSetChanged()
                 }
             }
-
-//        cycleDayViewModel.getCycleDaysOfCycle(cycleID).observe(viewLifecycleOwner) { cycleDays ->
-//
-//        }
 
         fabAddTrainingCycleDay.setOnClickListener {
             AddTrainingCycleDayDialog(
@@ -482,9 +464,5 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
             dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
         }
-    }
-
-    private fun updateAdapterFromScratch() {
-
     }
 }

@@ -4,26 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
-    <ImageView
-        android:id="@+id/image_view_expand_training_cycle_day_name"
-        style="@style/Widget.AppCompat.ActionButton"
-        android:layout_width="wrap_content"
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_expand_less_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/iconColor" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_view_training_cycle_day_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Training cycle day name"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/image_view_add_category"
-        app:layout_constraintStart_toEndOf="@id/image_view_expand_training_cycle_day_name"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

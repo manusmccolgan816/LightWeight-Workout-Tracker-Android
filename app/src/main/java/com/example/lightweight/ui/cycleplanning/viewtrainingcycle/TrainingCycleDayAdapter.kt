@@ -52,11 +52,8 @@ class TrainingCycleDayAdapter(
     // Used to set the size of views in pixels
     private val scale: Float = fragment.requireContext().resources.displayMetrics.density
 
-    var displayItems = ArrayList<Boolean?>()
-
     private lateinit var parent: ViewGroup
 
-    private lateinit var imageViewExpandTrainingCycleDayName: ImageView
     private lateinit var textViewTrainingCycleDayName: TextView
     private lateinit var imageViewAddCategory: ImageView
     private lateinit var imageViewDeleteDay: ImageView
@@ -105,28 +102,12 @@ class TrainingCycleDayAdapter(
                     }
                 }
 
-//                val curCycleDay = cycleDays[position - numPriorCycleDays]
                 var curCycleDay = cycleDays[position - numPriorCycleDays]
-//                val curCycleDayObs = cycleDayViewModel.getCycleDayOfID(cycleDays[position - numPriorCycleDays].cycleDayID)
-//                curCycleDayObs.observe(fragment.viewLifecycleOwner) {
-//                    curCycleDayObs.removeObservers(fragment.viewLifecycleOwner)
-//
-//                    curCycleDay = it
-//                }
 
-                imageViewExpandTrainingCycleDayName =
-                    holder.itemView.findViewById(R.id.image_view_expand_training_cycle_day_name)
                 textViewTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_name)
                 imageViewAddCategory = holder.itemView.findViewById(R.id.image_view_add_category)
                 imageViewDeleteDay = holder.itemView.findViewById(R.id.image_view_delete_day)
-
-                // Set the default image so that when the day is expanded by default upon adding a
-                // category to it, it will go back to the default image
-                imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_less_24)
-                imageViewExpandTrainingCycleDayName.setOnClickListener {
-                    hideOrShowChildren(position)
-                }
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
                 textViewTrainingCycleDayName.setOnLongClickListener {
@@ -154,7 +135,6 @@ class TrainingCycleDayAdapter(
                 imageViewAddCategory.setOnClickListener {
                     val dialog = AddTrainingCycleDayCategoryDialogFragment(
                         fun(category: Category) {
-                            showChildren(position)
                             val numCycleDaysObs =
                                 cycleDayCategoryViewModel.getNumCycleDayCategoriesOfCycleDay(
                                     curCycleDay.cycleDayID
@@ -204,10 +184,6 @@ class TrainingCycleDayAdapter(
             LAYOUT_CYCLE_DAY_CAT -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayCategory")
 
-                if (!displayItems[position]!!) {
-                    holder.itemView.visibility = View.GONE
-                    return
-                }
                 holder.itemView.visibility = View.VISIBLE
                 val params: ViewGroup.LayoutParams? = holder.itemView.layoutParams
                 val heightPixels = (48 * scale + 0.5f).toInt()
@@ -305,10 +281,6 @@ class TrainingCycleDayAdapter(
             LAYOUT_CYCLE_DAY_EX -> {
                 Log.d(logTag, "onBindViewHolder layoutCycleDayExercise")
 
-                if (!displayItems[position]!!) {
-                    holder.itemView.visibility = View.GONE
-                    return
-                }
                 holder.itemView.visibility = View.VISIBLE
                 val params: ViewGroup.LayoutParams? = holder.itemView.layoutParams
                 val heightPixels = (48 * scale + 0.5f).toInt()
@@ -331,12 +303,6 @@ class TrainingCycleDayAdapter(
                     holder.itemView.findViewById(R.id.text_view_training_cycle_day_exercise)
                 imageViewDeleteExercise =
                     holder.itemView.findViewById(R.id.image_view_delete_exercise)
-
-                if (!displayItems[position]!!) {
-                    holder.itemView.visibility = View.GONE
-                } else {
-                    holder.itemView.visibility = View.VISIBLE
-                }
 
                 textViewTrainingCycleDayExercise.text = curExerciseName
 
@@ -375,68 +341,6 @@ class TrainingCycleDayAdapter(
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    private fun hideOrShowChildren(position: Int) {
-        Log.d(logTag, "hideOrShowChildren entered at position: $position")
-        if (position + 1 < itemCount) {
-            if (displayItems[position + 1] == true) {
-                hideChildren(position)
-            } else {
-                showChildren(position)
-            }
-        }
-    }
-
-    /**
-     * Assuming the position passed is the position of a cycle day, the displayItems value for each
-     * of its categories and exercises is set to false.
-     */
-    private fun hideChildren(position: Int) {
-        // Change the image view icon to point downwards
-        fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(position)?.itemView
-            ?.findViewById<ImageView>(
-                R.id.image_view_expand_training_cycle_day_name
-            )?.setImageResource(R.drawable.ic_baseline_expand_more_24)
-        for (i in position + 1 until itemCount) {
-            if (items[i].first == LAYOUT_CYCLE_DAY) {
-                return
-            }
-            displayItems[i] = false
-            // Get a reference to the view at the given position
-            val view =
-                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
-            view?.visibility = View.GONE
-            // Set the layout parameters to take up no space so that there is no blank space
-            val params: ViewGroup.LayoutParams? = view?.layoutParams
-            params?.height = 0
-            params?.width = 0
-            view?.layoutParams = params
-        }
-    }
-
-    private fun showChildren(position: Int) {
-        // Change the image view icon to point upwards
-        fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(position)?.itemView
-            ?.findViewById<ImageView>(
-                R.id.image_view_expand_training_cycle_day_name
-            )?.setImageResource(R.drawable.ic_baseline_expand_less_24)
-        for (i in position + 1 until itemCount) {
-            if (items[i].first == LAYOUT_CYCLE_DAY) {
-                return
-            }
-            displayItems[i] = true
-            // Get a reference to the view at the given position
-            val view =
-                fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
-            view?.visibility = View.VISIBLE
-            // Set the layout parameters to the same values as in the XML file
-            val params: ViewGroup.LayoutParams? = view?.layoutParams
-            val heightPixels = (48 * scale + 0.5f).toInt()
-            params?.height = heightPixels
-            params?.width = ViewGroup.LayoutParams.MATCH_PARENT
-            view?.layoutParams = params
-        }
     }
 
     inner class TrainingCycleDayViewHolder(view: View) : RecyclerView.ViewHolder(view)
