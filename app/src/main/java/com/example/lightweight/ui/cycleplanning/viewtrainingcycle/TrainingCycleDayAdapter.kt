@@ -105,14 +105,7 @@ class TrainingCycleDayAdapter(
                     }
                 }
 
-//                val curCycleDay = cycleDays[position - numPriorCycleDays]
                 var curCycleDay = cycleDays[position - numPriorCycleDays]
-//                val curCycleDayObs = cycleDayViewModel.getCycleDayOfID(cycleDays[position - numPriorCycleDays].cycleDayID)
-//                curCycleDayObs.observe(fragment.viewLifecycleOwner) {
-//                    curCycleDayObs.removeObservers(fragment.viewLifecycleOwner)
-//
-//                    curCycleDay = it
-//                }
 
                 imageViewExpandTrainingCycleDayName =
                     holder.itemView.findViewById(R.id.image_view_expand_training_cycle_day_name)
@@ -125,7 +118,7 @@ class TrainingCycleDayAdapter(
                 // category to it, it will go back to the default image
                 imageViewExpandTrainingCycleDayName.setImageResource(R.drawable.ic_baseline_expand_less_24)
                 imageViewExpandTrainingCycleDayName.setOnClickListener {
-                    hideOrShowChildren(position)
+                    hideOrShowChildren(holder.absoluteAdapterPosition)
                 }
 
                 textViewTrainingCycleDayName.text = curCycleDay.cycleDayName
@@ -154,7 +147,7 @@ class TrainingCycleDayAdapter(
                 imageViewAddCategory.setOnClickListener {
                     val dialog = AddTrainingCycleDayCategoryDialogFragment(
                         fun(category: Category) {
-                            showChildren(position)
+                            showChildren(holder.absoluteAdapterPosition)
                             val numCycleDaysObs =
                                 cycleDayCategoryViewModel.getNumCycleDayCategoriesOfCycleDay(
                                     curCycleDay.cycleDayID
@@ -406,6 +399,8 @@ class TrainingCycleDayAdapter(
             // Get a reference to the view at the given position
             val view =
                 fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
+
+            Log.d(logTag, "Hiding view at position: $i")
             view?.visibility = View.GONE
             // Set the layout parameters to take up no space so that there is no blank space
             val params: ViewGroup.LayoutParams? = view?.layoutParams
@@ -429,6 +424,8 @@ class TrainingCycleDayAdapter(
             // Get a reference to the view at the given position
             val view =
                 fragment.recyclerViewTrainingCycleDays.findViewHolderForAdapterPosition(i)?.itemView
+
+            Log.d(logTag, "Showing view at position: $i")
             view?.visibility = View.VISIBLE
             // Set the layout parameters to the same values as in the XML file
             val params: ViewGroup.LayoutParams? = view?.layoutParams
