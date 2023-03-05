@@ -54,7 +54,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
 
         // Remove the share icon
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+        val imageViewShareWorkout =
+            activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.GONE
 
         // Remove the select date icon
@@ -77,10 +78,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
             // Display the total number of workouts completed
             val numWorkouts = workoutDateStrings.size
             if (numWorkouts == 1) {
-                textViewNumWorkouts.text = resources.getString(R.string.string_workout, numWorkouts)
-            }
-            else {
-                textViewNumWorkouts.text = resources.getString(R.string.string_workouts, numWorkouts)
+                textViewNumWorkouts.text =
+                    resources.getString(R.string.string_total_workout, numWorkouts)
+            } else {
+                textViewNumWorkouts.text =
+                    resources.getString(R.string.string_total_workouts, numWorkouts)
             }
 
             setMonthView()
