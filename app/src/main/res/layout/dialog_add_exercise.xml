@@ -56,6 +56,8 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/button_background"
         android:text="@string/string_save"
+        android:textColor="?colorOnSecondary"
+        app:backgroundTint="?colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_text_new_exercise_name" />
 
