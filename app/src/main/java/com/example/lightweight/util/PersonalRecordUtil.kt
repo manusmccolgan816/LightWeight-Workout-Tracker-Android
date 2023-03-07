@@ -1,6 +1,10 @@
 package com.example.lightweight.util
 
 import com.example.lightweight.data.db.entities.TrainingSet
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 
 object PersonalRecordUtil {
 
@@ -10,7 +14,7 @@ object PersonalRecordUtil {
      * ArrayList of the training set IDs of the training sets that would no longer be PRs after
      * adding a training set with the given weight and reps.
      */
-    fun calculateIsPR(
+    fun calculateIsNewSetPr(
         reps: Int,
         weight: Float,
         selectedDate: String,
@@ -64,5 +68,113 @@ object PersonalRecordUtil {
         }
 
         return Pair(isPR, noLongerPRTrainingSetIDs)
+    }
+
+    /**
+     * Returns an ArrayList of the IDs of the training sets that would be new PRs were
+     * curTrainingSet deleted.
+     */
+    fun getNewPrSetsAfterDeletion(
+        curTrainingSet: TrainingSet,
+        prSets: List<TrainingSet>,
+        sameRepSets: List<TrainingSet>,
+        lowerRepSets: List<TrainingSet>
+    ): ArrayList<Int?> {
+        val newPRTrainingSetIDs = arrayListOf<Int?>()
+        val updatedPRSets: LinkedList<TrainingSet> = LinkedList()
+
+        // Populate updatedPRSets with all PR sets but the one to be deleted
+        for (i in prSets) {
+            if (i.trainingSetID != curTrainingSet.trainingSetID) {
+                updatedPRSets.add(i)
+            }
+        }
+
+        // If at least one other set of the same number of reps exists...
+        if (sameRepSets.isNotEmpty()) {
+            var makePR = true
+            val possiblePRSet = sameRepSets[0]
+
+            loop@ for (i in updatedPRSets) {
+                // If i has a higher rep count than the heaviest non-PR
+                // set of the same rep count as the set to be deleted...
+                if (i.reps > possiblePRSet.reps) {
+                    // ...it will be made a PR if i has a lower weight
+                    makePR = i.weight < possiblePRSet.weight
+                    break@loop
+                }
+            }
+
+            if (makePR) {
+                addToUpdatedPRSets(updatedPRSets, possiblePRSet)
+                newPRTrainingSetIDs.add(possiblePRSet.trainingSetID)
+            }
+        }
+
+        val repValues: HashSet<Int> = HashSet()
+        var reps: Int
+        var weight: Float
+        // Iterate through each training set with fewer reps than the
+        // set to be deleted
+        for (i in lowerRepSets.indices) {
+            reps = lowerRepSets[i].reps
+            weight = lowerRepSets[i].weight
+
+            // If this is the first set of the given rep count that is
+            // being iterated through...
+            if (!repValues.contains(reps)) {
+                repValues.add(reps)
+                // If the set is not a PR...
+                if (!lowerRepSets[i].isPR) {
+                    var makePR1 = true
+                    // Check if the training set should be made a PR
+                    loop@ for (j in updatedPRSets.size - 1 downTo 0) {
+                        if (updatedPRSets[j].reps <= reps) break@loop
+                        if (updatedPRSets[j].weight >= weight) {
+                            makePR1 = false
+                            break@loop
+                        }
+                    }
+                    if (makePR1) {
+                        addToUpdatedPRSets(
+                            updatedPRSets,
+                            lowerRepSets[i]
+                        )
+                        newPRTrainingSetIDs.add(lowerRepSets[i].trainingSetID)
+                    }
+                }
+            }
+        }
+
+        return newPRTrainingSetIDs
+    }
+
+    /**
+     * Adds newSet to the correct index of updatedPRSets, which is ordered by reps (ascending).
+     */
+    fun addToUpdatedPRSets(updatedPRSets: LinkedList<TrainingSet>, newSet: TrainingSet)
+            : LinkedList<TrainingSet> {
+        // Add the now PR training set to the correct index of
+        // updatedPRSets
+        if (updatedPRSets.isEmpty()) {
+            updatedPRSets.add(newSet)
+            return updatedPRSets
+        }
+
+        loop@ for (i in updatedPRSets.indices) {
+            if (i + 1 != updatedPRSets.size) {
+                if (newSet.reps > updatedPRSets[i].reps
+                    && newSet.reps < updatedPRSets[i + 1].reps
+                ) {
+                    updatedPRSets.add(i + 1, newSet)
+                    break@loop
+                } else if (newSet.reps < updatedPRSets[i].reps) {
+                    updatedPRSets.addFirst(newSet)
+                    break@loop
+                }
+            }
+            updatedPRSets.addLast(newSet)
+        }
+        return updatedPRSets
     }
 }

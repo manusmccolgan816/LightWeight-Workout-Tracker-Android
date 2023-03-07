@@ -22,6 +22,8 @@ import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFact
 import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
+import com.example.lightweight.util.PersonalRecordUtil.addToUpdatedPRSets
+import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsAfterDeletion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -148,92 +150,36 @@ class TrainingSetItemAdapter(
                             val prTrainingSetsObs = trainingSetViewModel
                                 .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
-                                val updatedPRSets: LinkedList<TrainingSet> = LinkedList()
-
-                                // Populate updatedPRSets with all PR sets but the one to be deleted
-                                for (i in prSets) {
-                                    if (i.trainingSetID != curTrainingSet.trainingSetID) {
-                                        updatedPRSets.add(i)
-                                    }
-                                }
-
                                 val sameRepSetsObs = trainingSetViewModel
                                     .getTrainingSetsOfExerciseRepsIsPR(
                                         exerciseID,
-                                        curTrainingSet.reps, 0
+                                        curTrainingSet.reps,
+                                        0
                                     )
                                 sameRepSetsObs.observe(fragment.viewLifecycleOwner) { sameRepSets ->
-                                    // If at least one other set of the same number of reps exists...
-                                    if (sameRepSets.isNotEmpty()) {
-                                        var makePR = true
-                                        val possiblePRSet = sameRepSets[0]
-
-                                        loop@ for (i in updatedPRSets) {
-                                            // If i has a higher rep count than the heaviest non-PR
-                                            // set of the same rep count as the set to be deleted...
-                                            if (i.reps > possiblePRSet.reps) {
-                                                // ...it will be made a PR if i has a lower weight
-                                                makePR = i.weight < possiblePRSet.weight
-                                                break@loop
-                                            }
-                                        }
-
-                                        if (makePR) {
-                                            addToUpdatedPRSets(updatedPRSets, possiblePRSet)
-                                            trainingSetViewModel
-                                                .updateIsPR(possiblePRSet.trainingSetID, 1)
-                                        }
-                                    }
                                     sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
-                                    Log.d(null, "Removed sameRepSetsObs")
 
                                     val lowerRepSetsObs =
                                         trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
                                             exerciseID, curTrainingSet.reps
                                         )
                                     lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
-                                        val repValues: HashSet<Int> = HashSet()
-                                        var reps: Int
-                                        var weight: Float
-                                        // Iterate through each training set with fewer reps than the
-                                        // set to be deleted
-                                        for (i in lowerRepSets.indices) {
-                                            reps = lowerRepSets[i].reps
-                                            weight = lowerRepSets[i].weight
-
-                                            // If this is the first set of the given rep count that is
-                                            // being iterated through...
-                                            if (!repValues.contains(reps)) {
-                                                repValues.add(reps)
-                                                // If the set is not a PR...
-                                                if (!lowerRepSets[i].isPR) {
-                                                    var makePR1 = true
-                                                    // Check if the training set should be made a PR
-                                                    loop@ for (j in updatedPRSets.size - 1 downTo 0) {
-                                                        if (updatedPRSets[j].reps <= reps) break@loop
-                                                        if (updatedPRSets[j].weight >= weight) {
-                                                            makePR1 = false
-                                                            break@loop
-                                                        }
-                                                    }
-                                                    if (makePR1) {
-                                                        addToUpdatedPRSets(
-                                                            updatedPRSets,
-                                                            lowerRepSets[i]
-                                                        )
-                                                        trainingSetViewModel.updateIsPR(
-                                                            lowerRepSets[i].trainingSetID, 1
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                        }
                                         lowerRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
-                                        Log.d(null, "Removed lowerRepSetsObs")
+
+                                        val newPrIds = getNewPrSetsAfterDeletion(
+                                            curTrainingSet,
+                                            prSets,
+                                            sameRepSets,
+                                            lowerRepSets
+                                        )
+
+                                        // Set isPr to true for all training sets that are now PRs
+                                        for (id in newPrIds) {
+                                            trainingSetViewModel.updateIsPR(id, 1)
+                                        }
                                     }
                                 }
                                 prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
-                                Log.d(null, "Removed prTrainingSetsObs")
                             }
                         }
 
@@ -302,35 +248,6 @@ class TrainingSetItemAdapter(
             }
             popupMenu.show()
         }
-    }
-
-    /**
-     * Adds newSet to the correct index of updatedPRSets, which is ordered by reps (ascending).
-     */
-    private fun addToUpdatedPRSets(updatedPRSets: LinkedList<TrainingSet>, newSet: TrainingSet)
-            : LinkedList<TrainingSet> {
-        // Add the now PR training set to the correct index of
-        // updatedPRSets
-        if (updatedPRSets.isEmpty()) {
-            updatedPRSets.add(newSet)
-            return updatedPRSets
-        }
-
-        loop@ for (i in updatedPRSets.indices) {
-            if (i + 1 != updatedPRSets.size) {
-                if (newSet.reps > updatedPRSets[i].reps
-                    && newSet.reps < updatedPRSets[i + 1].reps
-                ) {
-                    updatedPRSets.add(i + 1, newSet)
-                    break@loop
-                } else if (newSet.reps < updatedPRSets[i].reps) {
-                    updatedPRSets.addFirst(newSet)
-                    break@loop
-                }
-            }
-            updatedPRSets.addLast(newSet)
-        }
-        return updatedPRSets
     }
 
     /**

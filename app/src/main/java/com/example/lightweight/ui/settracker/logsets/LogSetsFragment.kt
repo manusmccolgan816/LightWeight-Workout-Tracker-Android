@@ -26,7 +26,7 @@ import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
-import com.example.lightweight.util.PersonalRecordUtil.calculateIsPR
+import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
 import kotlinx.coroutines.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -232,7 +232,7 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                         prDatesObs.observe(viewLifecycleOwner) { prDates ->
                             prDatesObs.removeObservers(viewLifecycleOwner)
 
-                            val pair = calculateIsPR(reps, weight, selectedDate, prSets, prDates)
+                            val pair = calculateIsNewSetPr(reps, weight, selectedDate, prSets, prDates)
 
                             isPR = pair.first
                             val noLongerPrIds = pair.second
@@ -283,6 +283,4 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                 }
             }
     }
-
-
 }
