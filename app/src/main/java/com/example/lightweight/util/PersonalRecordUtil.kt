@@ -22,13 +22,12 @@ object PersonalRecordUtil {
 
         // If there are no PRs (and so no training sets) of this exercise...
         if (prSets.isEmpty()) {
-            // ...the new set will be a PR
             isPR = true
         } else {
             val repWeightMappings: HashMap<Int, Float> = HashMap()
+
             // If the new set has more reps than any other of the exercise...
             if (prSets[prSets.size - 1].reps < reps) {
-                // ...it will be a PR
                 isPR = true
             }
 
@@ -39,14 +38,13 @@ object PersonalRecordUtil {
                 if (i.reps > reps) {
                     // ...if the new set has a higher weight AND there is not a
                     // PR with the same number of reps...
-                    if (i.weight < weight && repWeightMappings.get(reps) == null) {
-                        // ...the new set is a PR
+                    if (i.weight < weight && repWeightMappings[reps] == null) {
                         isPR = true
                     }
                     break@loop
                 }
                 // If i has fewer reps and lower or equal weight than the new
-                // set OR i has the same number of reps and a higher weight than
+                // set OR i has the same number of reps and a lower weight than
                 // the new set OR i is the same as the new set and the new set
                 // is of an earlier date...
                 if ((i.reps < reps && i.weight <= weight)
@@ -54,14 +52,13 @@ object PersonalRecordUtil {
                     || (i.reps == reps && i.weight == weight
                             && selectedDate < prDates[count])
                 ) {
-                    // ...i is no longer a PR
-                    //trainingSetViewModel.updateIsPR(i.trainingSetID, 0)
+                    // Keep a record of i's ID as it's PR status should be removed
                     noLongerPRTrainingSetIDs.add(i.trainingSetID)
-                    // The new set is a PR
+
                     isPR = true
                 }
                 // Add i's reps and weight to the HashMap
-                repWeightMappings.put(i.reps, i.weight)
+                repWeightMappings[i.reps] = i.weight
                 count++
             }
         }
