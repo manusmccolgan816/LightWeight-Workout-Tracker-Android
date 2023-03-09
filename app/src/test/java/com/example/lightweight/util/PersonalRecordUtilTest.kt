@@ -407,7 +407,7 @@ class PersonalRecordUtilTest {
         assertThat(result.second).isEmpty()
     }
 
-
+    // The following tests test getNewPrSetsOnDeletion
 
     @Test
     fun `getNewPrSetsOnDeletion no other sets exist, return empty list`() {
@@ -419,7 +419,6 @@ class PersonalRecordUtilTest {
             null,
             true
         )
-        curTrainingSet.trainingSetID = 4
         val prSets = listOf(curTrainingSet)
 
         val result = getNewPrSetsOnDeletion(
@@ -462,8 +461,8 @@ class PersonalRecordUtilTest {
             true
         )
 
-        val prSets = listOf(trainingSet1, trainingSet2, curTrainingSet)
-        val sameRepSets = listOf(trainingSet1, trainingSet2)
+        val prSets = listOf(curTrainingSet)
+        val sameRepSets = listOf(trainingSet2, trainingSet1)
 
         val result = getNewPrSetsOnDeletion(
             curTrainingSet,
@@ -472,13 +471,51 @@ class PersonalRecordUtilTest {
             listOf()
         )
 
-        assertThat(result).contains(trainingSet1.trainingSetID)
-        assertThat(result).doesNotContain(trainingSet2.trainingSetID)
+        assertThat(result).containsExactly(trainingSet2.trainingSetID)
     }
 
     @Test
-    fun `getNewPrSetsOnDeletion sets of equal reps exist and PR of higher reps and equal weight exists, return empty list`() {
-        // This is not possible, idk what I was thinking
+    fun `getNewPrSetsOnDeletion set of equal reps exists and PR of higher reps and equal weight exists, return empty list`() {
+        // For example, 5RM on 100 is deleted. There is a 6RM on 95. Existing 5 reps on 95 is not a PR
+        val curTrainingSet = TrainingSet(
+            2,
+            1,
+            100f,
+            5,
+            null,
+            true
+        )
+
+        val trainingSet1 = TrainingSet(
+            2,
+            2,
+            95f,
+            6,
+            null,
+            true
+        )
+        trainingSet1.trainingSetID = 1
+        val trainingSet2 = TrainingSet(
+            2,
+            3,
+            95f,
+            5,
+            null,
+            false
+        )
+        trainingSet2.trainingSetID = 2
+
+        val prSets = listOf(curTrainingSet, trainingSet1)
+        val sameRepSets = listOf(trainingSet2)
+
+        val result = getNewPrSetsOnDeletion(
+            curTrainingSet,
+            prSets,
+            sameRepSets,
+            listOf()
+        )
+
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -511,7 +548,7 @@ class PersonalRecordUtilTest {
             true
         )
 
-        val prSets = listOf(trainingSet1, trainingSet2, curTrainingSet)
+        val prSets = listOf(curTrainingSet, trainingSet2)
         val sameRepSets = listOf(trainingSet1)
 
         val result = getNewPrSetsOnDeletion(
@@ -526,7 +563,7 @@ class PersonalRecordUtilTest {
 
     @Test
     fun `getNewPrSetsOnDeletion non-PR sets of lower reps and higher weight than existing PRs exist, return only IDs of new PRs`() {
-        // For example, 5RM on 100kg is deleted. There is a 6RM on 95kg. Existing 4 reps on 98 and 3
+        // For example, 5RM on 100 is deleted. There is a 6RM on 95. Existing 4 reps on 98 and 3
         // reps on 99 are now PRs
         val curTrainingSet = TrainingSet(
             2,
@@ -564,7 +601,7 @@ class PersonalRecordUtilTest {
         )
         trainingSet3.trainingSetID = 3
 
-        val prSets = listOf(curTrainingSet, trainingSet1, trainingSet2, trainingSet3)
+        val prSets = listOf(curTrainingSet, trainingSet3)
         val lowerRepSets = listOf(trainingSet1, trainingSet2)
 
         val result = getNewPrSetsOnDeletion(
@@ -574,8 +611,6 @@ class PersonalRecordUtilTest {
             lowerRepSets
         )
 
-        assertThat(result).contains(trainingSet1.trainingSetID)
-        assertThat(result).contains(trainingSet2.trainingSetID)
-        assertThat(result.size).isEqualTo(2)
+        assertThat(result).containsExactly(trainingSet1.trainingSetID, trainingSet2.trainingSetID)
     }
 }
