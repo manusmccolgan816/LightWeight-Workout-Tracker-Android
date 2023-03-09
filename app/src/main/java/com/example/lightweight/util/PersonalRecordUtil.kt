@@ -13,6 +13,8 @@ object PersonalRecordUtil {
      * weight and reps is a PR among the prSets that were logged on prDates. The second value is an
      * ArrayList of the training set IDs of the training sets that would no longer be PRs after
      * adding a training set with the given weight and reps.
+     *
+     * prSets should be ordered by reps asc
      */
     fun calculateIsNewSetPr(
         reps: Int,
@@ -73,8 +75,12 @@ object PersonalRecordUtil {
     /**
      * Returns an ArrayList of the IDs of the training sets that would be new PRs were
      * curTrainingSet deleted.
+     *
+     * *prSets should be ordered by reps asc
+     * *sameRepSets should be ordered by weight desc, date asc and trainingSetNumber asc
+     * *lowerRepSets should be ordered by reps desc, weight desc, date asc and trainingSetNumber asc
      */
-    fun getNewPrSetsAfterDeletion(
+    fun getNewPrSetsOnDeletion(
         curTrainingSet: TrainingSet,
         prSets: List<TrainingSet>,
         sameRepSets: List<TrainingSet>,
@@ -93,7 +99,7 @@ object PersonalRecordUtil {
         // If at least one other set of the same number of reps exists...
         if (sameRepSets.isNotEmpty()) {
             var makePR = true
-            val possiblePRSet = sameRepSets[0]
+            val possiblePRSet = sameRepSets[0] // The first index is the heaviest
 
             loop@ for (i in updatedPRSets) {
                 // If i has a higher rep count than the heaviest non-PR
@@ -129,7 +135,9 @@ object PersonalRecordUtil {
                     var makePR1 = true
                     // Check if the training set should be made a PR
                     loop@ for (j in updatedPRSets.size - 1 downTo 0) {
-                        if (updatedPRSets[j].reps <= reps) break@loop
+                        if (updatedPRSets[j].reps <= reps) {
+                            break@loop
+                        }
                         if (updatedPRSets[j].weight >= weight) {
                             makePR1 = false
                             break@loop

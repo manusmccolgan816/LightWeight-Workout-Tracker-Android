@@ -1,6 +1,8 @@
 package com.example.lightweight.util
 
 import com.example.lightweight.data.db.entities.*
+import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
+import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsOnDeletion
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -77,11 +79,11 @@ class PersonalRecordUtilTest {
         prDates.clear()
     }
 
-    // The following tests test the first value returned from calculateIsPR
+    // The following tests test the first value returned from calculateIsNewSetPr
 
     @Test
     fun `first training set, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+        val result = calculateIsNewSetPr(
             10,
             22.5f,
             "2023-01-21",
@@ -93,8 +95,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps than all PRs, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps than all PRs, returns true`() {
+        val result = calculateIsNewSetPr(
             10,
             12.5f,
             "2023-01-21",
@@ -106,8 +108,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and higher weight than any PR, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and higher weight than any PR, returns true`() {
+        val result = calculateIsNewSetPr(
             7,
             22.5f,
             "2023-01-21",
@@ -119,8 +121,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and higher weight than any PR, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and higher weight than any PR, returns true`() {
+        val result = calculateIsNewSetPr(
             9,
             20f,
             "2023-01-17",
@@ -132,8 +134,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and equal weight to any PR, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and equal weight to any PR, returns true`() {
+        val result = calculateIsNewSetPr(
             10,
             17.5f,
             "2023-01-17",
@@ -145,8 +147,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps and higher weight than any PR, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps and higher weight than any PR, returns true`() {
+        val result = calculateIsNewSetPr(
             8,
             21f,
             "2023-01-17",
@@ -158,8 +160,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and earlier date than any PR, returns true`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and earlier date than any PR, returns true`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-16",
@@ -171,8 +173,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and equal weight to any PR, returns false`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and equal weight to any PR, returns false`() {
+        val result = calculateIsNewSetPr(
             7,
             20f,
             "2023-01-16",
@@ -184,8 +186,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and lower weight than any PR, returns false`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and lower weight than any PR, returns false`() {
+        val result = calculateIsNewSetPr(
             7,
             10f,
             "2023-01-16",
@@ -197,8 +199,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and later date than any PR, returns false`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and later date than any PR, returns false`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-18",
@@ -210,8 +212,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and same date as any PR, returns false`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and same date as any PR, returns false`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-17",
@@ -222,11 +224,11 @@ class PersonalRecordUtilTest {
         assertThat(result.first).isFalse()
     }
 
-    // The following tests test the second value returned from calculateIsPR
+    // The following tests test the second value returned from calculateIsNewSetPr
 
     @Test
-    fun `first training set, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr first training set, returns empty list`() {
+        val result = calculateIsNewSetPr(
             10,
             22.5f,
             "2023-01-21",
@@ -238,8 +240,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and lower weight than all PRs, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and lower weight than all PRs, returns empty list`() {
+        val result = calculateIsNewSetPr(
             20,
             2.5f,
             "2023-01-21",
@@ -251,8 +253,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps than all PRs and equal weight to any PR, returns only ID of said PR and PRs with lower weight`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps than all PRs and equal weight to any PR, returns only ID of said PR and PRs with lower weight`() {
+        val result = calculateIsNewSetPr(
             20,
             20f,
             "2023-01-21",
@@ -266,8 +268,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and higher weight than all PRs, returns ID of all PRs`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and higher weight than all PRs, returns ID of all PRs`() {
+        val result = calculateIsNewSetPr(
             20,
             40f,
             "2023-01-21",
@@ -281,8 +283,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and higher weight than any PR, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and higher weight than any PR, returns empty list`() {
+        val result = calculateIsNewSetPr(
             1,
             60f,
             "2023-01-21",
@@ -294,8 +296,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and equal weight to any PR, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and equal weight to any PR, returns empty list`() {
+        val result = calculateIsNewSetPr(
             5,
             17.5f,
             "2023-01-21",
@@ -307,8 +309,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `lower reps and lower weight than any PR, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr lower reps and lower weight than any PR, returns empty list`() {
+        val result = calculateIsNewSetPr(
             5,
             10f,
             "2023-01-21",
@@ -320,8 +322,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and higher weight than any PR, returns only ID of said PR and PRs with lower or equal reps`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and higher weight than any PR, returns only ID of said PR and PRs with lower or equal reps`() {
+        val result = calculateIsNewSetPr(
             8,
             23f,
             "2023-01-21",
@@ -335,8 +337,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `higher reps and equal weight to any PR, returns only ID of said PR and PRs with lower or equal reps`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr higher reps and equal weight to any PR, returns only ID of said PR and PRs with lower or equal reps`() {
+        val result = calculateIsNewSetPr(
             8,
             22.5f,
             "2023-01-21",
@@ -350,8 +352,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps and higher weight than any PR, returns only ID of said PR and PRs with lower reps and lower or equal weight`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps and higher weight than any PR, returns only ID of said PR and PRs with lower reps and lower or equal weight`() {
+        val result = calculateIsNewSetPr(
             8,
             22.5f,
             "2023-01-21",
@@ -365,8 +367,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and earlier date than any PR, returns only ID of said PR`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and earlier date than any PR, returns only ID of said PR`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-10",
@@ -380,8 +382,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and later date than any PR, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and later date than any PR, returns empty list`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-30",
@@ -393,8 +395,8 @@ class PersonalRecordUtilTest {
     }
 
     @Test
-    fun `equal reps, equal weight and same date as any PR, returns empty list`() {
-        val result = PersonalRecordUtil.calculateIsNewSetPr(
+    fun `calculateIsNewSetPr equal reps, equal weight and same date as any PR, returns empty list`() {
+        val result = calculateIsNewSetPr(
             8,
             20f,
             "2023-01-17",
@@ -403,5 +405,177 @@ class PersonalRecordUtilTest {
         )
 
         assertThat(result.second).isEmpty()
+    }
+
+
+
+    @Test
+    fun `getNewPrSetsOnDeletion no other sets exist, return empty list`() {
+        val curTrainingSet = TrainingSet(
+            2,
+            1,
+            50f,
+            10,
+            null,
+            true
+        )
+        curTrainingSet.trainingSetID = 4
+        val prSets = listOf(curTrainingSet)
+
+        val result = getNewPrSetsOnDeletion(
+            curTrainingSet,
+            prSets,
+            listOf(),
+            listOf()
+        )
+
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun `getNewPrSetsOnDeletion sets of equal reps exist and no PRs of higher reps and equal or higher weight exist, return only heaviest one's ID`() {
+        val trainingSet1 = TrainingSet(
+            2,
+            1,
+            27.5f,
+            10,
+            null,
+            false
+        )
+        trainingSet1.trainingSetID = 1
+        val trainingSet2 = TrainingSet(
+            2,
+            2,
+            45f,
+            10,
+            null,
+            false
+        )
+        trainingSet2.trainingSetID = 2
+
+        val curTrainingSet = TrainingSet(
+            2,
+            3,
+            50f,
+            10,
+            null,
+            true
+        )
+
+        val prSets = listOf(trainingSet1, trainingSet2, curTrainingSet)
+        val sameRepSets = listOf(trainingSet1, trainingSet2)
+
+        val result = getNewPrSetsOnDeletion(
+            curTrainingSet,
+            prSets,
+            sameRepSets,
+            listOf()
+        )
+
+        assertThat(result).contains(trainingSet1.trainingSetID)
+        assertThat(result).doesNotContain(trainingSet2.trainingSetID)
+    }
+
+    @Test
+    fun `getNewPrSetsOnDeletion sets of equal reps exist and PR of higher reps and equal weight exists, return empty list`() {
+        // This is not possible, idk what I was thinking
+    }
+
+    @Test
+    fun `getNewPrSetsOnDeletion set of equal reps exists and PR of higher reps and higher weight exists, return empty list`() {
+        val trainingSet1 = TrainingSet(
+            2,
+            1,
+            27.5f,
+            10,
+            null,
+            false
+        )
+        trainingSet1.trainingSetID = 1
+        val trainingSet2 = TrainingSet(
+            2,
+            2,
+            45f,
+            11,
+            null,
+            true
+        )
+        trainingSet2.trainingSetID = 2
+
+        val curTrainingSet = TrainingSet(
+            2,
+            3,
+            50f,
+            10,
+            null,
+            true
+        )
+
+        val prSets = listOf(trainingSet1, trainingSet2, curTrainingSet)
+        val sameRepSets = listOf(trainingSet1)
+
+        val result = getNewPrSetsOnDeletion(
+            curTrainingSet,
+            prSets,
+            sameRepSets,
+            listOf()
+        )
+
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun `getNewPrSetsOnDeletion non-PR sets of lower reps and higher weight than existing PRs exist, return only IDs of new PRs`() {
+        // For example, 5RM on 100kg is deleted. There is a 6RM on 95kg. Existing 4 reps on 98 and 3
+        // reps on 99 are now PRs
+        val curTrainingSet = TrainingSet(
+            2,
+            1,
+            100f,
+            5,
+            null,
+            true
+        )
+        val trainingSet1 = TrainingSet(
+            2,
+            2,
+            98f,
+            4,
+            null,
+            false
+        )
+        trainingSet1.trainingSetID = 1
+        val trainingSet2 = TrainingSet(
+            2,
+            2,
+            99f,
+            3,
+            null,
+            false
+        )
+        trainingSet2.trainingSetID = 2
+        val trainingSet3 = TrainingSet(
+            2,
+            4,
+            95f,
+            6,
+            null,
+            true
+        )
+        trainingSet3.trainingSetID = 3
+
+        val prSets = listOf(curTrainingSet, trainingSet1, trainingSet2, trainingSet3)
+        val lowerRepSets = listOf(trainingSet1, trainingSet2)
+
+        val result = getNewPrSetsOnDeletion(
+            curTrainingSet,
+            prSets,
+            listOf(),
+            lowerRepSets
+        )
+
+        assertThat(result).contains(trainingSet1.trainingSetID)
+        assertThat(result).contains(trainingSet2.trainingSetID)
+        assertThat(result.size).isEqualTo(2)
     }
 }

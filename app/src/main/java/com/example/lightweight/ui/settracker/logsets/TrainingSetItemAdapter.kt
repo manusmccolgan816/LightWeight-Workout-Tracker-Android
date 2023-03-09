@@ -23,7 +23,7 @@ import com.example.lightweight.ui.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import com.example.lightweight.util.PersonalRecordUtil.addToUpdatedPRSets
-import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsAfterDeletion
+import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsOnDeletion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -166,7 +166,7 @@ class TrainingSetItemAdapter(
                                     lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
                                         lowerRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
-                                        val newPrIds = getNewPrSetsAfterDeletion(
+                                        val newPrIds = getNewPrSetsOnDeletion(
                                             curTrainingSet,
                                             prSets,
                                             sameRepSets,
