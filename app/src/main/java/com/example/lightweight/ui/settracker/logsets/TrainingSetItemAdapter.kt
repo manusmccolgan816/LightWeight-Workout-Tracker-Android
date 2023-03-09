@@ -153,6 +153,8 @@ class TrainingSetItemAdapter(
                             val prTrainingSetsObs = trainingSetViewModel
                                 .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
+                                prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
+
                                 val sameRepSetsObs = trainingSetViewModel
                                     .getTrainingSetsOfExerciseRepsIsPR(
                                         exerciseID,
@@ -182,7 +184,6 @@ class TrainingSetItemAdapter(
                                         }
                                     }
                                 }
-                                prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
                             }
                         }
 

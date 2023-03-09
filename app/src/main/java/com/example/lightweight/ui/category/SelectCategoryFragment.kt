@@ -24,7 +24,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
     private val args: SelectCategoryFragmentArgs by navArgs()
 
-    private lateinit var categories: List<Category>
+    private var categories = listOf<Category>()
 
     lateinit var searchViewCategories: SearchView
     private lateinit var recyclerViewCategories: RecyclerView
