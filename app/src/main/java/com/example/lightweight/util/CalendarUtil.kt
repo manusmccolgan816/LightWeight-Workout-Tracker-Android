@@ -47,7 +47,7 @@ object CalendarUtil {
                     selectedDatePositionVar = i - 1
                 }
                 // If this is today's date...
-                if (today.dayOfMonth == monthDay) {
+                if (displayDate.month.equals(today.month) && today.dayOfMonth == monthDay) {
                     // Take note of its position
                     todayPositionVar = i - 1
                 }

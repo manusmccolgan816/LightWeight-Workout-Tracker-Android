@@ -82,7 +82,7 @@ class PersonalRecordUtilTest {
     // The following tests test the first value returned from calculateIsNewSetPr
 
     @Test
-    fun `first training set, returns true`() {
+    fun `calculateIsNewSetPr first training set, returns true`() {
         val result = calculateIsNewSetPr(
             10,
             22.5f,

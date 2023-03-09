@@ -117,11 +117,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         selectedDatePosition = grid.second
         todayPosition = grid.third
 
-        // today's position is set to null if the displayed month is not the current month
-        if (!(displayDate.month.equals(today.month))) {
-            todayPosition = null
-        }
-
         // If the selected date's month is the same as the month being displayed...
         val calendarAdapter: CalendarAdapter = if (displayDate.month.equals(selectedDate.month)) {
             // ...pass selectedDatePosition to highlight the selected date
