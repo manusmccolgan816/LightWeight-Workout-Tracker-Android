@@ -1,7 +1,6 @@
 package com.example.lightweight.ui.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
+import com.example.lightweight.util.CalendarUtil.calculateMonthArray
+import com.example.lightweight.util.CalendarUtil.getMonthYearFromDate
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.OnItemListener,
     KodeinAware {
@@ -53,12 +52,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
         textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
 
-        // Remove the share icon
+        // Remove the share icon from the toolbar
         val imageViewShareWorkout =
             activity?.findViewById(R.id.image_view_share_workout) as ImageView
         imageViewShareWorkout.visibility = View.GONE
 
-        // Remove the select date icon
+        // Remove the select date icon from the toolbar
         val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
         imageViewSelectDate.visibility = View.GONE
 
@@ -106,8 +105,17 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
      */
     private fun setMonthView() {
         workoutPositions = arrayListOf() // Ensure workoutPositions is repopulated from scratch
-        textViewMonthYear.text = monthYearFromDate(displayDate)
-        val daysInMonth = daysInMonthArray(displayDate)
+        textViewMonthYear.text = getMonthYearFromDate(displayDate)
+        val grid = calculateMonthArray(
+            displayDate,
+            selectedDate,
+            today,
+            workoutPositions,
+            workoutDates
+        )
+        val daysInMonth = grid.first
+        selectedDatePosition = grid.second
+        todayPosition = grid.third
 
         // today's position is set to null if the displayed month is not the current month
         if (!(displayDate.month.equals(today.month))) {
@@ -137,64 +145,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
         recyclerViewCalendar.adapter = calendarAdapter
     }
 
-    /**
-     * Returns an array containing the days in the month to display on a 6 * 7 grid, where empty
-     * strings are empty grid spaces.
-     */
-    private fun daysInMonthArray(date: LocalDate): ArrayList<String> {
-        val daysInMonthArray = arrayListOf<String>()
-        val yearMonth: YearMonth = YearMonth.from(date)
-
-        val daysInMonth: Int = yearMonth.lengthOfMonth()
-
-        val firstOfMonth: LocalDate = displayDate.withDayOfMonth(1)
-        val dayOfWeek: Int = firstOfMonth.dayOfWeek.value
-
-        // Loop through each item in the 6 * 7 table
-        for (i in 1..42) {
-            // Ensure that the calendar squares before and after the first and last dates in the
-            // month are left blank
-            if (i < dayOfWeek || i >= daysInMonth + dayOfWeek) {
-                daysInMonthArray.add("")
-            }
-            // Fill the correct squares with the day's date
-            else {
-                val monthDay: Int = i + 1 - dayOfWeek
-                daysInMonthArray.add(monthDay.toString())
-
-                if (displayDate.equals(selectedDate) && selectedDate.dayOfMonth == monthDay) {
-                    selectedDatePosition = i - 1
-                    Log.d(logTag, "Selected date position is $selectedDatePosition")
-                }
-                if (today.dayOfMonth == monthDay) {
-                    todayPosition = i - 1
-                    Log.d(logTag, "Today position is $todayPosition")
-                }
-
-                val thisDate = LocalDate.of(yearMonth.year, yearMonth.month, monthDay)
-                if (workoutDates.contains(thisDate)) {
-                    Log.d(logTag, "Found workout on date $thisDate")
-                    workoutPositions.add(i - 1)
-                }
-            }
-        }
-
-        return daysInMonthArray
-    }
-
-    /**
-     * Return the month and year of the given date in the pattern MMMM yyyy.
-     */
-    private fun monthYearFromDate(date: LocalDate): String {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
-        return date.format(formatter)
-    }
-
     override fun onItemClick(position: Int, dayText: String) {
         // If a non-empty date was selected...
         if (dayText != "") {
             // Get the new selected date in the format d MMMM yyyy
-            val newSelectedDateStr = "$dayText ${monthYearFromDate(displayDate)}"
+            val newSelectedDateStr = "$dayText ${getMonthYearFromDate(displayDate)}"
 
             // Navigate to SelectCategoryFragment
             val action = CalendarFragmentDirections

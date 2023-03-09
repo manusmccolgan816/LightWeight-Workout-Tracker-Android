@@ -9,7 +9,7 @@ import kotlin.collections.HashSet
 object PersonalRecordUtil {
 
     /**
-     * Returns a pair where the first value is a Boolean to indicate whether a set with the given
+     * Returns a Pair where the first value is a Boolean to indicate whether a set with the given
      * weight and reps is a PR among the prSets that were logged on prDates. The second value is an
      * ArrayList of the training set IDs of the training sets that would no longer be PRs after
      * adding a training set with the given weight and reps.
