@@ -1,6 +1,7 @@
 package com.example.lightweight.util
 
 import com.example.lightweight.util.CalendarUtil.calculateMonthArray
+import com.example.lightweight.util.CalendarUtil.getMonthYearFromDate
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import java.time.LocalDate
@@ -34,7 +35,7 @@ class CalendarUtilTest {
     // The following tests test the second value returned by calculateMonthArray
 
     @Test
-    fun `selected date month != display date month, return null`() {
+    fun `calculateMonthArray selected date month != display date month, return null`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val selectedDate = LocalDate.parse("2024-08-01")
         val result = calculateMonthArray(
@@ -49,7 +50,7 @@ class CalendarUtilTest {
     }
 
     @Test
-    fun `selected date == display date, return correct position`() {
+    fun `calculateMonthArray selected date == display date, return correct position`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val selectedDate = LocalDate.parse("2023-03-03")
         val result = calculateMonthArray(
@@ -66,7 +67,7 @@ class CalendarUtilTest {
     // The following tests test the third value returned by calculateMonthArray
 
     @Test
-    fun `display date year == today year and display date month != today month, return null`() {
+    fun `calculateMonthArray display date year == today year and display date month != today month, return null`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val today = LocalDate.parse("2023-04-03")
         val result = calculateMonthArray(
@@ -81,7 +82,7 @@ class CalendarUtilTest {
     }
 
     @Test
-    fun `display date year != today year and display date month == today month, return null`() {
+    fun `calculateMonthArray display date year != today year and display date month == today month, return null`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val today = LocalDate.parse("2024-03-03")
         val result = calculateMonthArray(
@@ -96,7 +97,7 @@ class CalendarUtilTest {
     }
 
     @Test
-    fun `display date year != today year and display date month != today month, return null`() {
+    fun `calculateMonthArray display date year != today year and display date month != today month, return null`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val today = LocalDate.parse("2024-04-03")
         val result = calculateMonthArray(
@@ -111,7 +112,7 @@ class CalendarUtilTest {
     }
 
     @Test
-    fun `display date month and year == today month and year, return correct position`() {
+    fun `calculateMonthArray display date month and year == today month and year, return correct position`() {
         val displayDate = LocalDate.parse("2023-03-03")
         val today = LocalDate.parse("2023-03-03")
         val result = calculateMonthArray(
@@ -123,5 +124,15 @@ class CalendarUtilTest {
         )
 
         assertThat(result.third).isEqualTo(4)
+    }
+
+    // The following tests test getMonthYearFromDate
+
+    @Test
+    fun `getMonthYearFromDate date 2023-03-03, return March 2023`() {
+        val date = LocalDate.parse("2023-03-03")
+        val result = getMonthYearFromDate(date)
+
+        assertThat(result).isEqualTo("March 2023")
     }
 }
