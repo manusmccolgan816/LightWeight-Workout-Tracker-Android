@@ -8,27 +8,22 @@ import androidx.room.ForeignKey.Companion.CASCADE
 
 @Entity(
     tableName = "CYCLE_DAY_EXERCISE",
-    foreignKeys = [ForeignKey(
-        entity = CycleDay::class,
-        childColumns = ["cycle_day_ID"],
-        parentColumns = ["cycle_day_ID"],
-        onDelete = CASCADE
-    ), ForeignKey(
-        entity = CycleDayCategory::class,
-        childColumns = ["cycle_day_category_ID"],
-        parentColumns = ["cycle_day_category_ID"],
-        onDelete = CASCADE
-    ), ForeignKey(
-        entity = Exercise::class,
-        childColumns = ["exercise_ID"],
-        parentColumns = ["exercise_ID"],
-        onDelete = CASCADE
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = CycleDayCategory::class,
+            childColumns = ["cycle_day_category_ID"],
+            parentColumns = ["cycle_day_category_ID"],
+            onDelete = CASCADE
+        ),
+        ForeignKey(
+            entity = Exercise::class,
+            childColumns = ["exercise_ID"],
+            parentColumns = ["exercise_ID"],
+            onDelete = CASCADE
+        )
+    ]
 )
 data class CycleDayExercise(
-    @ColumnInfo(name = "cycle_day_ID")
-    val cycleDayID: Int?,
-
     @ColumnInfo(name = "cycle_day_category_ID")
     val cycleDayCategoryID: Int?,
 

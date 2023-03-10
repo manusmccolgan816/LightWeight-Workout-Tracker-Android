@@ -229,20 +229,15 @@ class TrainingCycleDayAdapter(
                                         cycleDayCategoryViewModel.getCycleDayIDOfCycleDayCategoryID(
                                             curCycleDayCategoryID
                                         )
-                                    // Observe to get the cycleDayID
-                                    cycleDayIDObs.observe(fragment.viewLifecycleOwner) { cycleDayID ->
-                                        val cycleDayExercise = CycleDayExercise(
-                                            cycleDayID,
-                                            curCycleDayCategoryID,
-                                            exercise.exerciseID,
-                                            numExercises + 1
-                                        )
 
-                                        cycleDayExerciseViewModel.insert(cycleDayExercise)
-                                        Log.d(logTag, "Inserting cycleDayExercise")
+                                    val cycleDayExercise = CycleDayExercise(
+                                        curCycleDayCategoryID,
+                                        exercise.exerciseID,
+                                        numExercises + 1
+                                    )
 
-                                        cycleDayIDObs.removeObservers(fragment.viewLifecycleOwner)
-                                    }
+                                    cycleDayExerciseViewModel.insert(cycleDayExercise)
+                                    Log.d(logTag, "Inserting cycleDayExercise")
 
                                     numExerciseObs.removeObservers(fragment.viewLifecycleOwner)
                                 }

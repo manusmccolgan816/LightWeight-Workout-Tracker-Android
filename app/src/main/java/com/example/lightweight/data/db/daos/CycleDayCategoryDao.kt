@@ -3,7 +3,6 @@ package com.example.lightweight.data.db.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lightweight.CycleDayCategoryCombo
-import com.example.lightweight.CycleDayCycleDayCatCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
 @Dao
