@@ -68,7 +68,6 @@ class CycleDayExerciseDaoTest {
         cycleDayCategory.cycleDayCategoryID = 1
         cycleDayCategoryDao.insert(cycleDayCategory)
         val cycleDayExercise = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             1
@@ -99,7 +98,6 @@ class CycleDayExerciseDaoTest {
         cycleDayCategory.cycleDayCategoryID = 1
         cycleDayCategoryDao.insert(cycleDayCategory)
         val cycleDayExercise1 = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             1
@@ -107,7 +105,6 @@ class CycleDayExerciseDaoTest {
         cycleDayExercise1.cycleDayExerciseID = 1
         cycleDayExerciseDao.insert(cycleDayExercise1)
         val cycleDayExercise2 = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             2
@@ -115,7 +112,6 @@ class CycleDayExerciseDaoTest {
         cycleDayExercise2.cycleDayExerciseID = 2
         cycleDayExerciseDao.insert(cycleDayExercise2)
         val cycleDayExercise3 = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             3
@@ -156,7 +152,6 @@ class CycleDayExerciseDaoTest {
         cycleDayCategory.cycleDayCategoryID = 1
         cycleDayCategoryDao.insert(cycleDayCategory)
         val cycleDayExercise = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             1
@@ -188,7 +183,6 @@ class CycleDayExerciseDaoTest {
         cycleDayCategory.cycleDayCategoryID = 1
         cycleDayCategoryDao.insert(cycleDayCategory)
         val cycleDayExercise = CycleDayExercise(
-            cycleDay.cycleDayID,
             cycleDayCategory.cycleDayCategoryID,
             exercise.exerciseID,
             1

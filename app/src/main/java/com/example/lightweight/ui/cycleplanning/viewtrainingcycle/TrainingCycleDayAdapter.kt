@@ -225,11 +225,6 @@ class TrainingCycleDayAdapter(
                                     )
                                 // Observe to get the number of CycleDayExercises in the CycleDayCategory
                                 numExerciseObs.observe(fragment.viewLifecycleOwner) { numExercises ->
-                                    val cycleDayIDObs =
-                                        cycleDayCategoryViewModel.getCycleDayIDOfCycleDayCategoryID(
-                                            curCycleDayCategoryID
-                                        )
-
                                     val cycleDayExercise = CycleDayExercise(
                                         curCycleDayCategoryID,
                                         exercise.exerciseID,
