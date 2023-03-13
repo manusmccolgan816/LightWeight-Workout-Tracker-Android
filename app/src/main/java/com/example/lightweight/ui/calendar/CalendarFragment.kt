@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
+import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.workout.WorkoutViewModel
 import com.example.lightweight.ui.workout.WorkoutViewModelFactory
 import com.example.lightweight.util.CalendarUtil.calculateMonthArray
@@ -48,18 +49,20 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the toolbar title
-        val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
-        textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
+        if (activity!!::class == MainActivity::class) {
+            // Set the toolbar title
+            val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
+            textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
 
-        // Remove the share icon from the toolbar
-        val imageViewShareWorkout =
-            activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.GONE
+            // Remove the share icon from the toolbar
+            val imageViewShareWorkout =
+                activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.GONE
 
-        // Remove the select date icon from the toolbar
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.GONE
+            // Remove the select date icon from the toolbar
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.GONE
+        }
 
         textViewMonthYear = view.findViewById(R.id.text_view_month_year)
         recyclerViewCalendar = view.findViewById(R.id.recycler_view_calendar)
