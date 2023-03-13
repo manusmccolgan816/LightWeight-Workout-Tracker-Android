@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
+import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workout.WorkoutViewModel
@@ -62,16 +63,41 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         // Set the toolbar title
-        val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
-        textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
+        if (activity!!::class == MainActivity::class) {
+            val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
+            textViewToolbarTitle.text = resources.getString(R.string.string_track_workouts)
 
-        // Set the share icon to be visible
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.VISIBLE
+            // Set the share icon to be visible
+            val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.VISIBLE
 
-        // Set the select date icon to be visible
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.VISIBLE
+            // Set the select date icon to be visible
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.VISIBLE
+
+            imageViewShareWorkout.setOnClickListener {
+                if (idNamePairs.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "There is no workout to share on this date",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    return@setOnClickListener
+                }
+                updateMovedExerciseInstanceNumbers()
+
+                val dialog = ShareWorkoutDialogFragment(selectedDate, idNamePairs, this)
+                dialog.show(requireActivity().supportFragmentManager, "ShareWorkout")
+            }
+
+            imageViewSelectDate.setOnClickListener {
+                // Navigate to CalendarFragment, passing the selected date
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToCalendarFragment(selectedDate.toString())
+                findNavController().navigate(action)
+            }
+        }
 
         textViewSelectedDate = view.findViewById(R.id.text_view_selected_date)
         progressBar = view.findViewById(R.id.progress_bar)
@@ -163,29 +189,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
                         Log.d(logTag, "Got ${it.size} exercise instance IDs and exercise names")
                     }
             }
-        }
-
-        imageViewShareWorkout.setOnClickListener {
-            if (idNamePairs.isEmpty()) {
-                Toast.makeText(
-                    context,
-                    "There is no workout to share on this date",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return@setOnClickListener
-            }
-            updateMovedExerciseInstanceNumbers()
-
-            val dialog = ShareWorkoutDialogFragment(selectedDate, idNamePairs, this)
-            dialog.show(requireActivity().supportFragmentManager, "ShareWorkout")
-        }
-
-        imageViewSelectDate.setOnClickListener {
-            // Navigate to CalendarFragment, passing the selected date
-            val action = HomeFragmentDirections
-                .actionHomeFragmentToCalendarFragment(selectedDate.toString())
-            findNavController().navigate(action)
         }
 
         buttonAddExercises.setOnClickListener {
