@@ -16,7 +16,8 @@ class CategoryItemAdapter(
     private val selectedDate: String,
     var categories: List<Category>,
     private val viewModel: CategoryViewModel,
-    var fragment: SelectCategoryFragment
+    var fragment: SelectCategoryFragment,
+    private val categorySelected: (Int, String) -> Unit
 ) : RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder>() {
 
     private lateinit var parent: ViewGroup
@@ -66,19 +67,24 @@ class CategoryItemAdapter(
 
         // Navigate to SelectExerciseFragment when a category item is selected
         holder.itemView.setOnClickListener {
-            // Remove the search view text
-            fragment.searchViewCategories.setQuery("", false)
-
-            val action = SelectCategoryFragmentDirections
-                .actionSelectCategoryFragmentToSelectExerciseFragment(
-                    curCategory.categoryID!!, selectedDate
-                )
-            findNavController(fragment).navigate(action)
+            categorySelected(curCategory.categoryID!!, selectedDate)
+//            // Remove the search view text
+//            fragment.searchViewCategories.setQuery("", false)
+//
+//            val action = SelectCategoryFragmentDirections
+//                .actionSelectCategoryFragmentToSelectExerciseFragment(
+//                    curCategory.categoryID!!, selectedDate
+//                )
+//            findNavController(fragment).navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
         return categories.size
+    }
+
+    interface OnItemListener {
+        fun onItemClick(categoryId: Int, selectedDate: String)
     }
 
     inner class CategoryItemViewHolder(categoryView: View) : RecyclerView.ViewHolder(categoryView)

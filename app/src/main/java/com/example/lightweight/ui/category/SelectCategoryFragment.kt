@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,15 +40,18 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
         if (activity!!::class == MainActivity::class) {
             // Set the toolbar title
-            val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+            val textViewToolbarTitle =
+                requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
             textViewToolbarTitle.text = resources.getString(R.string.string_select_category)
 
             // Remove the share icon
-            val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            val imageViewShareWorkout =
+                activity?.findViewById(R.id.image_view_share_workout) as ImageView
             imageViewShareWorkout.visibility = View.GONE
 
             // Remove the select date icon
-            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            val imageViewSelectDate =
+                activity?.findViewById(R.id.image_view_select_date) as ImageView
             imageViewSelectDate.visibility = View.GONE
         }
 
@@ -54,7 +59,19 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
         fabAddCategory = view.findViewById(R.id.fab_add_category)
 
-        val adapter = CategoryItemAdapter(args.selectedDate, listOf(), viewModel, this)
+        val adapter = CategoryItemAdapter(
+            args.selectedDate,
+            listOf(),
+            viewModel,
+            this,
+            fun(categoryId: Int, selectedDate: String) {
+                val action = SelectCategoryFragmentDirections
+                    .actionSelectCategoryFragmentToSelectExerciseFragment(
+                        categoryId, selectedDate
+                    )
+                findNavController().navigate(action)
+            }
+        )
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
 

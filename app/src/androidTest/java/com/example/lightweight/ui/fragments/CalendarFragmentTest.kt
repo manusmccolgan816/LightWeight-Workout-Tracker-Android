@@ -42,10 +42,11 @@ class CalendarFragmentTest {
         scenario.onFragment { fragment ->
             navController.setGraph(R.navigation.nav_graph)
             Navigation.setViewNavController(fragment.requireView(), navController)
+            navController.setCurrentDestination(R.id.calendarFragment)
         }
 
         onView(withId(R.id.recycler_view_calendar))
-            .perform(actionOnItemAtPosition<CalendarViewHolder>(2, click()))
+            .perform(actionOnItemAtPosition<CalendarViewHolder>(6, click()))
 
         Truth.assertThat(navController.currentDestination?.id).isEqualTo(R.id.homeFragment)
     }
