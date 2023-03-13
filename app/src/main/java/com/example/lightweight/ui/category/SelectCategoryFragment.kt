@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.ui.MainActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -35,17 +36,19 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
         val viewModel: CategoryViewModel by viewModels { factory }
 
-        // Set the toolbar title
-        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
-        textViewToolbarTitle.text = resources.getString(R.string.string_select_category)
+        if (activity!!::class == MainActivity::class) {
+            // Set the toolbar title
+            val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+            textViewToolbarTitle.text = resources.getString(R.string.string_select_category)
 
-        // Remove the share icon
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.GONE
+            // Remove the share icon
+            val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.GONE
 
-        // Remove the select date icon
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.GONE
+            // Remove the select date icon
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.GONE
+        }
 
         searchViewCategories = view.findViewById(R.id.search_view_categories)
         recyclerViewCategories = view.findViewById(R.id.recycler_view_categories)
