@@ -79,11 +79,25 @@ class CalendarFragmentTest {
 
     @Test
     fun testClickNextMonth_displayNextMonth() {
+        val args = bundleOf("selectedDate" to "2022-03-17")
+        val scenario = launchFragmentInContainer<CalendarFragment>(args)
 
+        onView(withId(R.id.text_view_month_year)).check(matches(withText("March 2022")))
+
+        onView(withId(R.id.image_view_prev_month)).perform(click())
+
+        onView(withId(R.id.text_view_month_year)).check(matches(withText("February 2022")))
     }
 
     @Test
     fun testClickPrevMonth_displayPreviousMonth() {
+        val args = bundleOf("selectedDate" to "2022-03-17")
+        val scenario = launchFragmentInContainer<CalendarFragment>(args)
 
+        onView(withId(R.id.text_view_month_year)).check(matches(withText("March 2022")))
+
+        onView(withId(R.id.image_view_next_month)).perform(click())
+
+        onView(withId(R.id.text_view_month_year)).check(matches(withText("April 2022")))
     }
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -50,24 +51,26 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
 
         val ref = this.activity
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val category = categoryViewModel.getCategoryOfID(categoryID)
-            ref?.runOnUiThread {
-                // Set the toolbar title
-                val textViewToolbarTitle =
-                    requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
-                textViewToolbarTitle.text = category.categoryName
+        if (activity!!::class == MainActivity::class) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val category = categoryViewModel.getCategoryOfID(categoryID)
+                ref?.runOnUiThread {
+                    // Set the toolbar title
+                    val textViewToolbarTitle =
+                        requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+                    textViewToolbarTitle.text = category.categoryName
+                }
             }
+
+            // Remove the share icon
+            val imageViewShareWorkout =
+                activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.GONE
+
+            // Remove the select date icon
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.GONE
         }
-
-        // Remove the share icon
-        val imageViewShareWorkout =
-            activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.GONE
-
-        // Remove the select date icon
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.GONE
 
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter

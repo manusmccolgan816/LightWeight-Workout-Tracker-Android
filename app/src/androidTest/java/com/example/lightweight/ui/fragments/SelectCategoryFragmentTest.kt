@@ -49,7 +49,7 @@ class SelectCategoryFragmentTest {
         scenario.onFragment { fragment ->
             navController.setGraph(R.navigation.nav_graph)
             Navigation.setViewNavController(fragment.requireView(), navController)
-            navController.setCurrentDestination(R.id.selectCategoryFragment)
+            navController.setCurrentDestination(R.id.selectCategoryFragment, args)
         }
 
         onView(withContentDescription("List of categories"))
@@ -67,7 +67,7 @@ class SelectCategoryFragmentTest {
 
         onView(withId(R.id.constraint_layout_select_category)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.recycler_view_categories))
+        onView(withContentDescription("List of categories"))
             .perform(actionOnItemAtPosition<CategoryItemAdapter.CategoryItemViewHolder>(1, click()))
 
         onView(withId(R.id.constraint_layout_select_exercise)).check(matches(isDisplayed()))
