@@ -17,8 +17,6 @@ import com.example.lightweight.ui.category.SelectCategoryFragment
 import org.junit.Test
 import com.example.lightweight.R
 import com.example.lightweight.ui.MainActivity
-import com.example.lightweight.ui.calendar.CalendarFragment
-import com.example.lightweight.ui.calendar.CalendarViewHolder
 import com.example.lightweight.ui.category.CategoryItemAdapter
 import com.google.common.truth.Truth
 import org.junit.runner.RunWith

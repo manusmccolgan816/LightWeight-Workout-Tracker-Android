@@ -6,20 +6,16 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.R
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.category.CategoryItemAdapter
-import com.example.lightweight.ui.category.SelectCategoryFragment
 import com.example.lightweight.ui.exercise.ExerciseItemAdapter
 import com.example.lightweight.ui.exercise.SelectExerciseFragment
 import com.google.common.truth.Truth
@@ -39,8 +35,8 @@ class SelectExerciseFragmentTest {
             fragmentArgs = args
         )
 
-        Espresso.onView(ViewMatchers.withId(R.id.constraint_layout_select_exercise))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.constraint_layout_select_exercise))
+            .check(matches(isDisplayed()))
     }
 
     @Test
