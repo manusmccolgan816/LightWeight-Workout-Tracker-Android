@@ -2,12 +2,13 @@ package com.example.lightweight.ui.cycleplanning.cycledaycategory
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.CycleDayCategory
-import com.example.lightweight.data.repositories.CycleDayCategoryRepository
+import com.example.lightweight.data.repositories.CycleDayCategoryRepositoryInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CycleDayCategoryViewModel(private val repository: CycleDayCategoryRepository) : ViewModel() {
+class CycleDayCategoryViewModel(private val repository: CycleDayCategoryRepositoryInterface) :
+    ViewModel() {
 
     fun insert(cycleDayCategory: CycleDayCategory) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(cycleDayCategory)
@@ -26,16 +27,11 @@ class CycleDayCategoryViewModel(private val repository: CycleDayCategoryReposito
         repository.deleteOfID(cycleDayCategoryID)
     }
 
-    fun getAllCycleDayCategories() = repository.getAllCycleDayCategories()
-
     fun getCycleDayCatCombosOfCycle(cycleID: Int?) =
         repository.getCycleDayCatCombosOfCycle(cycleID)
 
     fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?) =
         repository.getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID)
-
-    fun getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID: Int?) =
-        repository.getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID)
 
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
         repository.getNumCycleDayCategoriesOfCycleDay(cycleDayID)

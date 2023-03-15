@@ -3,20 +3,16 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.CycleDay
 
-class CycleDayRepository(private val db: WorkoutDatabase) {
+class CycleDayRepository(private val db: WorkoutDatabase) : CycleDayRepositoryInterface {
 
-    suspend fun insert(cycleDay: CycleDay) = db.getCycleDayDao().insert(cycleDay)
+    override suspend fun insert(cycleDay: CycleDay) = db.getCycleDayDao().insert(cycleDay)
 
-    suspend fun update(cycleDay: CycleDay) = db.getCycleDayDao().update(cycleDay)
+    override suspend fun update(cycleDay: CycleDay) = db.getCycleDayDao().update(cycleDay)
 
-    suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) =
+    override suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) =
         db.getCycleDayDao().decrementCycleDayNumbersAfter(cycleID, cycleDayNumber)
 
-    suspend fun delete(cycleDay: CycleDay) = db.getCycleDayDao().delete(cycleDay)
+    override suspend fun delete(cycleDay: CycleDay) = db.getCycleDayDao().delete(cycleDay)
 
-    fun getAllCycleDays() = db.getCycleDayDao().getAllCycleDays()
-
-    fun getCycleDaysOfCycle(cycleID: Int?) = db.getCycleDayDao().getCycleDaysOfCycle(cycleID)
-
-    fun getCycleDayOfID(cycleDayID: Int?) = db.getCycleDayDao().getCycleDayOfID(cycleDayID)
+    override fun getCycleDayOfID(cycleDayID: Int?) = db.getCycleDayDao().getCycleDayOfID(cycleDayID)
 }

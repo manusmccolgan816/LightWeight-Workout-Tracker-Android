@@ -3,37 +3,33 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
-class CycleDayCategoryRepository(private val db: WorkoutDatabase) {
+class CycleDayCategoryRepository(private val db: WorkoutDatabase) :
+    CycleDayCategoryRepositoryInterface {
 
-    suspend fun insert(cycleDayCategory: CycleDayCategory) =
+    override suspend fun insert(cycleDayCategory: CycleDayCategory) =
         db.getCycleDayCategoryDao().insert(cycleDayCategory)
 
-    suspend fun decrementCycleDayCategoryNumbersAfter(
+    override suspend fun decrementCycleDayCategoryNumbersAfter(
         cycleDayID: Int?,
         cycleDayCategoryNumber: Int
     ) = db.getCycleDayCategoryDao()
         .decrementCycleDayCategoryNumbersAfter(cycleDayID, cycleDayCategoryNumber)
 
-    suspend fun delete(cycleDayCategory: CycleDayCategory) =
+    override suspend fun delete(cycleDayCategory: CycleDayCategory) =
         db.getCycleDayCategoryDao().delete(cycleDayCategory)
 
-    suspend fun deleteOfID(cycleDayCategoryID: Int?) =
+    override suspend fun deleteOfID(cycleDayCategoryID: Int?) =
         db.getCycleDayCategoryDao().deleteOfID(cycleDayCategoryID)
 
-    fun getAllCycleDayCategories() = db.getCycleDayCategoryDao().getAllCycleDayCategories()
-
-    fun getCycleDayCatCombosOfCycle(cycleID: Int?) =
+    override fun getCycleDayCatCombosOfCycle(cycleID: Int?) =
         db.getCycleDayCategoryDao().getCycleDayCatCombosOfCycle(cycleID)
 
-    fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?) =
+    override fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?) =
         db.getCycleDayCategoryDao().getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID)
 
-    fun getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID: Int?) =
-        db.getCycleDayCategoryDao().getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID)
-
-    fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
+    override fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?) =
         db.getCycleDayCategoryDao().getNumCycleDayCategoriesOfCycleDay(cycleDayID)
 
-    fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?) =
+    override fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?) =
         db.getCycleDayCategoryDao().getCycleDayCategoryOfID(cycleDayCategoryID)
 }

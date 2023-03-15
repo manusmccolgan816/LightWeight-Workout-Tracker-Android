@@ -2,12 +2,12 @@ package com.example.lightweight.ui.cycleplanning.cycleday
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.CycleDay
-import com.example.lightweight.data.repositories.CycleDayRepository
+import com.example.lightweight.data.repositories.CycleDayRepositoryInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CycleDayViewModel(private val repository: CycleDayRepository) : ViewModel() {
+class CycleDayViewModel(private val repository: CycleDayRepositoryInterface) : ViewModel() {
 
     fun insert(cycleDay: CycleDay) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(cycleDay)
@@ -25,10 +25,6 @@ class CycleDayViewModel(private val repository: CycleDayRepository) : ViewModel(
     fun delete(cycleDay: CycleDay) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(cycleDay)
     }
-
-    fun getAllCycleDays() = repository.getAllCycleDays()
-
-    fun getCycleDaysOfCycle(cycleID: Int?) = repository.getCycleDaysOfCycle(cycleID)
 
     fun getCycleDayOfID(cycleDayID: Int?) = repository.getCycleDayOfID(cycleDayID)
 }

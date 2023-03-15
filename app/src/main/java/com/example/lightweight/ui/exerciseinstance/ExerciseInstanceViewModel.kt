@@ -2,12 +2,12 @@ package com.example.lightweight.ui.exerciseinstance
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.ExerciseInstance
-import com.example.lightweight.data.repositories.ExerciseInstanceRepository
+import com.example.lightweight.data.repositories.ExerciseInstanceRepositoryInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ExerciseInstanceViewModel(private val repository: ExerciseInstanceRepository) : ViewModel() {
+class ExerciseInstanceViewModel(private val repository: ExerciseInstanceRepositoryInterface) : ViewModel() {
 
     fun insert(exerciseInstance: ExerciseInstance) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(exerciseInstance)
@@ -26,8 +26,6 @@ class ExerciseInstanceViewModel(private val repository: ExerciseInstanceReposito
     fun delete(exerciseInstance: ExerciseInstance) = CoroutineScope(Dispatchers.Main).launch {
         repository.delete(exerciseInstance)
     }
-
-    fun getAllExerciseInstances() = repository.getAllExerciseInstances()
 
     fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?) =
         repository.getExerciseInstancesOfWorkoutNoLiveData(workoutID)

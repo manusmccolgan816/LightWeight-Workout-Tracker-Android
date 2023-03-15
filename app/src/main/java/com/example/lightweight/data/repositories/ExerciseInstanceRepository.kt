@@ -3,50 +3,49 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.ExerciseInstance
 
-class ExerciseInstanceRepository(private val db: WorkoutDatabase) {
+class ExerciseInstanceRepository(private val db: WorkoutDatabase) :
+    ExerciseInstanceRepositoryInterface {
 
-    suspend fun insert(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
+    override suspend fun insert(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
         .insert(exerciseInstance)
 
-    suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int) =
+    override suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int) =
         db.getExerciseInstanceDao().updateExerciseInstanceNumber(exerciseInstanceID, eiNumber)
 
-    suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int) =
+    override suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int) =
         db.getExerciseInstanceDao()
             .decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID, eiNumber)
 
-    suspend fun delete(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
+    override suspend fun delete(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
         .delete(exerciseInstance)
 
-    fun getAllExerciseInstances() = db.getExerciseInstanceDao().getAllExerciseInstances()
-
-    fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?) =
+    override fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesOfWorkoutNoLiveData(workoutID)
 
-    fun getExerciseInstancesOfWorkout(workoutID: Int?) =
+    override fun getExerciseInstancesOfWorkout(workoutID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesOfWorkout(workoutID)
 
-    fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?) =
+    override fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesAndNamesOfWorkout(workoutID)
 
-    fun getExerciseInstance(workoutID: Int?, exerciseID: Int?) =
+    override fun getExerciseInstance(workoutID: Int?, exerciseID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstance(workoutID, exerciseID)
 
-    fun getExerciseInstancesOfExercise(exerciseID: Int?) =
+    override fun getExerciseInstancesOfExercise(exerciseID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesOfExercise(exerciseID)
 
-    fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?) =
+    override fun getExerciseInstancesAndDatesOfExercise(exerciseID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstancesAndDatesOfExercise(exerciseID)
 
-    fun getExerciseInstanceOfID(exerciseInstanceID: Int?) =
+    override fun getExerciseInstanceOfID(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstanceOfID(exerciseInstanceID)
 
-    fun getExerciseInstanceOfIDObs(exerciseInstanceID: Int?) =
+    override fun getExerciseInstanceOfIDObs(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstanceOfIDObs(exerciseInstanceID)
 
-    fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?) =
+    override fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseOfExerciseInstance(exerciseInstanceID)
 
-    fun getExerciseInstanceDate(exerciseInstanceID: Int?) =
+    override fun getExerciseInstanceDate(exerciseInstanceID: Int?) =
         db.getExerciseInstanceDao().getExerciseInstanceDate(exerciseInstanceID)
 }
