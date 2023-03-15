@@ -2,12 +2,12 @@ package com.example.lightweight.ui.category
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.data.repositories.CategoryRepository
+import com.example.lightweight.data.repositories.CategoryRepositoryInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(private val repository: CategoryRepository) : ViewModel() {
+class CategoryViewModel(private val repository: CategoryRepositoryInterface) : ViewModel() {
 
     fun insert(category: Category) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(category)
