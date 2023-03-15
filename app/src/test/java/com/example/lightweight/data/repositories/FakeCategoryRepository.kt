@@ -3,6 +3,7 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Category
+import java.lang.Exception
 
 class FakeCategoryRepository : CategoryRepositoryInterface {
 
@@ -22,6 +23,7 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
         for (category in categories) {
             if (category.categoryID == categoryID) {
                 category.categoryName = newName
+                refreshLiveData()
             }
         }
     }
@@ -41,7 +43,7 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
                 return category
             }
         }
-        return Category("Category not found")
+        throw Exception("No category of ID")
     }
 
     override fun getCategoryOfIDObs(categoryID: Int?): LiveData<Category> {
@@ -50,6 +52,6 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
                 return MutableLiveData(category)
             }
         }
-        return MutableLiveData(Category("Category not found"))
+        throw Exception("No category of ID")
     }
 }

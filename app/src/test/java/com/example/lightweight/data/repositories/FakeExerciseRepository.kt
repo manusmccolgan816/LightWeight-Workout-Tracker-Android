@@ -3,29 +3,55 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Exercise
+import java.lang.Exception
 
 class FakeExerciseRepository : ExerciseRepositoryInterface {
 
     private val exercises = mutableListOf<Exercise>()
     private val observableExercises = MutableLiveData<List<Exercise>>(exercises)
 
+    private fun refreshLiveData() {
+        observableExercises.postValue(exercises)
+    }
+
     override suspend fun insert(exercise: Exercise) {
-        TODO("Not yet implemented")
+        exercises.add(exercise)
+        refreshLiveData()
     }
 
     override suspend fun updateName(exerciseID: Int?, exerciseName: String) {
-        TODO("Not yet implemented")
+        for (exercise in exercises) {
+            if (exercise.exerciseID == exerciseID) {
+                exercise.exerciseName = exerciseName
+                refreshLiveData()
+            }
+        }
     }
 
     override suspend fun delete(exercise: Exercise) {
-        TODO("Not yet implemented")
+        exercises.remove(exercise)
+        refreshLiveData()
     }
 
     override fun getExerciseOfID(exerciseID: Int?): Exercise {
-        TODO("Not yet implemented")
+        for (exercise in exercises) {
+            if (exercise.exerciseID == exerciseID) {
+                return exercise
+            }
+        }
+        throw Exception("No exercise of ID")
     }
 
     override fun getExercisesOfCategory(categoryID: Int?): LiveData<List<Exercise>> {
-        TODO("Not yet implemented")
+        val exercisesOfCat = mutableListOf<Exercise>()
+
+        for (exercise in exercises) {
+            if (exercise.categoryID == categoryID) {
+                exercisesOfCat.add(exercise)
+            }
+        }
+        exercisesOfCat.sortBy { it.exerciseName }
+
+        return MutableLiveData(exercisesOfCat)
     }
 }

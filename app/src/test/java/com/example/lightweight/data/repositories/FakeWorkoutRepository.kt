@@ -9,23 +9,42 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
     private val workouts = mutableListOf<Workout>()
     private val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
+    private fun refreshLiveData() {
+        observableWorkouts.postValue(workouts)
+    }
+
     override suspend fun insert(workout: Workout) {
-        TODO("Not yet implemented")
+        workouts.add(workout)
+        refreshLiveData()
     }
 
     override suspend fun delete(workout: Workout) {
-        TODO("Not yet implemented")
+        workouts.remove(workout)
+        refreshLiveData()
     }
 
     override suspend fun deleteWorkoutOfID(workoutID: Int?) {
-        TODO("Not yet implemented")
+        workouts.removeIf { it.workoutID == workoutID }
     }
 
     override fun getWorkoutOfDate(date: String): Workout? {
-        TODO("Not yet implemented")
+        for (workout in workouts) {
+            if (workout.date == date) {
+                return workout
+            }
+        }
+
+        return null
     }
 
     override fun getWorkoutDates(): LiveData<List<String>> {
-        TODO("Not yet implemented")
+        val workoutDates = mutableListOf<String>()
+
+        for (workout in workouts) {
+            workoutDates.add(workout.date)
+        }
+        workoutDates.sort()
+
+        return MutableLiveData(workoutDates)
     }
 }

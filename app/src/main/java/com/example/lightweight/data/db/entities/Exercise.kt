@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class Exercise(
     @ColumnInfo(name = "exercise_name")
-    val exerciseName: String,
+    var exerciseName: String,
 
     @ColumnInfo(name = "category_ID")
     val categoryID: Int?
