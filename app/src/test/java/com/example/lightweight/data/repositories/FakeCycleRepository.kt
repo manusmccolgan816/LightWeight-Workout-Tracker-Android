@@ -9,23 +9,33 @@ class FakeCycleRepository : CycleRepositoryInterface {
     private val cycles = mutableListOf<Cycle>()
     private val observableCycles = MutableLiveData<List<Cycle>>(cycles)
 
+    private fun refreshLiveData() {
+        observableCycles.postValue(cycles)
+    }
+
     override suspend fun insert(cycle: Cycle) {
-        TODO("Not yet implemented")
+        cycles.add(cycle)
+        refreshLiveData()
     }
 
     override suspend fun update(cycle: Cycle) {
-        TODO("Not yet implemented")
+        cycles.removeIf { it.cycleID == cycle.cycleID }
+        cycles.add(cycle)
+        refreshLiveData()
     }
 
     override suspend fun delete(cycle: Cycle) {
-        TODO("Not yet implemented")
+        cycles.remove(cycle)
+        refreshLiveData()
     }
 
     override fun getAllCycles(): LiveData<List<Cycle>> {
-        TODO("Not yet implemented")
+        return observableCycles
     }
 
     override fun getCycleOfID(cycleID: Int?): Cycle {
-        TODO("Not yet implemented")
+        return cycles.filter {
+            it.cycleID == cycleID
+        }[0]
     }
 }

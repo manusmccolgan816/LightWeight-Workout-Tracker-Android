@@ -34,11 +34,11 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
         workoutID: Int?,
         eiNumber: Int
     ) {
-        for (exerciseInstance in exerciseInstances.filter { it.workoutID == workoutID }) {
-            if (exerciseInstance.exerciseInstanceNumber > eiNumber) {
-                exerciseInstance.exerciseInstanceNumber--
-                refreshLiveData()
-            }
+        for (exerciseInstance in exerciseInstances.filter {
+            it.workoutID == workoutID && it.exerciseInstanceNumber > eiNumber
+        }) {
+            exerciseInstance.exerciseInstanceNumber--
+            refreshLiveData()
         }
     }
 
@@ -62,11 +62,6 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     }
 
     override fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<List<IdNamePair>> {
-//        val idNamePairs = mutableListOf<IdNamePair>()
-//
-//        for (exerciseInstance in exerciseInstances.filter { it.workoutID == workoutID }) {
-//
-//        }
         TODO("Joins are going to be a pain")
     }
 

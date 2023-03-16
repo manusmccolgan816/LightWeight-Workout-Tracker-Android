@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "CYCLE")
 data class Cycle(
     @ColumnInfo(name = "cycle_name")
-    val cycleName: String,
+    var cycleName: String,
 
     @ColumnInfo(name = "description")
-    val description: String?
+    var description: String?
 ) {
 
     @PrimaryKey(autoGenerate = true)
