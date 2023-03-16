@@ -24,6 +24,7 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
             if (category.categoryID == categoryID) {
                 category.categoryName = newName
                 refreshLiveData()
+                return
             }
         }
     }

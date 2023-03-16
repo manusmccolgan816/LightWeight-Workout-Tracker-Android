@@ -24,6 +24,7 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
             if (exercise.exerciseID == exerciseID) {
                 exercise.exerciseName = exerciseName
                 refreshLiveData()
+                return
             }
         }
     }

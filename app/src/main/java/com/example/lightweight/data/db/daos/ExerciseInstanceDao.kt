@@ -18,10 +18,12 @@ interface ExerciseInstanceDao {
     )
     suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int)
 
-    @Query("UPDATE EXERCISE_INSTANCE " +
-            "SET exercise_instance_number = exercise_instance_number - 1 " +
-            "WHERE workout_ID = :workoutID " +
-            "AND exercise_instance_number > :eiNumber")
+    @Query(
+        "UPDATE EXERCISE_INSTANCE " +
+                "SET exercise_instance_number = exercise_instance_number - 1 " +
+                "WHERE workout_ID = :workoutID " +
+                "AND exercise_instance_number > :eiNumber"
+    )
     suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int)
 
     @Delete
@@ -33,7 +35,8 @@ interface ExerciseInstanceDao {
     @Query(
         "SELECT * " +
                 "FROM EXERCISE_INSTANCE " +
-                "WHERE workout_ID = :workoutID"
+                "WHERE workout_ID = :workoutID " +
+                "ORDER BY exercise_instance_number"
     )
     fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?): List<ExerciseInstance>
 
@@ -55,7 +58,9 @@ interface ExerciseInstanceDao {
     )
     fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<List<IdNamePair>>
 
-    @Query("SELECT * FROM EXERCISE_INSTANCE WHERE workout_ID = :workoutID AND exercise_ID = :exerciseID")
+    @Query("SELECT * FROM EXERCISE_INSTANCE " +
+            "WHERE workout_ID = :workoutID " +
+            "AND exercise_ID = :exerciseID")
     fun getExerciseInstance(workoutID: Int?, exerciseID: Int?): ExerciseInstance?
 
     @Query("SELECT * FROM EXERCISE_INSTANCE WHERE exercise_ID = :exerciseID")

@@ -16,6 +16,9 @@ interface WorkoutDao {
     @Query("DELETE FROM WORKOUT WHERE workout_ID = :workoutID")
     suspend fun deleteWorkoutOfID(workoutID: Int?)
 
+    @Query("SELECT * FROM WORKOUT")
+    fun getAllWorkouts(): LiveData<List<Workout>>
+
     @Query("SELECT * FROM WORKOUT WHERE date = :date")
     fun getWorkoutOfDate(date: String): Workout?
 

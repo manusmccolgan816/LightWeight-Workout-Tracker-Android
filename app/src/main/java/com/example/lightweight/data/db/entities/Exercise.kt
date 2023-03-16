@@ -20,7 +20,7 @@ data class Exercise(
     var exerciseName: String,
 
     @ColumnInfo(name = "category_ID")
-    val categoryID: Int?
+    var categoryID: Int?
 ) {
 
     @PrimaryKey(autoGenerate = true)

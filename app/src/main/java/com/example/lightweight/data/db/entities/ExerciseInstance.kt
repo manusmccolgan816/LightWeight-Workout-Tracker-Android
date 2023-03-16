@@ -22,16 +22,16 @@ import androidx.room.PrimaryKey
 )
 data class ExerciseInstance(
     @ColumnInfo(name = "workout_ID")
-    val workoutID: Int?,
+    var workoutID: Int?,
 
     @ColumnInfo(name = "exercise_ID")
-    val exerciseID: Int?,
+    var exerciseID: Int?,
 
     @ColumnInfo(name = "exercise_instance_number")
-    val exerciseInstanceNumber: Int,
+    var exerciseInstanceNumber: Int,
 
     @ColumnInfo(name = "note")
-    val note: String?
+    var note: String?
 ) {
 
     @PrimaryKey(autoGenerate = true)

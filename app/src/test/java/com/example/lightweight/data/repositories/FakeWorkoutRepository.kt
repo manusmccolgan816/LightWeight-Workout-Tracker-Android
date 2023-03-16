@@ -25,6 +25,7 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
 
     override suspend fun deleteWorkoutOfID(workoutID: Int?) {
         workouts.removeIf { it.workoutID == workoutID }
+        refreshLiveData()
     }
 
     override fun getWorkoutOfDate(date: String): Workout? {
