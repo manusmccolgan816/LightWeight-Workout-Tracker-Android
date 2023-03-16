@@ -8,7 +8,7 @@ object CalendarUtil {
 
     /**
      * Returns a Triple where the first value is an array containing the days in the month to
-     * display on a 6 * 7 grid, where empty strings are empty grid spaces. The second and third
+     * display on a 7 * 6 grid, where empty strings are empty grid spaces. The second and third
      * values are the selected date's position and today's position in the array respectively.
      */
     fun calculateMonthArray(

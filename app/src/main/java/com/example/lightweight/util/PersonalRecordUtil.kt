@@ -32,7 +32,7 @@ object PersonalRecordUtil {
         } else {
             val repWeightMappings: HashMap<Int, Float> = HashMap()
 
-            // If the new set has more reps than any other of the exercise...
+            // If the new set has more reps than any other of the exercise's sets...
             if (prSets[prSets.size - 1].reps < reps) {
                 isPR = true
             }
@@ -74,7 +74,7 @@ object PersonalRecordUtil {
 
     /**
      * Returns an ArrayList of the IDs of the training sets that would be new PRs were
-     * curTrainingSet deleted.
+     * curTrainingSet to be deleted.
      *
      * *prSets should be ordered by reps asc
      * *sameRepSets should be ordered by weight desc, date asc and trainingSetNumber asc
