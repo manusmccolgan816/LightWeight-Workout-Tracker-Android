@@ -9,23 +9,36 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
     private val cycleDays = mutableListOf<CycleDay>()
     private val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
 
+    private fun refreshLiveData() {
+        observableCycleDays.postValue(cycleDays)
+    }
+
     override suspend fun insert(cycleDay: CycleDay) {
-        TODO("Not yet implemented")
+        cycleDays.add(cycleDay)
+        refreshLiveData()
     }
 
     override suspend fun update(cycleDay: CycleDay) {
-        TODO("Not yet implemented")
+        cycleDays.removeIf { it.cycleDayID == cycleDay.cycleDayID }
+        cycleDays.add(cycleDay)
+        refreshLiveData()
     }
 
     override suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) {
-        TODO("Not yet implemented")
+        for (cycleDay in cycleDays.filter {
+            it.cycleID == cycleID && it.cycleDayNumber > cycleDayNumber
+        }) {
+            cycleDay.cycleDayNumber--
+            refreshLiveData()
+        }
     }
 
     override suspend fun delete(cycleDay: CycleDay) {
-        TODO("Not yet implemented")
+        cycleDays.remove(cycleDay)
+        refreshLiveData()
     }
 
     override fun getCycleDayOfID(cycleDayID: Int?): LiveData<CycleDay> {
-        TODO("Not yet implemented")
+        return MutableLiveData(cycleDays.filter { it.cycleDayID == cycleDayID }[0])
     }
 }
