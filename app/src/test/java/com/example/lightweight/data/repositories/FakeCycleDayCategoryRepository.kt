@@ -11,38 +11,56 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
     private val observableCycleDayCategories =
         MutableLiveData<List<CycleDayCategory>>(cycleDayCategories)
 
+    private fun refreshLiveData() {
+        observableCycleDayCategories.postValue(cycleDayCategories)
+    }
+
     override suspend fun insert(cycleDayCategory: CycleDayCategory) {
-        TODO("Not yet implemented")
+        cycleDayCategories.add(cycleDayCategory)
+        refreshLiveData()
     }
 
     override suspend fun decrementCycleDayCategoryNumbersAfter(
         cycleDayID: Int?,
         cycleDayCategoryNumber: Int
     ) {
-        TODO("Not yet implemented")
+        for (cycleDayCategory in cycleDayCategories.filter {
+            it.cycleDayID == cycleDayID && it.cycleDayCategoryNumber > cycleDayCategoryNumber
+        }) {
+            cycleDayCategory.cycleDayCategoryNumber--
+            refreshLiveData()
+        }
     }
 
     override suspend fun delete(cycleDayCategory: CycleDayCategory) {
-        TODO("Not yet implemented")
+        cycleDayCategories.remove(cycleDayCategory)
+        refreshLiveData()
     }
 
     override suspend fun deleteOfID(cycleDayCategoryID: Int?) {
-        TODO("Not yet implemented")
+        cycleDayCategories.removeIf { it.cycleDayCategoryID == cycleDayCategoryID }
+        refreshLiveData()
     }
 
     override fun getCycleDayCatCombosOfCycle(cycleID: Int?): List<CycleDayCategoryCombo> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int?> {
-        TODO("Not yet implemented")
+        return MutableLiveData(
+            cycleDayCategories.filter { it.cycleDayCategoryID == cycleDayCategoryID }[0].categoryID
+        )
     }
 
     override fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int> {
-        TODO("Not yet implemented")
+        return MutableLiveData(
+            cycleDayCategories.filter { it.cycleDayID == cycleDayID }.size
+        )
     }
 
     override fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?): LiveData<CycleDayCategory> {
-        TODO("Not yet implemented")
+        return MutableLiveData(
+            cycleDayCategories.filter { it.cycleDayCategoryID == cycleDayCategoryID }[0]
+        )
     }
 }

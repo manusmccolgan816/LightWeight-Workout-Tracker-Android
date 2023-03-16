@@ -36,15 +36,18 @@ interface CycleDayCategoryDao {
             "ORDER BY cycle_day_category_number")
     fun getCycleDayCatCombosOfCycle(cycleDayID: Int?): List<CycleDayCategoryCombo>
 
-    @Query("SELECT category_ID FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    @Query("SELECT category_ID " +
+            "FROM CYCLE_DAY_CATEGORY " +
+            "WHERE cycle_day_category_ID = :cycleDayCategoryID")
     fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int?>
 
-    @Query("SELECT cycle_day_ID FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
-    fun getCycleDayIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int>
-
-    @Query("SELECT COUNT(cycle_day_category_number) FROM CYCLE_DAY_CATEGORY WHERE cycle_day_ID = :cycleDayID")
+    @Query("SELECT COUNT(cycle_day_category_number) " +
+            "FROM CYCLE_DAY_CATEGORY " +
+            "WHERE cycle_day_ID = :cycleDayID")
     fun getNumCycleDayCategoriesOfCycleDay(cycleDayID: Int?): LiveData<Int>
 
-    @Query("SELECT * FROM CYCLE_DAY_CATEGORY WHERE cycle_day_category_ID = :cycleDayCategoryID")
+    @Query("SELECT * " +
+            "FROM CYCLE_DAY_CATEGORY " +
+            "WHERE cycle_day_category_ID = :cycleDayCategoryID")
     fun getCycleDayCategoryOfID(cycleDayCategoryID: Int?): LiveData<CycleDayCategory>
 }

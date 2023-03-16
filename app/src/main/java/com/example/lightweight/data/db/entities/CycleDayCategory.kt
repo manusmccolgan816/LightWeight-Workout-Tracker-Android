@@ -22,13 +22,13 @@ import androidx.room.ForeignKey.Companion.CASCADE
 )
 data class CycleDayCategory(
     @ColumnInfo(name = "cycle_day_ID")
-    val cycleDayID: Int?,
+    var cycleDayID: Int?,
 
     @ColumnInfo(name = "category_ID")
-    val categoryID: Int?,
+    var categoryID: Int?,
 
     @ColumnInfo(name = "cycle_day_category_number")
-    val cycleDayCategoryNumber: Int
+    var cycleDayCategoryNumber: Int
 ) {
 
     @PrimaryKey(autoGenerate = true)
