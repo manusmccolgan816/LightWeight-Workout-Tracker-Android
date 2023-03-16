@@ -9,57 +9,82 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     private val trainingSets = mutableListOf<TrainingSet>()
     private val observableTrainingSets = MutableLiveData<List<TrainingSet>>(trainingSets)
 
+    private fun refreshLiveData() {
+        observableTrainingSets.postValue(trainingSets)
+    }
+
     override suspend fun insert(trainingSet: TrainingSet) {
-        TODO("Not yet implemented")
+        trainingSets.add(trainingSet)
+        refreshLiveData()
     }
 
     override suspend fun delete(trainingSet: TrainingSet) {
-        TODO("Not yet implemented")
+        trainingSets.remove(trainingSet)
+        refreshLiveData()
     }
 
     override suspend fun update(trainingSet: TrainingSet) {
-        TODO("Not yet implemented")
+        trainingSets.removeIf { it.trainingSetID == trainingSet.trainingSetID }
+        trainingSets.add(trainingSet)
+        refreshLiveData()
     }
 
     override suspend fun updateIsPR(trainingSetID: Int?, isPR: Int) {
-        TODO("Not yet implemented")
+        for (trainingSet in trainingSets.filter { it.trainingSetID == trainingSetID }) {
+            trainingSet.isPR = isPR == 1
+            refreshLiveData()
+            return
+        }
     }
 
     override suspend fun updateNote(trainingSetID: Int?, note: String?) {
-        TODO("Not yet implemented")
+        for (trainingSet in trainingSets.filter { it.trainingSetID == trainingSetID }) {
+            trainingSet.note = note
+            refreshLiveData()
+            return
+        }
     }
 
     override suspend fun decrementTrainingSetNumbersAbove(
         exerciseInstanceID: Int?,
         trainingSetNumber: Int
     ) {
-        TODO("Not yet implemented")
+        for (trainingSet in trainingSets.filter {
+            it.exerciseInstanceID == exerciseInstanceID && it.trainingSetNumber > trainingSetNumber
+        }) {
+            trainingSet.trainingSetNumber--
+            refreshLiveData()
+        }
     }
 
     override fun getAllTrainingSets(): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        return observableTrainingSets
     }
 
     override fun getTrainingSetDatesOfExerciseIsPR(
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<String>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getTrainingSetsOfExerciseAndIsPR(
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        return MutableLiveData(trainingSets.filter {
+            it.exerciseInstanceID == exerciseInstanceID
+        })
     }
 
     override fun getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID: Int?): List<TrainingSet> {
-        TODO("Not yet implemented")
+        return trainingSets.filter {
+            it.exerciseInstanceID == exerciseInstanceID
+        }
     }
 
     override fun getTrainingSetsOfExerciseRepsIsPR(
@@ -67,17 +92,17 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         reps: Int,
         isPR: Int
     ): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getTrainingSetsOfExerciseFewerReps(
         exerciseID: Int?,
         reps: Int
     ): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 }

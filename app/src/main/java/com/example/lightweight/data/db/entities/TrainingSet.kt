@@ -17,19 +17,19 @@ import androidx.room.PrimaryKey
 )
 class TrainingSet(
     @ColumnInfo(name = "exercise_instance_ID")
-    val exerciseInstanceID: Int?,
+    var exerciseInstanceID: Int?,
 
     @ColumnInfo(name = "training_set_number")
-    val trainingSetNumber: Int,
+    var trainingSetNumber: Int,
 
     @ColumnInfo(name = "weight")
-    val weight: Float,
+    var weight: Float,
 
     @ColumnInfo(name = "reps")
-    val reps: Int,
+    var reps: Int,
 
     @ColumnInfo(name = "note")
-    val note: String?,
+    var note: String?,
 
     @ColumnInfo(name = "is_PR")
     var isPR: Boolean
