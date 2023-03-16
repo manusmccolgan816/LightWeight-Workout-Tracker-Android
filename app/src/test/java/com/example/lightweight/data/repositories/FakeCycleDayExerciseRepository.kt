@@ -12,38 +12,56 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
     private val observableCycleDayExercises =
         MutableLiveData<List<CycleDayExercise>>(cycleDayExercises)
 
+    private fun refreshLiveData() {
+        observableCycleDayExercises.postValue(cycleDayExercises)
+    }
+
     override suspend fun insert(cycleDayExercise: CycleDayExercise) {
-        TODO("Not yet implemented")
+        cycleDayExercises.add(cycleDayExercise)
+        refreshLiveData()
     }
 
     override suspend fun decrementCycleDayExerciseNumbersAfter(
         cycleDayCategoryID: Int?,
         cycleDayExerciseNumber: Int
     ) {
-        TODO("Not yet implemented")
+        for (cycleDayExercise in cycleDayExercises.filter {
+            it.cycleDayCategoryID == cycleDayCategoryID
+                    && it.cycleDayExerciseNumber > cycleDayExerciseNumber
+        }) {
+            cycleDayExercise.cycleDayExerciseNumber--
+            refreshLiveData()
+        }
     }
 
     override suspend fun delete(cycleDayExercise: CycleDayExercise) {
-        TODO("Not yet implemented")
+        cycleDayExercises.remove(cycleDayExercise)
+        refreshLiveData()
     }
 
     override suspend fun deleteOfID(cycleDayExerciseID: Int?) {
-        TODO("Not yet implemented")
+        cycleDayExercises.removeIf { it.cycleDayExerciseID == cycleDayExerciseID }
+        refreshLiveData()
     }
 
     override fun getCycleItemsOfCycleID(cycleID: Int?): LiveData<List<CycleItem>> {
-        TODO("Not yet implemented")
+        TODO("Joins are going to be a pain")
     }
 
     override fun getNumCycleDayExercisesOfCycleDayCategory(cycleDayCategoryID: Int?): LiveData<Int> {
-        TODO("Not yet implemented")
+        return MutableLiveData(
+            cycleDayExercises.filter { it.cycleDayCategoryID == cycleDayCategoryID }.size
+        )
     }
 
-    override fun getCycleDayCatExCombosOfCycleDayCategory(cycleDayCategoryID: Int?): List<CycleDayCategoryExerciseCombo> {
-        TODO("Not yet implemented")
+    override fun getCycleDayCatExCombosOfCycleDayCategory(cycleDayCategoryID: Int?):
+            List<CycleDayCategoryExerciseCombo> {
+        TODO("Joins are going to be a pain")
     }
 
     override fun getCycleDayExerciseOfID(cycleDayExerciseID: Int?): LiveData<CycleDayExercise> {
-        TODO("Not yet implemented")
+        return MutableLiveData(
+            cycleDayExercises.filter { it.cycleDayExerciseID == cycleDayExerciseID }[0]
+        )
     }
 }
