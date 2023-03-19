@@ -232,7 +232,8 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                         prDatesObs.observe(viewLifecycleOwner) { prDates ->
                             prDatesObs.removeObservers(viewLifecycleOwner)
 
-                            val pair = calculateIsNewSetPr(reps, weight, selectedDate, prSets, prDates)
+                            val pair =
+                                calculateIsNewSetPr(reps, weight, selectedDate, prSets, prDates)
 
                             isPR = pair.first
                             val noLongerPrIds = pair.second

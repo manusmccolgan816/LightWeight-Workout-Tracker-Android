@@ -61,7 +61,7 @@ class StopwatchService : Service() {
     /**
      * onStartCommand() is called every time a client starts the service using
      * startService(intent: Intent)
-     * We will check for what action this service has been called for and then perform the action
+     * We will check what action this service has been called for and then perform the action
      * accordingly. The action is extracted from the intent that is used to start the service.
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -116,7 +116,7 @@ class StopwatchService : Service() {
     }
 
     /**
-     * This function starts the stopwatch. A timer is started and timeElapsed is increased by 1
+     * This function starts the stopwatch. A timer is started, timeElapsed is increased by 1
      * every second and the value is broadcast with the action of STOPWATCH_TICK.
      * An activity or fragment can receive this broadcast to get access to the time elapsed.
      */
@@ -215,7 +215,6 @@ class StopwatchService : Service() {
             updateTimer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     updateNotification()
-
                 }
             }, 0, 1000)
         }
