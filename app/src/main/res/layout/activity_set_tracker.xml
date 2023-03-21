@@ -5,7 +5,7 @@
     android:id="@+id/relative_layout_set_tracker"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settracker.SetTrackerActivity">
+    tools:context=".ui.workouttracking.settracker.SetTrackerActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_set_tracker"

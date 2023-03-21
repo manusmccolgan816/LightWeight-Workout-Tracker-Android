@@ -14,8 +14,8 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
-import com.example.lightweight.ui.category.ConfirmDeleteCategoryDialog
-import com.example.lightweight.ui.category.EditCategoryDialog
+import com.example.lightweight.ui.workouttracking.selectcategory.ConfirmDeleteCategoryDialog
+import com.example.lightweight.ui.workouttracking.selectcategory.EditCategoryDialog
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance

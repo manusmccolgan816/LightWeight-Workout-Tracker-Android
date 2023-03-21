@@ -2,9 +2,8 @@ package com.example.lightweight.data.db.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.lightweight.CycleDayCategoryExerciseCombo
-import com.example.lightweight.CycleItem
-import com.example.lightweight.data.db.entities.CycleDayCategory
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
+import com.example.lightweight.ui.cycleplanning.CycleItem
 import com.example.lightweight.data.db.entities.CycleDayExercise
 
 @Dao

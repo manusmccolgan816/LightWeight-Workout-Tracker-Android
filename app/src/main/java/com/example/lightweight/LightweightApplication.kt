@@ -9,9 +9,9 @@ import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactor
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
-import com.example.lightweight.ui.exerciseinstance.ExerciseInstanceViewModelFactory
-import com.example.lightweight.ui.trainingset.TrainingSetViewModelFactory
-import com.example.lightweight.ui.workout.WorkoutViewModelFactory
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule

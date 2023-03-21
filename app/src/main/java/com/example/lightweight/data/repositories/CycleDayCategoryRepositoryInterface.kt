@@ -1,7 +1,7 @@
 package com.example.lightweight.data.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.lightweight.CycleDayCategoryCombo
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
 interface CycleDayCategoryRepositoryInterface {

@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lightweight.CycleDayCategoryCombo
-import com.example.lightweight.CycleDayCategoryExerciseCombo
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel

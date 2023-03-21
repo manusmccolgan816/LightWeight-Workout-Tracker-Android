@@ -31,11 +31,11 @@
         </activity>
 
         <activity
-            android:name=".ui.settracker.SetTrackerActivity"
+            android:name="com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <service
-            android:name=".ui.settracker.stopwatch.StopwatchService"
+            android:name="com.example.lightweight.ui.workouttracking.settracker.stopwatch.StopwatchService"
             android:enabled="true" />
     </application>
 

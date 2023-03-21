@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.ui.category.AddCategoryDialog
+import com.example.lightweight.ui.workouttracking.selectcategory.AddCategoryDialog
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton

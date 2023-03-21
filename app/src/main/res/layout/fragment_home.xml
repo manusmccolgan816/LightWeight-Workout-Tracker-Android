@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.workouttracking.home.HomeFragment">
 
     <TextView
         android:id="@+id/text_view_selected_date"

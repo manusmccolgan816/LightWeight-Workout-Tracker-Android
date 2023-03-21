@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settracker.stopwatch.StopwatchFragment">
+    tools:context=".ui.workouttracking.settracker.stopwatch.StopwatchFragment">
 
     <RelativeLayout
         android:id="@+id/stopwatch_layout"

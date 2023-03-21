@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
-import com.example.lightweight.ui.exercise.ConfirmDeleteExerciseDialog
-import com.example.lightweight.ui.exercise.EditExerciseDialog
+import com.example.lightweight.ui.workouttracking.selectexercise.ConfirmDeleteExerciseDialog
+import com.example.lightweight.ui.workouttracking.selectexercise.EditExerciseDialog
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import org.kodein.di.KodeinAware

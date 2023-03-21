@@ -8,7 +8,7 @@
     android:layout_marginTop="60dp"
     android:layout_marginBottom="56dp"
     android:animateLayoutChanges="true"
-    tools:context=".ui.settracker.exerciseinsights.ExerciseInsightsFragment">
+    tools:context=".ui.workouttracking.settracker.exerciseinsights.ExerciseInsightsFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view_total_instances"

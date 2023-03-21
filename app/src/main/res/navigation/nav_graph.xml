@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.lightweight.ui.home.HomeFragment"
+        android:name="com.example.lightweight.ui.workouttracking.home.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_selectCategoryFragment"
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectCategoryFragment"
-        android:name="com.example.lightweight.ui.category.SelectCategoryFragment"
+        android:name="com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryFragment"
         tools:layout="@layout/fragment_select_category">
         <action
             android:id="@+id/action_selectCategoryFragment_to_selectExerciseFragment"
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectExerciseFragment"
-        android:name="com.example.lightweight.ui.exercise.SelectExerciseFragment"
+        android:name="com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseFragment"
         tools:layout="@layout/fragment_select_exercise">
         <argument
             android:name="categoryID"
@@ -59,7 +59,7 @@
     </fragment>
     <activity
         android:id="@+id/setTrackerActivity"
-        android:name="com.example.lightweight.ui.settracker.SetTrackerActivity"
+        android:name="com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity"
         tools:layout="@layout/activity_set_tracker">
         <argument
             android:name="exerciseID"
@@ -70,7 +70,7 @@
     </activity>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.lightweight.ui.calendar.CalendarFragment"
+        android:name="com.example.lightweight.ui.workouttracking.calendar.CalendarFragment"
         tools:layout="@layout/fragment_calendar" >
         <argument android:name="selectedDate"
             app:argType="string"

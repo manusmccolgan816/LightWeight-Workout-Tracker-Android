@@ -13,7 +13,7 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.category.CategoryViewModelFactory
-import com.example.lightweight.ui.exercise.AddExerciseDialog
+import com.example.lightweight.ui.workouttracking.selectexercise.AddExerciseDialog
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton

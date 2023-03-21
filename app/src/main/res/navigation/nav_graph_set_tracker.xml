@@ -6,18 +6,18 @@
     app:startDestination="@id/logSetsFragment">
     <fragment
         android:id="@+id/logSetsFragment"
-        android:name="com.example.lightweight.ui.settracker.logsets.LogSetsFragment"
+        android:name="com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsFragment"
         tools:layout="@layout/fragment_log_sets" />
     <fragment
         android:id="@+id/stopwatchFragment"
-        android:name="com.example.lightweight.ui.settracker.stopwatch.StopwatchFragment"
+        android:name="com.example.lightweight.ui.workouttracking.settracker.stopwatch.StopwatchFragment"
         tools:layout="@layout/fragment_stopwatch" />
     <fragment
         android:id="@+id/exerciseHistoryFragment"
-        android:name="com.example.lightweight.ui.settracker.exercisehistory.ExerciseHistoryFragment"
+        android:name="com.example.lightweight.ui.workouttracking.settracker.exercisehistory.ExerciseHistoryFragment"
         tools:layout="@layout/fragment_exercise_history" />
     <fragment
         android:id="@+id/exerciseInsightsFragment"
-        android:name="com.example.lightweight.ui.settracker.exerciseinsights.ExerciseInsightsFragment"
+        android:name="com.example.lightweight.ui.workouttracking.settracker.exerciseinsights.ExerciseInsightsFragment"
         tools:layout="@layout/fragment_exercise_insights" />
 </navigation>
