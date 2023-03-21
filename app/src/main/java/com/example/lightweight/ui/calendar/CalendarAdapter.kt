@@ -1,6 +1,5 @@
 package com.example.lightweight.ui.calendar
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater

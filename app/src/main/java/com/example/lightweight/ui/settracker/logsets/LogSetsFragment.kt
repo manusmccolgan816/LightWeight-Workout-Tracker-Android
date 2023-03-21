@@ -106,7 +106,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     // Set up the adapter outside of the coroutine
                     ref?.runOnUiThread {
                         setupAdapter()
-                        isAdapterSetup = true
                     }
                 }
             }
@@ -217,6 +216,10 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
                     exerciseInstanceID = exerciseInstanceViewModel
                         .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
+
+                    // If a new exercise instance has been created the adapter will need to be set
+                    // up to observe training sets with that exerciseInstanceID
+                    isAdapterSetup = false
                 }
 
                 ref?.runOnUiThread {
@@ -260,7 +263,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     // Set up the adapter outside of the coroutine
                     ref?.runOnUiThread {
                         setupAdapter()
-                        isAdapterSetup = true
                     }
                 }
             }
@@ -283,5 +285,6 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
                     editTextNumReps.setText(it[it.size - 1].reps.toString())
                 }
             }
+        isAdapterSetup = true
     }
 }
