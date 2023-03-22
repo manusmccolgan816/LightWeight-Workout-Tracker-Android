@@ -17,6 +17,10 @@
         android:theme="@style/Theme.Lightweight"
         tools:targetApi="31">
 
+        <meta-data
+            android:name="IS_TEST_BUILD"
+            android:value="true" />
+
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

@@ -2,10 +2,10 @@ package com.example.lightweight.ui.cycleplanning.cycledaycategory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.lightweight.data.repositories.CycleDayCategoryRepository
+import com.example.lightweight.data.repositories.CycleDayCategoryRepositoryInterface
 
 class CycleDayCategoryViewModelFactory(
-    private val repository: CycleDayCategoryRepository
+    private val repository: CycleDayCategoryRepositoryInterface
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

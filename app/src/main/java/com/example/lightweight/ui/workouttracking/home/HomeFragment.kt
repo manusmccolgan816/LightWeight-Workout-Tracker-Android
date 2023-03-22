@@ -11,9 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lightweight.IdNamePair
-import com.example.lightweight.R
-import com.example.lightweight.WrapContentLinearLayoutManager
+import com.example.lightweight.*
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
@@ -21,6 +19,7 @@ import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance

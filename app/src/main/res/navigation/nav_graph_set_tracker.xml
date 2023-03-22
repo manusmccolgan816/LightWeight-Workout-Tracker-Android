@@ -7,7 +7,14 @@
     <fragment
         android:id="@+id/logSetsFragment"
         android:name="com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsFragment"
-        tools:layout="@layout/fragment_log_sets" />
+        tools:layout="@layout/fragment_log_sets" >
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
+        <argument
+            android:name="exerciseID"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/stopwatchFragment"
         android:name="com.example.lightweight.ui.workouttracking.settracker.stopwatch.StopwatchFragment"

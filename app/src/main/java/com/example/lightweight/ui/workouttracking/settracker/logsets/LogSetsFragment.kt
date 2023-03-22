@@ -9,7 +9,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,9 +76,18 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val act: SetTrackerActivity = this.activity as SetTrackerActivity
-        exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
-        selectedDate = act.args.selectedDate // Set selectedDate from the SetTrackerActivity arg
+        if (this.activity is SetTrackerActivity) {
+            // Launching the activity rather than launching the fragment in isolation does not allow
+            // for arguments to be passed to the fragment, so activity arguments are used
+            val act: SetTrackerActivity = this.activity as SetTrackerActivity
+            exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
+            selectedDate = act.args.selectedDate // Set selectedDate from the SetTrackerActivity arg
+        } else {
+            // Launching the fragment in isolation will require arguments to be passed directly
+            val args: LogSetsFragmentArgs by navArgs()
+            exerciseID = args.exerciseID
+            selectedDate = args.selectedDate
+        }
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 

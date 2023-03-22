@@ -19,7 +19,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "boolean", "IS_TEST_BUILD", "true"
+        }
         release {
+            buildConfigField "boolean", "IS_TEST_BUILD", "true"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -75,6 +79,7 @@ dependencies {
     // Kodein
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
+    testImplementation "org.kodein.di:kodein-di-test-junit:$kodein_version"
 
     // CardView
     implementation "androidx.cardview:cardview:1.0.0"
@@ -107,4 +112,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test:rules:1.5.0'
     debugImplementation "androidx.fragment:fragment-testing:1.5.5"
+
+    // Mockk
+//    def mockk_version = "1.9.3"
+//    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 }
