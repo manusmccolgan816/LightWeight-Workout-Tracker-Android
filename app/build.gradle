@@ -23,7 +23,7 @@ android {
             buildConfigField "boolean", "IS_TEST_BUILD", "true"
         }
         release {
-            buildConfigField "boolean", "IS_TEST_BUILD", "true"
+            buildConfigField "boolean", "IS_TEST_BUILD", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

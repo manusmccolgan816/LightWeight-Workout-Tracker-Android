@@ -1,6 +1,5 @@
 package com.example.lightweight
 
-import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.repositories.*
 import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
@@ -27,9 +26,27 @@ val testTrainingSetViewModelFactory = TrainingSetViewModelFactory(FakeTrainingSe
 val testCycleViewModelFactory = CycleViewModelFactory(FakeCycleRepository())
 
 val testModule = Kodein.Module("testModule") {
-    bind() from singleton { FakeTrainingSetRepository() }
-    // provider instantiates a new instance each time a reference is made
+    bind<CategoryRepositoryInterface>() with singleton { FakeCategoryRepository() }
+    bind() from provider { CategoryViewModelFactory(instance()) }
+
+    bind<ExerciseRepositoryInterface>() with singleton { FakeExerciseRepository() }
+    bind() from provider { ExerciseViewModelFactory(instance()) }
+
+    bind<WorkoutRepositoryInterface>() with singleton { FakeWorkoutRepository() }
+    bind() from provider { WorkoutViewModelFactory(instance()) }
+
+    bind<ExerciseInstanceRepositoryInterface>() with singleton {
+        FakeExerciseInstanceRepository()
+    }
+    bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
+
+    bind<TrainingSetRepositoryInterface>() with singleton { FakeTrainingSetRepository() }
     bind() from provider { TrainingSetViewModelFactory(instance()) }
+
+
+//    bind() from singleton { FakeTrainingSetRepository() }
+//    // provider instantiates a new instance each time a reference is made
+//    bind() from provider { TrainingSetViewModelFactory(instance()) }
 //    bind<CategoryViewModelFactory>() with singleton { testCategoryViewModelFactory }
 //    bind<ExerciseViewModelFactory>() with singleton { testExerciseViewModelFactory }
 //    bind<WorkoutViewModelFactory>() with singleton { testWorkoutViewModelFactory }

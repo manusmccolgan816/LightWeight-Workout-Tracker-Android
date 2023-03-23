@@ -1,7 +1,6 @@
 package com.example.lightweight
 
 import android.app.Application
-import android.util.Log
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.repositories.*
 import com.example.lightweight.ui.category.CategoryViewModelFactory
@@ -20,7 +19,6 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import java.lang.Exception
 
 class LightweightApplication : Application(), KodeinAware {
 
@@ -46,64 +44,79 @@ class LightweightApplication : Application(), KodeinAware {
 //            "LightweightApplication",
 //            "BuildConfig.IS_TEST_BUILD: " + BuildConfig.DEBUG.toString()
 //        )
-        if (isTestBuild) {
-            bind<CategoryRepositoryInterface>() with singleton { FakeCategoryRepository() }
-        } else {
-            bind() from singleton { WorkoutDatabase(instance()) }
-
-            bind() from singleton { CategoryRepository(instance()) }
-            bind() from provider { CategoryViewModelFactory(instance()) }
-
-            bind() from singleton { ExerciseRepository(instance()) }
-            bind() from provider { ExerciseViewModelFactory(instance()) }
-
-            bind() from singleton { WorkoutRepository(instance()) }
-            bind() from provider { WorkoutViewModelFactory(instance()) }
-
-            bind() from singleton { ExerciseInstanceRepository(instance()) }
-            bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
-
-            bind() from singleton { TrainingSetRepository(instance()) }
-            bind() from provider { TrainingSetViewModelFactory(instance()) }
-
-            bind() from singleton { CycleRepository(instance()) }
-            bind() from provider { CycleViewModelFactory(instance()) }
-
-            bind() from singleton { CycleDayRepository(instance()) }
-            bind() from provider { CycleDayViewModelFactory(instance()) }
-
-            bind() from singleton { CycleDayCategoryRepository(instance()) }
-            bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
-
-            bind() from singleton { CycleDayExerciseRepository(instance()) }
-            bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
-        }
-//        bind() from singleton { CategoryRepository(instance()) }
-//        // provider instantiates a new instance each time a reference is made
-//        bind() from provider { CategoryViewModelFactory(instance()) }
+//        if (isTestBuild) {
+//            bind<CategoryRepositoryInterface>() with singleton { FakeCategoryRepository() }
+//            bind() from provider { CategoryViewModelFactory(instance()) }
 //
-//        bind() from singleton { ExerciseRepository(instance()) }
-//        bind() from provider { ExerciseViewModelFactory(instance()) }
+//            bind<ExerciseRepositoryInterface>() with singleton { FakeExerciseRepository() }
+//            bind() from provider { ExerciseViewModelFactory(instance()) }
 //
-//        bind() from singleton { WorkoutRepository(instance()) }
-//        bind() from provider { WorkoutViewModelFactory(instance()) }
+//            bind<WorkoutRepositoryInterface>() with singleton { FakeWorkoutRepository() }
+//            bind() from provider { WorkoutViewModelFactory(instance()) }
 //
-//        bind() from singleton { ExerciseInstanceRepository(instance()) }
-//        bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
+//            bind<ExerciseInstanceRepositoryInterface>() with singleton {
+//                FakeExerciseInstanceRepository()
+//            }
+//            bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
 //
-//        bind() from singleton { TrainingSetRepository(instance()) }
-//        bind() from provider { TrainingSetViewModelFactory(instance()) }
+//            bind<TrainingSetRepositoryInterface>() with singleton { FakeTrainingSetRepository() }
+//            bind() from provider { TrainingSetViewModelFactory(instance()) }
+//        } else {
+//            bind() from singleton { WorkoutDatabase(instance()) }
 //
-//        bind() from singleton { CycleRepository(instance()) }
-//        bind() from provider { CycleViewModelFactory(instance()) }
+//            bind() from singleton { CategoryRepository(instance()) }
+//            bind() from provider { CategoryViewModelFactory(instance()) }
 //
-//        bind() from singleton { CycleDayRepository(instance()) }
-//        bind() from provider { CycleDayViewModelFactory(instance()) }
+//            bind() from singleton { ExerciseRepository(instance()) }
+//            bind() from provider { ExerciseViewModelFactory(instance()) }
 //
-//        bind() from singleton { CycleDayCategoryRepository(instance()) }
-//        bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
+//            bind() from singleton { WorkoutRepository(instance()) }
+//            bind() from provider { WorkoutViewModelFactory(instance()) }
 //
-//        bind() from singleton { CycleDayExerciseRepository(instance()) }
-//        bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
+//            bind() from singleton { ExerciseInstanceRepository(instance()) }
+//            bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
+//
+//            bind() from singleton { TrainingSetRepository(instance()) }
+//            bind() from provider { TrainingSetViewModelFactory(instance()) }
+//
+//            bind() from singleton { CycleRepository(instance()) }
+//            bind() from provider { CycleViewModelFactory(instance()) }
+//
+//            bind() from singleton { CycleDayRepository(instance()) }
+//            bind() from provider { CycleDayViewModelFactory(instance()) }
+//
+//            bind() from singleton { CycleDayCategoryRepository(instance()) }
+//            bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
+//
+//            bind() from singleton { CycleDayExerciseRepository(instance()) }
+//            bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
+//        }
+        bind() from singleton { CategoryRepository(instance()) }
+        // provider instantiates a new instance each time a reference is made
+        bind() from provider { CategoryViewModelFactory(instance()) }
+
+        bind() from singleton { ExerciseRepository(instance()) }
+        bind() from provider { ExerciseViewModelFactory(instance()) }
+
+        bind() from singleton { WorkoutRepository(instance()) }
+        bind() from provider { WorkoutViewModelFactory(instance()) }
+
+        bind() from singleton { ExerciseInstanceRepository(instance()) }
+        bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
+
+        bind() from singleton { TrainingSetRepository(instance()) }
+        bind() from provider { TrainingSetViewModelFactory(instance()) }
+
+        bind() from singleton { CycleRepository(instance()) }
+        bind() from provider { CycleViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayRepository(instance()) }
+        bind() from provider { CycleDayViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayCategoryRepository(instance()) }
+        bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
+
+        bind() from singleton { CycleDayExerciseRepository(instance()) }
+        bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
     }
 }
