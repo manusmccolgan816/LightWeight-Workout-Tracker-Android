@@ -22,7 +22,11 @@
     <fragment
         android:id="@+id/exerciseHistoryFragment"
         android:name="com.example.lightweight.ui.workouttracking.settracker.exercisehistory.ExerciseHistoryFragment"
-        tools:layout="@layout/fragment_exercise_history" />
+        tools:layout="@layout/fragment_exercise_history" >
+        <argument
+            android:name="exerciseID"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/exerciseInsightsFragment"
         android:name="com.example.lightweight.ui.workouttracking.settracker.exerciseinsights.ExerciseInsightsFragment"

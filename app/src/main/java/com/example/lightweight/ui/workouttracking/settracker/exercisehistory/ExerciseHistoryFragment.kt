@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
@@ -31,8 +32,14 @@ class ExerciseHistoryFragment : Fragment(R.layout.fragment_exercise_history), Ko
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val act: SetTrackerActivity = this.activity as SetTrackerActivity
-        exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
+        if (this.activity is SetTrackerActivity) {
+            val act: SetTrackerActivity = this.activity as SetTrackerActivity
+            exerciseID = act.args.exerciseID // Set exerciseID from the SetTrackerActivity arg
+        } else {
+            // Launching the fragment in isolation will require arguments to be passed directly
+            val args: ExerciseHistoryFragmentArgs by navArgs()
+            exerciseID = args.exerciseID
+        }
 
         recyclerViewExerciseInstances = view.findViewById(R.id.recycler_view_exercise_instances)
 
