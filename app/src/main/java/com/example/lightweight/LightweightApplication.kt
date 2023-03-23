@@ -91,6 +91,8 @@ class LightweightApplication : Application(), KodeinAware {
 //            bind() from singleton { CycleDayExerciseRepository(instance()) }
 //            bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
 //        }
+        bind() from singleton { WorkoutDatabase(instance()) }
+
         bind() from singleton { CategoryRepository(instance()) }
         // provider instantiates a new instance each time a reference is made
         bind() from provider { CategoryViewModelFactory(instance()) }

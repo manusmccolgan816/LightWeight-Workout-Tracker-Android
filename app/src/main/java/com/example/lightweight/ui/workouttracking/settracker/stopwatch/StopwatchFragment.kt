@@ -29,9 +29,9 @@ class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stopwatchValueTextView = view.findViewById(R.id.stopwatch_value_text_view)
-        resetImageView = view.findViewById(R.id.reset_image_view)
-        toggleButton = view.findViewById(R.id.toggle_button)
+        stopwatchValueTextView = view.findViewById(R.id.text_view_stopwatch_value)
+        resetImageView = view.findViewById(R.id.image_view_reset)
+        toggleButton = view.findViewById(R.id.button_toggle)
 
         toggleButton.setOnClickListener {
             if (isStopwatchRunning) pauseStopwatch() else startStopwatch()

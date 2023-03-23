@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_stopwatch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.workouttracking.settracker.stopwatch.StopwatchFragment">
@@ -12,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="48dp"
         android:layout_marginVertical="24dp"
-        app:layout_constraintBottom_toTopOf="@id/toggle_button"
+        app:layout_constraintBottom_toTopOf="@id/button_toggle"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +21,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <TextView
-            android:id="@+id/stopwatch_value_text_view"
+            android:id="@+id/text_view_stopwatch_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -29,11 +30,11 @@
             tools:ignore="HardcodedText" />
 
         <ImageView
-            android:id="@+id/reset_image_view"
+            android:id="@+id/image_view_reset"
             style="@style/Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/stopwatch_value_text_view"
+            android:layout_below="@id/text_view_stopwatch_value"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:contentDescription="@string/string_reset_stopwatch"
@@ -43,7 +44,7 @@
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/toggle_button"
+        android:id="@+id/button_toggle"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginHorizontal="40dp"
