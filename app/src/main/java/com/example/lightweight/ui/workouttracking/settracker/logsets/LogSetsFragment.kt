@@ -34,22 +34,32 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
+class LogSetsFragment(
+    var exerciseViewModel: ExerciseViewModel,
+    var workoutViewModel: WorkoutViewModel,
+    var exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    var trainingSetViewModel: TrainingSetViewModel
+) : Fragment(R.layout.fragment_log_sets), KodeinAware {
 
     private val logTag = "LogSetsFragment"
 
     override val kodein by kodein()
-    private val exerciseFactory: ExerciseViewModelFactory by instance()
-    private val workoutFactory: WorkoutViewModelFactory by instance()
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
+//    private val exerciseFactory: ExerciseViewModelFactory by instance()
+//    private val workoutFactory: WorkoutViewModelFactory by instance()
+//    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
+//    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
 
-    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
-    private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
-        exerciseInstanceFactory
-    }
-    private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
+    //private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
+    //private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
+//    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
+//        exerciseInstanceFactory
+//    }
+//    lateinit var exerciseViewModel: ExerciseViewModel
+//    lateinit var workoutViewModel: WorkoutViewModel
+//    lateinit var exerciseInstanceViewModel: ExerciseInstanceViewModel
+//    lateinit var trainingSetViewModel: TrainingSetViewModel
+    //private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
+    //var trainingSetViewModel: TrainingSetViewModel = ViewModelProvider(this, trainingSetFactory).get(TrainingSetViewModel::class.java)
 
     private lateinit var adapter: TrainingSetItemAdapter
     private var isAdapterSetup = false
@@ -88,6 +98,16 @@ class LogSetsFragment : Fragment(R.layout.fragment_log_sets), KodeinAware {
             exerciseID = args.exerciseID
             selectedDate = args.selectedDate
         }
+
+//        exerciseViewModel =
+//            ViewModelProvider(this, exerciseFactory)[ExerciseViewModel::class.java]
+//        workoutViewModel = ViewModelProvider(this, workoutFactory)[WorkoutViewModel::class.java]
+//        exerciseInstanceViewModel = ViewModelProvider(
+//            this,
+//            exerciseInstanceFactory
+//        )[ExerciseInstanceViewModel::class.java]
+//        trainingSetViewModel =
+//            ViewModelProvider(this, trainingSetFactory)[TrainingSetViewModel::class.java]
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 

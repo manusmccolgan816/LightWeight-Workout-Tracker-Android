@@ -3,9 +3,15 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.IdNamePair
+import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.data.db.entities.ExerciseInstance
+import com.example.lightweight.data.db.entities.Workout
+import java.lang.Exception
 
 class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
+
+    var exercises = mutableListOf<Exercise>()
+    var workouts = mutableListOf<Workout>()
 
     private val exerciseInstances = mutableListOf<ExerciseInstance>()
     private val observableExerciseInstances =
@@ -62,13 +68,29 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     }
 
     override fun getExerciseInstancesAndNamesOfWorkout(workoutID: Int?): LiveData<List<IdNamePair>> {
-        TODO("Joins are going to be a pain")
+        val idNamesToReturn = mutableListOf<IdNamePair>()
+
+        for (exerciseInstance in exerciseInstances.filter {
+            it.workoutID == workoutID
+        }.sortedBy { it.exerciseInstanceNumber }) {
+            for (exercise in exercises.filter { it.exerciseID == exerciseInstance.exerciseID }) {
+                idNamesToReturn.add(
+                    IdNamePair(exerciseInstance.exerciseInstanceID, exercise.exerciseName)
+                )
+            }
+        }
+
+        return MutableLiveData(idNamesToReturn)
     }
 
     override fun getExerciseInstance(workoutID: Int?, exerciseID: Int?): ExerciseInstance? {
-        return exerciseInstances.filter {
-            it.workoutID == workoutID && it.exerciseID == exerciseID
-        }[0]
+        for (exerciseInstance in exerciseInstances) {
+            if (exerciseInstance.workoutID == workoutID && exerciseInstance.exerciseID == exerciseID) {
+                return exerciseInstance
+            }
+        }
+
+        return null
     }
 
     override fun getExerciseInstancesOfExercise(exerciseID: Int?): LiveData<List<ExerciseInstance>> {
@@ -100,6 +122,14 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     }
 
     override fun getExerciseInstanceDate(exerciseInstanceID: Int?): LiveData<String> {
-        TODO("Joins are going to be a pain")
+        for (exerciseInstance in exerciseInstances.filter {
+            it.exerciseInstanceID == exerciseInstanceID
+        }) {
+            for (workout in workouts.filter { it.workoutID == exerciseInstance.workoutID }) {
+                return MutableLiveData(workout.date)
+            }
+        }
+
+        throw Exception("exerciseInstance date not found")
     }
 }

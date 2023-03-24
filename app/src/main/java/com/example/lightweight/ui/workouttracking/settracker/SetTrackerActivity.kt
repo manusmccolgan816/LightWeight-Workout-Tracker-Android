@@ -3,6 +3,7 @@ package com.example.lightweight.ui.workouttracking.settracker
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -13,11 +14,36 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.lightweight.R
+import com.example.lightweight.ui.LightweightFragmentFactory
+import com.example.lightweight.ui.exercise.ExerciseViewModel
+import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
-class SetTrackerActivity : AppCompatActivity() {
+class SetTrackerActivity : AppCompatActivity(), KodeinAware {
 
     val args: SetTrackerActivityArgs by navArgs()
+
+    override val kodein by kodein()
+    private val exerciseFactory: ExerciseViewModelFactory by instance()
+    private val workoutFactory: WorkoutViewModelFactory by instance()
+    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
+    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
+    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
+    private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
+        exerciseInstanceFactory
+    }
+    private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -26,6 +52,13 @@ class SetTrackerActivity : AppCompatActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = LightweightFragmentFactory(
+            null,
+            exerciseViewModel,
+            workoutViewModel,
+            exerciseInstanceViewModel,
+            trainingSetViewModel
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_tracker)
 

@@ -1,25 +1,36 @@
 package com.example.lightweight.ui.workouttracking.settracker.logsets
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.data.db.entities.TrainingSet
+import com.example.lightweight.data.repositories.FakeExerciseInstanceRepository
+import com.example.lightweight.data.repositories.FakeExerciseRepository
+import com.example.lightweight.data.repositories.FakeTrainingSetRepository
+import com.example.lightweight.data.repositories.FakeWorkoutRepository
+import com.example.lightweight.getOrAwaitValue
+import com.example.lightweight.ui.exercise.ExerciseViewModel
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
+import com.google.common.truth.Truth
+import kotlinx.coroutines.runBlocking
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.kodein.di.Kodein
-import org.kodein.di.direct
-import org.kodein.di.generic.instance
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class LogSetsFragmentTest {
 
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 //    private val testKodein = Kodein {
 //        import(testModule)
 //    }
@@ -37,8 +48,8 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
-            themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
+        launchFragmentInContainer<LogSetsFragment>(
+            themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args
         )
 
@@ -47,19 +58,44 @@ class LogSetsFragmentTest {
     }
 
     @Test
-    fun testClickSaveWithValidWeightAndReps_trainingSetAddedToRecyclerView() {
+    fun testClickSaveWithValidWeightAndReps_trainingSetSaved() {
         // TODO: REQUIRES FAKE REPOSITORY TO BE USED
         // This test requires the unit of measurement to be kg
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+        val fakeTrainingSetRepository = FakeTrainingSetRepository()
+        val exercise = Exercise("Fake Exercise", 1)
+        val exerciseId = 1
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+            fakeExerciseInstanceRepository.exercises.add(exercise)
+        }
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+        val testTrainingSetViewModel = TrainingSetViewModel(fakeTrainingSetRepository)
 
         val args = bundleOf(
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
         //val fragment: LogSetsFragment = testKodein.direct.instance()
-        launchFragmentInContainer<LogSetsFragment>(
+        val scenario = launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
+
+        scenario.onFragment {
+            it.exerciseViewModel = testExerciseViewModel
+            it.workoutViewModel = testWorkoutViewModel
+            it.exerciseInstanceViewModel = testExerciseInstanceViewModel
+            it.trainingSetViewModel = testTrainingSetViewModel
+        }
 
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
         onView(withId(R.id.edit_text_weight)).check(matches(withText("10")))
@@ -69,24 +105,29 @@ class LogSetsFragmentTest {
 
         onView(withId(R.id.button_save_set)).perform(click())
 
-        onView(withId(R.id.recycler_view_training_sets))
-            .perform(
-                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
-                    0,
-                    scrollTo()
-                )
-            ).check(
-                matches(hasDescendant(withText("12 reps")))
-            )
-        onView(withId(R.id.recycler_view_training_sets))
-            .perform(
-                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
-                    0,
-                    scrollTo()
-                )
-            ).check(
-                matches(hasDescendant(withText("10.0kg")))
-            )
+        val trainingSet =
+            testTrainingSetViewModel.getTrainingSetsOfExercise(exerciseId).getOrAwaitValue()[0]
+        Truth.assertThat(trainingSet.weight).isEqualTo(10f)
+        Truth.assertThat(trainingSet.reps).isEqualTo(12)
+
+//        onView(withId(R.id.recycler_view_training_sets))
+//            .perform(
+//                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+//                    0,
+//                    scrollTo()
+//                )
+//            ).check(
+//                matches(hasDescendant(withText("12 reps")))
+//            )
+//        onView(withId(R.id.recycler_view_training_sets))
+//            .perform(
+//                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+//                    0,
+//                    scrollTo()
+//                )
+//            ).check(
+//                matches(hasDescendant(withText("10.0kg")))
+//            )
     }
 
     @Test

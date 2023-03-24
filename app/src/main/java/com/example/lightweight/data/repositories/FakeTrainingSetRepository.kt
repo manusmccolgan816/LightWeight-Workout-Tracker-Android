@@ -2,9 +2,15 @@ package com.example.lightweight.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
+import com.example.lightweight.data.db.entities.Workout
 
 class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
+
+    var workouts = mutableListOf<Workout>()
+
+    var exerciseInstances = mutableListOf<ExerciseInstance>()
 
     private val trainingSets = mutableListOf<TrainingSet>()
     private val observableTrainingSets = MutableLiveData<List<TrainingSet>>(trainingSets)
@@ -65,20 +71,66 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<String>> {
-        TODO("Joins are going to be a pain")
+        val isPrBool = isPR == 1
+        val datesAndReps = arrayListOf<Pair<String, Int>>()
+
+        for (workout in workouts) {
+            for (exerciseInstance in exerciseInstances.filter {
+                it.workoutID == workout.workoutID &&
+                it.exerciseID == exerciseID
+            }) {
+                for (trainingSet in trainingSets.filter {
+                    it.exerciseInstanceID == exerciseInstance.exerciseInstanceID &&
+                            it.isPR == isPrBool
+                }) {
+                    datesAndReps.add(Pair(workout.date, trainingSet.reps))
+                }
+            }
+        }
+
+        // Sort dates by corresponding rep count
+        datesAndReps.sortedBy { it.second }
+        val dates = arrayListOf<String>()
+        for (pair in datesAndReps) {
+            dates.add(pair.first)
+        }
+
+        return MutableLiveData(dates)
     }
 
     override fun getTrainingSetsOfExerciseAndIsPR(
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<TrainingSet>> {
-        TODO("Joins are going to be a pain")
+        val isPrBool = isPR == 1
+        val trainingSetsToReturn = arrayListOf<TrainingSet>()
+
+        for (exerciseInstance in exerciseInstances.filter {
+            it.exerciseID == exerciseID
+        }) {
+            for (trainingSet in trainingSets.filter {
+                it.exerciseInstanceID == exerciseInstance.exerciseInstanceID &&
+                it.isPR == isPrBool
+            }) {
+                trainingSetsToReturn.add(trainingSet)
+            }
+        }
+
+        return MutableLiveData(trainingSetsToReturn.sortedBy { it.reps })
     }
 
     override fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>> {
-        return MutableLiveData(trainingSets.filter {
-            it.exerciseInstanceID == exerciseInstanceID
-        })
+//        return MutableLiveData(trainingSets.filter {
+//            it.exerciseInstanceID == exerciseInstanceID
+//        })
+        val sets = arrayListOf<TrainingSet>()
+        for (trainingSet in trainingSets) {
+            if (trainingSet.exerciseInstanceID == exerciseInstanceID) {
+                sets.add(trainingSet)
+            }
+        }
+        sets.sortBy { it.trainingSetNumber }
+        return MutableLiveData(sets)
     }
 
     override fun getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID: Int?): List<TrainingSet> {
@@ -103,6 +155,34 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     }
 
     override fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>> {
-        TODO("Joins are going to be a pain")
+        val trainingSetDatePairs = arrayListOf<Pair<TrainingSet, String>>()
+
+        for (exerciseInstance in exerciseInstances.filter { it.exerciseID == exerciseID }) {
+            for (workout in workouts.filter { it.workoutID == exerciseInstance.workoutID }) {
+                for (trainingSet in trainingSets.filter {
+                    it.exerciseInstanceID == exerciseInstance.exerciseInstanceID
+                }) {
+                    trainingSetDatePairs.add(Pair(trainingSet, workout.date))
+                }
+            }
+        }
+
+        // Sort by date then trainingSetNumber
+        trainingSetDatePairs.sortWith(
+            compareBy(
+                {
+                    it.second
+                },
+                {
+                    it.first.trainingSetNumber
+                }
+            )
+        )
+        val trainingSetsOfExercise = arrayListOf<TrainingSet>()
+        for (pair in trainingSetDatePairs) {
+            trainingSetsOfExercise.add(pair.first)
+        }
+
+        return MutableLiveData(trainingSetsOfExercise)
     }
 }
