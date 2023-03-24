@@ -7,7 +7,7 @@ import com.example.lightweight.data.db.entities.Workout
 class FakeWorkoutRepository : WorkoutRepositoryInterface {
 
     private val workouts = mutableListOf<Workout>()
-    private val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
+    val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
     private fun refreshLiveData() {
         observableWorkouts.postValue(workouts)

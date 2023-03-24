@@ -10,12 +10,15 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
+import com.example.lightweight.data.db.entities.Workout
 import com.example.lightweight.data.repositories.FakeExerciseInstanceRepository
 import com.example.lightweight.data.repositories.FakeExerciseRepository
 import com.example.lightweight.data.repositories.FakeTrainingSetRepository
 import com.example.lightweight.data.repositories.FakeWorkoutRepository
 import com.example.lightweight.getOrAwaitValue
+import com.example.lightweight.ui.LightweightFragmentFactory
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
@@ -59,7 +62,6 @@ class LogSetsFragmentTest {
 
     @Test
     fun testClickSaveWithValidWeightAndReps_trainingSetSaved() {
-        // TODO: REQUIRES FAKE REPOSITORY TO BE USED
         // This test requires the unit of measurement to be kg
         val fakeExerciseRepository = FakeExerciseRepository()
         val fakeWorkoutRepository = FakeWorkoutRepository()
@@ -72,6 +74,11 @@ class LogSetsFragmentTest {
         runBlocking {
             fakeExerciseRepository.insert(exercise)
             fakeExerciseInstanceRepository.exercises.add(exercise)
+            fakeTrainingSetRepository.exerciseInstances =
+                fakeExerciseInstanceRepository
+                    .observableExerciseInstances.value as MutableList<ExerciseInstance>
+            fakeTrainingSetRepository.workouts =
+                fakeWorkoutRepository.observableWorkouts.value as MutableList<Workout>
         }
 
         val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
@@ -84,10 +91,17 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
+        )
         //val fragment: LogSetsFragment = testKodein.direct.instance()
         val scenario = launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         scenario.onFragment {
@@ -109,25 +123,6 @@ class LogSetsFragmentTest {
             testTrainingSetViewModel.getTrainingSetsOfExercise(exerciseId).getOrAwaitValue()[0]
         Truth.assertThat(trainingSet.weight).isEqualTo(10f)
         Truth.assertThat(trainingSet.reps).isEqualTo(12)
-
-//        onView(withId(R.id.recycler_view_training_sets))
-//            .perform(
-//                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
-//                    0,
-//                    scrollTo()
-//                )
-//            ).check(
-//                matches(hasDescendant(withText("12 reps")))
-//            )
-//        onView(withId(R.id.recycler_view_training_sets))
-//            .perform(
-//                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
-//                    0,
-//                    scrollTo()
-//                )
-//            ).check(
-//                matches(hasDescendant(withText("10.0kg")))
-//            )
     }
 
     @Test

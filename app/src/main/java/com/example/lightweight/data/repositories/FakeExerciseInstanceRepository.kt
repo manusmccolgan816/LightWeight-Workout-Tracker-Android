@@ -14,7 +14,7 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     var workouts = mutableListOf<Workout>()
 
     private val exerciseInstances = mutableListOf<ExerciseInstance>()
-    private val observableExerciseInstances =
+    val observableExerciseInstances =
         MutableLiveData<List<ExerciseInstance>>(exerciseInstances)
 
     private fun refreshLiveData() {

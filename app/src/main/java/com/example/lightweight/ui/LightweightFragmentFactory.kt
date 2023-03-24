@@ -10,7 +10,7 @@ import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewMod
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 
 class LightweightFragmentFactory(
-    private val categoryViewModel: CategoryViewModel?,
+    private val categoryViewModel: CategoryViewModel? = null,
     private val exerciseViewModel: ExerciseViewModel?,
     private val workoutViewModel: WorkoutViewModel?,
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel?,
