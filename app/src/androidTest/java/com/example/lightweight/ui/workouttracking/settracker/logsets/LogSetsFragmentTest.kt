@@ -56,7 +56,7 @@ class LogSetsFragmentTest {
             "selectedDate" to "2022-12-03"
         )
         //val fragment: LogSetsFragment = testKodein.direct.instance()
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -96,7 +96,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -114,7 +114,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -138,7 +138,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -157,7 +157,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -174,7 +174,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -191,7 +191,7 @@ class LogSetsFragmentTest {
             "exerciseID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )
@@ -210,7 +210,7 @@ class LogSetsFragmentTest {
             "selectedDate" to "2022-12-02"
         )
         //val fragment: LogSetsFragment = testKodein.direct.instance()
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
         )

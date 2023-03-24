@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,8 +66,13 @@ class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val act: SetTrackerActivity = this.activity as SetTrackerActivity
-        exerciseID = act.args.exerciseID
+        if (this.activity is SetTrackerActivity) {
+            val act: SetTrackerActivity = this.activity as SetTrackerActivity
+            exerciseID = act.args.exerciseID
+        } else {
+            val args: ExerciseInsightsFragmentArgs by navArgs()
+            exerciseID = args.exerciseID
+        }
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 

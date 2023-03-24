@@ -16,6 +16,7 @@ import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
+import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
@@ -62,26 +63,44 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
 
         cycleID = args.cycleID
 
-        val ref = this.activity
+        if (this.activity is MainActivity) {
+            val ref = this.activity
+            lifecycleScope.launch(Dispatchers.IO) {
+                val cycleName = cycleViewModel.getCycleOfID(cycleID).cycleName
+                ref?.runOnUiThread {
+                    // Set the toolbar title
+                    val textViewToolbarTitle =
+                        requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+                    textViewToolbarTitle.text = cycleName
+                }
+            }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val cycleName = cycleViewModel.getCycleOfID(cycleID).cycleName
-            ref?.runOnUiThread {
-                // Set the toolbar title
-                val textViewToolbarTitle =
-                    requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
-                textViewToolbarTitle.text = cycleName
+            // Set the share icon to be visible
+            val imageViewShareWorkout =
+                activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.VISIBLE
+
+            // Remove the select date icon
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.GONE
+
+            imageViewShareWorkout.setOnClickListener {
+                // If there are no cycle items (cycle days, categories or exercises)...
+                if (cycleDayAdapter.items.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "There is nothing to share in this training cycle",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    return@setOnClickListener
+                }
+
+                val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
+                dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
             }
         }
 
-        // Set the share icon to be visible
-        val imageViewShareWorkout =
-            activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.VISIBLE
-
-        // Remove the select date icon
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.GONE
 
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
@@ -447,22 +466,6 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
                 cycleDayAdapter.cycleDays.size,
                 fun(cycleDay: CycleDay) { cycleDayViewModel.insert(cycleDay) }
             ).show()
-        }
-
-        imageViewShareWorkout.setOnClickListener {
-            // If there are no cycle items (cycle days, categories or exercises)...
-            if (cycleDayAdapter.items.isEmpty()) {
-                Toast.makeText(
-                    context,
-                    "There is nothing to share in this training cycle",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return@setOnClickListener
-            }
-
-            val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
-            dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
         }
     }
 }

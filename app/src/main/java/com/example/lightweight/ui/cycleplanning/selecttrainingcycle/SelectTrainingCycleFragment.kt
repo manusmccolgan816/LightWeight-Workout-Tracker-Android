@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Cycle
+import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import org.kodein.di.KodeinAware
@@ -29,17 +30,19 @@ class SelectTrainingCycleFragment : Fragment(R.layout.fragment_select_training_c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set the toolbar title
-        val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
-        textViewToolbarTitle.text = resources.getString(R.string.string_plan_training_cycles)
+        if (this.activity is MainActivity) {
+            // Set the toolbar title
+            val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+            textViewToolbarTitle.text = resources.getString(R.string.string_plan_training_cycles)
 
-        // Remove the share icon
-        val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
-        imageViewShareWorkout.visibility = View.GONE
+            // Remove the share icon
+            val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            imageViewShareWorkout.visibility = View.GONE
 
-        // Remove the select date icon
-        val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
-        imageViewSelectDate.visibility = View.GONE
+            // Remove the select date icon
+            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            imageViewSelectDate.visibility = View.GONE
+        }
 
         recyclerViewTrainingCycles = view.findViewById(R.id.recycler_view_training_cycles)
         fabAddTrainingCycle = view.findViewById(R.id.extended_fab_add_training_cycle)
