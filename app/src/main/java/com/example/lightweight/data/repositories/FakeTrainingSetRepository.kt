@@ -15,11 +15,84 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     private val trainingSets = mutableListOf<TrainingSet>()
     private val observableTrainingSets = MutableLiveData<List<TrainingSet>>(trainingSets)
 
+    private val observableTrainingSetDatesOfExerciseIsPR = MutableLiveData<List<String>>()
+    private var trainingSetDatesOfExerciseIsPRParamExerciseID: Int? = null
+    private var trainingSetDatesOfExerciseIsPRParamIsPR: Int? = null
+
+    private val observableTrainingSetsOfExerciseAndIsPR = MutableLiveData<List<TrainingSet>>()
+    private var trainingSetsOfExerciseAndIsPRParamExerciseID: Int? = null
+    private var trainingSetsOfExerciseAndIsPRParamIsPR: Int? = null
+
+    private val observableTrainingSetsOfExerciseInstance = MutableLiveData<List<TrainingSet>>()
+    private var trainingSetsOfExerciseInstanceParam: Int? = null
+
+    private val observableTrainingSetsOfExerciseRepsIsPR = MutableLiveData<List<TrainingSet>>()
+    private var trainingSetsOfExerciseRepsIsPRParamExerciseID: Int? = null
+    private var trainingSetsOfExerciseRepsIsPRParamReps: Int? = null
+    private var trainingSetsOfExerciseRepsIsPRParamIsPR: Int? = null
+
+    private val observableTrainingSetsOfExerciseFewerReps = MutableLiveData<List<TrainingSet>>()
+    private var trainingSetsOfExerciseFewerRepsParamExerciseID: Int? = null
+    private var trainingSetsOfExerciseFewerRepsParamReps: Int? = null
+
+    private val observableTrainingSetsOfExercise = MutableLiveData<List<TrainingSet>>()
+    private var trainingSetsOfExerciseParam: Int? = null
+
+    private var lastId = 0
+
     private fun refreshLiveData() {
         observableTrainingSets.postValue(trainingSets)
+        if (trainingSetDatesOfExerciseIsPRParamExerciseID != null) {
+            observableTrainingSetDatesOfExerciseIsPR.postValue(
+                calcTrainingSetDatesOfExerciseIsPR(
+                    trainingSetDatesOfExerciseIsPRParamExerciseID,
+                    trainingSetDatesOfExerciseIsPRParamIsPR!!
+                )
+            )
+        }
+        if (trainingSetsOfExerciseAndIsPRParamExerciseID != null) {
+            observableTrainingSetsOfExerciseAndIsPR.postValue(
+                calcTrainingSetsOfExerciseAndIsPR(
+                    trainingSetsOfExerciseAndIsPRParamExerciseID,
+                    trainingSetsOfExerciseAndIsPRParamIsPR!!
+                )
+            )
+        }
+        if (trainingSetsOfExerciseInstanceParam != null) {
+            observableTrainingSetsOfExerciseInstance.postValue(
+                calcTrainingSetsOfExerciseInstance(
+                    trainingSetsOfExerciseInstanceParam
+                )
+            )
+        }
+        if (trainingSetsOfExerciseRepsIsPRParamExerciseID != null) {
+            observableTrainingSetsOfExerciseRepsIsPR.postValue(
+                calcTrainingSetsOfExerciseRepsIsPR(
+                    trainingSetsOfExerciseRepsIsPRParamExerciseID,
+                    trainingSetsOfExerciseRepsIsPRParamReps!!,
+                    trainingSetsOfExerciseRepsIsPRParamIsPR!!
+                )
+            )
+        }
+        if (trainingSetsOfExerciseFewerRepsParamExerciseID != null) {
+            observableTrainingSetsOfExerciseFewerReps.postValue(
+                calcTrainingSetsOfExerciseFewerReps(
+                    trainingSetsOfExerciseFewerRepsParamExerciseID,
+                    trainingSetsOfExerciseFewerRepsParamReps!!
+                )
+            )
+        }
+        if (trainingSetsOfExerciseParam != null) {
+            observableTrainingSetsOfExercise.postValue(
+                calcTrainingSetsOfExercise(trainingSetsOfExerciseParam)
+            )
+        }
     }
 
     override suspend fun insert(trainingSet: TrainingSet) {
+        if (trainingSet.trainingSetID == null) {
+            trainingSet.trainingSetID = ++lastId
+        }
         trainingSets.add(trainingSet)
         refreshLiveData()
     }
@@ -71,13 +144,20 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<String>> {
+        trainingSetDatesOfExerciseIsPRParamExerciseID = exerciseID
+        trainingSetDatesOfExerciseIsPRParamIsPR = isPR
+        refreshLiveData()
+        return observableTrainingSetDatesOfExerciseIsPR
+    }
+
+    private fun calcTrainingSetDatesOfExerciseIsPR(exerciseID: Int?, isPR: Int): List<String> {
         val isPrBool = isPR == 1
         val datesAndReps = arrayListOf<Pair<String, Int>>()
 
         for (workout in workouts) {
             for (exerciseInstance in exerciseInstances.filter {
                 it.workoutID == workout.workoutID &&
-                it.exerciseID == exerciseID
+                        it.exerciseID == exerciseID
             }) {
                 for (trainingSet in trainingSets.filter {
                     it.exerciseInstanceID == exerciseInstance.exerciseInstanceID &&
@@ -95,13 +175,20 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
             dates.add(pair.first)
         }
 
-        return MutableLiveData(dates)
+        return dates
     }
 
     override fun getTrainingSetsOfExerciseAndIsPR(
         exerciseID: Int?,
         isPR: Int
     ): LiveData<List<TrainingSet>> {
+        trainingSetsOfExerciseAndIsPRParamExerciseID = exerciseID
+        trainingSetsOfExerciseAndIsPRParamIsPR = isPR
+        refreshLiveData()
+        return observableTrainingSetsOfExerciseAndIsPR
+    }
+
+    private fun calcTrainingSetsOfExerciseAndIsPR(exerciseID: Int?, isPR: Int): List<TrainingSet> {
         val isPrBool = isPR == 1
         val trainingSetsToReturn = arrayListOf<TrainingSet>()
 
@@ -110,27 +197,30 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         }) {
             for (trainingSet in trainingSets.filter {
                 it.exerciseInstanceID == exerciseInstance.exerciseInstanceID &&
-                it.isPR == isPrBool
+                        it.isPR == isPrBool
             }) {
                 trainingSetsToReturn.add(trainingSet)
             }
         }
 
-        return MutableLiveData(trainingSetsToReturn.sortedBy { it.reps })
+        return trainingSetsToReturn.sortedBy { it.reps }
     }
 
     override fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>> {
-//        return MutableLiveData(trainingSets.filter {
-//            it.exerciseInstanceID == exerciseInstanceID
-//        })
-        val sets = arrayListOf<TrainingSet>()
+        trainingSetsOfExerciseInstanceParam = exerciseInstanceID
+        refreshLiveData()
+        return observableTrainingSetsOfExerciseInstance
+    }
+
+    private fun calcTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): List<TrainingSet> {
+        val setsToReturn = arrayListOf<TrainingSet>()
         for (trainingSet in trainingSets) {
             if (trainingSet.exerciseInstanceID == exerciseInstanceID) {
-                sets.add(trainingSet)
+                setsToReturn.add(trainingSet)
             }
         }
-        sets.sortBy { it.trainingSetNumber }
-        return MutableLiveData(sets)
+        setsToReturn.sortBy { it.trainingSetNumber }
+        return setsToReturn
     }
 
     override fun getTrainingSetsOfExerciseInstanceNoLiveData(exerciseInstanceID: Int?): List<TrainingSet> {
@@ -144,6 +234,18 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         reps: Int,
         isPR: Int
     ): LiveData<List<TrainingSet>> {
+        trainingSetsOfExerciseRepsIsPRParamExerciseID = exerciseID
+        trainingSetsOfExerciseRepsIsPRParamReps = reps
+        trainingSetsOfExerciseRepsIsPRParamIsPR = isPR
+        refreshLiveData()
+        return observableTrainingSetsOfExerciseRepsIsPR
+    }
+
+    private fun calcTrainingSetsOfExerciseRepsIsPR(
+        exerciseID: Int?,
+        reps: Int,
+        isPR: Int
+    ): List<TrainingSet> {
         TODO("Joins are going to be a pain")
     }
 
@@ -151,10 +253,26 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         exerciseID: Int?,
         reps: Int
     ): LiveData<List<TrainingSet>> {
+        trainingSetsOfExerciseFewerRepsParamExerciseID = exerciseID
+        trainingSetsOfExerciseFewerRepsParamReps = reps
+        refreshLiveData()
+        return observableTrainingSetsOfExerciseFewerReps
+    }
+
+    private fun calcTrainingSetsOfExerciseFewerReps(
+        exerciseID: Int?,
+        reps: Int
+    ): List<TrainingSet> {
         TODO("Joins are going to be a pain")
     }
 
     override fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>> {
+        trainingSetsOfExerciseParam = exerciseID
+        refreshLiveData()
+        return observableTrainingSetsOfExercise
+    }
+
+    private fun calcTrainingSetsOfExercise(exerciseID: Int?): List<TrainingSet> {
         val trainingSetDatePairs = arrayListOf<Pair<TrainingSet, String>>()
 
         for (exerciseInstance in exerciseInstances.filter { it.exerciseID == exerciseID }) {
@@ -183,6 +301,6 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
             trainingSetsOfExercise.add(pair.first)
         }
 
-        return MutableLiveData(trainingSetsOfExercise)
+        return trainingSetsOfExercise
     }
 }

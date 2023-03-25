@@ -6,6 +6,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.R
@@ -34,16 +35,6 @@ class LogSetsFragmentTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-//    private val testKodein = Kodein {
-//        import(testModule)
-//    }
-
-//    private val kodein = Kodein.lazy {
-//        import(testModule, allowOverride = true)
-//    }
-
-//    private val factory by kodein.instance<TrainingSetViewModelFactory>()
-//    private val trainingSetViewModel = factory.create(TrainingSetViewModel::class.java)
 
     @Test
     fun testSelectLogSetsFragmentInView() {
@@ -62,7 +53,6 @@ class LogSetsFragmentTest {
 
     @Test
     fun testClickSaveWithValidWeightAndReps_trainingSetSaved() {
-        // This test requires the unit of measurement to be kg
         val fakeExerciseRepository = FakeExerciseRepository()
         val fakeWorkoutRepository = FakeWorkoutRepository()
         val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
@@ -72,11 +62,13 @@ class LogSetsFragmentTest {
         exercise.exerciseID = 1
 
         runBlocking {
+            // Add the exercise to exercise and exerciseInstance repos
             fakeExerciseRepository.insert(exercise)
             fakeExerciseInstanceRepository.exercises.add(exercise)
-            fakeTrainingSetRepository.exerciseInstances =
-                fakeExerciseInstanceRepository
-                    .observableExerciseInstances.value as MutableList<ExerciseInstance>
+
+            // Observe exerciseInstances and workouts from trainingSet repo
+            fakeTrainingSetRepository.exerciseInstances = fakeExerciseInstanceRepository
+                .observableExerciseInstances.value as MutableList<ExerciseInstance>
             fakeTrainingSetRepository.workouts =
                 fakeWorkoutRepository.observableWorkouts.value as MutableList<Workout>
         }
@@ -97,7 +89,6 @@ class LogSetsFragmentTest {
             exerciseInstanceViewModel = testExerciseInstanceViewModel,
             trainingSetViewModel = testTrainingSetViewModel
         )
-        //val fragment: LogSetsFragment = testKodein.direct.instance()
         val scenario = launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
@@ -239,16 +230,95 @@ class LogSetsFragmentTest {
     }
 
     @Test
-    fun testSavePrTrainingSet_trophyDisplayedBesideRecyclerViewItem() {
-        // TODO: REQUIRES FAKE REPOSITORY TO BE USED
+    fun testSavePrTrainingSet_recyclerViewItemDisplayedWithTrophy() {
+        // This test requires the unit of measurement to be the default value of kg
+
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+        val fakeTrainingSetRepository = FakeTrainingSetRepository()
+        val exercise = Exercise("Fake Exercise", 1)
+        val exerciseId = 1
+        exercise.exerciseID = 1
+
+        runBlocking {
+            // Add the exercise to exercise and exerciseInstance repos
+            fakeExerciseRepository.insert(exercise)
+            fakeExerciseInstanceRepository.exercises.add(exercise)
+
+            // Observe exerciseInstances and workouts from trainingSet repo
+            fakeTrainingSetRepository.exerciseInstances = fakeExerciseInstanceRepository
+                .observableExerciseInstances.value as MutableList<ExerciseInstance>
+            fakeTrainingSetRepository.workouts =
+                fakeWorkoutRepository.observableWorkouts.value as MutableList<Workout>
+        }
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+        val testTrainingSetViewModel = TrainingSetViewModel(fakeTrainingSetRepository)
+
         val args = bundleOf(
             "exerciseID" to 1,
-            "selectedDate" to "2022-12-02"
+            "selectedDate" to "2022-12-03"
         )
-        //val fragment: LogSetsFragment = testKodein.direct.instance()
-        launchFragmentInContainer<LogSetsFragment>(
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
+        )
+        val scenario = launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
+
+        scenario.onFragment {
+            it.exerciseViewModel = testExerciseViewModel
+            it.workoutViewModel = testWorkoutViewModel
+            it.exerciseInstanceViewModel = testExerciseInstanceViewModel
+            it.trainingSetViewModel = testTrainingSetViewModel
+        }
+
+        onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
+        onView(withId(R.id.edit_text_weight)).check(matches(withText("10")))
+
+        onView(withId(R.id.edit_text_num_reps)).perform(replaceText("12"))
+        onView(withId(R.id.edit_text_num_reps)).check(matches(withText("12")))
+
+        onView(withId(R.id.button_save_set)).perform(click())
+
+        testTrainingSetViewModel.getTrainingSetsOfExercise(exerciseId).getOrAwaitValue()
+
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("12 reps")))
+            )
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("10.0kg")))
+            )
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0, scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withId(R.id.image_view_trophy)))
+            ).check(
+                matches(isDisplayed())
+            )
     }
 }

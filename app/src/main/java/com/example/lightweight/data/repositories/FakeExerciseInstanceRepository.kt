@@ -17,11 +17,16 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     val observableExerciseInstances =
         MutableLiveData<List<ExerciseInstance>>(exerciseInstances)
 
+    private var lastId = 0
+
     private fun refreshLiveData() {
         observableExerciseInstances.postValue(exerciseInstances)
     }
 
     override suspend fun insert(exerciseInstance: ExerciseInstance) {
+        if (exerciseInstance.exerciseInstanceID == null) {
+            exerciseInstance.exerciseInstanceID = ++lastId
+        }
         exerciseInstances.add(exerciseInstance)
         refreshLiveData()
     }

@@ -10,11 +10,16 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     private val exercises = mutableListOf<Exercise>()
     private val observableExercises = MutableLiveData<List<Exercise>>(exercises)
 
+    private var lastId = 0
+
     private fun refreshLiveData() {
         observableExercises.postValue(exercises)
     }
 
     override suspend fun insert(exercise: Exercise) {
+        if (exercise.exerciseID == null) {
+            exercise.exerciseID = ++lastId
+        }
         exercises.add(exercise)
         refreshLiveData()
     }

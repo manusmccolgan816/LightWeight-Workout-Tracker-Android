@@ -9,11 +9,16 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
     private val workouts = mutableListOf<Workout>()
     val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
+    private var lastId = 0
+
     private fun refreshLiveData() {
         observableWorkouts.postValue(workouts)
     }
 
     override suspend fun insert(workout: Workout) {
+        if (workout.workoutID == null) {
+            workout.workoutID = ++lastId
+        }
         workouts.add(workout)
         refreshLiveData()
     }
