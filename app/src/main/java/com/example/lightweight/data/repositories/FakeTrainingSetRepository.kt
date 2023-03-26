@@ -8,6 +8,15 @@ import com.example.lightweight.data.db.entities.Workout
 
 class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
 
+    private val allTag = 0
+    private val trainingSetsTag = 1
+    private val trainingSetDatesOfExerciseIsPRTag = 2
+    private val trainingSetsOfExerciseAndIsPRTag = 3
+    private val trainingSetsOfExerciseInstanceTag = 4
+    private val trainingSetsOfExerciseRepsIsPRTag = 5
+    private val trainingSetsOfExerciseFewerRepsTag = 6
+    private val trainingSetsOfExerciseTag = 7
+
     var workouts = mutableListOf<Workout>()
 
     var exerciseInstances = mutableListOf<ExerciseInstance>()
@@ -40,52 +49,64 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
 
     private var lastId = 0
 
-    private fun refreshLiveData() {
-        observableTrainingSets.postValue(trainingSets)
-        if (trainingSetDatesOfExerciseIsPRParamExerciseID != null) {
-            observableTrainingSetDatesOfExerciseIsPR.postValue(
-                calcTrainingSetDatesOfExerciseIsPR(
-                    trainingSetDatesOfExerciseIsPRParamExerciseID,
-                    trainingSetDatesOfExerciseIsPRParamIsPR!!
+    private fun refreshLiveData(tag: Int) {
+        if (tag == trainingSetsTag || tag == allTag) observableTrainingSets.postValue(trainingSets)
+        if (tag == trainingSetDatesOfExerciseIsPRTag || tag == allTag) {
+            if (trainingSetDatesOfExerciseIsPRParamExerciseID != null) {
+                observableTrainingSetDatesOfExerciseIsPR.postValue(
+                    calcTrainingSetDatesOfExerciseIsPR(
+                        trainingSetDatesOfExerciseIsPRParamExerciseID,
+                        trainingSetDatesOfExerciseIsPRParamIsPR!!
+                    )
                 )
-            )
+            }
         }
-        if (trainingSetsOfExerciseAndIsPRParamExerciseID != null) {
-            observableTrainingSetsOfExerciseAndIsPR.postValue(
-                calcTrainingSetsOfExerciseAndIsPR(
-                    trainingSetsOfExerciseAndIsPRParamExerciseID,
-                    trainingSetsOfExerciseAndIsPRParamIsPR!!
+        if (tag == trainingSetsOfExerciseAndIsPRTag || tag == allTag) {
+            if (trainingSetsOfExerciseAndIsPRParamExerciseID != null) {
+                observableTrainingSetsOfExerciseAndIsPR.postValue(
+                    calcTrainingSetsOfExerciseAndIsPR(
+                        trainingSetsOfExerciseAndIsPRParamExerciseID,
+                        trainingSetsOfExerciseAndIsPRParamIsPR!!
+                    )
                 )
-            )
+            }
         }
-        if (trainingSetsOfExerciseInstanceParam != null) {
-            observableTrainingSetsOfExerciseInstance.postValue(
-                calcTrainingSetsOfExerciseInstance(
-                    trainingSetsOfExerciseInstanceParam
+        if (tag == trainingSetsOfExerciseInstanceTag || tag == allTag) {
+            if (trainingSetsOfExerciseInstanceParam != null) {
+                observableTrainingSetsOfExerciseInstance.postValue(
+                    calcTrainingSetsOfExerciseInstance(
+                        trainingSetsOfExerciseInstanceParam
+                    )
                 )
-            )
+            }
         }
-        if (trainingSetsOfExerciseRepsIsPRParamExerciseID != null) {
-            observableTrainingSetsOfExerciseRepsIsPR.postValue(
-                calcTrainingSetsOfExerciseRepsIsPR(
-                    trainingSetsOfExerciseRepsIsPRParamExerciseID,
-                    trainingSetsOfExerciseRepsIsPRParamReps!!,
-                    trainingSetsOfExerciseRepsIsPRParamIsPR!!
+        if (tag == trainingSetsOfExerciseRepsIsPRTag || tag == allTag) {
+            if (trainingSetsOfExerciseRepsIsPRParamExerciseID != null) {
+                observableTrainingSetsOfExerciseRepsIsPR.postValue(
+                    calcTrainingSetsOfExerciseRepsIsPR(
+                        trainingSetsOfExerciseRepsIsPRParamExerciseID,
+                        trainingSetsOfExerciseRepsIsPRParamReps!!,
+                        trainingSetsOfExerciseRepsIsPRParamIsPR!!
+                    )
                 )
-            )
+            }
         }
-        if (trainingSetsOfExerciseFewerRepsParamExerciseID != null) {
-            observableTrainingSetsOfExerciseFewerReps.postValue(
-                calcTrainingSetsOfExerciseFewerReps(
-                    trainingSetsOfExerciseFewerRepsParamExerciseID,
-                    trainingSetsOfExerciseFewerRepsParamReps!!
+        if (tag == trainingSetsOfExerciseFewerRepsTag || tag == allTag) {
+            if (trainingSetsOfExerciseFewerRepsParamExerciseID != null) {
+                observableTrainingSetsOfExerciseFewerReps.postValue(
+                    calcTrainingSetsOfExerciseFewerReps(
+                        trainingSetsOfExerciseFewerRepsParamExerciseID,
+                        trainingSetsOfExerciseFewerRepsParamReps!!
+                    )
                 )
-            )
+            }
         }
-        if (trainingSetsOfExerciseParam != null) {
-            observableTrainingSetsOfExercise.postValue(
-                calcTrainingSetsOfExercise(trainingSetsOfExerciseParam)
-            )
+        if (tag == trainingSetsOfExerciseTag || tag == allTag) {
+            if (trainingSetsOfExerciseParam != null) {
+                observableTrainingSetsOfExercise.postValue(
+                    calcTrainingSetsOfExercise(trainingSetsOfExerciseParam)
+                )
+            }
         }
     }
 
@@ -94,24 +115,24 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
             trainingSet.trainingSetID = ++lastId
         }
         trainingSets.add(trainingSet)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun delete(trainingSet: TrainingSet) {
         trainingSets.remove(trainingSet)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun update(trainingSet: TrainingSet) {
         trainingSets.removeIf { it.trainingSetID == trainingSet.trainingSetID }
         trainingSets.add(trainingSet)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun updateIsPR(trainingSetID: Int?, isPR: Int) {
         for (trainingSet in trainingSets.filter { it.trainingSetID == trainingSetID }) {
             trainingSet.isPR = isPR == 1
-            refreshLiveData()
+            refreshLiveData(allTag)
             return
         }
     }
@@ -119,7 +140,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     override suspend fun updateNote(trainingSetID: Int?, note: String?) {
         for (trainingSet in trainingSets.filter { it.trainingSetID == trainingSetID }) {
             trainingSet.note = note
-            refreshLiveData()
+            refreshLiveData(allTag)
             return
         }
     }
@@ -132,7 +153,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
             it.exerciseInstanceID == exerciseInstanceID && it.trainingSetNumber > trainingSetNumber
         }) {
             trainingSet.trainingSetNumber--
-            refreshLiveData()
+            refreshLiveData(allTag)
         }
     }
 
@@ -146,7 +167,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     ): LiveData<List<String>> {
         trainingSetDatesOfExerciseIsPRParamExerciseID = exerciseID
         trainingSetDatesOfExerciseIsPRParamIsPR = isPR
-        refreshLiveData()
+        refreshLiveData(trainingSetDatesOfExerciseIsPRTag)
         return observableTrainingSetDatesOfExerciseIsPR
     }
 
@@ -184,7 +205,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     ): LiveData<List<TrainingSet>> {
         trainingSetsOfExerciseAndIsPRParamExerciseID = exerciseID
         trainingSetsOfExerciseAndIsPRParamIsPR = isPR
-        refreshLiveData()
+        refreshLiveData(trainingSetsOfExerciseAndIsPRTag)
         return observableTrainingSetsOfExerciseAndIsPR
     }
 
@@ -208,7 +229,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
 
     override fun getTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): LiveData<List<TrainingSet>> {
         trainingSetsOfExerciseInstanceParam = exerciseInstanceID
-        refreshLiveData()
+        refreshLiveData(trainingSetsOfExerciseInstanceTag)
         return observableTrainingSetsOfExerciseInstance
     }
 
@@ -237,7 +258,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         trainingSetsOfExerciseRepsIsPRParamExerciseID = exerciseID
         trainingSetsOfExerciseRepsIsPRParamReps = reps
         trainingSetsOfExerciseRepsIsPRParamIsPR = isPR
-        refreshLiveData()
+        refreshLiveData(trainingSetsOfExerciseRepsIsPRTag)
         return observableTrainingSetsOfExerciseRepsIsPR
     }
 
@@ -255,7 +276,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     ): LiveData<List<TrainingSet>> {
         trainingSetsOfExerciseFewerRepsParamExerciseID = exerciseID
         trainingSetsOfExerciseFewerRepsParamReps = reps
-        refreshLiveData()
+        refreshLiveData(trainingSetsOfExerciseFewerRepsTag)
         return observableTrainingSetsOfExerciseFewerReps
     }
 
@@ -268,7 +289,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
 
     override fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>> {
         trainingSetsOfExerciseParam = exerciseID
-        refreshLiveData()
+        refreshLiveData(trainingSetsOfExerciseTag)
         return observableTrainingSetsOfExercise
     }
 
