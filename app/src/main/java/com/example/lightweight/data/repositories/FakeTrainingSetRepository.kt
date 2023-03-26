@@ -2,6 +2,7 @@ package com.example.lightweight.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
@@ -267,7 +268,18 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         reps: Int,
         isPR: Int
     ): List<TrainingSet> {
-        TODO("Joins are going to be a pain")
+        val setsToReturn = arrayListOf<TrainingSet>()
+        val isPrBool = isPR == 1
+
+        for (exerciseInstance in exerciseInstances.filter { it.exerciseID == exerciseID }) {
+            for (trainingSet in trainingSets.filter { it.reps == reps && it.isPR == isPrBool }) {
+                setsToReturn.add(trainingSet)
+            }
+        }
+
+        // TODO - Sort by weight desc, date, trainingSetNumber
+
+        return setsToReturn
     }
 
     override fun getTrainingSetsOfExerciseFewerReps(
@@ -284,7 +296,19 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
         exerciseID: Int?,
         reps: Int
     ): List<TrainingSet> {
-        TODO("Joins are going to be a pain")
+        val setsToReturn = arrayListOf<TrainingSet>()
+
+        for (exerciseInstance in exerciseInstances.filter { it.exerciseID == exerciseID }) {
+            for (trainingSet in trainingSets.filter {
+                it.exerciseInstanceID == exerciseInstance.exerciseInstanceID && it.reps < reps
+            }) {
+                setsToReturn.add(trainingSet)
+            }
+        }
+
+        // TODO - Sort by reps desc, weight desc, date, trainingSetNumber
+
+        return setsToReturn
     }
 
     override fun getTrainingSetsOfExercise(exerciseID: Int?): LiveData<List<TrainingSet>> {

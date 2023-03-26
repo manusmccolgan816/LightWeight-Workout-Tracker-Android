@@ -20,14 +20,14 @@ class LightweightFragmentFactory(
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         return when (className) {
             LogSetsFragment::class.java.name -> {
-                LogSetsFragment(exerciseViewModel!!, workoutViewModel!!, exerciseInstanceViewModel!!, trainingSetViewModel!!)
-//                if (exerciseViewModel != null && workoutViewModel != null
-//                    && exerciseInstanceViewModel != null && trainingSetViewModel != null) {
-//                    LogSetsFragment(exerciseViewModel, workoutViewModel, exerciseInstanceViewModel, trainingSetViewModel)
-//                } else {
-//                    super.instantiate(classLoader, className)
-//                }
+                LogSetsFragment(
+                    exerciseViewModel!!,
+                    workoutViewModel!!,
+                    exerciseInstanceViewModel!!,
+                    trainingSetViewModel!!
+                )
             }
+
             else -> super.instantiate(classLoader, className)
         }
     }
