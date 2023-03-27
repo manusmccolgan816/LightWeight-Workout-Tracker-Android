@@ -25,11 +25,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), KodeinAware {
-
-    override val kodein by kodein()
-    private val exerciseFactory: ExerciseViewModelFactory by instance()
-    private val categoryFactory: CategoryViewModelFactory by instance()
+class SelectExerciseFragment(
+    private val categoryViewModel: CategoryViewModel,
+    private val exerciseViewModel: ExerciseViewModel
+) : Fragment(R.layout.fragment_select_exercise) {
 
     private val args: SelectExerciseFragmentArgs by navArgs()
 
@@ -40,8 +39,6 @@ class SelectExerciseFragment : Fragment(R.layout.fragment_select_exercise), Kode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
-        val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
         val adapter = ExerciseItemAdapter(args.selectedDate, listOf(), exerciseViewModel, this)
 
         val categoryID = args.categoryID

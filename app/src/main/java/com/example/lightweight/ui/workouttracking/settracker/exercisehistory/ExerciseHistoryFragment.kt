@@ -15,13 +15,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-class ExerciseHistoryFragment : Fragment(R.layout.fragment_exercise_history), KodeinAware {
-
-    override val kodein by kodein()
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
-        exerciseInstanceFactory
-    }
+class ExerciseHistoryFragment(
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+) : Fragment(R.layout.fragment_exercise_history) {
 
     private lateinit var adapter: ExerciseHistoryParentAdapter
 

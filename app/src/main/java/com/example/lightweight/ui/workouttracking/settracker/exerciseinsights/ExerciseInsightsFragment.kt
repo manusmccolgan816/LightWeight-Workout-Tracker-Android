@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,27 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.google.android.material.card.MaterialCardView
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class ExerciseInsightsFragment : Fragment(R.layout.fragment_exercise_insights), KodeinAware {
-
-    override val kodein by kodein()
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
-        exerciseInstanceFactory
-    }
-    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-    private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
+class ExerciseInsightsFragment(
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    private val trainingSetViewModel: TrainingSetViewModel
+) : Fragment(R.layout.fragment_exercise_insights) {
 
     private val adapter = PersonalRecordAdapter(listOf(), this)
 

@@ -8,8 +8,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -20,46 +18,22 @@ import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
 import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
-import kotlinx.coroutines.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LogSetsFragment(
-    var exerciseViewModel: ExerciseViewModel,
-    var workoutViewModel: WorkoutViewModel,
-    var exerciseInstanceViewModel: ExerciseInstanceViewModel,
-    var trainingSetViewModel: TrainingSetViewModel
-) : Fragment(R.layout.fragment_log_sets), KodeinAware {
+    private val exerciseViewModel: ExerciseViewModel,
+    private val workoutViewModel: WorkoutViewModel,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    private val trainingSetViewModel: TrainingSetViewModel
+) : Fragment(R.layout.fragment_log_sets) {
 
     private val logTag = "LogSetsFragment"
-
-    override val kodein by kodein()
-//    private val exerciseFactory: ExerciseViewModelFactory by instance()
-//    private val workoutFactory: WorkoutViewModelFactory by instance()
-//    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-//    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-
-    //private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
-    //private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
-//    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
-//        exerciseInstanceFactory
-//    }
-//    lateinit var exerciseViewModel: ExerciseViewModel
-//    lateinit var workoutViewModel: WorkoutViewModel
-//    lateinit var exerciseInstanceViewModel: ExerciseInstanceViewModel
-//    lateinit var trainingSetViewModel: TrainingSetViewModel
-    //private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
-    //var trainingSetViewModel: TrainingSetViewModel = ViewModelProvider(this, trainingSetFactory).get(TrainingSetViewModel::class.java)
 
     private lateinit var adapter: TrainingSetItemAdapter
     private var isAdapterSetup = false
@@ -98,16 +72,6 @@ class LogSetsFragment(
             exerciseID = args.exerciseID
             selectedDate = args.selectedDate
         }
-
-//        exerciseViewModel =
-//            ViewModelProvider(this, exerciseFactory)[ExerciseViewModel::class.java]
-//        workoutViewModel = ViewModelProvider(this, workoutFactory)[WorkoutViewModel::class.java]
-//        exerciseInstanceViewModel = ViewModelProvider(
-//            this,
-//            exerciseInstanceFactory
-//        )[ExerciseInstanceViewModel::class.java]
-//        trainingSetViewModel =
-//            ViewModelProvider(this, trainingSetFactory)[TrainingSetViewModel::class.java]
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 

@@ -5,39 +5,29 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lightweight.*
+import com.example.lightweight.IdNamePair
+import com.example.lightweight.R
+import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class HomeFragment : Fragment(R.layout.fragment_home), KodeinAware {
+class HomeFragment(
+    private val workoutViewModel: WorkoutViewModel,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+) : Fragment(R.layout.fragment_home) {
 
     private val logTag = "HomeFragment"
-
-    override val kodein by kodein()
-    private val workoutFactory: WorkoutViewModelFactory by instance()
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
-        exerciseInstanceFactory
-    }
 
     private val args: HomeFragmentArgs by navArgs()
 

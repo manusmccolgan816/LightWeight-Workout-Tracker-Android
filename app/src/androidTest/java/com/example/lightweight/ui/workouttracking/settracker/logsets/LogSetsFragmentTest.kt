@@ -95,13 +95,6 @@ class LogSetsFragmentTest {
             factory = factory
         )
 
-        scenario.onFragment {
-            it.exerciseViewModel = testExerciseViewModel
-            it.workoutViewModel = testWorkoutViewModel
-            it.exerciseInstanceViewModel = testExerciseInstanceViewModel
-            it.trainingSetViewModel = testTrainingSetViewModel
-        }
-
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
         onView(withId(R.id.edit_text_weight)).check(matches(withText("10")))
 
@@ -274,13 +267,6 @@ class LogSetsFragmentTest {
             fragmentArgs = args,
             factory = factory
         )
-
-        scenario.onFragment {
-            it.exerciseViewModel = testExerciseViewModel
-            it.workoutViewModel = testWorkoutViewModel
-            it.exerciseInstanceViewModel = testExerciseInstanceViewModel
-            it.trainingSetViewModel = testTrainingSetViewModel
-        }
 
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
         onView(withId(R.id.edit_text_weight)).check(matches(withText("10")))

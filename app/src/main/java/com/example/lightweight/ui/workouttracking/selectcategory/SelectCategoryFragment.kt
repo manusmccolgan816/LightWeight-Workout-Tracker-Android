@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +14,11 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.category.CategoryViewModel
-import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
-class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), KodeinAware {
-
-    override val kodein by kodein()
-    private val factory: CategoryViewModelFactory by instance()
+class SelectCategoryFragment(
+    private val categoryViewModel: CategoryViewModel
+) : Fragment(R.layout.fragment_select_category) {
 
     private val args: SelectCategoryFragmentArgs by navArgs()
 
@@ -36,8 +30,6 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel: CategoryViewModel by viewModels { factory }
 
         if (activity!!::class == MainActivity::class) {
             // Set the toolbar title
@@ -63,7 +55,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         val adapter = CategoryItemAdapter(
             args.selectedDate,
             listOf(),
-            viewModel,
+            categoryViewModel,
             this,
             fun(categoryId: Int, selectedDate: String) {
                 val action = SelectCategoryFragmentDirections
@@ -76,7 +68,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
 
-        viewModel.getAllCategories().observe(viewLifecycleOwner) {
+        categoryViewModel.getAllCategories().observe(viewLifecycleOwner) {
             categories = it
             adapter.categories = it
             adapter.notifyDataSetChanged()
@@ -111,7 +103,7 @@ class SelectCategoryFragment : Fragment(R.layout.fragment_select_category), Kode
             AddCategoryDialog(
                 requireContext(),
                 fun(category: Category) {
-                    viewModel.insert(category)
+                    categoryViewModel.insert(category)
                     // Clear the search view text
                     searchViewCategories.setQuery("", false)
                     // Ensure the keyboard does not appear

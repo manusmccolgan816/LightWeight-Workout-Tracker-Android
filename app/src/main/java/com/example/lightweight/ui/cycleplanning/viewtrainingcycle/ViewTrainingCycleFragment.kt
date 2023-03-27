@@ -7,46 +7,32 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
-import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.MainActivity
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
+import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
-import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
-import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
-import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY_CAT
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY_EX
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
-class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle), KodeinAware {
+class ViewTrainingCycleFragment(
+    private val cycleViewModel: CycleViewModel,
+    private val cycleDayViewModel: CycleDayViewModel,
+    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel
+) : Fragment(R.layout.fragment_view_training_cycle) {
 
     private val logTag = "ViewTrainingCycleFragment"
-
-    override val kodein by kodein()
-    private val cycleFactory: CycleViewModelFactory by instance()
-    private val cycleDayFactory: CycleDayViewModelFactory by instance()
-    private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
-
-    private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
-    private val cycleDayViewModel: CycleDayViewModel by viewModels { cycleDayFactory }
-    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by viewModels {
-        cycleDayExerciseFactory
-    }
 
     private val args: ViewTrainingCycleFragmentArgs by navArgs()
 
@@ -81,7 +67,8 @@ class ViewTrainingCycleFragment : Fragment(R.layout.fragment_view_training_cycle
             imageViewShareWorkout.visibility = View.VISIBLE
 
             // Remove the select date icon
-            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            val imageViewSelectDate =
+                activity?.findViewById(R.id.image_view_select_date) as ImageView
             imageViewSelectDate.visibility = View.GONE
 
             imageViewShareWorkout.setOnClickListener {

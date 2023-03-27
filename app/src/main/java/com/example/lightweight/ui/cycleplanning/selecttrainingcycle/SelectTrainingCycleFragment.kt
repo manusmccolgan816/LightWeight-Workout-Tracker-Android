@@ -6,23 +6,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Cycle
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
-import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
-class SelectTrainingCycleFragment : Fragment(R.layout.fragment_select_training_cycle), KodeinAware {
-
-    override val kodein by kodein()
-    private val cycleFactory: CycleViewModelFactory by instance()
-    private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
+class SelectTrainingCycleFragment(
+    private val cycleViewModel: CycleViewModel
+) : Fragment(R.layout.fragment_select_training_cycle) {
 
     private lateinit var recyclerViewTrainingCycles: RecyclerView
     private lateinit var fabAddTrainingCycle: Button
@@ -32,15 +25,18 @@ class SelectTrainingCycleFragment : Fragment(R.layout.fragment_select_training_c
 
         if (this.activity is MainActivity) {
             // Set the toolbar title
-            val textViewToolbarTitle = requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
+            val textViewToolbarTitle =
+                requireActivity().findViewById<TextView>(R.id.text_view_toolbar_title)
             textViewToolbarTitle.text = resources.getString(R.string.string_plan_training_cycles)
 
             // Remove the share icon
-            val imageViewShareWorkout = activity?.findViewById(R.id.image_view_share_workout) as ImageView
+            val imageViewShareWorkout =
+                activity?.findViewById(R.id.image_view_share_workout) as ImageView
             imageViewShareWorkout.visibility = View.GONE
 
             // Remove the select date icon
-            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            val imageViewSelectDate =
+                activity?.findViewById(R.id.image_view_select_date) as ImageView
             imageViewSelectDate.visibility = View.GONE
         }
 

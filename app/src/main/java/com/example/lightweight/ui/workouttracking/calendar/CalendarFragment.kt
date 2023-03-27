@@ -21,16 +21,13 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import java.time.LocalDate
 
-class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.OnItemListener,
-    KodeinAware {
+class CalendarFragment(
+    private val workoutViewModel: WorkoutViewModel
+) : Fragment(R.layout.fragment_calendar), CalendarAdapter.OnItemListener {
 
     private val logTag = "CalendarFragment"
 
     private val args: CalendarFragmentArgs by navArgs()
-
-    override val kodein by kodein()
-    private val workoutFactory: WorkoutViewModelFactory by instance()
-    private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
 
     private lateinit var selectedDate: LocalDate
     private var selectedDatePosition: Int? = null
@@ -51,7 +48,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
 
         if (activity!!::class == MainActivity::class) {
             // Set the toolbar title
-            val textViewToolbarTitle = activity?.findViewById(R.id.text_view_toolbar_title) as TextView
+            val textViewToolbarTitle =
+                activity?.findViewById(R.id.text_view_toolbar_title) as TextView
             textViewToolbarTitle.text = resources.getString(R.string.string_select_date)
 
             // Remove the share icon from the toolbar
@@ -60,7 +58,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar), CalendarAdapter.O
             imageViewShareWorkout.visibility = View.GONE
 
             // Remove the select date icon from the toolbar
-            val imageViewSelectDate = activity?.findViewById(R.id.image_view_select_date) as ImageView
+            val imageViewSelectDate =
+                activity?.findViewById(R.id.image_view_select_date) as ImageView
             imageViewSelectDate.visibility = View.GONE
         }
 

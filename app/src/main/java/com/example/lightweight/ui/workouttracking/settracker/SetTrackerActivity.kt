@@ -53,11 +53,10 @@ class SetTrackerActivity : AppCompatActivity(), KodeinAware {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.fragmentFactory = LightweightFragmentFactory(
-            null,
-            exerciseViewModel,
-            workoutViewModel,
-            exerciseInstanceViewModel,
-            trainingSetViewModel
+            exerciseViewModel = exerciseViewModel,
+            workoutViewModel = workoutViewModel,
+            exerciseInstanceViewModel = exerciseInstanceViewModel,
+            trainingSetViewModel = trainingSetViewModel
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_tracker)

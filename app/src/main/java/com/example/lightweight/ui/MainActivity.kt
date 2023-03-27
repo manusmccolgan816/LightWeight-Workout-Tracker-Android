@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,11 +15,58 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import androidx.preference.PreferenceManager
 import com.example.lightweight.R
+import com.example.lightweight.ui.category.CategoryViewModel
+import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
+import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
+import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
+import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
+import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
+import com.example.lightweight.ui.exercise.ExerciseViewModel
+import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import com.google.android.material.navigation.NavigationView
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), KodeinAware {
 
     private val logTag = "MainActivity"
+
+    override val kodein by kodein()
+    private val categoryFactory: CategoryViewModelFactory by instance()
+    private val exerciseFactory: ExerciseViewModelFactory by instance()
+    private val workoutFactory: WorkoutViewModelFactory by instance()
+    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
+    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
+    private val cycleFactory: CycleViewModelFactory by instance()
+    private val cycleDayFactory: CycleDayViewModelFactory by instance()
+    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
+    private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
+    private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
+    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
+    private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
+        exerciseInstanceFactory
+    }
+    private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
+    private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
+    private val cycleDayViewModel: CycleDayViewModel by viewModels { cycleDayFactory }
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by viewModels {
+        cycleDayCategoryFactory
+    }
+    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by viewModels {
+        cycleDayExerciseFactory
+    }
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -27,6 +75,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = LightweightFragmentFactory(
+            categoryViewModel,
+            exerciseViewModel,
+            workoutViewModel,
+            exerciseInstanceViewModel,
+            trainingSetViewModel,
+            cycleViewModel,
+            cycleDayViewModel,
+            cycleDayCategoryViewModel,
+            cycleDayExerciseViewModel
+        )
+
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         // Set the theme to light or dark based on the theme preference
