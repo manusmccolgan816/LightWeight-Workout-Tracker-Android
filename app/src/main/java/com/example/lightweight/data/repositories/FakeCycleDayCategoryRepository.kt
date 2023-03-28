@@ -82,37 +82,6 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
         refreshLiveData(allTag)
     }
 
-    override fun getCycleDayCatCombosOfCycle(cycleID: Int?): List<CycleDayCategoryCombo> {
-        val combosAndOrder = arrayListOf<Pair<CycleDayCategoryCombo, Int>>()
-
-        for (cycleDay in cycleDays.filter { it.cycleID == cycleID }) {
-            for (cycleDayCategory in cycleDayCategories.filter {
-                it.cycleDayID == cycleDay.cycleDayID
-            }) {
-                for (category in categories.filter {
-                    it.categoryID == cycleDayCategory.cycleDayCategoryID
-                }) {
-                    combosAndOrder.add(
-                        Pair(
-                            CycleDayCategoryCombo(
-                                cycleDayCategory.cycleDayCategoryID,
-                                category.categoryName,
-                                cycleDay.cycleDayID
-                            ), cycleDayCategory.cycleDayCategoryNumber
-                        )
-                    )
-                }
-            }
-        }
-
-        combosAndOrder.sortBy { it.second }
-        var combosToReturn = arrayListOf<CycleDayCategoryCombo>()
-        for (combo in combosAndOrder) {
-            combosToReturn.add(combo.first)
-        }
-
-        return combosToReturn
-    }
 
     override fun getCategoryIDOfCycleDayCategoryID(cycleDayCategoryID: Int?): LiveData<Int?> {
         categoryIDOfCycleDayCategoryIDParam = cycleDayCategoryID
@@ -138,6 +107,38 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
         cycleDayCategoryOfIDParam = cycleDayCategoryID
         refreshLiveData(cycleDayCategoryOfIDTag)
         return observableCycleDayCategoryOfID
+    }
+    override fun getCycleDayCatCombosOfCycle(cycleID: Int?): List<CycleDayCategoryCombo> {
+        val combosAndOrder = arrayListOf<Pair<CycleDayCategoryCombo, Int>>()
+
+        for (cycleDay in cycleDays.filter { it.cycleID == cycleID }) {
+            for (cycleDayCategory in cycleDayCategories.filter {
+                it.cycleDayID == cycleDay.cycleDayID
+            }) {
+                for (category in categories.filter {
+                    it.categoryID == cycleDayCategory.cycleDayCategoryID
+                }) {
+                    combosAndOrder.add(
+                        Pair(
+                            CycleDayCategoryCombo(
+                                cycleDayCategory.cycleDayCategoryID,
+                                category.categoryName,
+                                cycleDay.cycleDayID
+                            ), cycleDayCategory.cycleDayCategoryNumber
+                        )
+                    )
+                }
+            }
+        }
+
+        // Sort by cycleDayCategoryNumber
+        combosAndOrder.sortBy { it.second }
+        val combosToReturn = arrayListOf<CycleDayCategoryCombo>()
+        for (combo in combosAndOrder) {
+            combosToReturn.add(combo.first)
+        }
+
+        return combosToReturn
     }
 
     private fun calcCycleDayCategoryOfID(cycleDayCategoryID: Int): CycleDayCategory {
