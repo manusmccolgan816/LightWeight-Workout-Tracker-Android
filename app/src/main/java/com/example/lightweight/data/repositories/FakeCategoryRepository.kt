@@ -12,7 +12,7 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
     private val categoryOfIDObsTag = 2
 
     private val categories = mutableListOf<Category>()
-    private val observableCategories = MutableLiveData<List<Category>>(categories)
+    val observableCategories = MutableLiveData<List<Category>>(categories)
 
     private val observableCategoryOfIDObs = MutableLiveData<Category>()
     private var categoryOfIDObsParam: Int? = null

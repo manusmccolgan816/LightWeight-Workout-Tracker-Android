@@ -6,31 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.ui.category.CategoryViewModel
-import com.example.lightweight.ui.category.CategoryViewModelFactory
-import com.example.lightweight.ui.workouttracking.selectexercise.AddExerciseDialog
 import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
+import com.example.lightweight.ui.workouttracking.selectexercise.AddExerciseDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
 class AddTrainingCycleDayExerciseDialogFragment(
     private val categoryID: Int?,
-    val addCycleDayExercise: (Exercise) -> Unit
-) : DialogFragment(), KodeinAware {
-
-    override val kodein by kodein()
-    private val categoryFactory: CategoryViewModelFactory by instance()
-    private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
-    private val exerciseFactory: ExerciseViewModelFactory by instance()
-    private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
+    val addCycleDayExercise: (Exercise) -> Unit,
+    private val categoryViewModel: CategoryViewModel,
+    private val exerciseViewModel: ExerciseViewModel
+) : DialogFragment() {
 
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var fabAddExercise: FloatingActionButton
@@ -52,7 +42,8 @@ class AddTrainingCycleDayExerciseDialogFragment(
                 addCycleDayExercise(exercise)
                 dismiss()
             },
-            this
+            this,
+            exerciseViewModel
         )
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter

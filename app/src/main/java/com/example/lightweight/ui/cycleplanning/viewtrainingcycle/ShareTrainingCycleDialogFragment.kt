@@ -10,43 +10,25 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
-import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
-import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 class ShareTrainingCycleDialogFragment(
     private val trainingCycleDayAdapter: TrainingCycleDayAdapter,
     private val cycleID: Int?,
-    fragment: Fragment
-) : DialogFragment(), KodeinAware {
+    private val cycleViewModel: CycleViewModel,
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel,
+    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel
+) : DialogFragment() {
 
     private val logTag = "ShareTrainingCycleDialogFragment"
-
-    override val kodein by kodein(fragment.requireContext())
-    private val cycleFactory: CycleViewModelFactory by instance()
-    private val cycleViewModel: CycleViewModel by viewModels { cycleFactory }
-    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
-    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by viewModels {
-        cycleDayCategoryFactory
-    }
-    private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
-    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by viewModels {
-        cycleDayExerciseFactory
-    }
 
     private lateinit var recyclerViewTrainingCycle: RecyclerView
     private lateinit var buttonShareTrainingCycle: Button

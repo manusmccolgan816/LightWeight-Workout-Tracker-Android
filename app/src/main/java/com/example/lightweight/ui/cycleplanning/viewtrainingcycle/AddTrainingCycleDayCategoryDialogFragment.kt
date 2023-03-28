@@ -6,26 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.ui.workouttracking.selectcategory.AddCategoryDialog
 import com.example.lightweight.ui.category.CategoryViewModel
-import com.example.lightweight.ui.category.CategoryViewModelFactory
+import com.example.lightweight.ui.workouttracking.selectcategory.AddCategoryDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
 class AddTrainingCycleDayCategoryDialogFragment(
-    val addCycleDayCategory: (Category) -> Unit
-) : DialogFragment(), KodeinAware {
-
-    override val kodein by kodein()
-    private val categoryFactory: CategoryViewModelFactory by instance()
-    private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
+    val addCycleDayCategory: (Category) -> Unit,
+    private val categoryViewModel: CategoryViewModel
+) : DialogFragment() {
 
     private lateinit var recyclerViewCategories: RecyclerView
     private lateinit var fabAddCategory: FloatingActionButton
@@ -47,7 +39,8 @@ class AddTrainingCycleDayCategoryDialogFragment(
                 addCycleDayCategory(category)
                 dismiss()
             },
-            this
+            this,
+            categoryViewModel
         )
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter

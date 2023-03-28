@@ -36,7 +36,7 @@ class LogSetsFragmentTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Test
-    fun testSelectLogSetsFragmentInView() {
+    fun testLogSetsFragmentInView() {
         val fakeExerciseRepository = FakeExerciseRepository()
         val fakeWorkoutRepository = FakeWorkoutRepository()
         val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()

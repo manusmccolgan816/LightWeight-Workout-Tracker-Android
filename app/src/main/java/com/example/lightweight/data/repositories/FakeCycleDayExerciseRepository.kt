@@ -31,6 +31,8 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
     private val observableCycleDayExerciseOfID = MutableLiveData<CycleDayExercise>()
     private var cycleDayExerciseOfIDParam: Int? = null
 
+    private var lastId = 0
+
     private fun refreshLiveData(tag: Int) {
         if (tag == allTag) observableCycleDayExercises.postValue(cycleDayExercises)
         if (tag == allTag || tag == cycleItemsOfCycleIDTag) {
@@ -59,6 +61,9 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
     }
 
     override suspend fun insert(cycleDayExercise: CycleDayExercise) {
+        if (cycleDayExercise.cycleDayExerciseID == null) {
+            cycleDayExercise.cycleDayExerciseID = ++lastId
+        }
         cycleDayExercises.add(cycleDayExercise)
         refreshLiveData(allTag)
     }

@@ -75,8 +75,11 @@ class LightweightFragmentFactory(
             }
             ViewTrainingCycleFragment::class.java.name -> {
                 ViewTrainingCycleFragment(
+                    categoryViewModel!!,
+                    exerciseViewModel!!,
                     cycleViewModel!!,
                     cycleDayViewModel!!,
+                    cycleDayCategoryViewModel!!,
                     cycleDayExerciseViewModel!!
                 )
             }

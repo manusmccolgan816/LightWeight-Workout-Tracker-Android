@@ -14,21 +14,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.MainActivity
+import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
+import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY_CAT
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.TrainingCycleDayAdapter.Companion.LAYOUT_CYCLE_DAY_EX
+import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ViewTrainingCycleFragment(
+    private val categoryViewModel: CategoryViewModel,
+    private val exerciseViewModel: ExerciseViewModel,
     private val cycleViewModel: CycleViewModel,
     private val cycleDayViewModel: CycleDayViewModel,
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel,
     private val cycleDayExerciseViewModel: CycleDayExerciseViewModel
 ) : Fragment(R.layout.fragment_view_training_cycle) {
 
@@ -83,7 +89,13 @@ class ViewTrainingCycleFragment(
                     return@setOnClickListener
                 }
 
-                val dialog = ShareTrainingCycleDialogFragment(cycleDayAdapter, cycleID, this)
+                val dialog = ShareTrainingCycleDialogFragment(
+                    cycleDayAdapter,
+                    cycleID,
+                    cycleViewModel,
+                    cycleDayCategoryViewModel,
+                    cycleDayExerciseViewModel
+                )
                 dialog.show(requireActivity().supportFragmentManager, "ShareTrainingCycle")
             }
         }
@@ -97,7 +109,12 @@ class ViewTrainingCycleFragment(
             arrayListOf(),
             arrayListOf(),
             arrayListOf(),
-            this
+            this,
+            categoryViewModel,
+            exerciseViewModel,
+            cycleDayViewModel,
+            cycleDayCategoryViewModel,
+            cycleDayExerciseViewModel
         )
 
         recyclerViewTrainingCycleDays.layoutManager = LinearLayoutManager(requireContext())

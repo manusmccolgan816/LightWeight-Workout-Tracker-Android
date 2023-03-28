@@ -1,23 +1,21 @@
 package com.example.lightweight.ui.cycleplanning.viewtrainingcycle
 
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.*
+import com.example.lightweight.ui.category.CategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
-import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
-import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModelFactory
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
-import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModelFactory
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import com.example.lightweight.ui.exercise.ExerciseViewModel
 
 
 class TrainingCycleDayAdapter(
@@ -25,8 +23,13 @@ class TrainingCycleDayAdapter(
     var cycleDays: ArrayList<CycleDay>,
     var idNamePairsCategory: ArrayList<Pair<Int?, String>>,
     var idNamePairsExercise: ArrayList<Pair<Int?, String>>,
-    private val fragment: ViewTrainingCycleFragment
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
+    private val fragment: ViewTrainingCycleFragment,
+    private val categoryViewModel: CategoryViewModel,
+    private val exerciseViewModel: ExerciseViewModel,
+    private val cycleDayViewModel: CycleDayViewModel,
+    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel,
+    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val LAYOUT_CYCLE_DAY = 0
@@ -35,19 +38,6 @@ class TrainingCycleDayAdapter(
     }
 
     private val logTag = "TrainingCycleDayAdapter"
-
-    override val kodein by kodein(fragment.requireContext())
-    private val cycleDayFactory: CycleDayViewModelFactory by instance()
-    private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
-    private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
-
-    private val cycleDayViewModel: CycleDayViewModel by fragment.viewModels { cycleDayFactory }
-    private val cycleDayCategoryViewModel: CycleDayCategoryViewModel by fragment.viewModels {
-        cycleDayCategoryFactory
-    }
-    private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by fragment.viewModels {
-        cycleDayExerciseFactory
-    }
 
     // Used to set the size of views in pixels
     private val scale: Float = fragment.requireContext().resources.displayMetrics.density
@@ -151,7 +141,8 @@ class TrainingCycleDayAdapter(
                                 cycleDayCategoryViewModel.insert(cycleDayCategory)
                                 Log.d(logTag, "Inserting cycleDayCategory")
                             }
-                        }
+                        },
+                        categoryViewModel
                     )
                     dialog.show(
                         fragment.requireActivity().supportFragmentManager,
@@ -236,7 +227,9 @@ class TrainingCycleDayAdapter(
 
                                     numExerciseObs.removeObservers(fragment.viewLifecycleOwner)
                                 }
-                            }
+                            },
+                            categoryViewModel,
+                            exerciseViewModel
                         )
                         dialog.show(
                             fragment.requireActivity().supportFragmentManager,

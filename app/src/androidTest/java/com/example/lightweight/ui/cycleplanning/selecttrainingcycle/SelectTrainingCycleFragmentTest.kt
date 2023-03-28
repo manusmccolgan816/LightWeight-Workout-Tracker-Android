@@ -17,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class SelectTrainingCycleTest {
+class SelectTrainingCycleFragmentTest {
     @Test
     fun testSelectTrainingCycleInView() {
         val testCycleViewModel = CycleViewModel(FakeCycleRepository())

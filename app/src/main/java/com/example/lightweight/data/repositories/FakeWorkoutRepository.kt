@@ -13,7 +13,7 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
     private val workouts = mutableListOf<Workout>()
     val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
-    val observableWorkoutDates = MutableLiveData<List<String>>()
+    private val observableWorkoutDates = MutableLiveData<List<String>>()
 
     private var lastId = 0
 

@@ -1,6 +1,6 @@
 package com.example.lightweight.ui
 
-import com.example.lightweight.ui.cycleplanning.selecttrainingcycle.SelectTrainingCycleTest
+import com.example.lightweight.ui.cycleplanning.selecttrainingcycle.SelectTrainingCycleFragmentTest
 import com.example.lightweight.ui.cycleplanning.viewtrainingcycle.ViewTrainingCycleFragmentTest
 import com.example.lightweight.ui.settings.SettingsFragmentTest
 import com.example.lightweight.ui.workouttracking.calendar.CalendarFragmentTest
@@ -28,7 +28,7 @@ import org.junit.runners.Suite
     ExerciseHistoryFragmentTest::class,
     ExerciseInsightsFragmentTest::class,
     SettingsFragmentTest::class,
-    SelectTrainingCycleTest::class,
+    SelectTrainingCycleFragmentTest::class,
     ViewTrainingCycleFragmentTest::class
 )
 class UITestSuite

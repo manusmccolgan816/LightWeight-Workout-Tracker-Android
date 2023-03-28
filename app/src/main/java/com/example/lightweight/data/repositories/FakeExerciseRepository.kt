@@ -12,7 +12,7 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     private val exercisesOfCategoryTag = 2
 
     private val exercises = mutableListOf<Exercise>()
-    private val observableExercises = MutableLiveData<List<Exercise>>(exercises)
+    val observableExercises = MutableLiveData<List<Exercise>>(exercises)
 
     private val observableExercisesOfCategory = MutableLiveData<List<Exercise>>()
     private var exercisesOfCategoryParam: Int? = null

@@ -9,14 +9,20 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
     private val allTag = 0
     private val cycleDayOfIDTag = 1
 
+    var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
+
     private val cycleDays = mutableListOf<CycleDay>()
-    private val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
+    val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
 
     private val observableCycleDayOfID = MutableLiveData<CycleDay>()
     private var cycleDayOfIDParam: Int? = null
 
+    private var lastId = 0
+
     private fun refreshLiveData(tag: Int?) {
-        if (tag == allTag) observableCycleDays.postValue(cycleDays)
+        if (tag == allTag) {
+            observableCycleDays.postValue(cycleDays)
+        }
         if (tag == allTag || tag == cycleDayOfIDTag) {
             if (cycleDayOfIDParam != null) {
                 observableCycleDayOfID.postValue(calcCycleDayOfID(cycleDayOfIDParam))
@@ -25,6 +31,9 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
     }
 
     override suspend fun insert(cycleDay: CycleDay) {
+        if (cycleDay.cycleDayID == null) {
+            cycleDay.cycleDayID = ++lastId
+        }
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
     }
