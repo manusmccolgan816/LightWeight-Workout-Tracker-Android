@@ -43,7 +43,7 @@ class SelectTrainingCycleFragment(
         recyclerViewTrainingCycles = view.findViewById(R.id.recycler_view_training_cycles)
         fabAddTrainingCycle = view.findViewById(R.id.extended_fab_add_training_cycle)
 
-        val adapter = TrainingCycleItemAdapter(listOf(), this)
+        val adapter = TrainingCycleItemAdapter(listOf(), this, cycleViewModel)
         recyclerViewTrainingCycles.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingCycles.adapter = adapter
 

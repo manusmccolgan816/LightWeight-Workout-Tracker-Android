@@ -84,26 +84,6 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun testClickShareWorkout_ShareWorkoutDialogFragmentInView() {
-//        val args = bundleOf(
-//            "selectedDate" to LocalDate.now(),
-//            "idNamePairs" to listOf<IdNamePair>(),
-//            "fragment" to null
-//        )
-//        with(launchFragment<ShareWorkoutDialogFragment>(args)) {
-//            onFragment { fragment ->
-//                assertThat(fragment.dialog).isNotNull()
-//                assertThat(fragment.requireDialog().isShowing).isTrue()
-//                fragment.dismiss()
-//                fragment.parentFragmentManager.executePendingTransactions()
-//                assertThat(fragment.dialog).isNull()
-//            }
-//        }
-//
-//        onView(withText("Cancel")).check(doesNotExist())
-    }
-
-    @Test
     fun testClickCalendar_navigateToCalendarFragment() {
         ActivityScenario.launch(MainActivity::class.java)
 

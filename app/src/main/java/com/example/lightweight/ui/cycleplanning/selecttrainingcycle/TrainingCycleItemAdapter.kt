@@ -20,14 +20,11 @@ import org.kodein.di.generic.instance
 
 class TrainingCycleItemAdapter(
     var cycles: List<Cycle>,
-    private val fragment: SelectTrainingCycleFragment
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KodeinAware {
+    private val fragment: SelectTrainingCycleFragment,
+    private val cycleViewModel: CycleViewModel
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val logTag = "TrainingCycleItemAdapter"
-
-    override val kodein by kodein(fragment.requireContext())
-    private val cycleFactory: CycleViewModelFactory by instance()
-    private val cycleViewModel: CycleViewModel by fragment.viewModels { cycleFactory }
 
     private lateinit var parent: ViewGroup
 
