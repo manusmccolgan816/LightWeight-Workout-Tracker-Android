@@ -68,23 +68,11 @@ class CategoryItemAdapter(
         // Navigate to SelectExerciseFragment when a category item is selected
         holder.itemView.setOnClickListener {
             categorySelected(curCategory.categoryID!!, selectedDate)
-//            // Remove the search view text
-//            fragment.searchViewCategories.setQuery("", false)
-//
-//            val action = SelectCategoryFragmentDirections
-//                .actionSelectCategoryFragmentToSelectExerciseFragment(
-//                    curCategory.categoryID!!, selectedDate
-//                )
-//            findNavController(fragment).navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
         return categories.size
-    }
-
-    interface OnItemListener {
-        fun onItemClick(categoryId: Int, selectedDate: String)
     }
 
     inner class CategoryItemViewHolder(categoryView: View) : RecyclerView.ViewHolder(categoryView)

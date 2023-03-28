@@ -6,13 +6,22 @@ import com.example.lightweight.data.db.entities.Workout
 
 class FakeWorkoutRepository : WorkoutRepositoryInterface {
 
+    private val allTag = 0
+    private val workoutsTag = 1
+    private val workoutDatesTag = 2
+
     private val workouts = mutableListOf<Workout>()
     val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
+    val observableWorkoutDates = MutableLiveData<List<String>>()
+
     private var lastId = 0
 
-    private fun refreshLiveData() {
-        observableWorkouts.postValue(workouts)
+    private fun refreshLiveData(tag: Int) {
+        if (tag == workoutsTag || tag == allTag) observableWorkouts.postValue(workouts)
+        if (tag == workoutDatesTag || tag == allTag) {
+            observableWorkoutDates.postValue(calcWorkoutDates())
+        }
     }
 
     override suspend fun insert(workout: Workout) {
@@ -20,17 +29,17 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
             workout.workoutID = ++lastId
         }
         workouts.add(workout)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun delete(workout: Workout) {
         workouts.remove(workout)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun deleteWorkoutOfID(workoutID: Int?) {
         workouts.removeIf { it.workoutID == workoutID }
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override fun getWorkoutOfDate(date: String): Workout? {
@@ -44,6 +53,11 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
     }
 
     override fun getWorkoutDates(): LiveData<List<String>> {
+        refreshLiveData(workoutDatesTag)
+        return observableWorkoutDates
+    }
+
+    private fun calcWorkoutDates(): List<String> {
         val workoutDates = mutableListOf<String>()
 
         for (workout in workouts) {
@@ -51,6 +65,6 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
         }
         workoutDates.sort()
 
-        return MutableLiveData(workoutDates)
+        return workoutDates
     }
 }

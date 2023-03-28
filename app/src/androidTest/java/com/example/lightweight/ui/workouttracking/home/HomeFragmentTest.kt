@@ -9,11 +9,17 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
-import com.google.common.truth.Truth.assertThat
-import com.example.lightweight.R
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.example.lightweight.R
+import com.example.lightweight.data.repositories.FakeExerciseInstanceRepository
+import com.example.lightweight.data.repositories.FakeWorkoutRepository
+import com.example.lightweight.ui.LightweightFragmentFactory
 import com.example.lightweight.ui.MainActivity
+import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
+import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -21,10 +27,22 @@ import org.junit.runner.RunWith
 class HomeFragmentTest {
     @Test
     fun testHomeFragmentInView() {
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+
         val args = bundleOf("selectedDate" to "today")
-        val scenario = launchFragmentInContainer<HomeFragment>(
+        val factory = LightweightFragmentFactory(
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel
+        )
+        launchFragmentInContainer<HomeFragment>(
             themeResId = R.style.Theme_Lightweight,
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.constraint_layout_home)).check(matches(isDisplayed()))
@@ -34,11 +52,22 @@ class HomeFragmentTest {
     fun testNavController_navigateToSelectCategoryFragment() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+
         val args = bundleOf("selectedDate" to "today")
-        // Create a graphical FragmentScenario for HomeFragment
+        val factory = LightweightFragmentFactory(
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel
+        )
         val homeScenario = launchFragmentInContainer<HomeFragment>(
             themeResId = R.style.Theme_Lightweight,
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         homeScenario.onFragment { fragment ->
@@ -76,7 +105,7 @@ class HomeFragmentTest {
 
     @Test
     fun testClickCalendar_navigateToCalendarFragment() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.image_view_select_date)).perform(click())
 
@@ -85,7 +114,7 @@ class HomeFragmentTest {
 
     @Test
     fun testClickAddExercises_navigateToSelectCategoryFragment() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_add_exercises)).perform(click())
 

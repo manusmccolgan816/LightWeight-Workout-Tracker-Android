@@ -15,18 +15,28 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import org.junit.Test
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.data.repositories.FakeCategoryRepository
+import com.example.lightweight.ui.LightweightFragmentFactory
 import com.example.lightweight.ui.MainActivity
+import com.example.lightweight.ui.category.CategoryViewModel
 import com.google.common.truth.Truth
+import kotlinx.coroutines.runBlocking
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class SelectCategoryFragmentTest {
     @Test
     fun testSelectCategoryFragmentInView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+
         val args = bundleOf("selectedDate" to "2022-12-03")
-        val scenario = launchFragmentInContainer<SelectCategoryFragment>(
+        val factory = LightweightFragmentFactory(categoryViewModel = testCategoryViewModel)
+        launchFragmentInContainer<SelectCategoryFragment>(
             themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.constraint_layout_select_category)).check(matches(isDisplayed()))
@@ -36,10 +46,21 @@ class SelectCategoryFragmentTest {
     fun testNavController_navigateToSelectExerciseFragment() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val category = Category("Test Cat")
+
+        runBlocking {
+            fakeCategoryRepository.insert(category)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+
         val args = bundleOf("selectedDate" to "2022-12-03")
+        val factory = LightweightFragmentFactory(categoryViewModel = testCategoryViewModel)
         val scenario = launchFragmentInContainer<SelectCategoryFragment>(
             themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         scenario.onFragment { fragment ->
@@ -49,7 +70,7 @@ class SelectCategoryFragmentTest {
         }
 
         onView(withContentDescription("List of categories"))
-            .perform(actionOnItemAtPosition<CategoryItemAdapter.CategoryItemViewHolder>(1, click()))
+            .perform(actionOnItemAtPosition<CategoryItemAdapter.CategoryItemViewHolder>(0, click()))
 
         Truth.assertThat(navController.currentDestination?.id)
             .isEqualTo(R.id.selectExerciseFragment)
@@ -57,7 +78,7 @@ class SelectCategoryFragmentTest {
 
     @Test
     fun testClickCategory_navigateToSelectExerciseFragmentOfCategory() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_add_exercises)).perform(click())
 
@@ -71,7 +92,7 @@ class SelectCategoryFragmentTest {
 
     @Test
     fun testBackPress_navigateToHomeFragment() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_add_exercises)).perform(click())
 

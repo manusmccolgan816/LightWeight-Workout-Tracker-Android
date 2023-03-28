@@ -262,7 +262,7 @@ class LogSetsFragmentTest {
             exerciseInstanceViewModel = testExerciseInstanceViewModel,
             trainingSetViewModel = testTrainingSetViewModel
         )
-        val scenario = launchFragmentInContainer<LogSetsFragment>(
+        launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
             factory = factory
