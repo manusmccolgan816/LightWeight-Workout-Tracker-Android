@@ -6,22 +6,33 @@ import com.example.lightweight.data.db.entities.CycleDay
 
 class FakeCycleDayRepository : CycleDayRepositoryInterface {
 
+    private val allTag = 0
+    private val cycleDayOfIDTag = 1
+
     private val cycleDays = mutableListOf<CycleDay>()
     private val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
 
-    private fun refreshLiveData() {
-        observableCycleDays.postValue(cycleDays)
+    private val observableCycleDayOfID = MutableLiveData<CycleDay>()
+    private var cycleDayOfIDParam: Int? = null
+
+    private fun refreshLiveData(tag: Int?) {
+        if (tag == allTag) observableCycleDays.postValue(cycleDays)
+        if (tag == allTag || tag == cycleDayOfIDTag) {
+            if (cycleDayOfIDParam != null) {
+                observableCycleDayOfID.postValue(calcCycleDayOfID(cycleDayOfIDParam))
+            }
+        }
     }
 
     override suspend fun insert(cycleDay: CycleDay) {
         cycleDays.add(cycleDay)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun update(cycleDay: CycleDay) {
         cycleDays.removeIf { it.cycleDayID == cycleDay.cycleDayID }
         cycleDays.add(cycleDay)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) {
@@ -29,16 +40,22 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
             it.cycleID == cycleID && it.cycleDayNumber > cycleDayNumber
         }) {
             cycleDay.cycleDayNumber--
-            refreshLiveData()
+            refreshLiveData(allTag)
         }
     }
 
     override suspend fun delete(cycleDay: CycleDay) {
         cycleDays.remove(cycleDay)
-        refreshLiveData()
+        refreshLiveData(allTag)
     }
 
     override fun getCycleDayOfID(cycleDayID: Int?): LiveData<CycleDay> {
-        return MutableLiveData(cycleDays.filter { it.cycleDayID == cycleDayID }[0])
+        cycleDayOfIDParam = cycleDayID
+        refreshLiveData(cycleDayOfIDTag)
+        return observableCycleDayOfID
+    }
+
+    private fun calcCycleDayOfID(cycleDayID: Int?): CycleDay {
+        return cycleDays.filter { it.cycleDayID == cycleDayID }[0]
     }
 }

@@ -9,11 +9,16 @@ class FakeCycleRepository : CycleRepositoryInterface {
     private val cycles = mutableListOf<Cycle>()
     private val observableCycles = MutableLiveData<List<Cycle>>(cycles)
 
+    private var lastId = 0
+
     private fun refreshLiveData() {
         observableCycles.postValue(cycles)
     }
 
     override suspend fun insert(cycle: Cycle) {
+        if (cycle.cycleID == null) {
+            cycle.cycleID = ++lastId
+        }
         cycles.add(cycle)
         refreshLiveData()
     }
