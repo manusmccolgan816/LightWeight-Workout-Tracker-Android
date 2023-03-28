@@ -14,9 +14,17 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.R
+import com.example.lightweight.data.db.entities.Category
+import com.example.lightweight.data.db.entities.Exercise
+import com.example.lightweight.data.repositories.FakeCategoryRepository
+import com.example.lightweight.data.repositories.FakeExerciseRepository
+import com.example.lightweight.ui.LightweightFragmentFactory
 import com.example.lightweight.ui.MainActivity
+import com.example.lightweight.ui.category.CategoryViewModel
+import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.workouttracking.selectcategory.CategoryItemAdapter
 import com.google.common.truth.Truth
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -24,13 +32,21 @@ import org.junit.runner.RunWith
 class SelectExerciseFragmentTest {
     @Test
     fun testSelectExerciseFragmentInView() {
+        val testCategoryViewModel = CategoryViewModel(FakeCategoryRepository())
+        val testExerciseViewModel = ExerciseViewModel(FakeExerciseRepository())
+
         val args = bundleOf(
             "categoryID" to 1,
             "selectedDate" to "2022-12-03"
         )
-        val scenario = launchFragmentInContainer<SelectExerciseFragment>(
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel
+        )
+        launchFragmentInContainer<SelectExerciseFragment>(
             themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.constraint_layout_select_exercise))
@@ -41,13 +57,31 @@ class SelectExerciseFragmentTest {
     fun testNavController_navigateToSetTrackerActivity() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val category = Category("Test Cat")
+        category.categoryID = 1
+
+        runBlocking {
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(Exercise("Test Ex", category.categoryID))
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+
         val args = bundleOf(
-            "categoryID" to 1,
+            "categoryID" to category.categoryID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel
         )
         val scenario = launchFragmentInContainer<SelectExerciseFragment>(
             themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
-            fragmentArgs = args
+            fragmentArgs = args,
+            factory = factory
         )
 
         scenario.onFragment { fragment ->
@@ -57,14 +91,14 @@ class SelectExerciseFragmentTest {
         }
 
         onView(withContentDescription("List of exercises"))
-            .perform(actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(1, click()))
+            .perform(actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(0, click()))
 
         Truth.assertThat(navController.currentDestination?.id).isEqualTo(R.id.setTrackerActivity)
     }
 
     @Test
     fun testClickExercise_navigateToLogSetsFragmentOfExercise() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_add_exercises)).perform(click())
 
@@ -81,7 +115,7 @@ class SelectExerciseFragmentTest {
 
     @Test
     fun testBackPress_navigateToSelectCategoryFragment() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_add_exercises)).perform(click())
 
