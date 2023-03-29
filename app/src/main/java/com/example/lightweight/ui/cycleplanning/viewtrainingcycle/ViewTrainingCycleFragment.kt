@@ -100,7 +100,6 @@ class ViewTrainingCycleFragment(
             }
         }
 
-
         recyclerViewTrainingCycleDays = view.findViewById(R.id.recycler_view_training_cycle_days)
         fabAddTrainingCycleDay = view.findViewById(R.id.fab_add_training_cycle_day)
 

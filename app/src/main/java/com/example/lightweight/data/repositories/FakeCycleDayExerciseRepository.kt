@@ -1,5 +1,6 @@
 package com.example.lightweight.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.*
@@ -17,6 +18,7 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
     var exercises = mutableListOf<Exercise>()
     var cycleDays = mutableListOf<CycleDay>()
     var cycleDayCategories = mutableListOf<CycleDayCategory>()
+    var observableCycleDays = MutableLiveData<List<CycleDay>>()
 
     private val cycleDayExercises = mutableListOf<CycleDayExercise>()
     private val observableCycleDayExercises =
@@ -33,7 +35,7 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
 
     private var lastId = 0
 
-    private fun refreshLiveData(tag: Int) {
+    fun refreshLiveData(tag: Int) {
         if (tag == allTag) observableCycleDayExercises.postValue(cycleDayExercises)
         if (tag == allTag || tag == cycleItemsOfCycleIDTag) {
             if (cycleItemsOfCycleIDParam != null) {
@@ -103,12 +105,49 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
         for (cycleDay in cycleDays.filter {
             it.cycleID == cycleID
         }.sortedBy { it.cycleDayNumber }) {
+
+            // Add the cycle item now if cycleDay has no children
+            if (cycleDayCategories.none { it.cycleDayID == cycleDay.cycleDayID }) {
+                itemsToReturn.add(
+                    CycleItem(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        cycleDay.cycleDayID,
+                        cycleDay.cycleDayName,
+                        cycleDay.cycleDayNumber
+                    )
+                )
+            }
+
             for (cycleDayCategory in cycleDayCategories.filter {
                 it.cycleDayID == cycleDay.cycleDayID
             }.sortedBy { it.cycleDayCategoryNumber }) {
                 for (category in categories.filter {
                     it.categoryID == cycleDayCategory.categoryID
                 }) {
+
+                    // Add the cycle item now if the cycleDayCategory has no children
+                    if (cycleDayExercises.none {
+                            it.cycleDayCategoryID == cycleDayCategory.cycleDayCategoryID
+                        }) {
+                        itemsToReturn.add(
+                            CycleItem(
+                                null,
+                                null,
+                                null,
+                                cycleDayCategory.cycleDayCategoryID,
+                                cycleDayCategory.cycleDayCategoryNumber,
+                                category.categoryName,
+                                cycleDay.cycleDayID,
+                                cycleDay.cycleDayName,
+                                cycleDay.cycleDayNumber
+                            )
+                        )
+                    }
                     for (cycleDayExercise in cycleDayExercises.filter {
                         it.cycleDayCategoryID == cycleDayCategory.cycleDayCategoryID
                     }.sortedBy { it.cycleDayExerciseNumber }) {
@@ -117,16 +156,16 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
                         }) {
                             itemsToReturn.add(
                                 CycleItem(
-                                cycleDayExercise.cycleDayExerciseID,
-                                cycleDayExercise.cycleDayExerciseNumber,
-                                exercise.exerciseName,
-                                cycleDayCategory.cycleDayCategoryID,
-                                cycleDayCategory.cycleDayCategoryNumber,
-                                category.categoryName,
-                                cycleDay.cycleDayID,
-                                cycleDay.cycleDayName,
-                                cycleDay.cycleDayNumber
-                            )
+                                    cycleDayExercise.cycleDayExerciseID,
+                                    cycleDayExercise.cycleDayExerciseNumber,
+                                    exercise.exerciseName,
+                                    cycleDayCategory.cycleDayCategoryID,
+                                    cycleDayCategory.cycleDayCategoryNumber,
+                                    category.categoryName,
+                                    cycleDay.cycleDayID,
+                                    cycleDay.cycleDayName,
+                                    cycleDay.cycleDayNumber
+                                )
                             )
                         }
                     }
@@ -134,6 +173,7 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
             }
         }
 
+        Log.d("FakeCycleDayExerciseRepository", "cycleItemsOfCycleID size = ${itemsToReturn.size}")
         return itemsToReturn
     }
 

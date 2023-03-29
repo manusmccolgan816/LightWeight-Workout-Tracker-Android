@@ -36,6 +36,12 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         }
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDays?.add(cycleDay)
+            cycleDayExerciseRepo?.observableCycleDays?.postValue(cycleDayExerciseRepo?.cycleDays)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun update(cycleDay: CycleDay) {
