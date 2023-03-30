@@ -443,6 +443,8 @@ class ViewTrainingCycleFragmentTest {
                 )
             )
 
+        Thread.sleep(500)
+
         onView(withId(R.id.button_confirm_delete_training_cycle_day)).perform(click())
 
         onView(withId(R.id.recycler_view_training_cycle_days)).check(
@@ -528,6 +530,8 @@ class ViewTrainingCycleFragmentTest {
                     clickChildViewWithId(R.id.image_view_delete_category)
                 )
             )
+
+        Thread.sleep(500)
 
         onView(withId(R.id.button_confirm_delete_training_cycle_day_category)).perform(click())
 
@@ -615,6 +619,8 @@ class ViewTrainingCycleFragmentTest {
                     clickChildViewWithId(R.id.image_view_delete_exercise)
                 )
             )
+
+        Thread.sleep(500)
 
         onView(withId(R.id.button_confirm_delete_training_cycle_day_exercise)).perform(click())
 

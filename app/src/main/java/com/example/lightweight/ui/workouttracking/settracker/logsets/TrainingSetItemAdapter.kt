@@ -11,24 +11,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
 import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsOnDeletion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 
 class TrainingSetItemAdapter(
@@ -36,16 +30,10 @@ class TrainingSetItemAdapter(
     private val trainingSetViewModel: TrainingSetViewModel,
     private val exerciseID: Int?,
     private val selectedDate: String,
-    private val fragment: Fragment
-) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>(), KodeinAware {
-
-    override val kodein by kodein(fragment.requireContext())
-    private val workoutFactory: WorkoutViewModelFactory by instance()
-    private val workoutViewModel: WorkoutViewModel by fragment.viewModels { workoutFactory }
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by fragment.viewModels {
-        exerciseInstanceFactory
-    }
+    private val fragment: Fragment,
+    private val workoutViewModel: WorkoutViewModel,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>() {
 
     private lateinit var sharedPreferences: SharedPreferences
 

@@ -41,6 +41,7 @@ class LogSetsFragmentTest {
         val fakeWorkoutRepository = FakeWorkoutRepository()
         val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
         val fakeTrainingSetRepository = FakeTrainingSetRepository()
+
         val exercise = Exercise("Fake Exercise", 1)
         exercise.exerciseID = 1
 
@@ -88,7 +89,6 @@ class LogSetsFragmentTest {
             fakeExerciseRepository.insert(exercise)
             fakeExerciseInstanceRepository.exercises.add(exercise)
 
-            // Observe exerciseInstances and workouts from trainingSet repo
             fakeTrainingSetRepository.exerciseInstances = fakeExerciseInstanceRepository
                 .observableExerciseInstances.value as MutableList<ExerciseInstance>
             fakeTrainingSetRepository.workouts =
@@ -126,7 +126,8 @@ class LogSetsFragmentTest {
         onView(withId(R.id.button_save_set)).perform(click())
 
         val trainingSet =
-            testTrainingSetViewModel.getTrainingSetsOfExercise(exercise.exerciseID).getOrAwaitValue()[0]
+            testTrainingSetViewModel.getTrainingSetsOfExercise(exercise.exerciseID)
+                .getOrAwaitValue()[0]
         Truth.assertThat(trainingSet.weight).isEqualTo(10f)
         Truth.assertThat(trainingSet.reps).isEqualTo(12)
     }
@@ -152,13 +153,35 @@ class LogSetsFragmentTest {
 
     @Test
     fun testClickClear_weightAndRepsCleared() {
+        val fakeExerciseRepository = FakeExerciseRepository()
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(FakeWorkoutRepository())
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(FakeExerciseInstanceRepository())
+        val testTrainingSetViewModel = TrainingSetViewModel(FakeTrainingSetRepository())
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+        }
+
         val args = bundleOf(
-            "exerciseID" to 1,
+            "exerciseID" to exercise.exerciseID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
         )
         launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
@@ -176,13 +199,35 @@ class LogSetsFragmentTest {
     fun testClickDecrementWeight_weightDecremented() {
         // This test requires the weight increment to be the default value of 2.5
 
+        val fakeExerciseRepository = FakeExerciseRepository()
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(FakeWorkoutRepository())
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(FakeExerciseInstanceRepository())
+        val testTrainingSetViewModel = TrainingSetViewModel(FakeTrainingSetRepository())
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+        }
+
         val args = bundleOf(
-            "exerciseID" to 1,
+            "exerciseID" to exercise.exerciseID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
         )
         launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
@@ -195,13 +240,35 @@ class LogSetsFragmentTest {
     fun testClickIncrementWeight_weightIncremented() {
         // This test requires the weight increment to be the default value of 2.5
 
+        val fakeExerciseRepository = FakeExerciseRepository()
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(FakeWorkoutRepository())
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(FakeExerciseInstanceRepository())
+        val testTrainingSetViewModel = TrainingSetViewModel(FakeTrainingSetRepository())
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+        }
+
         val args = bundleOf(
-            "exerciseID" to 1,
+            "exerciseID" to exercise.exerciseID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
         )
         launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.edit_text_weight)).perform(replaceText("10"))
@@ -212,13 +279,35 @@ class LogSetsFragmentTest {
 
     @Test
     fun testClickDecrementReps_repsDecremented() {
+        val fakeExerciseRepository = FakeExerciseRepository()
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(FakeWorkoutRepository())
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(FakeExerciseInstanceRepository())
+        val testTrainingSetViewModel = TrainingSetViewModel(FakeTrainingSetRepository())
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+        }
+
         val args = bundleOf(
-            "exerciseID" to 1,
+            "exerciseID" to exercise.exerciseID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
         )
         launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.edit_text_num_reps)).perform(replaceText("10"))
@@ -229,13 +318,35 @@ class LogSetsFragmentTest {
 
     @Test
     fun testClickIncrementReps_repsIncremented() {
+        val fakeExerciseRepository = FakeExerciseRepository()
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(FakeWorkoutRepository())
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(FakeExerciseInstanceRepository())
+        val testTrainingSetViewModel = TrainingSetViewModel(FakeTrainingSetRepository())
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+
+        runBlocking {
+            fakeExerciseRepository.insert(exercise)
+        }
+
         val args = bundleOf(
-            "exerciseID" to 1,
+            "exerciseID" to exercise.exerciseID,
             "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
         )
         launchFragmentInContainer<LogSetsFragment>(
             themeResId = R.style.Theme_Lightweight,
             fragmentArgs = args,
+            factory = factory
         )
 
         onView(withId(R.id.edit_text_num_reps)).perform(replaceText("10"))
@@ -259,12 +370,6 @@ class LogSetsFragmentTest {
             // Add the exercise to exercise and exerciseInstance repos
             fakeExerciseRepository.insert(exercise)
             fakeExerciseInstanceRepository.exercises.add(exercise)
-
-            // Observe exerciseInstances and workouts from trainingSet repo
-            fakeTrainingSetRepository.exerciseInstances = fakeExerciseInstanceRepository
-                .observableExerciseInstances.value as MutableList<ExerciseInstance>
-            fakeTrainingSetRepository.workouts =
-                fakeWorkoutRepository.observableWorkouts.value as MutableList<Workout>
         }
 
         val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)

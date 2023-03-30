@@ -117,7 +117,13 @@ class LogSetsFragment(
         recyclerViewTrainingSets = view.findViewById(R.id.recycler_view_training_sets)
 
         adapter = TrainingSetItemAdapter(
-            listOf(), trainingSetViewModel, exerciseID, selectedDate, this
+            listOf(),
+            trainingSetViewModel,
+            exerciseID,
+            selectedDate,
+            this,
+            workoutViewModel,
+            exerciseInstanceViewModel
         )
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
