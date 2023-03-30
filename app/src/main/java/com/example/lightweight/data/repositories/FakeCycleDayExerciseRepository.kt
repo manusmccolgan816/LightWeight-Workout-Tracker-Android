@@ -18,7 +18,6 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
     var exercises = mutableListOf<Exercise>()
     var cycleDays = mutableListOf<CycleDay>()
     var cycleDayCategories = mutableListOf<CycleDayCategory>()
-    var observableCycleDays = MutableLiveData<List<CycleDay>>()
 
     private val cycleDayExercises = mutableListOf<CycleDayExercise>()
     private val observableCycleDayExercises =

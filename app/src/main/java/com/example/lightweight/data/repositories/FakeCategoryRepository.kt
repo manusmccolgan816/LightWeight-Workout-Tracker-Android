@@ -56,7 +56,7 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
             }
         }
 
-        // TODO Notify cycleDayCategoryRepo
+        // TODO Notify cycleDayCategoryRepo and cycleDayExerciseRepo
     }
 
     override suspend fun delete(category: Category) {
@@ -66,6 +66,10 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
         if (cycleDayCategoryRepo != null) {
             cycleDayCategoryRepo?.categories?.remove(category)
             cycleDayCategoryRepo?.refreshLiveData(allTag)
+        }
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.categories?.remove(category)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
         }
     }
 

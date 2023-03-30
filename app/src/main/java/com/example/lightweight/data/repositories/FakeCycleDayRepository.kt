@@ -9,6 +9,7 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
     private val allTag = 0
     private val cycleDayOfIDTag = 1
 
+    var cycleDayCategoryRepo: FakeCycleDayCategoryRepository? = null
     var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
 
     private val cycleDays = mutableListOf<CycleDay>()
@@ -37,7 +38,11 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
 
-        // Notify cycleDayExerciseRepo that cycleDay has been inserted
+        // Notify cycleDayCategoryRepo that cycleDay has been inserted
+        if (cycleDayCategoryRepo != null) {
+            cycleDayCategoryRepo?.cycleDays?.add(cycleDay)
+            cycleDayCategoryRepo?.refreshLiveData(allTag)
+        }
         if (cycleDayExerciseRepo != null) {
             cycleDayExerciseRepo?.cycleDays?.add(cycleDay)
             cycleDayExerciseRepo?.refreshLiveData(allTag)

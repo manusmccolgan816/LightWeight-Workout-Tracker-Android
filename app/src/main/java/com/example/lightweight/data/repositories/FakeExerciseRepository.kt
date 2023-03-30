@@ -11,8 +11,10 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     private val exercisesTag = 1
     private val exercisesOfCategoryTag = 2
 
+    var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
+
     private val exercises = mutableListOf<Exercise>()
-    val observableExercises = MutableLiveData<List<Exercise>>(exercises)
+    private val observableExercises = MutableLiveData<List<Exercise>>(exercises)
 
     private val observableExercisesOfCategory = MutableLiveData<List<Exercise>>()
     private var exercisesOfCategoryParam: Int? = null
@@ -36,6 +38,11 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
         }
         exercises.add(exercise)
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.exercises?.add(exercise)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun updateName(exerciseID: Int?, exerciseName: String) {
@@ -51,6 +58,11 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     override suspend fun delete(exercise: Exercise) {
         exercises.remove(exercise)
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.exercises?.remove(exercise)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override fun getExerciseOfID(exerciseID: Int?): Exercise {

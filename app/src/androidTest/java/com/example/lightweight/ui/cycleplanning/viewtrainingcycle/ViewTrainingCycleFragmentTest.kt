@@ -200,7 +200,89 @@ class ViewTrainingCycleFragmentTest {
 
     @Test
     fun testAddCycleDayExercise_cycleDayExerciseAddedToRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+        exercise.exerciseID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeExerciseRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+            fakeCycleDayCategoryRepository.insert(cycleDayCategory)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayCategoryViewHolder>(
+                    1,
+                    clickChildViewWithId(R.id.image_view_add_exercise)
+                )
+            )
+
+        onView(withId(R.id.recycler_view_exercises))
+            .perform(
+                actionOnItemAtPosition<SelectExerciseForCycleAdapter.SelectExerciseForCycleViewHolder>(
+                    0,
+                    click()
+                )
+            )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayExerciseViewHolder>(
+                    2,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText(exercise.exerciseName)))
+            )
     }
 
     @Test
