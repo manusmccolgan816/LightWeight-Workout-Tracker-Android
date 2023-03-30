@@ -5,13 +5,12 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.example.lightweight.AndroidTestUtil
 import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
 import com.example.lightweight.AndroidTestUtil.longClickChildViewWithId
+import com.example.lightweight.AndroidTestUtil.recyclerViewSizeMatcher
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.*
 import com.example.lightweight.data.repositories.*
@@ -21,7 +20,6 @@ import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
-import com.example.lightweight.ui.cycleplanning.selecttrainingcycle.TrainingCycleItemAdapter
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -372,16 +370,261 @@ class ViewTrainingCycleFragmentTest {
 
     @Test
     fun testRemoveCycleDay_cycleDayAndChildrenRemovedFromRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+        exercise.exerciseID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+        val cycleDayExercise = CycleDayExercise(
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            1
+        )
+        cycleDayExercise.cycleDayExerciseID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeExerciseRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+            fakeCycleDayCategoryRepository.insert(cycleDayCategory)
+            fakeCycleDayExerciseRepository.insert(cycleDayExercise)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_delete_day)
+                )
+            )
+
+        onView(withId(R.id.button_confirm_delete_training_cycle_day)).perform(click())
+
+        onView(withId(R.id.recycler_view_training_cycle_days)).check(
+            matches(
+                recyclerViewSizeMatcher(
+                    0
+                )
+            )
+        )
     }
 
     @Test
     fun testRemoveCycleDayCategory_cycleDayCategoryAndChildrenRemovedFromRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+        exercise.exerciseID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+        val cycleDayExercise = CycleDayExercise(
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            1
+        )
+        cycleDayExercise.cycleDayExerciseID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeExerciseRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+            fakeCycleDayCategoryRepository.insert(cycleDayCategory)
+            fakeCycleDayExerciseRepository.insert(cycleDayExercise)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayCategoryViewHolder>(
+                    1,
+                    clickChildViewWithId(R.id.image_view_delete_category)
+                )
+            )
+
+        onView(withId(R.id.button_confirm_delete_training_cycle_day_category)).perform(click())
+
+        // Check there is 1 item in the recycler view
+        onView(withId(R.id.recycler_view_training_cycle_days)).check(
+            matches(
+                recyclerViewSizeMatcher(
+                    1
+                )
+            )
+        )
     }
 
     @Test
     fun testRemoveCycleDayExercise_cycleDayExerciseRemovedFromRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+        exercise.exerciseID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+        val cycleDayExercise = CycleDayExercise(
+            cycleDayCategory.cycleDayCategoryID,
+            exercise.exerciseID,
+            1
+        )
+        cycleDayExercise.cycleDayExerciseID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeExerciseRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+            fakeCycleDayCategoryRepository.insert(cycleDayCategory)
+            fakeCycleDayExerciseRepository.insert(cycleDayExercise)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayExerciseViewHolder>(
+                    2,
+                    clickChildViewWithId(R.id.image_view_delete_exercise)
+                )
+            )
+
+        onView(withId(R.id.button_confirm_delete_training_cycle_day_exercise)).perform(click())
+
+        // Check there are 2 items in the recycler view
+        onView(withId(R.id.recycler_view_training_cycle_days)).check(
+            matches(
+                recyclerViewSizeMatcher(
+                    2
+                )
+            )
+        )
     }
 }

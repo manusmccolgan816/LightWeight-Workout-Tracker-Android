@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.*
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.ui.cycleplanning.CycleItem
+import java.lang.IndexOutOfBoundsException
 
 class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
 
@@ -229,7 +230,11 @@ class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
         return observableCycleDayExerciseOfID
     }
 
-    private fun calcCycleDayExerciseOfID(cycleDayExerciseID: Int?): CycleDayExercise {
-        return cycleDayExercises.filter { it.cycleDayExerciseID == cycleDayExerciseID }[0]
+    private fun calcCycleDayExerciseOfID(cycleDayExerciseID: Int?): CycleDayExercise? {
+        return try {
+            cycleDayExercises.filter { it.cycleDayExerciseID == cycleDayExerciseID }[0]
+        } catch (e: IndexOutOfBoundsException) {
+            null
+        }
     }
 }

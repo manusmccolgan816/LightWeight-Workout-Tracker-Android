@@ -6,6 +6,7 @@ import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.db.entities.CycleDay
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
+import java.lang.IndexOutOfBoundsException
 
 class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
 
@@ -83,16 +84,30 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
             cycleDayCategory.cycleDayCategoryNumber--
             refreshLiveData(allTag)
         }
+
+        // TODO Notify cycleDayExerciseRepo
     }
 
     override suspend fun delete(cycleDayCategory: CycleDayCategory) {
         cycleDayCategories.remove(cycleDayCategory)
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDayCategories?.remove(cycleDayCategory)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun deleteOfID(cycleDayCategoryID: Int?) {
         cycleDayCategories.removeIf { it.cycleDayCategoryID == cycleDayCategoryID }
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDayCategories?.removeIf {
+                it.cycleDayCategoryID == cycleDayCategoryID
+            }
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
 
@@ -154,7 +169,11 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
         return combosToReturn
     }
 
-    private fun calcCycleDayCategoryOfID(cycleDayCategoryID: Int): CycleDayCategory {
-        return cycleDayCategories.filter { it.cycleDayCategoryID == cycleDayCategoryID }[0]
+    private fun calcCycleDayCategoryOfID(cycleDayCategoryID: Int): CycleDayCategory? {
+        return try {
+            cycleDayCategories.filter { it.cycleDayCategoryID == cycleDayCategoryID }[0]
+        } catch (e: IndexOutOfBoundsException) {
+            null
+        }
     }
 }

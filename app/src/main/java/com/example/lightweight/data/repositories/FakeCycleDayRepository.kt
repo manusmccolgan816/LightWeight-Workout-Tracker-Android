@@ -3,6 +3,7 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.CycleDay
+import java.lang.IndexOutOfBoundsException
 
 class FakeCycleDayRepository : CycleDayRepositoryInterface {
 
@@ -93,7 +94,11 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         return observableCycleDayOfID
     }
 
-    private fun calcCycleDayOfID(cycleDayID: Int?): CycleDay {
-        return cycleDays.filter { it.cycleDayID == cycleDayID }[0]
+    private fun calcCycleDayOfID(cycleDayID: Int?): CycleDay? {
+        return try {
+            cycleDays.filter { it.cycleDayID == cycleDayID }[0]
+        } catch (e: IndexOutOfBoundsException) {
+            null
+        }
     }
 }
