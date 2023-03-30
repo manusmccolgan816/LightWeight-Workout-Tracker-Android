@@ -51,6 +51,23 @@ object AndroidTestUtil {
         }
     }
 
+    fun longClickChildViewWithId(id: Int): ViewAction {
+        return object : ViewAction {
+            override fun getDescription(): String {
+                return "Long click on a child view with specified id."
+            }
+
+            override fun getConstraints(): Matcher<View>? {
+                return null
+            }
+
+            override fun perform(uiController: UiController, view: View) {
+                val v = view.findViewById<View>(id)
+                v.performLongClick()
+            }
+        }
+    }
+
     // Function by Stack Overflow user 'jeprubio':
     // https://stackoverflow.com/questions/63562046/how-to-check-if-recyclerview-is-empty-espresso
     fun recyclerViewSizeMatcher(matcherSize: Int): Matcher<View?>? {

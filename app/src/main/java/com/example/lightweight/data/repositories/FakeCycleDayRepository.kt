@@ -54,7 +54,16 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
 
-        // TODO Notify cycleDayExerciseRepo
+        if (cycleDayCategoryRepo != null) {
+            cycleDayCategoryRepo?.cycleDays?.removeIf { it.cycleDayID == cycleDay.cycleDayID }
+            cycleDayCategoryRepo?.cycleDays?.add(cycleDay)
+            cycleDayCategoryRepo?.refreshLiveData(allTag)
+        }
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDays?.removeIf { it.cycleDayID == cycleDay.cycleDayID }
+            cycleDayExerciseRepo?.cycleDays?.add(cycleDay)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) {

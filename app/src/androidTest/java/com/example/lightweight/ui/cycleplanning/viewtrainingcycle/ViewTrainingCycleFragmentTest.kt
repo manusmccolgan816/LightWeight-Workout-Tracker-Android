@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.AndroidTestUtil
 import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
+import com.example.lightweight.AndroidTestUtil.longClickChildViewWithId
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.*
 import com.example.lightweight.data.repositories.*
@@ -20,6 +21,7 @@ import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
 import com.example.lightweight.ui.cycleplanning.cycleday.CycleDayViewModel
 import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategoryViewModel
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
+import com.example.lightweight.ui.cycleplanning.selecttrainingcycle.TrainingCycleItemAdapter
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -287,7 +289,85 @@ class ViewTrainingCycleFragmentTest {
 
     @Test
     fun testEditCycleDay_cycleDayEditedInRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+        exercise.exerciseID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+        val cycleDayCategory = CycleDayCategory(cycleDay.cycleDayID, category.categoryID, 1)
+        cycleDayCategory.cycleDayCategoryID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeExerciseRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+            fakeCycleDayCategoryRepository.insert(cycleDayCategory)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
+                    0,
+                    longClickChildViewWithId(R.id.text_view_training_cycle_day_name)
+                )
+            )
+
+        onView(withText("Edit")).perform(click())
+        onView(withId(R.id.edit_text_edit_training_cycle_day_name)).perform(replaceText("Edited Day"))
+        onView(withId(R.id.button_save_edit_training_cycle_day)).perform(click())
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("Edited Day")))
+            )
     }
 
     @Test
