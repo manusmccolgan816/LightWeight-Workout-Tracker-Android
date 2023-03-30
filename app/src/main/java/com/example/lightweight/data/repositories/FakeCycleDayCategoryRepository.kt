@@ -14,11 +14,13 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
     private val numCycleDayCategoriesOfCycleDayTag = 2
     private val cycleDayCategoryOfIDTag = 3
 
+    var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
+
     var categories = mutableListOf<Category>()
     var cycleDays = mutableListOf<CycleDay>()
 
     private val cycleDayCategories = mutableListOf<CycleDayCategory>()
-    val observableCycleDayCategories =
+    private val observableCycleDayCategories =
         MutableLiveData<List<CycleDayCategory>>(cycleDayCategories)
 
     private val observableCategoryIDOfCycleDayCategoryID = MutableLiveData<Int?>()
@@ -32,7 +34,7 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
 
     private var lastId = 0
 
-    private fun refreshLiveData(tag: Int) {
+    fun refreshLiveData(tag: Int) {
         if (tag == allTag) observableCycleDayCategories.postValue(cycleDayCategories)
         if (tag == allTag || tag == categoryIDOfCycleDayCategoryIDTag) {
             if (categoryIDOfCycleDayCategoryIDParam != null) {
@@ -63,6 +65,12 @@ class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
         }
         cycleDayCategories.add(cycleDayCategory)
         refreshLiveData(allTag)
+
+        // Notify cycleDayExerciseRepo that cycleDay has been inserted
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDayCategories?.add(cycleDayCategory)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun decrementCycleDayCategoryNumbersAfter(

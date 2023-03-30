@@ -3,7 +3,6 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Category
-import java.lang.Exception
 
 class FakeCategoryRepository : CategoryRepositoryInterface {
 
@@ -11,8 +10,11 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
     private val categoriesTag = 1
     private val categoryOfIDObsTag = 2
 
+    var cycleDayCategoryRepo: FakeCycleDayCategoryRepository? = null
+    var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
+
     private val categories = mutableListOf<Category>()
-    val observableCategories = MutableLiveData<List<Category>>(categories)
+    private val observableCategories = MutableLiveData<List<Category>>(categories)
 
     private val observableCategoryOfIDObs = MutableLiveData<Category>()
     private var categoryOfIDObsParam: Int? = null
@@ -34,6 +36,15 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
         }
         categories.add(category)
         refreshLiveData(allTag)
+
+        if (cycleDayCategoryRepo != null) {
+            cycleDayCategoryRepo?.categories?.add(category)
+            cycleDayCategoryRepo?.refreshLiveData(allTag)
+        }
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.categories?.add(category)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun update(categoryID: Int?, newName: String) {
@@ -44,11 +55,18 @@ class FakeCategoryRepository : CategoryRepositoryInterface {
                 return
             }
         }
+
+        // TODO Notify cycleDayCategoryRepo
     }
 
     override suspend fun delete(category: Category) {
         categories.remove(category)
         refreshLiveData(allTag)
+
+        if (cycleDayCategoryRepo != null) {
+            cycleDayCategoryRepo?.categories?.remove(category)
+            cycleDayCategoryRepo?.refreshLiveData(allTag)
+        }
     }
 
     override fun getAllCategories(): LiveData<List<Category>> {

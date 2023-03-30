@@ -12,7 +12,7 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
     var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
 
     private val cycleDays = mutableListOf<CycleDay>()
-    val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
+    private val observableCycleDays = MutableLiveData<List<CycleDay>>(cycleDays)
 
     private val observableCycleDayOfID = MutableLiveData<CycleDay>()
     private var cycleDayOfIDParam: Int? = null
@@ -37,9 +37,9 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
 
+        // Notify cycleDayExerciseRepo that cycleDay has been inserted
         if (cycleDayExerciseRepo != null) {
             cycleDayExerciseRepo?.cycleDays?.add(cycleDay)
-            cycleDayExerciseRepo?.observableCycleDays?.postValue(cycleDayExerciseRepo?.cycleDays)
             cycleDayExerciseRepo?.refreshLiveData(allTag)
         }
     }
@@ -48,6 +48,8 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
         cycleDays.removeIf { it.cycleDayID == cycleDay.cycleDayID }
         cycleDays.add(cycleDay)
         refreshLiveData(allTag)
+
+        // TODO Notify cycleDayExerciseRepo
     }
 
     override suspend fun decrementCycleDayNumbersAfter(cycleID: Int?, cycleDayNumber: Int) {
@@ -57,11 +59,18 @@ class FakeCycleDayRepository : CycleDayRepositoryInterface {
             cycleDay.cycleDayNumber--
             refreshLiveData(allTag)
         }
+
+        // TODO Notify cycleDayExerciseRepo
     }
 
     override suspend fun delete(cycleDay: CycleDay) {
         cycleDays.remove(cycleDay)
         refreshLiveData(allTag)
+
+        if (cycleDayExerciseRepo != null) {
+            cycleDayExerciseRepo?.cycleDays?.remove(cycleDay)
+            cycleDayExerciseRepo?.refreshLiveData(allTag)
+        }
     }
 
     override fun getCycleDayOfID(cycleDayID: Int?): LiveData<CycleDay> {

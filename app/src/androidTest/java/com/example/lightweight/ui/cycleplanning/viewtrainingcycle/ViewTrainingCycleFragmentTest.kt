@@ -6,8 +6,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.example.lightweight.AndroidTestUtil
+import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.*
 import com.example.lightweight.data.repositories.*
@@ -74,20 +77,6 @@ class ViewTrainingCycleFragmentTest {
         runBlocking {
             fakeCycleRepository.insert(cycle)
 
-            fakeCycleDayCategoryRepository.categories =
-                fakeCategoryRepository.observableCategories.value as MutableList<Category>
-            fakeCycleDayCategoryRepository.cycleDays =
-                fakeCycleDayRepository.observableCycleDays.value as MutableList<CycleDay>
-            fakeCycleDayExerciseRepository.categories =
-                fakeCategoryRepository.observableCategories.value as MutableList<Category>
-            fakeCycleDayExerciseRepository.exercises =
-                fakeExerciseRepository.observableExercises.value as MutableList<Exercise>
-            fakeCycleDayExerciseRepository.cycleDays =
-                fakeCycleDayRepository.observableCycleDays.value as MutableList<CycleDay>
-            fakeCycleDayExerciseRepository.cycleDayCategories =
-                fakeCycleDayCategoryRepository.observableCycleDayCategories.value
-                        as MutableList<CycleDayCategory>
-
             fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
         }
 
@@ -121,7 +110,7 @@ class ViewTrainingCycleFragmentTest {
 
         onView(withId(R.id.recycler_view_training_cycle_days))
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
                     0,
                     scrollTo()
                 )
@@ -132,7 +121,81 @@ class ViewTrainingCycleFragmentTest {
 
     @Test
     fun testAddCycleDayCategory_cycleDayCategoryAddedToRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeCycleRepository = FakeCycleRepository()
+        val fakeCycleDayRepository = FakeCycleDayRepository()
+        val fakeCycleDayCategoryRepository = FakeCycleDayCategoryRepository()
+        val fakeCycleDayExerciseRepository = FakeCycleDayExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val cycle = Cycle("Test Cycle", null)
+        cycle.cycleID = 1
+        val cycleDay = CycleDay(cycle.cycleID, "Test Day", 1)
+        cycleDay.cycleDayID = 1
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeCategoryRepository.cycleDayCategoryRepo = fakeCycleDayCategoryRepository
+            fakeCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+            fakeCycleDayCategoryRepository.cycleDayExerciseRepo = fakeCycleDayExerciseRepository
+
+            fakeCategoryRepository.insert(category)
+            fakeCycleRepository.insert(cycle)
+            fakeCycleDayRepository.insert(cycleDay)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testCycleViewModel = CycleViewModel(fakeCycleRepository)
+        val testCycleDayViewModel = CycleDayViewModel(fakeCycleDayRepository)
+        val testCycleDayCategoryViewModel =
+            CycleDayCategoryViewModel(fakeCycleDayCategoryRepository)
+        val testCycleDayExerciseViewModel =
+            CycleDayExerciseViewModel(fakeCycleDayExerciseRepository)
+
+        val args = bundleOf("cycleID" to cycle.cycleID)
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel,
+            cycleViewModel = testCycleViewModel,
+            cycleDayViewModel = testCycleDayViewModel,
+            cycleDayCategoryViewModel = testCycleDayCategoryViewModel,
+            cycleDayExerciseViewModel = testCycleDayExerciseViewModel
+        )
+        launchFragmentInContainer<ViewTrainingCycleFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_add_category)
+                )
+            )
+
+        onView(withId(R.id.recycler_view_categories))
+            .perform(
+                actionOnItemAtPosition<SelectCategoryForCycleAdapter.SelectCategoryForCycleViewHolder>(
+                    0,
+                    click()
+                )
+            )
+
+        onView(withId(R.id.recycler_view_training_cycle_days))
+            .perform(
+                actionOnItemAtPosition<TrainingCycleDayAdapter.TrainingCycleDayCategoryViewHolder>(
+                    1,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText(category.categoryName)))
+            )
     }
 
     @Test
