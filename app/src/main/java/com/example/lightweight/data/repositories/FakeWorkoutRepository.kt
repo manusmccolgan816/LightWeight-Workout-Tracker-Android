@@ -10,6 +10,8 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
     private val workoutsTag = 1
     private val workoutDatesTag = 2
 
+    var exerciseInstanceRepo: FakeExerciseInstanceRepository? = null
+
     private val workouts = mutableListOf<Workout>()
     val observableWorkouts = MutableLiveData<List<Workout>>(workouts)
 
@@ -30,16 +32,31 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
         }
         workouts.add(workout)
         refreshLiveData(allTag)
+
+        if (exerciseInstanceRepo != null) {
+            exerciseInstanceRepo?.workouts?.add(workout)
+            exerciseInstanceRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun delete(workout: Workout) {
         workouts.remove(workout)
         refreshLiveData(allTag)
+
+        if (exerciseInstanceRepo != null) {
+            exerciseInstanceRepo?.workouts?.remove(workout)
+            exerciseInstanceRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun deleteWorkoutOfID(workoutID: Int?) {
         workouts.removeIf { it.workoutID == workoutID }
         refreshLiveData(allTag)
+
+        if (exerciseInstanceRepo != null) {
+            exerciseInstanceRepo?.workouts?.removeIf { it.workoutID == workoutID }
+            exerciseInstanceRepo?.refreshLiveData(allTag)
+        }
     }
 
     override fun getWorkoutOfDate(date: String): Workout? {

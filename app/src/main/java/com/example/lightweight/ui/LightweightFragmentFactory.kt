@@ -62,7 +62,7 @@ class LightweightFragmentFactory(
                 )
             }
             ExerciseHistoryFragment::class.java.name -> {
-                ExerciseHistoryFragment(exerciseInstanceViewModel!!)
+                ExerciseHistoryFragment(exerciseInstanceViewModel!!, trainingSetViewModel!!)
             }
             ExerciseInsightsFragment::class.java.name -> {
                 ExerciseInsightsFragment(

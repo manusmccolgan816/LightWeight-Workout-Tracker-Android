@@ -3,20 +3,17 @@ package com.example.lightweight.ui.workouttracking.settracker.exercisehistory
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 
 class ExerciseHistoryFragment(
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    private val trainingSetViewModel: TrainingSetViewModel
 ) : Fragment(R.layout.fragment_exercise_history) {
 
     private lateinit var adapter: ExerciseHistoryParentAdapter
@@ -39,7 +36,7 @@ class ExerciseHistoryFragment(
 
         recyclerViewExerciseInstances = view.findViewById(R.id.recycler_view_exercise_instances)
 
-        adapter = ExerciseHistoryParentAdapter(mapOf(), this)
+        adapter = ExerciseHistoryParentAdapter(mapOf(), this, trainingSetViewModel)
         recyclerViewExerciseInstances.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExerciseInstances.adapter = adapter
 

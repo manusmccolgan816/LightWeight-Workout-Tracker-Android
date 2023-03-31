@@ -50,7 +50,7 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
 
     private var lastId = 0
 
-    private fun refreshLiveData(tag: Int?) {
+    fun refreshLiveData(tag: Int?) {
         if (tag == allTag || tag == exerciseInstancesTag) {
             observableExerciseInstances.postValue(exerciseInstances)
         }
@@ -78,7 +78,7 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
         if (tag == allTag || tag == exerciseInstancesAndDatesOfExerciseTag) {
             if (exerciseInstancesAndDatesOfExerciseParam != null) {
                 observableExerciseInstancesAndDatesOfExercise.postValue(
-                    calcExerciseInstancesAndDatesOfExercise(exerciseInstancesAndDatesOfExerciseTag)
+                    calcExerciseInstancesAndDatesOfExercise(exerciseInstancesAndDatesOfExerciseParam)
                 )
             }
         }

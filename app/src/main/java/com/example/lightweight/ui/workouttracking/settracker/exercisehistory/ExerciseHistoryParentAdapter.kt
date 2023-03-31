@@ -5,28 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 class ExerciseHistoryParentAdapter(
     var idDateMappings: Map<Int?, String>,
-    private val fragment: Fragment
-) : RecyclerView.Adapter<ExerciseHistoryParentAdapter.ExerciseHistoryParentViewHolder>(),
-    KodeinAware {
-
-    override val kodein by kodein(fragment.requireContext())
-    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-    private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels { trainingSetFactory }
+    private val fragment: Fragment,
+    private val trainingSetViewModel: TrainingSetViewModel
+) : RecyclerView.Adapter<ExerciseHistoryParentAdapter.ExerciseHistoryParentViewHolder>() {
 
     private lateinit var parent: ViewGroup
 
