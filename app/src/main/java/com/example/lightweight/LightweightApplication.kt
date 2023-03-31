@@ -22,75 +22,9 @@ import org.kodein.di.generic.singleton
 
 class LightweightApplication : Application(), KodeinAware {
 
-    private var isTestBuild = false
-
-    override fun onCreate() {
-        super.onCreate()
-        isTestBuild = try {
-            applicationInfo.metaData != null && applicationInfo.metaData.getBoolean(
-                "IS_TEST_BUILD", false
-            )
-        } catch (e: Exception) {
-            false
-        }
-    }
-
     override val kodein: Kodein = Kodein.lazy {
         import(androidXModule(this@LightweightApplication))
 
-        // singleton ensures that the instance never changes
-        //bind() from singleton { WorkoutDatabase(instance()) }
-//        Log.d(
-//            "LightweightApplication",
-//            "BuildConfig.IS_TEST_BUILD: " + BuildConfig.DEBUG.toString()
-//        )
-//        if (isTestBuild) {
-//            bind<CategoryRepositoryInterface>() with singleton { FakeCategoryRepository() }
-//            bind() from provider { CategoryViewModelFactory(instance()) }
-//
-//            bind<ExerciseRepositoryInterface>() with singleton { FakeExerciseRepository() }
-//            bind() from provider { ExerciseViewModelFactory(instance()) }
-//
-//            bind<WorkoutRepositoryInterface>() with singleton { FakeWorkoutRepository() }
-//            bind() from provider { WorkoutViewModelFactory(instance()) }
-//
-//            bind<ExerciseInstanceRepositoryInterface>() with singleton {
-//                FakeExerciseInstanceRepository()
-//            }
-//            bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
-//
-//            bind<TrainingSetRepositoryInterface>() with singleton { FakeTrainingSetRepository() }
-//            bind() from provider { TrainingSetViewModelFactory(instance()) }
-//        } else {
-//            bind() from singleton { WorkoutDatabase(instance()) }
-//
-//            bind() from singleton { CategoryRepository(instance()) }
-//            bind() from provider { CategoryViewModelFactory(instance()) }
-//
-//            bind() from singleton { ExerciseRepository(instance()) }
-//            bind() from provider { ExerciseViewModelFactory(instance()) }
-//
-//            bind() from singleton { WorkoutRepository(instance()) }
-//            bind() from provider { WorkoutViewModelFactory(instance()) }
-//
-//            bind() from singleton { ExerciseInstanceRepository(instance()) }
-//            bind() from provider { ExerciseInstanceViewModelFactory(instance()) }
-//
-//            bind() from singleton { TrainingSetRepository(instance()) }
-//            bind() from provider { TrainingSetViewModelFactory(instance()) }
-//
-//            bind() from singleton { CycleRepository(instance()) }
-//            bind() from provider { CycleViewModelFactory(instance()) }
-//
-//            bind() from singleton { CycleDayRepository(instance()) }
-//            bind() from provider { CycleDayViewModelFactory(instance()) }
-//
-//            bind() from singleton { CycleDayCategoryRepository(instance()) }
-//            bind() from provider { CycleDayCategoryViewModelFactory(instance()) }
-//
-//            bind() from singleton { CycleDayExerciseRepository(instance()) }
-//            bind() from provider { CycleDayExerciseViewModelFactory(instance()) }
-//        }
         bind() from singleton { WorkoutDatabase(instance()) }
 
         bind() from singleton { CategoryRepository(instance()) }
