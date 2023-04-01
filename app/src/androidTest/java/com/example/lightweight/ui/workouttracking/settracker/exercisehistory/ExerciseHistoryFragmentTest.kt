@@ -5,8 +5,8 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollTo
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.lightweight.AndroidTestUtil.recyclerViewSizeMatcher
 import com.example.lightweight.R
@@ -21,6 +21,7 @@ import com.example.lightweight.ui.LightweightFragmentFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matchers.allOf
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -74,15 +75,17 @@ class ExerciseHistoryFragmentTest {
         val trainingSet2 = TrainingSet(
             exerciseInstance.exerciseInstanceID,
             2,
-            100f,
-            6,
+            90f,
+            8,
             null,
-            false
+            true
         )
 
 
         runBlocking {
             fakeWorkoutRepository.exerciseInstanceRepo = fakeExerciseInstanceRepository
+            fakeWorkoutRepository.trainingSetRepo = fakeTrainingSetRepository
+            fakeExerciseInstanceRepository.trainingSetRepo = fakeTrainingSetRepository
 
             fakeWorkoutRepository.insert(workout)
             fakeExerciseInstanceRepository.insert(exerciseInstance)
@@ -107,5 +110,11 @@ class ExerciseHistoryFragmentTest {
 
         onView(withId(R.id.recycler_view_exercise_instances))
             .check(matches(recyclerViewSizeMatcher(1)))
+
+        onView(withText("3 Dec 2022")).check(matches(isDisplayed()))
+        onView(allOf(withText("100.0kg"))).check(matches(isDisplayed()))
+        onView(allOf(withText("90.0kg"))).check(matches(isDisplayed()))
+        onView(allOf(withText("6 reps"))).check(matches(isDisplayed()))
+        onView(allOf(withText("8 reps"))).check(matches(isDisplayed()))
     }
 }

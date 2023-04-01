@@ -20,6 +20,8 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     private val exerciseOfExerciseInstanceTag = 7
     private val exerciseInstanceDateTag = 8
 
+    var trainingSetRepo: FakeTrainingSetRepository? = null
+
     var exercises = mutableListOf<Exercise>()
     var workouts = mutableListOf<Workout>()
 
@@ -111,14 +113,27 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
         }
         exerciseInstances.add(exerciseInstance)
         refreshLiveData(allTag)
+
+        if (trainingSetRepo != null) {
+            trainingSetRepo?.exerciseInstances?.add(exerciseInstance)
+            trainingSetRepo?.refreshLiveData(allTag)
+        }
     }
 
     override suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int) {
-        for (exerciseInstance in exerciseInstances) {
-            if (exerciseInstance.exerciseInstanceID == exerciseInstanceID) {
-                exerciseInstance.exerciseInstanceNumber = eiNumber
-                refreshLiveData(allTag)
-                return
+        for (exerciseInstance in exerciseInstances.filter {
+            it.exerciseInstanceID == exerciseInstanceID
+        }) {
+            exerciseInstance.exerciseInstanceNumber = eiNumber
+            refreshLiveData(allTag)
+
+            if (trainingSetRepo != null) {
+                for (repoExInstance in trainingSetRepo?.exerciseInstances!!.filter {
+                    it.exerciseInstanceID == exerciseInstanceID
+                }) {
+                    repoExInstance.exerciseInstanceNumber = eiNumber
+                    trainingSetRepo?.refreshLiveData(allTag)
+                }
             }
         }
     }

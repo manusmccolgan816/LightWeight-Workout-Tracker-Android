@@ -19,7 +19,6 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     private val trainingSetsOfExerciseTag = 7
 
     var workouts = mutableListOf<Workout>()
-
     var exerciseInstances = mutableListOf<ExerciseInstance>()
 
     private val trainingSets = mutableListOf<TrainingSet>()
@@ -50,7 +49,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
 
     private var lastId = 0
 
-    private fun refreshLiveData(tag: Int) {
+    fun refreshLiveData(tag: Int) {
         if (tag == trainingSetsTag || tag == allTag) observableTrainingSets.postValue(trainingSets)
         if (tag == trainingSetDatesOfExerciseIsPRTag || tag == allTag) {
             if (trainingSetDatesOfExerciseIsPRParamExerciseID != null) {
