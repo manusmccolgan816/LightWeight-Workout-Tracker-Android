@@ -26,7 +26,7 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     var exercises = mutableListOf<Exercise>()
     var workouts = mutableListOf<Workout>()
 
-    private val exerciseInstances = mutableListOf<ExerciseInstance>()
+    val exerciseInstances = mutableListOf<ExerciseInstance>()
     val observableExerciseInstances =
         MutableLiveData<List<ExerciseInstance>>(exerciseInstances)
 
@@ -166,8 +166,10 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
 
         if (trainingSetRepo != null) {
             // Delete trainingSets of this exerciseInstance
-            trainingSetRepo?.trainingSets?.removeIf {
+            for (trainingSet in trainingSetRepo?.trainingSets!!.filter {
                 it.exerciseInstanceID == exerciseInstance.exerciseInstanceID
+            }) {
+                trainingSetRepo?.delete(trainingSet)
             }
             trainingSetRepo?.exerciseInstances?.remove(exerciseInstance)
             trainingSetRepo?.refreshLiveData(allTag)

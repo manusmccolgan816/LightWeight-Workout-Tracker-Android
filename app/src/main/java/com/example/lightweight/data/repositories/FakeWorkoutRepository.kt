@@ -49,6 +49,13 @@ class FakeWorkoutRepository : WorkoutRepositoryInterface {
         refreshLiveData(allTag)
 
         if (exerciseInstanceRepo != null) {
+            // Delete exerciseInstances of this workout
+            for (exerciseInstance in exerciseInstanceRepo?.exerciseInstances!!.filter {
+                it.workoutID == workout.workoutID
+            }) {
+                exerciseInstanceRepo?.delete(exerciseInstance)
+            }
+
             exerciseInstanceRepo?.workouts?.remove(workout)
             exerciseInstanceRepo?.refreshLiveData(allTag)
         }

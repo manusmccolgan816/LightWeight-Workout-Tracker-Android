@@ -418,7 +418,96 @@ class LogSetsFragmentTest {
 
     @Test
     fun testEditTrainingSet_trainingSetEditedInRecyclerView() {
+        // This test requires the unit of measurement to be the default value of kg
 
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+        val fakeTrainingSetRepository = FakeTrainingSetRepository()
+
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+        val workout = Workout("2022-12-03", null)
+        workout.workoutID = 1
+        val exerciseInstance = ExerciseInstance(
+            workout.workoutID, exercise.exerciseID, 1, null
+        )
+        exerciseInstance.exerciseInstanceID = 1
+        val trainingSet = TrainingSet(
+            exerciseInstance.exerciseInstanceID,
+            1,
+            100f,
+            10,
+            null,
+            true
+        )
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeExerciseRepository.exerciseInstanceRepo = fakeExerciseInstanceRepository
+            fakeWorkoutRepository.exerciseInstanceRepo = fakeExerciseInstanceRepository
+            fakeWorkoutRepository.trainingSetRepo = fakeTrainingSetRepository
+            fakeExerciseInstanceRepository.trainingSetRepo = fakeTrainingSetRepository
+
+            fakeExerciseRepository.insert(exercise)
+            fakeWorkoutRepository.insert(workout)
+            fakeExerciseInstanceRepository.insert(exerciseInstance)
+            fakeTrainingSetRepository.insert(trainingSet)
+        }
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+        val testTrainingSetViewModel = TrainingSetViewModel(fakeTrainingSetRepository)
+
+        val args = bundleOf(
+            "exerciseID" to exercise.exerciseID,
+            "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
+        )
+        launchFragmentInContainer<LogSetsFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_training_set_options)
+                )
+            )
+
+        onView(withText("Edit")).perform(click())
+        onView(withId(R.id.edit_text_edit_set_weight)).perform(replaceText("2"))
+        onView(withId(R.id.edit_text_edit_set_reps)).perform(replaceText("3"))
+        onView(withId(R.id.button_save_edit_set)).perform(click())
+
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("3 reps")))
+            )
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("2.0kg")))
+            )
     }
 
     @Test
