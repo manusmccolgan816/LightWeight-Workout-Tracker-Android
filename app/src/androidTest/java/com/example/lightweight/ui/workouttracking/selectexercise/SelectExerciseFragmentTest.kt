@@ -8,11 +8,14 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.example.lightweight.AndroidTestUtil
+import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
+import com.example.lightweight.AndroidTestUtil.recyclerViewSizeMatcher
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.data.db.entities.Exercise
@@ -131,16 +134,151 @@ class SelectExerciseFragmentTest {
 
     @Test
     fun testAddExercise_exerciseAddedToRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+
+        runBlocking {
+            fakeCategoryRepository.insert(category)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+
+        val args = bundleOf(
+            "categoryID" to category.categoryID,
+            "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel
+        )
+        launchFragmentInContainer<SelectExerciseFragment>(
+            themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.fab_add_exercise)).perform(click())
+        onView(withId(R.id.edit_text_new_exercise_name)).perform(replaceText("Test Ex"))
+        onView(withId(R.id.button_save_new_exercise)).perform(click())
+
+        onView(withId(R.id.recycler_view_exercises))
+            .perform(
+                actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("Test Ex")))
+            )
     }
 
     @Test
     fun testEditExercise_exerciseEditedInRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+
+        runBlocking {
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+
+        val args = bundleOf(
+            "categoryID" to category.categoryID,
+            "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel
+        )
+        launchFragmentInContainer<SelectExerciseFragment>(
+            themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_exercises))
+            .perform(
+                actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_exercise_options)
+                )
+            )
+
+        onView(withText("Edit")).perform(click())
+        onView(withId(R.id.edit_text_edit_exercise_name)).perform(replaceText("Edited Ex"))
+        onView(withId(R.id.button_save_edit_exercise)).perform(click())
+
+        onView(withId(R.id.recycler_view_exercises))
+            .perform(
+                actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(
+                    0,
+                    scrollTo()
+                )
+            ).check(
+                matches(hasDescendant(withText("Edited Ex")))
+            )
     }
 
     @Test
     fun testDeleteExercise_exerciseRemovedFromRecyclerView() {
+        val fakeCategoryRepository = FakeCategoryRepository()
+        val fakeExerciseRepository = FakeExerciseRepository()
 
+        val category = Category("Test Cat")
+        category.categoryID = 1
+        val exercise = Exercise("Test Ex", category.categoryID)
+
+        runBlocking {
+            fakeCategoryRepository.insert(category)
+            fakeExerciseRepository.insert(exercise)
+        }
+
+        val testCategoryViewModel = CategoryViewModel(fakeCategoryRepository)
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+
+        val args = bundleOf(
+            "categoryID" to category.categoryID,
+            "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            categoryViewModel = testCategoryViewModel,
+            exerciseViewModel = testExerciseViewModel
+        )
+        launchFragmentInContainer<SelectExerciseFragment>(
+            themeResId = R.style.Theme_Lightweight, // Set the theme to avoid inflation error
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_exercises))
+            .perform(
+                actionOnItemAtPosition<ExerciseItemAdapter.ExerciseItemViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_exercise_options)
+                )
+            )
+
+        onView(withText("Delete")).perform(click())
+        onView(withId(R.id.button_confirm_delete_exercise)).perform(click())
+
+        // Assert that the recycler view is empty
+        onView(withId(R.id.recycler_view_exercises)).check(
+            matches(
+                recyclerViewSizeMatcher(
+                    0
+                )
+            )
+        )
     }
 }
