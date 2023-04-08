@@ -356,7 +356,7 @@ class LogSetsFragmentTest {
     }
 
     @Test
-    fun testSavePrTrainingSet_recyclerViewItemDisplayedWithTrophy() {
+    fun testSavePrTrainingSet_trainingSetWithTrophyAddedToRecyclerView() {
         // This test requires the unit of measurement to be the default value of kg
 
         val fakeExerciseRepository = FakeExerciseRepository()
@@ -430,5 +430,20 @@ class LogSetsFragmentTest {
             ).check(
                 matches(isDisplayed())
             )
+    }
+
+    @Test
+    fun testAddTrainingSet_trainingSetAddedToRecyclerView() {
+
+    }
+
+    @Test
+    fun testEditTrainingSet_trainingSetEditedInRecyclerView() {
+
+    }
+
+    @Test
+    fun testDeleteTrainingSet_trainingSetRemovedFromRecyclerView() {
+
     }
 }

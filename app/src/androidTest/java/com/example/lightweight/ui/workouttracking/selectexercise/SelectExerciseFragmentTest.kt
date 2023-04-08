@@ -128,4 +128,19 @@ class SelectExerciseFragmentTest {
 
         onView(withId(R.id.constraint_layout_select_category)).check(matches(isDisplayed()))
     }
+
+    @Test
+    fun testAddExercise_exerciseAddedToRecyclerView() {
+
+    }
+
+    @Test
+    fun testEditExercise_exerciseEditedInRecyclerView() {
+
+    }
+
+    @Test
+    fun testDeleteExercise_exerciseRemovedFromRecyclerView() {
+
+    }
 }
