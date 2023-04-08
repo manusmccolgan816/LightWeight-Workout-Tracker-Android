@@ -3,7 +3,6 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Exercise
-import java.lang.Exception
 
 class FakeExerciseRepository : ExerciseRepositoryInterface {
 
@@ -11,6 +10,7 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     private val exercisesTag = 1
     private val exercisesOfCategoryTag = 2
 
+    var exerciseInstanceRepo: FakeExerciseInstanceRepository? = null
     var cycleDayExerciseRepo: FakeCycleDayExerciseRepository? = null
 
     private val exercises = mutableListOf<Exercise>()
@@ -39,6 +39,10 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
         exercises.add(exercise)
         refreshLiveData(allTag)
 
+        if (exerciseInstanceRepo != null) {
+            exerciseInstanceRepo?.exercises?.add(exercise)
+            exerciseInstanceRepo?.refreshLiveData(allTag)
+        }
         if (cycleDayExerciseRepo != null) {
             cycleDayExerciseRepo?.exercises?.add(exercise)
             cycleDayExerciseRepo?.refreshLiveData(allTag)
@@ -46,6 +50,7 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
     }
 
     override suspend fun updateName(exerciseID: Int?, exerciseName: String) {
+        // TODO Update other repository data
         for (exercise in exercises) {
             if (exercise.exerciseID == exerciseID) {
                 exercise.exerciseName = exerciseName
@@ -59,6 +64,10 @@ class FakeExerciseRepository : ExerciseRepositoryInterface {
         exercises.remove(exercise)
         refreshLiveData(allTag)
 
+        if (exerciseInstanceRepo != null) {
+            exerciseInstanceRepo?.exercises?.remove(exercise)
+            exerciseInstanceRepo?.refreshLiveData(allTag)
+        }
         if (cycleDayExerciseRepo != null) {
             cycleDayExerciseRepo?.exercises?.remove(exercise)
             cycleDayExerciseRepo?.refreshLiveData(allTag)

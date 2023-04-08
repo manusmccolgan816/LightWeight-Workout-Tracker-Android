@@ -1,5 +1,6 @@
 package com.example.lightweight.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Exercise
@@ -21,7 +22,7 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     var workouts = mutableListOf<Workout>()
     var exerciseInstances = mutableListOf<ExerciseInstance>()
 
-    private val trainingSets = mutableListOf<TrainingSet>()
+    val trainingSets = mutableListOf<TrainingSet>()
     private val observableTrainingSets = MutableLiveData<List<TrainingSet>>(trainingSets)
 
     private val observableTrainingSetDatesOfExerciseIsPR = MutableLiveData<List<String>>()
@@ -234,8 +235,10 @@ class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
     }
 
     private fun calcTrainingSetsOfExerciseInstance(exerciseInstanceID: Int?): List<TrainingSet> {
+        Log.d("FakeExerciseInstanceRepository", "Entered calcTrainingSetsOfExerciseInstance")
         val setsToReturn = arrayListOf<TrainingSet>()
         for (trainingSet in trainingSets) {
+            Log.d("FakeTrainingSetRepository", "Found training set with ID: ${trainingSet.trainingSetID}")
             if (trainingSet.exerciseInstanceID == exerciseInstanceID) {
                 setsToReturn.add(trainingSet)
             }

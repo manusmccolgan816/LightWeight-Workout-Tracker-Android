@@ -1,5 +1,6 @@
 package com.example.lightweight.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.IdNamePair
@@ -147,12 +148,34 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
         }) {
             exerciseInstance.exerciseInstanceNumber--
             refreshLiveData(allTag)
+
+            if (trainingSetRepo != null) {
+                for (repoExInstance in trainingSetRepo?.exerciseInstances!!.filter {
+                    it.workoutID == workoutID && it.exerciseInstanceNumber > eiNumber
+                }) {
+                    repoExInstance.exerciseInstanceNumber--
+                    trainingSetRepo?.refreshLiveData(allTag)
+                }
+            }
         }
     }
 
     override suspend fun delete(exerciseInstance: ExerciseInstance) {
         exerciseInstances.remove(exerciseInstance)
         refreshLiveData(allTag)
+
+        if (trainingSetRepo != null) {
+            // Delete trainingSets of this exerciseInstance
+            trainingSetRepo?.trainingSets?.removeIf {
+                it.exerciseInstanceID == exerciseInstance.exerciseInstanceID
+            }
+            trainingSetRepo?.exerciseInstances?.remove(exerciseInstance)
+            trainingSetRepo?.refreshLiveData(allTag)
+            Log.d(
+                "FakeExerciseInstanceRepository",
+                "exerciseInstance deleted and trainingSetRepo notified"
+            )
+        }
     }
 
     override fun getExerciseInstancesOfWorkoutNoLiveData(workoutID: Int?): List<ExerciseInstance> {

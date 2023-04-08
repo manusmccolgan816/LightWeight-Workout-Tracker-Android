@@ -13,7 +13,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.example.lightweight.AndroidTestUtil
 import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
 import com.example.lightweight.AndroidTestUtil.recyclerViewSizeMatcher
 import com.example.lightweight.R

@@ -9,9 +9,12 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.example.lightweight.AndroidTestUtil.clickChildViewWithId
+import com.example.lightweight.AndroidTestUtil.recyclerViewSizeMatcher
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.data.db.entities.ExerciseInstance
+import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
 import com.example.lightweight.data.repositories.FakeExerciseInstanceRepository
 import com.example.lightweight.data.repositories.FakeExerciseRepository
@@ -130,25 +133,6 @@ class LogSetsFragmentTest {
                 .getOrAwaitValue()[0]
         Truth.assertThat(trainingSet.weight).isEqualTo(10f)
         Truth.assertThat(trainingSet.reps).isEqualTo(12)
-    }
-
-    @Test
-    fun testClickSaveWithInvalidWeightAndReps_toastDisplayed() {
-        // TODO: CAN'T GET TOASTMATCHER TO WORK
-//        val args = bundleOf(
-//            "exerciseID" to 1,
-//            "selectedDate" to "2022-12-03"
-//        )
-//        launchFragmentInContainer<LogSetsFragment>(
-//            themeResId = R.style.Theme_Lightweight,
-//            fragmentArgs = args,
-//        )
-//
-//        onView(withId(R.id.edit_text_weight)).perform(replaceText(""))
-//        onView(withId(R.id.edit_text_num_reps)).perform(replaceText(""))
-//        onView(withId(R.id.button_save_set)).perform(click())
-//        onView(withText("Enter weight and reps")).inRoot(ToastMatcher())
-//            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -433,17 +417,86 @@ class LogSetsFragmentTest {
     }
 
     @Test
-    fun testAddTrainingSet_trainingSetAddedToRecyclerView() {
-
-    }
-
-    @Test
     fun testEditTrainingSet_trainingSetEditedInRecyclerView() {
 
     }
 
     @Test
     fun testDeleteTrainingSet_trainingSetRemovedFromRecyclerView() {
+        val fakeExerciseRepository = FakeExerciseRepository()
+        val fakeWorkoutRepository = FakeWorkoutRepository()
+        val fakeExerciseInstanceRepository = FakeExerciseInstanceRepository()
+        val fakeTrainingSetRepository = FakeTrainingSetRepository()
 
+        val exercise = Exercise("Fake Exercise", 1)
+        exercise.exerciseID = 1
+        val workout = Workout("2022-12-03", null)
+        workout.workoutID = 1
+        val exerciseInstance = ExerciseInstance(
+            workout.workoutID, exercise.exerciseID, 1, null
+        )
+        exerciseInstance.exerciseInstanceID = 1
+        val trainingSet = TrainingSet(
+            exerciseInstance.exerciseInstanceID,
+            1,
+            100f,
+            10,
+            null,
+            true
+        )
+
+        runBlocking {
+            // Give some repos references to each other so that they can have up-to-date data
+            fakeExerciseRepository.exerciseInstanceRepo = fakeExerciseInstanceRepository
+            fakeWorkoutRepository.exerciseInstanceRepo = fakeExerciseInstanceRepository
+            fakeWorkoutRepository.trainingSetRepo = fakeTrainingSetRepository
+            fakeExerciseInstanceRepository.trainingSetRepo = fakeTrainingSetRepository
+
+            fakeExerciseRepository.insert(exercise)
+            fakeWorkoutRepository.insert(workout)
+            fakeExerciseInstanceRepository.insert(exerciseInstance)
+            fakeTrainingSetRepository.insert(trainingSet)
+        }
+
+        val testExerciseViewModel = ExerciseViewModel(fakeExerciseRepository)
+        val testWorkoutViewModel = WorkoutViewModel(fakeWorkoutRepository)
+        val testExerciseInstanceViewModel =
+            ExerciseInstanceViewModel(fakeExerciseInstanceRepository)
+        val testTrainingSetViewModel = TrainingSetViewModel(fakeTrainingSetRepository)
+
+        val args = bundleOf(
+            "exerciseID" to exercise.exerciseID,
+            "selectedDate" to "2022-12-03"
+        )
+        val factory = LightweightFragmentFactory(
+            exerciseViewModel = testExerciseViewModel,
+            workoutViewModel = testWorkoutViewModel,
+            exerciseInstanceViewModel = testExerciseInstanceViewModel,
+            trainingSetViewModel = testTrainingSetViewModel
+        )
+        launchFragmentInContainer<LogSetsFragment>(
+            themeResId = R.style.Theme_Lightweight,
+            fragmentArgs = args,
+            factory = factory
+        )
+
+        onView(withId(R.id.recycler_view_training_sets))
+            .perform(
+                actionOnItemAtPosition<TrainingSetItemAdapter.TrainingSetItemViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.image_view_training_set_options)
+                )
+            )
+
+        onView(withText("Delete")).perform(click())
+
+        // Assert that the recycler view is empty
+        onView(withId(R.id.recycler_view_training_sets)).check(
+            matches(
+                recyclerViewSizeMatcher(
+                    0
+                )
+            )
+        )
     }
 }

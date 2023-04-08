@@ -24,7 +24,6 @@ import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsOnDeletion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class TrainingSetItemAdapter(
     var trainingSets: List<TrainingSet>,
     private val trainingSetViewModel: TrainingSetViewModel,
@@ -34,6 +33,8 @@ class TrainingSetItemAdapter(
     private val workoutViewModel: WorkoutViewModel,
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel
 ) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>() {
+
+    private val logTag = "TrainingSetItemAdapter"
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -175,6 +176,7 @@ class TrainingSetItemAdapter(
                         // If this is the only set in the exercise instance...
                         if (this.itemCount <= 1) {
                             fragment.lifecycleScope.launch(Dispatchers.IO) {
+                                Log.d(logTag, "About to delete exercise instance")
                                 // Delete the exercise instance
                                 val curExerciseInstance = exerciseInstanceViewModel
                                     .getExerciseInstanceOfID(curTrainingSet.exerciseInstanceID)
@@ -191,27 +193,26 @@ class TrainingSetItemAdapter(
                                 delExInstanceJob.join()
                                 updateExInstanceNumbersJob.join()
 
-                                fragment.lifecycleScope.launch(Dispatchers.IO) {
-                                    val workout = workoutViewModel.getWorkoutOfDate(selectedDate)
+                                val workout = workoutViewModel.getWorkoutOfDate(selectedDate)
 
-                                    val exInstOfWorkoutObs = exerciseInstanceViewModel
-                                        .getExerciseInstancesOfWorkout(workout?.workoutID)
+                                val exInstOfWorkoutObs = exerciseInstanceViewModel
+                                    .getExerciseInstancesOfWorkout(workout?.workoutID)
+                                Log.d(logTag, "workoutID: ${workout?.workoutID}")
 
-                                    val ref = fragment.activity
-                                    ref?.runOnUiThread {
-                                        exInstOfWorkoutObs.observe(fragment.viewLifecycleOwner) { exInstancesOfWorkout ->
-                                            Log.d(null, "Entered exInstOfWorkoutObs")
-                                            if (exInstancesOfWorkout.isEmpty()) {
-                                                Log.d(
-                                                    null,
-                                                    "No exercise instances of workout found"
-                                                )
-                                                // Delete the workout if it has no exercise
-                                                // instances
-                                                workoutViewModel.deleteWorkoutOfID(workout?.workoutID)
-                                            }
-                                            exInstOfWorkoutObs.removeObservers(fragment.viewLifecycleOwner)
+                                val ref = fragment.activity
+                                ref?.runOnUiThread {
+                                    exInstOfWorkoutObs.observe(fragment.viewLifecycleOwner) { exInstancesOfWorkout ->
+                                        Log.d(logTag, "Entered exInstOfWorkoutObs")
+                                        if (exInstancesOfWorkout.isEmpty()) {
+                                            Log.d(
+                                                logTag,
+                                                "No exercise instances of workout found"
+                                            )
+                                            // Delete the workout if it has no exercise
+                                            // instances
+                                            workoutViewModel.deleteWorkoutOfID(workout?.workoutID)
                                         }
+                                        exInstOfWorkoutObs.removeObservers(fragment.viewLifecycleOwner)
                                     }
                                 }
                             }
