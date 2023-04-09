@@ -23,16 +23,11 @@ class HomeChildWorkoutAdapter(
     private val recyclerViewPopulated: () -> Unit,
     var trainingSets: List<TrainingSet>,
     val exerciseInstanceID: Int?,
-    private val fragment: HomeFragment
-) : RecyclerView.Adapter<HomeChildWorkoutAdapter.HomeChildWorkoutViewHolder>(), KodeinAware {
+    private val fragment: HomeFragment,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+) : RecyclerView.Adapter<HomeChildWorkoutAdapter.HomeChildWorkoutViewHolder>() {
 
     private val logTag = "HomeChildWorkoutAdapter"
-
-    override val kodein by kodein(fragment.requireContext())
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by fragment.viewModels {
-        exerciseInstanceFactory
-    }
 
     private lateinit var sharedPreferences: SharedPreferences
 

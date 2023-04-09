@@ -1,47 +1,34 @@
 package com.example.lightweight.ui.workouttracking.home
 
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import com.example.lightweight.util.PersonalRecordUtil
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 class HomeParentWorkoutAdapter(
     private val recyclerViewPopulated: () -> Unit,
     var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
-    private val fragment: HomeFragment
-) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>(), KodeinAware {
+    private val fragment: HomeFragment,
+    private val workoutViewModel: WorkoutViewModel,
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    private val trainingSetViewModel: TrainingSetViewModel
+) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>() {
 
     private val logTag = "HomeParentWorkoutAdapter"
-
-    override val kodein by kodein(fragment.requireContext())
-    private val workoutFactory: WorkoutViewModelFactory by instance()
-    private val workoutViewModel: WorkoutViewModel by fragment.viewModels { workoutFactory }
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by fragment.viewModels {
-        exerciseInstanceFactory
-    }
-    private val trainingSetFactory: TrainingSetViewModelFactory by instance()
-    private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels {
-        trainingSetFactory
-    }
 
     private lateinit var parent: ViewGroup
 
@@ -75,7 +62,8 @@ class HomeParentWorkoutAdapter(
             recyclerViewPopulated,
             listOf(),
             curID,
-            fragment
+            fragment,
+            exerciseInstanceViewModel
         )
         recyclerViewTrainingSets.layoutManager = WrapContentLinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false

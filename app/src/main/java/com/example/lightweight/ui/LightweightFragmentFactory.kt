@@ -38,7 +38,8 @@ class LightweightFragmentFactory(
             HomeFragment::class.java.name -> {
                 HomeFragment(
                     workoutViewModel!!,
-                    exerciseInstanceViewModel!!
+                    exerciseInstanceViewModel!!,
+                    trainingSetViewModel!!
                 )
             }
             CalendarFragment::class.java.name -> {

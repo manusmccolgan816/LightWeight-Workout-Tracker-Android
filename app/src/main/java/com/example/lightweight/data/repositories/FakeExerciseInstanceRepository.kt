@@ -272,10 +272,13 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
         return observableExerciseInstanceOfIDObs
     }
 
-    private fun calcExerciseInstanceOfIDObs(exerciseInstanceID: Int?): ExerciseInstance {
-        return exerciseInstances.filter {
+    private fun calcExerciseInstanceOfIDObs(exerciseInstanceID: Int?): ExerciseInstance? {
+        for (exerciseInstance in exerciseInstances.filter {
             it.exerciseInstanceID == exerciseInstanceID
-        }[0]
+        }) {
+            return exerciseInstance
+        }
+        return null
     }
 
     override fun getExerciseOfExerciseInstance(exerciseInstanceID: Int?): LiveData<Int?> {
@@ -285,9 +288,12 @@ class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
     }
 
     private fun calcExerciseOfExerciseInstance(exerciseInstanceID: Int?): Int? {
-        return exerciseInstances.filter {
+        for (exerciseInstance in exerciseInstances.filter {
             it.exerciseInstanceID == exerciseInstanceID
-        }[0].exerciseID
+        }) {
+            return exerciseInstance.exerciseID
+        }
+        return null
     }
 
     override fun getExerciseInstanceDate(exerciseInstanceID: Int?): LiveData<String> {

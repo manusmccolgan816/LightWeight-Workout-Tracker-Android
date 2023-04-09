@@ -15,6 +15,7 @@ import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
+import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +25,8 @@ import java.util.*
 
 class HomeFragment(
     private val workoutViewModel: WorkoutViewModel,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
+    private val trainingSetViewModel: TrainingSetViewModel
 ) : Fragment(R.layout.fragment_home) {
 
     private val logTag = "HomeFragment"
@@ -112,7 +114,10 @@ class HomeFragment(
                 recyclerViewExerciseInstances.visibility = View.VISIBLE
             },
             listOf(),
-            this
+            this,
+            workoutViewModel,
+            exerciseInstanceViewModel,
+            trainingSetViewModel
         )
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())

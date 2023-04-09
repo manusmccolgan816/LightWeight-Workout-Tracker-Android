@@ -476,6 +476,8 @@ class ExerciseInsightsFragmentTest {
 
     @Test
     fun testPRsStatCorrect() {
+        // This test requires the unit of measurement to be the default value of kg
+
         val fakeCategoryRepository = FakeCategoryRepository()
         val fakeExerciseRepository = FakeExerciseRepository()
         val fakeWorkoutRepository = FakeWorkoutRepository()
