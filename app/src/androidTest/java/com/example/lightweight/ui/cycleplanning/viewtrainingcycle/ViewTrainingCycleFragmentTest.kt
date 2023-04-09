@@ -179,7 +179,7 @@ class ViewTrainingCycleFragmentTest {
                 )
             )
 
-        onView(withId(R.id.recycler_view_categories))
+        onView(withContentDescription(R.string.string_categories_for_cycle_content_desc))
             .perform(
                 actionOnItemAtPosition<SelectCategoryForCycleAdapter.SelectCategoryForCycleViewHolder>(
                     0,
@@ -266,7 +266,7 @@ class ViewTrainingCycleFragmentTest {
                 )
             )
 
-        onView(withId(R.id.recycler_view_exercises))
+        onView(withContentDescription(R.string.string_exercises_for_cycle_content_desc))
             .perform(
                 actionOnItemAtPosition<SelectExerciseForCycleAdapter.SelectExerciseForCycleViewHolder>(
                     0,

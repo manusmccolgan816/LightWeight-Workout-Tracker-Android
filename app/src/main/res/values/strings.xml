@@ -104,4 +104,6 @@
     <string name="string_share_workout">Share Workout</string>
     <string name="string_share_training_cycle">Share Training Cycle</string>
     <string name="string_share">Share</string>
+    <string name="string_categories_for_cycle_content_desc">Categories for training cycle</string>
+    <string name="string_exercises_for_cycle_content_desc">Exercises for training cycle</string>
 </resources>
