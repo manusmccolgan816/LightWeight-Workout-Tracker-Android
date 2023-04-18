@@ -3,7 +3,6 @@ package com.example.lightweight.data.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout

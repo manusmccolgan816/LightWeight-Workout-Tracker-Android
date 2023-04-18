@@ -223,15 +223,3 @@ class SelectCategoryFragmentTest {
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

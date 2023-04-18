@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,15 +14,10 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.ui.MainActivity
 import com.example.lightweight.ui.category.CategoryViewModel
-import com.example.lightweight.ui.category.CategoryViewModelFactory
 import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
 class SelectExerciseFragment(
     private val categoryViewModel: CategoryViewModel,

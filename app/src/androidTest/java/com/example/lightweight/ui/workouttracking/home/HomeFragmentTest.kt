@@ -268,10 +268,3 @@ class HomeFragmentTest {
         )
     }
 }
-
-
-
-
-
-
-

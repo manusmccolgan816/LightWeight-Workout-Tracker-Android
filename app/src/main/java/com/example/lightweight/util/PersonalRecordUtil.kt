@@ -160,7 +160,7 @@ object PersonalRecordUtil {
     /**
      * Adds newSet to the correct index of updatedPRSets, which is ordered by reps (ascending).
      */
-    fun addToUpdatedPRSets(updatedPRSets: LinkedList<TrainingSet>, newSet: TrainingSet)
+    private fun addToUpdatedPRSets(updatedPRSets: LinkedList<TrainingSet>, newSet: TrainingSet)
             : LinkedList<TrainingSet> {
         // Add the now PR training set to the correct index of
         // updatedPRSets

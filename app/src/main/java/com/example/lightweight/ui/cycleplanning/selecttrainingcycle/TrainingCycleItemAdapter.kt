@@ -7,24 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Cycle
 import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModel
-import com.example.lightweight.ui.cycleplanning.cycle.CycleViewModelFactory
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 class TrainingCycleItemAdapter(
     var cycles: List<Cycle>,
     private val fragment: SelectTrainingCycleFragment,
     private val cycleViewModel: CycleViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val logTag = "TrainingCycleItemAdapter"
 
     private lateinit var parent: ViewGroup
 

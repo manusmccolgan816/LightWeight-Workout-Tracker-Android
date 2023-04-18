@@ -17,7 +17,6 @@ import com.example.lightweight.ui.cycleplanning.cycledaycategory.CycleDayCategor
 import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModel
 
-
 class TrainingCycleDayAdapter(
     var items: ArrayList<Pair<Int, Int?>>,
     var cycleDays: ArrayList<CycleDay>,

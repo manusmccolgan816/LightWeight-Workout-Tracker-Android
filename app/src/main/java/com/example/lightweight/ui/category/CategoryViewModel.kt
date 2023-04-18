@@ -21,7 +21,6 @@ class CategoryViewModel(private val repository: CategoryRepositoryInterface) : V
         repository.delete(category)
     }
 
-    // Doesn't need to be executed in a coroutine because it is just a read operation
     fun getAllCategories() = repository.getAllCategories()
 
     fun getCategoryOfID(categoryID: Int?) = repository.getCategoryOfID(categoryID)

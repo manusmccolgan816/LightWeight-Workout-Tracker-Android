@@ -10,10 +10,10 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.CycleDay
 
 class ShareTrainingCycleAdapter(
-    var items: ArrayList<Pair<Int, Int?>>,
-    var cycleDays: ArrayList<CycleDay>,
-    var idNamePairsCategory: ArrayList<Pair<Int?, String>>,
-    var idNamePairsExercise: ArrayList<Pair<Int?, String>>,
+    private var items: ArrayList<Pair<Int, Int?>>,
+    private var cycleDays: ArrayList<CycleDay>,
+    private var idNamePairsCategory: ArrayList<Pair<Int?, String>>,
+    private var idNamePairsExercise: ArrayList<Pair<Int?, String>>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -72,7 +72,7 @@ class ShareTrainingCycleAdapter(
                 checkBoxCycleDay.text = curCycleDay.cycleDayName
 
                 checkedCycleDays.add(curCycleDay)
-                checkBoxCycleDay.setOnCheckedChangeListener { buttonView, isChecked ->
+                checkBoxCycleDay.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         checkedCycleDays.add(curCycleDay)
                     } else {

@@ -15,7 +15,7 @@ class MainActivityTest {
 
     @Test
     fun testMainActivityInView() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.drawer_layout)).check(matches(isDisplayed()))
     }

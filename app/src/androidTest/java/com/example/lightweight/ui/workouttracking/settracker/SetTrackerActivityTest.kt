@@ -20,7 +20,7 @@ class SetTrackerActivityTest {
             putExtra("exerciseID", 1)
             putExtra("selectedDate", "2022-12-04")
         }
-        val scenario = ActivityScenario.launch<SetTrackerActivity>(intent)
+        ActivityScenario.launch<SetTrackerActivity>(intent)
 
         onView(withId(R.id.relative_layout_set_tracker)).check(matches(isDisplayed()))
     }

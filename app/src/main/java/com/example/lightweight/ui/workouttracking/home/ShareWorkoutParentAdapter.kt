@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import org.kodein.di.KodeinAware
@@ -19,15 +17,12 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 class ShareWorkoutParentAdapter(
-    var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
+    private var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: Fragment
 ) : RecyclerView.Adapter<ShareWorkoutParentAdapter.ShareWorkoutParentViewHolder>(), KodeinAware {
 
     override val kodein by kodein(fragment.requireContext())
-    private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel by fragment.viewModels {
-        exerciseInstanceFactory
-    }
+
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
     private val trainingSetViewModel: TrainingSetViewModel by fragment.viewModels {
         trainingSetFactory
@@ -55,7 +50,7 @@ class ShareWorkoutParentAdapter(
 
         checkBoxExerciseInstance.text = curName
         checkedIDNamePairs.add(idNamePairs[position])
-        checkBoxExerciseInstance.setOnCheckedChangeListener { buttonView, isChecked ->
+        checkBoxExerciseInstance.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 checkedIDNamePairs.add(idNamePairs[position])
             } else {

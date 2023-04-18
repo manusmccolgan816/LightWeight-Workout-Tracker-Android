@@ -26,7 +26,6 @@ import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactor
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
-import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class SetTrackerActivity : AppCompatActivity(), KodeinAware {

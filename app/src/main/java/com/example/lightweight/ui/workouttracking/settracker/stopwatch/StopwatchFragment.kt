@@ -15,8 +15,6 @@ import com.google.android.material.button.MaterialButton
 
 class StopwatchFragment : Fragment(R.layout.fragment_stopwatch) {
 
-    private val logTag = "StopwatchFragment"
-
     private var isStopwatchRunning = false
 
     private lateinit var statusReceiver: BroadcastReceiver

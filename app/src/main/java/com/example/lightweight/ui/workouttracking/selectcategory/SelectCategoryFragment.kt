@@ -24,7 +24,7 @@ class SelectCategoryFragment(
 
     private var categories = listOf<Category>()
 
-    lateinit var searchViewCategories: SearchView
+    private lateinit var searchViewCategories: SearchView
     private lateinit var recyclerViewCategories: RecyclerView
     private lateinit var fabAddCategory: FloatingActionButton
 
