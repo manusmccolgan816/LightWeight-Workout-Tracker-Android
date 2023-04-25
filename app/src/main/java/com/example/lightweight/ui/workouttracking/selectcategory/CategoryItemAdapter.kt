@@ -10,12 +10,11 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
-import com.example.lightweight.ui.category.CategoryViewModel
 
 class CategoryItemAdapter(
     private val selectedDate: String,
     var categories: List<Category>,
-    private val viewModel: CategoryViewModel,
+    private val viewModel: SelectCategoryViewModel,
     var fragment: SelectCategoryFragment,
     private val categorySelected: (Int, String) -> Unit
 ) : RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder>() {

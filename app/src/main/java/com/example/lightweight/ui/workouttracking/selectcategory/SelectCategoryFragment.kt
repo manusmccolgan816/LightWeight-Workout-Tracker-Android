@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Category
 import com.example.lightweight.ui.MainActivity
-import com.example.lightweight.ui.category.CategoryViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SelectCategoryFragment(
-    private val categoryViewModel: CategoryViewModel
+    private val viewModel: SelectCategoryViewModel
 ) : Fragment(R.layout.fragment_select_category) {
 
     private val args: SelectCategoryFragmentArgs by navArgs()
@@ -55,7 +54,7 @@ class SelectCategoryFragment(
         val adapter = CategoryItemAdapter(
             args.selectedDate,
             listOf(),
-            categoryViewModel,
+            viewModel,
             this,
             fun(categoryId: Int, selectedDate: String) {
                 val action = SelectCategoryFragmentDirections
@@ -68,7 +67,7 @@ class SelectCategoryFragment(
         recyclerViewCategories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewCategories.adapter = adapter
 
-        categoryViewModel.getAllCategories().observe(viewLifecycleOwner) {
+        viewModel.getAllCategories().observe(viewLifecycleOwner) {
             categories = it
             adapter.categories = it
             adapter.notifyDataSetChanged()
@@ -103,7 +102,7 @@ class SelectCategoryFragment(
             AddCategoryDialog(
                 requireContext(),
                 fun(category: Category) {
-                    categoryViewModel.insert(category)
+                    viewModel.insert(category)
                     // Clear the search view text
                     searchViewCategories.setQuery("", false)
                     // Ensure the keyboard does not appear

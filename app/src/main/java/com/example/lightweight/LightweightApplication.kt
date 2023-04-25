@@ -11,6 +11,7 @@ import com.example.lightweight.ui.cycleplanning.cycledayexercise.CycleDayExercis
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.home.HomeViewModelFactory
+import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModelFactory
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
@@ -59,6 +60,7 @@ class LightweightApplication : Application(), KodeinAware {
 
 
         bind() from provider { HomeViewModelFactory(instance(), instance(), instance()) }
+        bind() from provider { SelectCategoryViewModelFactory(instance()) }
         bind() from provider { SelectExerciseViewModelFactory(instance(), instance()) }
     }
 }

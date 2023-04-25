@@ -31,6 +31,8 @@ import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInsta
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.home.HomeViewModel
 import com.example.lightweight.ui.workouttracking.home.HomeViewModelFactory
+import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModel
+import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModelFactory
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModel
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
@@ -57,6 +59,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
     private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
     private val homeViewModelFactory: HomeViewModelFactory by instance()
+    private val selectCategoryViewModelFactory: SelectCategoryViewModelFactory by instance()
     private val selectExerciseViewModelFactory: SelectExerciseViewModelFactory by instance()
 
     private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
@@ -76,6 +79,9 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
     private val homeViewModel: HomeViewModel by viewModels {
         homeViewModelFactory
+    }
+    private val selectCategoryViewModel: SelectCategoryViewModel by viewModels {
+        selectCategoryViewModelFactory
     }
     private val selectExerciseViewModel: SelectExerciseViewModel by viewModels {
         selectExerciseViewModelFactory
@@ -99,6 +105,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             cycleDayCategoryViewModel,
             cycleDayExerciseViewModel,
             homeViewModel,
+            selectCategoryViewModel,
             selectExerciseViewModel,
         )
 

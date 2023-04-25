@@ -15,6 +15,7 @@ import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInsta
 import com.example.lightweight.ui.workouttracking.home.HomeFragment
 import com.example.lightweight.ui.workouttracking.home.HomeViewModel
 import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryFragment
+import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModel
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseFragment
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModel
 import com.example.lightweight.ui.workouttracking.settracker.exercisehistory.ExerciseHistoryFragment
@@ -34,6 +35,7 @@ class LightweightFragmentFactory(
     private val cycleDayCategoryViewModel: CycleDayCategoryViewModel? = null,
     private val cycleDayExerciseViewModel: CycleDayExerciseViewModel? = null,
     private val homeViewModel: HomeViewModel? = null,
+    private val selectCategoryViewModel: SelectCategoryViewModel? = null,
     private val selectExerciseViewModel: SelectExerciseViewModel? = null,
 ) : FragmentFactory() {
 
@@ -48,7 +50,7 @@ class LightweightFragmentFactory(
                 CalendarFragment(workoutViewModel!!)
             }
             SelectCategoryFragment::class.java.name -> {
-                SelectCategoryFragment(categoryViewModel!!)
+                SelectCategoryFragment(selectCategoryViewModel!!)
             }
             SelectExerciseFragment::class.java.name -> {
                 SelectExerciseFragment(
