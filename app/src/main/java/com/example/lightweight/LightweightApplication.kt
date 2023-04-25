@@ -13,6 +13,7 @@ import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInsta
 import com.example.lightweight.ui.workouttracking.home.HomeViewModelFactory
 import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModelFactory
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModelFactory
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModelFactory
 import org.kodein.di.Kodein
@@ -62,5 +63,13 @@ class LightweightApplication : Application(), KodeinAware {
         bind() from provider { HomeViewModelFactory(instance(), instance(), instance()) }
         bind() from provider { SelectCategoryViewModelFactory(instance()) }
         bind() from provider { SelectExerciseViewModelFactory(instance(), instance()) }
+        bind() from provider {
+            LogSetsViewModelFactory(
+                instance(),
+                instance(),
+                instance(),
+                instance()
+            )
+        }
     }
 }

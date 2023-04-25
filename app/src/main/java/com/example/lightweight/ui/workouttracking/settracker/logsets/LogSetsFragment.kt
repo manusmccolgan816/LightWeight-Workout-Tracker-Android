@@ -17,20 +17,13 @@ import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
-import com.example.lightweight.ui.exercise.ExerciseViewModel
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.settracker.SetTrackerActivity
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LogSetsFragment(
-    private val exerciseViewModel: ExerciseViewModel,
-    private val workoutViewModel: WorkoutViewModel,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
-    private val trainingSetViewModel: TrainingSetViewModel
+    private val viewModel: LogSetsViewModel
 ) : Fragment(R.layout.fragment_log_sets) {
 
     private val logTag = "LogSetsFragment"
@@ -81,21 +74,21 @@ class LogSetsFragment(
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
-            val exercise = exerciseViewModel.getExerciseOfID(exerciseID)
+            val exercise = viewModel.getExerciseOfID(exerciseID)
             ref?.runOnUiThread {
                 // Set the action bar title
                 activity?.title = exercise.exerciseName
             }
 
             // If a workout exists for the selected date...
-            if (workoutViewModel.getWorkoutOfDate(selectedDate) != null) {
+            if (viewModel.getWorkoutOfDate(selectedDate) != null) {
                 // Get a reference to the workoutID
-                workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
+                workoutID = viewModel.getWorkoutOfDate(selectedDate)!!.workoutID
 
                 // If an exercise instance exists for the selected date and exercise
-                if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) != null) {
+                if (viewModel.getExerciseInstance(workoutID, exerciseID) != null) {
                     // Get a reference to the exerciseInstanceID
-                    exerciseInstanceID = exerciseInstanceViewModel
+                    exerciseInstanceID = viewModel
                         .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
 
                     // Set up the adapter outside of the coroutine
@@ -118,12 +111,10 @@ class LogSetsFragment(
 
         adapter = TrainingSetItemAdapter(
             listOf(),
-            trainingSetViewModel,
             exerciseID,
             selectedDate,
-            this,
-            workoutViewModel,
-            exerciseInstanceViewModel
+            viewModel,
+            this
         )
         recyclerViewTrainingSets.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewTrainingSets.adapter = adapter
@@ -195,27 +186,27 @@ class LogSetsFragment(
 
             lifecycleScope.launch(Dispatchers.IO) {
                 // If no workout exists for the selected date...
-                if (workoutViewModel.getWorkoutOfDate(selectedDate) == null) {
+                if (viewModel.getWorkoutOfDate(selectedDate) == null) {
                     // Create a new workout
-                    val insWorkoutJob = workoutViewModel.insert(Workout(selectedDate, null))
+                    val insWorkoutJob = viewModel.insertWorkout(Workout(selectedDate, null))
                     insWorkoutJob.join() // Wait for the insertion to finish
 
-                    workoutID = workoutViewModel.getWorkoutOfDate(selectedDate)!!.workoutID
+                    workoutID = viewModel.getWorkoutOfDate(selectedDate)!!.workoutID
                 }
 
                 // If no exercise instance exists for the selected date and exercise...
-                if (exerciseInstanceViewModel.getExerciseInstance(workoutID, exerciseID) == null) {
+                if (viewModel.getExerciseInstance(workoutID, exerciseID) == null) {
                     // Get the exercise instance number to assign for ordering purposes
-                    val eiNumber = exerciseInstanceViewModel
+                    val eiNumber = viewModel
                         .getExerciseInstancesOfWorkoutNoLiveData(workoutID).size + 1
 
                     // Create and insert a new exercise instance
-                    val instExerciseInstanceJob = exerciseInstanceViewModel.insert(
+                    val instExerciseInstanceJob = viewModel.insertExerciseInstance(
                         ExerciseInstance(workoutID, exerciseID, eiNumber, null)
                     )
                     instExerciseInstanceJob.join() // Wait for the insertion to finish
 
-                    exerciseInstanceID = exerciseInstanceViewModel
+                    exerciseInstanceID = viewModel
                         .getExerciseInstance(workoutID, exerciseID)!!.exerciseInstanceID
 
                     // If a new exercise instance has been created the adapter will need to be set
@@ -226,12 +217,12 @@ class LogSetsFragment(
                 ref?.runOnUiThread {
                     var isPR: Boolean
                     // Get the PR sets of the current exercise by observing a LiveData
-                    val previousPRSetsObs = trainingSetViewModel
+                    val previousPRSetsObs = viewModel
                         .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                     previousPRSetsObs.observe(viewLifecycleOwner) { prSets ->
 
                         // Get the dates of the PR sets by observing a LiveData
-                        val prDatesObs = trainingSetViewModel
+                        val prDatesObs = viewModel
                             .getTrainingSetDatesOfExerciseIsPR(exerciseID, 1)
                         prDatesObs.observe(viewLifecycleOwner) { prDates ->
                             prDatesObs.removeObservers(viewLifecycleOwner)
@@ -244,7 +235,7 @@ class LogSetsFragment(
 
                             // Set isPr to false for all training sets that will no longer be a PR
                             for (id in noLongerPrIds) {
-                                trainingSetViewModel.updateIsPR(id, 0)
+                                viewModel.updateTrainingSetIsPR(id, 0)
                             }
 
                             // Insert the new training set
@@ -252,7 +243,7 @@ class LogSetsFragment(
                                 exerciseInstanceID,
                                 adapter.itemCount + 1, weight, reps, null, isPR
                             )
-                            trainingSetViewModel.insert(trainingSet)
+                            viewModel.insertTrainingSet(trainingSet)
                         }
 
                         previousPRSetsObs.removeObservers(viewLifecycleOwner)
@@ -273,7 +264,7 @@ class LogSetsFragment(
     }
 
     private fun setupAdapter() {
-        trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
+        viewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
             .observe(viewLifecycleOwner) {
                 Log.d(logTag, "Training sets data changed")
                 adapter.trainingSets = it

@@ -16,9 +16,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import com.example.lightweight.util.PersonalRecordUtil.calculateIsNewSetPr
 import com.example.lightweight.util.PersonalRecordUtil.getNewPrSetsOnDeletion
 import kotlinx.coroutines.Dispatchers
@@ -26,12 +23,10 @@ import kotlinx.coroutines.launch
 
 class TrainingSetItemAdapter(
     var trainingSets: List<TrainingSet>,
-    private val trainingSetViewModel: TrainingSetViewModel,
     private val exerciseID: Int?,
     private val selectedDate: String,
-    private val fragment: Fragment,
-    private val workoutViewModel: WorkoutViewModel,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+    private val viewModel: LogSetsViewModel,
+    private val fragment: Fragment
 ) : RecyclerView.Adapter<TrainingSetItemAdapter.TrainingSetItemViewHolder>() {
 
     private val logTag = "TrainingSetItemAdapter"
@@ -112,7 +107,7 @@ class TrainingSetItemAdapter(
         imageViewSetNote.setOnClickListener {
             TrainingSetNoteDialog(parent.context, curTrainingSet,
                 fun(trainingSetID: Int?, note: String?) {
-                    trainingSetViewModel.updateNote(trainingSetID, note)
+                    viewModel.updateTrainingSetNote(trainingSetID, note)
                 }).show()
         }
 
@@ -136,12 +131,12 @@ class TrainingSetItemAdapter(
                     R.id.menu_item_delete_training_set -> {
                         // If the set to be deleted is a PR, another set may become a PR
                         if (curTrainingSet.isPR) {
-                            val prTrainingSetsObs = trainingSetViewModel
+                            val prTrainingSetsObs = viewModel
                                 .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
                                 prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
-                                val sameRepSetsObs = trainingSetViewModel
+                                val sameRepSetsObs = viewModel
                                     .getTrainingSetsOfExerciseRepsIsPR(
                                         exerciseID,
                                         curTrainingSet.reps,
@@ -151,7 +146,7 @@ class TrainingSetItemAdapter(
                                     sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
                                     val lowerRepSetsObs =
-                                        trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
+                                        viewModel.getTrainingSetsOfExerciseFewerReps(
                                             exerciseID, curTrainingSet.reps
                                         )
                                     lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
@@ -166,7 +161,7 @@ class TrainingSetItemAdapter(
 
                                         // Set isPr to true for all training sets that are now PRs
                                         for (id in newPrIds) {
-                                            trainingSetViewModel.updateIsPR(id, 1)
+                                            viewModel.updateTrainingSetIsPR(id, 1)
                                         }
                                     }
                                 }
@@ -178,13 +173,13 @@ class TrainingSetItemAdapter(
                             fragment.lifecycleScope.launch(Dispatchers.IO) {
                                 Log.d(logTag, "About to delete exercise instance")
                                 // Delete the exercise instance
-                                val curExerciseInstance = exerciseInstanceViewModel
+                                val curExerciseInstance = viewModel
                                     .getExerciseInstanceOfID(curTrainingSet.exerciseInstanceID)
                                 val delExInstanceJob =
-                                    exerciseInstanceViewModel.delete(curExerciseInstance)
+                                    viewModel.deleteExerciseInstance(curExerciseInstance)
 
                                 val updateExInstanceNumbersJob =
-                                    exerciseInstanceViewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
+                                    viewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
                                         curExerciseInstance.workoutID,
                                         curExerciseInstance.exerciseInstanceNumber
                                     )
@@ -193,9 +188,9 @@ class TrainingSetItemAdapter(
                                 delExInstanceJob.join()
                                 updateExInstanceNumbersJob.join()
 
-                                val workout = workoutViewModel.getWorkoutOfDate(selectedDate)
+                                val workout = viewModel.getWorkoutOfDate(selectedDate)
 
-                                val exInstOfWorkoutObs = exerciseInstanceViewModel
+                                val exInstOfWorkoutObs = viewModel
                                     .getExerciseInstancesOfWorkout(workout?.workoutID)
                                 Log.d(logTag, "workoutID: ${workout?.workoutID}")
 
@@ -210,7 +205,7 @@ class TrainingSetItemAdapter(
                                             )
                                             // Delete the workout if it has no exercise
                                             // instances
-                                            workoutViewModel.deleteWorkoutOfID(workout?.workoutID)
+                                            viewModel.deleteWorkoutOfID(workout?.workoutID)
                                         }
                                         exInstOfWorkoutObs.removeObservers(fragment.viewLifecycleOwner)
                                     }
@@ -218,13 +213,13 @@ class TrainingSetItemAdapter(
                             }
                         } else {
                             // Decrement trainingSetNumber of all sets after curTrainingSet
-                            trainingSetViewModel.decrementTrainingSetNumbersAbove(
+                            viewModel.decrementTrainingSetNumbersAbove(
                                 curTrainingSet.exerciseInstanceID,
                                 curTrainingSet.trainingSetNumber
                             )
 
                             // Delete the training set
-                            trainingSetViewModel.delete(curTrainingSet)
+                            viewModel.deleteTrainingSet(curTrainingSet)
                         }
 
                         Toast.makeText(
@@ -246,10 +241,10 @@ class TrainingSetItemAdapter(
      */
     private fun updateOtherSetsIsPR(curTrainingSet: TrainingSet, weight: Float, reps: Int) {
         if (curTrainingSet.isPR) {
-            val prTrainingSetsObs = trainingSetViewModel
+            val prTrainingSetsObs = viewModel
                 .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
             prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
-                val sameRepSetsObs = trainingSetViewModel
+                val sameRepSetsObs = viewModel
                     .getTrainingSetsOfExerciseRepsIsPR(
                         exerciseID,
                         curTrainingSet.reps,
@@ -259,7 +254,7 @@ class TrainingSetItemAdapter(
                     sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
                     val lowerRepSetsObs =
-                        trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
+                        viewModel.getTrainingSetsOfExerciseFewerReps(
                             exerciseID, curTrainingSet.reps
                         )
                     lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
@@ -274,7 +269,7 @@ class TrainingSetItemAdapter(
 
                         // Set isPr to true for all training sets that are now PRs
                         for (id in newPrIds) {
-                            trainingSetViewModel.updateIsPR(id, 1)
+                            viewModel.updateTrainingSetIsPR(id, 1)
                         }
 
                         reviewIsPRAndUpdateTrainingSet(curTrainingSet, weight, reps)
@@ -297,19 +292,19 @@ class TrainingSetItemAdapter(
     ) {
         fragment.lifecycleScope.launch(Dispatchers.IO) {
             Log.d(null, "Updating PR status")
-            val tsJob = trainingSetViewModel.updateIsPR(curTrainingSet.trainingSetID, 0)
+            val tsJob = viewModel.updateTrainingSetIsPR(curTrainingSet.trainingSetID, 0)
             tsJob.join()
 
             val ref = fragment.activity
             ref?.runOnUiThread {
                 var isPR: Boolean
                 // Get the PR sets of the current exercise by observing a LiveData
-                val previousPRSetsObs = trainingSetViewModel
+                val previousPRSetsObs = viewModel
                     .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                 previousPRSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
 
                     // Get the dates of the PR sets by observing a LiveData
-                    val prDatesObs = trainingSetViewModel
+                    val prDatesObs = viewModel
                         .getTrainingSetDatesOfExerciseIsPR(exerciseID, 1)
                     prDatesObs.observe(fragment.viewLifecycleOwner) { prDates ->
                         prDatesObs.removeObservers(fragment.viewLifecycleOwner)
@@ -321,7 +316,7 @@ class TrainingSetItemAdapter(
 
                         // Set isPr to false for all training sets that will no longer be a PR
                         for (id in noLongerPrIds) {
-                            trainingSetViewModel.updateIsPR(id, 0)
+                            viewModel.updateTrainingSetIsPR(id, 0)
                         }
 
                         // Update the training set
@@ -334,7 +329,7 @@ class TrainingSetItemAdapter(
                             isPR
                         )
                         trainingSet.trainingSetID = curTrainingSet.trainingSetID
-                        trainingSetViewModel.update(trainingSet)
+                        viewModel.updateTrainingSet(trainingSet)
                     }
 
                     previousPRSetsObs.removeObservers(fragment.viewLifecycleOwner)

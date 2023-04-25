@@ -21,6 +21,7 @@ import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseV
 import com.example.lightweight.ui.workouttracking.settracker.exercisehistory.ExerciseHistoryFragment
 import com.example.lightweight.ui.workouttracking.settracker.exerciseinsights.ExerciseInsightsFragment
 import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsFragment
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 
@@ -37,6 +38,7 @@ class LightweightFragmentFactory(
     private val homeViewModel: HomeViewModel? = null,
     private val selectCategoryViewModel: SelectCategoryViewModel? = null,
     private val selectExerciseViewModel: SelectExerciseViewModel? = null,
+    private val logSetsViewModel: LogSetsViewModel? = null,
 ) : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
@@ -59,10 +61,7 @@ class LightweightFragmentFactory(
             }
             LogSetsFragment::class.java.name -> {
                 LogSetsFragment(
-                    exerciseViewModel!!,
-                    workoutViewModel!!,
-                    exerciseInstanceViewModel!!,
-                    trainingSetViewModel!!
+                    logSetsViewModel!!
                 )
             }
             ExerciseHistoryFragment::class.java.name -> {

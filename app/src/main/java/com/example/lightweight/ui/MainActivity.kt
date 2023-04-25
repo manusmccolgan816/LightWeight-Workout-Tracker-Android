@@ -35,6 +35,8 @@ import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryV
 import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryViewModelFactory
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModel
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModelFactory
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModel
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val homeViewModelFactory: HomeViewModelFactory by instance()
     private val selectCategoryViewModelFactory: SelectCategoryViewModelFactory by instance()
     private val selectExerciseViewModelFactory: SelectExerciseViewModelFactory by instance()
+    private val logSetsViewModelFactory: LogSetsViewModelFactory by instance()
 
     private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
@@ -86,6 +89,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val selectExerciseViewModel: SelectExerciseViewModel by viewModels {
         selectExerciseViewModelFactory
     }
+    private val logSetsViewModel: LogSetsViewModel by viewModels { logSetsViewModelFactory }
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -107,6 +111,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             homeViewModel,
             selectCategoryViewModel,
             selectExerciseViewModel,
+            logSetsViewModel
         )
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)

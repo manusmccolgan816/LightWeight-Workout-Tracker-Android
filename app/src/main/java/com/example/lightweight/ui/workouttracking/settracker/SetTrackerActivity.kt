@@ -19,6 +19,8 @@ import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModel
+import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
@@ -37,12 +39,15 @@ class SetTrackerActivity : AppCompatActivity(), KodeinAware {
     private val workoutFactory: WorkoutViewModelFactory by instance()
     private val exerciseInstanceFactory: ExerciseInstanceViewModelFactory by instance()
     private val trainingSetFactory: TrainingSetViewModelFactory by instance()
+    private val logSetsViewModelFactory: LogSetsViewModelFactory by instance()
+
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
     private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
     private val exerciseInstanceViewModel: ExerciseInstanceViewModel by viewModels {
         exerciseInstanceFactory
     }
     private val trainingSetViewModel: TrainingSetViewModel by viewModels { trainingSetFactory }
+    private val logSetsViewModel: LogSetsViewModel by viewModels { logSetsViewModelFactory }
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -55,7 +60,8 @@ class SetTrackerActivity : AppCompatActivity(), KodeinAware {
             exerciseViewModel = exerciseViewModel,
             workoutViewModel = workoutViewModel,
             exerciseInstanceViewModel = exerciseInstanceViewModel,
-            trainingSetViewModel = trainingSetViewModel
+            trainingSetViewModel = trainingSetViewModel,
+            logSetsViewModel = logSetsViewModel
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_tracker)
