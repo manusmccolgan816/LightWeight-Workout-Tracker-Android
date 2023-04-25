@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
 import com.example.lightweight.ui.MainActivity
-import com.example.lightweight.ui.category.CategoryViewModel
-import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SelectExerciseFragment(
-    private val categoryViewModel: CategoryViewModel,
-    private val exerciseViewModel: ExerciseViewModel
+    private val viewModel: SelectExerciseViewModel
 ) : Fragment(R.layout.fragment_select_exercise) {
 
     private val args: SelectExerciseFragmentArgs by navArgs()
@@ -33,7 +30,7 @@ class SelectExerciseFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ExerciseItemAdapter(args.selectedDate, listOf(), exerciseViewModel, this)
+        val adapter = ExerciseItemAdapter(args.selectedDate, listOf(), viewModel, this)
 
         val categoryID = args.categoryID
         var exercises: List<Exercise> = listOf()
@@ -46,7 +43,7 @@ class SelectExerciseFragment(
 
         if (activity!!::class == MainActivity::class) {
             lifecycleScope.launch(Dispatchers.IO) {
-                val category = categoryViewModel.getCategoryOfID(categoryID)
+                val category = viewModel.getCategoryOfID(categoryID)
                 ref?.runOnUiThread {
                     // Set the toolbar title
                     val textViewToolbarTitle =
@@ -68,7 +65,7 @@ class SelectExerciseFragment(
         recyclerViewExercises.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewExercises.adapter = adapter
 
-        exerciseViewModel.getExercisesOfCategory(categoryID).observe(viewLifecycleOwner) {
+        viewModel.getExercisesOfCategory(categoryID).observe(viewLifecycleOwner) {
             exercises = it
             adapter.exercises = it
             adapter.notifyDataSetChanged()
@@ -101,14 +98,14 @@ class SelectExerciseFragment(
         fabAddExercise.setOnClickListener {
             // Use a coroutine to execute the query and alter editTextDiaryEntry accordingly
             lifecycleScope.launch(Dispatchers.IO) {
-                val category = categoryViewModel.getCategoryOfID(categoryID)
+                val category = viewModel.getCategoryOfID(categoryID)
                 ref?.runOnUiThread {
                     // Display the add category dialog
                     AddExerciseDialog(
                         requireContext(),
                         category,
                         fun(exercise: Exercise) {
-                            exerciseViewModel.insert(exercise)
+                            viewModel.insertExercise(exercise)
                             // Clear the search view text
                             searchViewExercises.setQuery("", false)
                             // Ensure the keyboard does not appear

@@ -6,7 +6,7 @@ import com.example.lightweight.data.repositories.IExerciseInstanceRepository
 import com.example.lightweight.data.repositories.ITrainingSetRepository
 import com.example.lightweight.data.repositories.IWorkoutRepository
 
-class HomeFragmentViewModelFactory(
+class HomeViewModelFactory(
     private val workoutRepository: IWorkoutRepository,
     private val exerciseInstanceRepository: IExerciseInstanceRepository,
     private val trainingSetRepository: ITrainingSetRepository

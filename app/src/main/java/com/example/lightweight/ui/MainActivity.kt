@@ -30,7 +30,9 @@ import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
 import com.example.lightweight.ui.workouttracking.home.HomeViewModel
-import com.example.lightweight.ui.workouttracking.home.HomeFragmentViewModelFactory
+import com.example.lightweight.ui.workouttracking.home.HomeViewModelFactory
+import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModel
+import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
@@ -54,7 +56,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val cycleDayFactory: CycleDayViewModelFactory by instance()
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
     private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
-    private val homeFragmentViewModelFactory: HomeFragmentViewModelFactory by instance()
+    private val homeViewModelFactory: HomeViewModelFactory by instance()
+    private val selectExerciseViewModelFactory: SelectExerciseViewModelFactory by instance()
 
     private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
@@ -72,7 +75,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         cycleDayExerciseFactory
     }
     private val homeViewModel: HomeViewModel by viewModels {
-        homeFragmentViewModelFactory
+        homeViewModelFactory
+    }
+    private val selectExerciseViewModel: SelectExerciseViewModel by viewModels {
+        selectExerciseViewModelFactory
     }
 
     private lateinit var navController: NavController
@@ -93,6 +99,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             cycleDayCategoryViewModel,
             cycleDayExerciseViewModel,
             homeViewModel,
+            selectExerciseViewModel,
         )
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)

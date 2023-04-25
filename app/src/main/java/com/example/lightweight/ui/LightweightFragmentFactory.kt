@@ -16,6 +16,7 @@ import com.example.lightweight.ui.workouttracking.home.HomeFragment
 import com.example.lightweight.ui.workouttracking.home.HomeViewModel
 import com.example.lightweight.ui.workouttracking.selectcategory.SelectCategoryFragment
 import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseFragment
+import com.example.lightweight.ui.workouttracking.selectexercise.SelectExerciseViewModel
 import com.example.lightweight.ui.workouttracking.settracker.exercisehistory.ExerciseHistoryFragment
 import com.example.lightweight.ui.workouttracking.settracker.exerciseinsights.ExerciseInsightsFragment
 import com.example.lightweight.ui.workouttracking.settracker.logsets.LogSetsFragment
@@ -33,6 +34,7 @@ class LightweightFragmentFactory(
     private val cycleDayCategoryViewModel: CycleDayCategoryViewModel? = null,
     private val cycleDayExerciseViewModel: CycleDayExerciseViewModel? = null,
     private val homeViewModel: HomeViewModel? = null,
+    private val selectExerciseViewModel: SelectExerciseViewModel? = null,
 ) : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
@@ -50,8 +52,7 @@ class LightweightFragmentFactory(
             }
             SelectExerciseFragment::class.java.name -> {
                 SelectExerciseFragment(
-                    categoryViewModel!!,
-                    exerciseViewModel!!
+                    selectExerciseViewModel!!
                 )
             }
             LogSetsFragment::class.java.name -> {

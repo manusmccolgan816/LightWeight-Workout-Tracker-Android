@@ -12,12 +12,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.Exercise
-import com.example.lightweight.ui.exercise.ExerciseViewModel
 
 class ExerciseItemAdapter(
     private val selectedDate: String,
     var exercises: List<Exercise>,
-    private val viewModel: ExerciseViewModel,
+    private val viewModel: SelectExerciseViewModel,
     var fragment: Fragment
 ) : RecyclerView.Adapter<ExerciseItemAdapter.ExerciseItemViewHolder>() {
 
@@ -50,13 +49,13 @@ class ExerciseItemAdapter(
                         // Display the edit exercise dialog
                         EditExerciseDialog(parent.context, curExercise,
                             fun(exerciseID: Int?, newName: String) {
-                                viewModel.updateName(exerciseID, newName)
+                                viewModel.updateExerciseName(exerciseID, newName)
                             }).show()
                         true
                     }
                     R.id.menu_item_delete_exercise -> {
                         ConfirmDeleteExerciseDialog(parent.context, curExercise,
-                            fun(curExercise: Exercise) { viewModel.delete(curExercise) }).show()
+                            fun(curExercise: Exercise) { viewModel.deleteExercise(curExercise) }).show()
                         true
                     }
                     else -> true
