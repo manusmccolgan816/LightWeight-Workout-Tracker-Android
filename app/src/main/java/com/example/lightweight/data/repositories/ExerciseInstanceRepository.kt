@@ -4,7 +4,7 @@ import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.ExerciseInstance
 
 class ExerciseInstanceRepository(private val db: WorkoutDatabase) :
-    ExerciseInstanceRepositoryInterface {
+    IExerciseInstanceRepository {
 
     override suspend fun insert(exerciseInstance: ExerciseInstance) = db.getExerciseInstanceDao()
         .insert(exerciseInstance)

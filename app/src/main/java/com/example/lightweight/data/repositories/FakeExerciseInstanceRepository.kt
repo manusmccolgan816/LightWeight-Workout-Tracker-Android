@@ -9,7 +9,7 @@ import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.Workout
 import java.lang.Exception
 
-class FakeExerciseInstanceRepository : ExerciseInstanceRepositoryInterface {
+class FakeExerciseInstanceRepository : IExerciseInstanceRepository {
 
     private val allTag = 0
     private val exerciseInstancesTag = 1

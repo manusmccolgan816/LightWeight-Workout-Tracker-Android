@@ -3,7 +3,7 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.TrainingSet
 
-class TrainingSetRepository(private val db: WorkoutDatabase) : TrainingSetRepositoryInterface {
+class TrainingSetRepository(private val db: WorkoutDatabase) : ITrainingSetRepository {
 
     override suspend fun insert(trainingSet: TrainingSet) =
         db.getTrainingSetDao().insert(trainingSet)

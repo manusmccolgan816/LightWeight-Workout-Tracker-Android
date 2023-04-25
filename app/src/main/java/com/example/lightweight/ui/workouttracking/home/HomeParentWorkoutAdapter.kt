@@ -14,18 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import com.example.lightweight.util.PersonalRecordUtil
 
 class HomeParentWorkoutAdapter(
     private val recyclerViewPopulated: () -> Unit,
     var idNamePairs: List<IdNamePair>, // A list of exercise instance IDs and their exercise name
     private val fragment: HomeFragment,
-    private val workoutViewModel: WorkoutViewModel,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
-    private val trainingSetViewModel: TrainingSetViewModel
+    private val viewModel: HomeViewModel
 ) : RecyclerView.Adapter<HomeParentWorkoutAdapter.HomeParentWorkoutViewHolder>() {
 
     private val logTag = "HomeParentWorkoutAdapter"
@@ -63,14 +58,14 @@ class HomeParentWorkoutAdapter(
             listOf(),
             curID,
             fragment,
-            exerciseInstanceViewModel
+            viewModel
         )
         recyclerViewTrainingSets.layoutManager = WrapContentLinearLayoutManager(
             holder.itemView.context, LinearLayoutManager.VERTICAL, false
         )
         recyclerViewTrainingSets.adapter = homeChildWorkoutAdapter
 
-        trainingSetViewModel.getTrainingSetsOfExerciseInstance(curID)
+        viewModel.getTrainingSetsOfExerciseInstance(curID)
             .observe(fragment.viewLifecycleOwner) {
                 homeChildWorkoutAdapter.trainingSets = it
                 homeChildWorkoutAdapter.notifyItemRangeChanged(0, it.size)
@@ -85,7 +80,7 @@ class HomeParentWorkoutAdapter(
                 when (it.itemId) {
                     R.id.menu_item_delete_exercise_instance -> {
                         val getEiObserver =
-                            exerciseInstanceViewModel.getExerciseInstanceOfIDObs(curID)
+                            viewModel.getExerciseInstanceOfIDObs(curID)
                         getEiObserver.observe(fragment.viewLifecycleOwner) { exerciseInstance ->
                             deleteTrainingSets(exerciseInstance.exerciseInstanceID)
 
@@ -94,15 +89,15 @@ class HomeParentWorkoutAdapter(
                             val deleteWorkout: Boolean = idNamePairs.size == 1
 
                             // Delete the exercise instance
-                            exerciseInstanceViewModel.delete(exerciseInstance)
+                            viewModel.deleteExerciseInstance(exerciseInstance)
 
                             if (deleteWorkout) {
-                                workoutViewModel.deleteWorkoutOfID(fragment.workoutID)
+                                viewModel.deleteWorkoutOfID(fragment.workoutID)
                             }
 
                             // Decrement the exercise instance number of all exercise instances in
                             // the workout with a higher exercise instance number to preserve ordering
-                            exerciseInstanceViewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
+                            viewModel.decrementExerciseInstanceNumbersOfWorkoutAfter(
                                 exerciseInstance.workoutID,
                                 exerciseInstance.exerciseInstanceNumber
                             )
@@ -129,7 +124,7 @@ class HomeParentWorkoutAdapter(
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
         val exerciseObs =
-            exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+            viewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
         exerciseObs.observe(fragment.viewLifecycleOwner) {
             Log.d(logTag, "Exercise ID is $it")
 
@@ -145,23 +140,23 @@ class HomeParentWorkoutAdapter(
 
     private fun deleteTrainingSets(exerciseInstanceID: Int?) {
         val trainingSetsObs =
-            trainingSetViewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
+            viewModel.getTrainingSetsOfExerciseInstance(exerciseInstanceID)
         trainingSetsObs.observe(fragment.viewLifecycleOwner) { trainingSets ->
             trainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
             val exerciseIDObs =
-                exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+                viewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
             exerciseIDObs.observe(fragment.viewLifecycleOwner) { exerciseID ->
                 exerciseIDObs.removeObservers(fragment.viewLifecycleOwner)
 
                 for (curTrainingSet in trainingSets) {
                     // If the set to be deleted is a PR, another set may become a PR
                     if (curTrainingSet.isPR) {
-                        val prTrainingSetsObs = trainingSetViewModel
+                        val prTrainingSetsObs = viewModel
                             .getTrainingSetsOfExerciseAndIsPR(exerciseID, 1)
                         prTrainingSetsObs.observe(fragment.viewLifecycleOwner) { prSets ->
                             prTrainingSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
-                            val sameRepSetsObs = trainingSetViewModel
+                            val sameRepSetsObs = viewModel
                                 .getTrainingSetsOfExerciseRepsIsPR(
                                     exerciseID,
                                     curTrainingSet.reps, 0
@@ -170,7 +165,7 @@ class HomeParentWorkoutAdapter(
                                 sameRepSetsObs.removeObservers(fragment.viewLifecycleOwner)
 
                                 val lowerRepSetsObs =
-                                    trainingSetViewModel.getTrainingSetsOfExerciseFewerReps(
+                                    viewModel.getTrainingSetsOfExerciseFewerReps(
                                         exerciseID, curTrainingSet.reps
                                     )
                                 lowerRepSetsObs.observe(fragment.viewLifecycleOwner) { lowerRepSets ->
@@ -185,7 +180,7 @@ class HomeParentWorkoutAdapter(
 
                                     // Set isPr to true for all training sets that are now PRs
                                     for (id in newPrIds) {
-                                        trainingSetViewModel.updateIsPR(id, 1)
+                                        viewModel.updateIsPR(id, 1)
                                     }
                                 }
                             }
@@ -193,13 +188,13 @@ class HomeParentWorkoutAdapter(
                     }
                     if (this.itemCount > 1) {
                         // Decrement trainingSetNumber of all sets after curTrainingSet
-                        trainingSetViewModel.decrementTrainingSetNumbersAbove(
+                        viewModel.decrementTrainingSetNumbersAbove(
                             curTrainingSet.exerciseInstanceID,
                             curTrainingSet.trainingSetNumber
                         )
 
                         // Delete the training set
-                        trainingSetViewModel.delete(curTrainingSet)
+                        viewModel.deleteTrainingSet(curTrainingSet)
                     }
                 }
             }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.CycleDay
 import java.lang.IndexOutOfBoundsException
 
-class FakeCycleDayRepository : CycleDayRepositoryInterface {
+class FakeCycleDayRepository : ICycleDayRepository {
 
     private val allTag = 0
     private val cycleDayOfIDTag = 1

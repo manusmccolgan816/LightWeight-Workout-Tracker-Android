@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Cycle
 
-class FakeCycleRepository : CycleRepositoryInterface {
+class FakeCycleRepository : ICycleRepository {
 
     private val cycles = mutableListOf<Cycle>()
     private val observableCycles = MutableLiveData<List<Cycle>>(cycles)

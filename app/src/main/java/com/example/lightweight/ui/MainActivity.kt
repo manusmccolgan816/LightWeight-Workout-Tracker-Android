@@ -29,6 +29,8 @@ import com.example.lightweight.ui.exercise.ExerciseViewModel
 import com.example.lightweight.ui.exercise.ExerciseViewModelFactory
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModelFactory
+import com.example.lightweight.ui.workouttracking.home.HomeViewModel
+import com.example.lightweight.ui.workouttracking.home.HomeFragmentViewModelFactory
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
 import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModelFactory
 import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     private val cycleDayFactory: CycleDayViewModelFactory by instance()
     private val cycleDayCategoryFactory: CycleDayCategoryViewModelFactory by instance()
     private val cycleDayExerciseFactory: CycleDayExerciseViewModelFactory by instance()
+    private val homeFragmentViewModelFactory: HomeFragmentViewModelFactory by instance()
+
     private val categoryViewModel: CategoryViewModel by viewModels { categoryFactory }
     private val exerciseViewModel: ExerciseViewModel by viewModels { exerciseFactory }
     private val workoutViewModel: WorkoutViewModel by viewModels { workoutFactory }
@@ -66,6 +70,9 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
     private val cycleDayExerciseViewModel: CycleDayExerciseViewModel by viewModels {
         cycleDayExerciseFactory
+    }
+    private val homeViewModel: HomeViewModel by viewModels {
+        homeFragmentViewModelFactory
     }
 
     private lateinit var navController: NavController
@@ -84,7 +91,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             cycleViewModel,
             cycleDayViewModel,
             cycleDayCategoryViewModel,
-            cycleDayExerciseViewModel
+            cycleDayExerciseViewModel,
+            homeViewModel,
         )
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)

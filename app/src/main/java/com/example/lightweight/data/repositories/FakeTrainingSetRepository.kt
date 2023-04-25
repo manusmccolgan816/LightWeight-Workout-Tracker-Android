@@ -7,7 +7,7 @@ import com.example.lightweight.data.db.entities.ExerciseInstance
 import com.example.lightweight.data.db.entities.TrainingSet
 import com.example.lightweight.data.db.entities.Workout
 
-class FakeTrainingSetRepository : TrainingSetRepositoryInterface {
+class FakeTrainingSetRepository : ITrainingSetRepository {
 
     private val allTag = 0
     private val trainingSetsTag = 1

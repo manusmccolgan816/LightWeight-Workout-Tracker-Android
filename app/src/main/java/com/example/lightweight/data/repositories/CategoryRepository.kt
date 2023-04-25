@@ -3,7 +3,7 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.Category
 
-class CategoryRepository(private val db: WorkoutDatabase) : CategoryRepositoryInterface {
+class CategoryRepository(private val db: WorkoutDatabase) : ICategoryRepository {
 
     override suspend fun insert(category: Category) = db.getCategoryDao().insert(category)
 

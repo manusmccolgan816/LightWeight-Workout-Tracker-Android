@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.lightweight.IdNamePair
 import com.example.lightweight.data.db.entities.ExerciseInstance
 
-interface ExerciseInstanceRepositoryInterface {
+interface IExerciseInstanceRepository {
     suspend fun insert(exerciseInstance: ExerciseInstance)
     suspend fun updateExerciseInstanceNumber(exerciseInstanceID: Int?, eiNumber: Int)
     suspend fun decrementExerciseInstanceNumbersOfWorkoutAfter(workoutID: Int?, eiNumber: Int)

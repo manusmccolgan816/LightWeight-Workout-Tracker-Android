@@ -3,7 +3,7 @@ package com.example.lightweight.data.repositories
 import com.example.lightweight.data.db.WorkoutDatabase
 import com.example.lightweight.data.db.entities.CycleDay
 
-class CycleDayRepository(private val db: WorkoutDatabase) : CycleDayRepositoryInterface {
+class CycleDayRepository(private val db: WorkoutDatabase) : ICycleDayRepository {
 
     override suspend fun insert(cycleDay: CycleDay) = db.getCycleDayDao().insert(cycleDay)
 

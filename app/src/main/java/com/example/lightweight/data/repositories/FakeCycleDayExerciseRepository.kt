@@ -8,7 +8,7 @@ import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.ui.cycleplanning.CycleItem
 import java.lang.IndexOutOfBoundsException
 
-class FakeCycleDayExerciseRepository : CycleDayExerciseRepositoryInterface {
+class FakeCycleDayExerciseRepository : ICycleDayExerciseRepository {
 
     private val allTag = 0
     private val cycleItemsOfCycleIDTag = 1

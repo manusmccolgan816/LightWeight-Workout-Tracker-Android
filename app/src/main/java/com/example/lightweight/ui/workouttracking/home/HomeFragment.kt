@@ -14,9 +14,6 @@ import com.example.lightweight.IdNamePair
 import com.example.lightweight.R
 import com.example.lightweight.WrapContentLinearLayoutManager
 import com.example.lightweight.ui.MainActivity
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
-import com.example.lightweight.ui.workouttracking.trainingset.TrainingSetViewModel
-import com.example.lightweight.ui.workouttracking.workout.WorkoutViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -24,9 +21,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class HomeFragment(
-    private val workoutViewModel: WorkoutViewModel,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel,
-    private val trainingSetViewModel: TrainingSetViewModel
+    private val viewModel: HomeViewModel
 ) : Fragment(R.layout.fragment_home) {
 
     private val logTag = "HomeFragment"
@@ -115,9 +110,7 @@ class HomeFragment(
             },
             listOf(),
             this,
-            workoutViewModel,
-            exerciseInstanceViewModel,
-            trainingSetViewModel
+            viewModel
         )
         recyclerViewExerciseInstances.layoutManager =
             WrapContentLinearLayoutManager(requireContext())
@@ -160,10 +153,10 @@ class HomeFragment(
 
         val ref = this.activity
         lifecycleScope.launch(Dispatchers.IO) {
-            workoutID = workoutViewModel.getWorkoutOfDate(selectedDate.toString())?.workoutID
+            workoutID = viewModel.getWorkoutOfDate(selectedDate.toString())?.workoutID
 
             ref?.runOnUiThread {
-                exerciseInstanceViewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
+                viewModel.getExerciseInstancesAndNamesOfWorkout(workoutID)
                     .observe(viewLifecycleOwner) {
                         if (it.isNullOrEmpty()) {
                             progressBar.visibility = View.GONE
@@ -203,7 +196,7 @@ class HomeFragment(
         // Update the exercise instance numbers of those that were moved
         for (i in exerciseInstanceIDisMoved.indices) {
             if (exerciseInstanceIDisMoved[i].second) {
-                exerciseInstanceViewModel.updateExerciseInstanceNumber(
+                viewModel.updateExerciseInstanceNumber(
                     exerciseInstanceIDisMoved[i].first,
                     i + 1
                 )

@@ -2,10 +2,10 @@ package com.example.lightweight.ui.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.lightweight.data.repositories.CategoryRepositoryInterface
+import com.example.lightweight.data.repositories.ICategoryRepository
 
 class CategoryViewModelFactory(
-    private val repository: CategoryRepositoryInterface
+    private val repository: ICategoryRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

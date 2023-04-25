@@ -12,14 +12,13 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.R
 import com.example.lightweight.data.db.entities.TrainingSet
-import com.example.lightweight.ui.workouttracking.exerciseinstance.ExerciseInstanceViewModel
 
 class HomeChildWorkoutAdapter(
     private val recyclerViewPopulated: () -> Unit,
     var trainingSets: List<TrainingSet>,
     val exerciseInstanceID: Int?,
     private val fragment: HomeFragment,
-    private val exerciseInstanceViewModel: ExerciseInstanceViewModel
+    private val viewModel: HomeViewModel
 ) : RecyclerView.Adapter<HomeChildWorkoutAdapter.HomeChildWorkoutViewHolder>() {
 
     private val logTag = "HomeChildWorkoutAdapter"
@@ -100,7 +99,7 @@ class HomeChildWorkoutAdapter(
 
     private fun navigateToExercise(exerciseInstanceID: Int?) {
         val exerciseObs =
-            exerciseInstanceViewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
+            viewModel.getExerciseOfExerciseInstance(exerciseInstanceID)
 
         exerciseObs.observe(fragment.viewLifecycleOwner) {
             Log.d(logTag, "Exercise ID is $it")

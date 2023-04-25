@@ -3,7 +3,7 @@ package com.example.lightweight.data.repositories
 import androidx.lifecycle.LiveData
 import com.example.lightweight.data.db.entities.TrainingSet
 
-interface TrainingSetRepositoryInterface {
+interface ITrainingSetRepository {
     suspend fun insert(trainingSet: TrainingSet)
     suspend fun delete(trainingSet: TrainingSet)
     suspend fun update(trainingSet: TrainingSet)

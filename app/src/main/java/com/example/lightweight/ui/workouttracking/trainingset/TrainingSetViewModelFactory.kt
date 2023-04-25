@@ -2,10 +2,10 @@ package com.example.lightweight.ui.workouttracking.trainingset
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.lightweight.data.repositories.TrainingSetRepositoryInterface
+import com.example.lightweight.data.repositories.ITrainingSetRepository
 
 class TrainingSetViewModelFactory(
-    private val repository: TrainingSetRepositoryInterface
+    private val repository: ITrainingSetRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

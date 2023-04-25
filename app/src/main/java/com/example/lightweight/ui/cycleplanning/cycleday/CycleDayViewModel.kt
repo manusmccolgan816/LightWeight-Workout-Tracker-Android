@@ -2,12 +2,12 @@ package com.example.lightweight.ui.cycleplanning.cycleday
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.CycleDay
-import com.example.lightweight.data.repositories.CycleDayRepositoryInterface
+import com.example.lightweight.data.repositories.ICycleDayRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CycleDayViewModel(private val repository: CycleDayRepositoryInterface) : ViewModel() {
+class CycleDayViewModel(private val repository: ICycleDayRepository) : ViewModel() {
 
     fun insert(cycleDay: CycleDay) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(cycleDay)

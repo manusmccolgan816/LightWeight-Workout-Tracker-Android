@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Category
 
-class FakeCategoryRepository : CategoryRepositoryInterface {
+class FakeCategoryRepository : ICategoryRepository {
 
     private val allTag = 0
     private val categoriesTag = 1

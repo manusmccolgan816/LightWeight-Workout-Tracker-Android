@@ -8,7 +8,7 @@ import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
 import java.lang.IndexOutOfBoundsException
 
-class FakeCycleDayCategoryRepository : CycleDayCategoryRepositoryInterface {
+class FakeCycleDayCategoryRepository : ICycleDayCategoryRepository {
 
     private val allTag = 0
     private val categoryIDOfCycleDayCategoryIDTag = 1

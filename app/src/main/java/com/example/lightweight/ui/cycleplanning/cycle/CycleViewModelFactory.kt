@@ -2,10 +2,10 @@ package com.example.lightweight.ui.cycleplanning.cycle
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.lightweight.data.repositories.CycleRepositoryInterface
+import com.example.lightweight.data.repositories.ICycleRepository
 
 class CycleViewModelFactory(
-    private val repository: CycleRepositoryInterface
+    private val repository: ICycleRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

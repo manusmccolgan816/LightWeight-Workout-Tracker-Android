@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.lightweight.data.db.entities.Exercise
 
-class FakeExerciseRepository : ExerciseRepositoryInterface {
+class FakeExerciseRepository : IExerciseRepository {
 
     private val allTag = 0
     private val exercisesTag = 1

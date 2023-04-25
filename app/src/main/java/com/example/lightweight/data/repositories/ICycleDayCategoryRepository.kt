@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.lightweight.ui.cycleplanning.CycleDayCategoryCombo
 import com.example.lightweight.data.db.entities.CycleDayCategory
 
-interface CycleDayCategoryRepositoryInterface {
+interface ICycleDayCategoryRepository {
     suspend fun insert(cycleDayCategory: CycleDayCategory)
     suspend fun decrementCycleDayCategoryNumbersAfter(
         cycleDayID: Int?,

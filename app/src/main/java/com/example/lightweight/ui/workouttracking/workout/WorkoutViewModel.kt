@@ -2,12 +2,12 @@ package com.example.lightweight.ui.workouttracking.workout
 
 import androidx.lifecycle.ViewModel
 import com.example.lightweight.data.db.entities.Workout
-import com.example.lightweight.data.repositories.WorkoutRepositoryInterface
+import com.example.lightweight.data.repositories.IWorkoutRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WorkoutViewModel(private val repository: WorkoutRepositoryInterface) : ViewModel() {
+class WorkoutViewModel(private val repository: IWorkoutRepository) : ViewModel() {
 
     fun insert(workout: Workout) = CoroutineScope(Dispatchers.Main).launch {
         repository.insert(workout)

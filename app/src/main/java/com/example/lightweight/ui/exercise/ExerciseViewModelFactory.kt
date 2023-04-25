@@ -2,10 +2,10 @@ package com.example.lightweight.ui.exercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.lightweight.data.repositories.ExerciseRepositoryInterface
+import com.example.lightweight.data.repositories.IExerciseRepository
 
 class ExerciseViewModelFactory(
-    private val repository: ExerciseRepositoryInterface
+    private val repository: IExerciseRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

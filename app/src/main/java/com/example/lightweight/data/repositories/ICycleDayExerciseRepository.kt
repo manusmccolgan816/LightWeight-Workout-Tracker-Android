@@ -5,7 +5,7 @@ import com.example.lightweight.ui.cycleplanning.CycleDayCategoryExerciseCombo
 import com.example.lightweight.ui.cycleplanning.CycleItem
 import com.example.lightweight.data.db.entities.CycleDayExercise
 
-interface CycleDayExerciseRepositoryInterface {
+interface ICycleDayExerciseRepository {
     suspend fun insert(cycleDayExercise: CycleDayExercise)
     suspend fun decrementCycleDayExerciseNumbersAfter(
         cycleDayCategoryID: Int?, cycleDayExerciseNumber: Int
